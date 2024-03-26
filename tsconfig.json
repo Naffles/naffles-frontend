@@ -18,9 +18,24 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@components/*": ["./src/components/*"],
+      "@contracts/*": ["./src/contracts/*"],
+      "@layout/*": ["./src/layouts/*"],
+      "@store/*": ["./src/store/*"],
+      "@hook/*": ["./src/hooks/*"],
+      "@util/*": ["./src/util/*"],
+      "@network/*": ["./src/network/*"],
+      "@type/*": ["./src/types/*"],
+      "@image/*": ["./public/static/*"],
+      "@api/*": ["./src/api/api.ts"],
+      "react": [ "./node_modules/@types/react" ],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
