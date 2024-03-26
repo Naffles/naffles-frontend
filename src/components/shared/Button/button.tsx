@@ -1,5 +1,3 @@
-// create reusable button component that can be used in multiple places
-// props: label, leftIcon, rightIcon, isOutline, default
 type ButtonProps = {
   label: string;
   leftIcon?: React.ReactNode;
