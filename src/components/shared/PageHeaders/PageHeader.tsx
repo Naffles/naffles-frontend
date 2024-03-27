@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Fragment } from "react";
 import Link from "next/link";
 import BrandIcon from "@components/icons/brandIcon";
@@ -6,17 +6,23 @@ import { Menu, Transition } from "@headlessui/react";
 import { MdMenu } from "react-icons/md";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
 
+import { useUser } from "../../../blockchain/context/UserContext";
+import {
+  ConnectButton,
+  DisconnectButton,
+  ShowUIButton,
+} from "../../../components/magic/index";
+
 type PageHeaderProps = {
   // onLogin?: () => void;
   // onLogout: () => void;
 };
 
-
-
 const PageHeader: React.FC<PageHeaderProps> = ({
   // onLogin,
   // onLogout,
- }) => {
+}) => {
+  const { user } = useUser();
 
   const navigationOptions = [
     {
@@ -38,7 +44,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     {
       title: "Profile",
       href: "/profile",
-    }
+    },
   ];
 
   return (
@@ -101,17 +107,29 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           </div>
 
           <div className="flex items-center space-x-4 text-nafl-grey-900">
-
             {/* <CreateNaffleModal className=""></CreateNaffleModal> */}
             <div className="flex items-center space-x-4 hidden md:inline-block ">
-              { navigationOptions.map((navItem, index) => (
-                <a key={index} href={navItem.href} className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem]">
+              {navigationOptions.map((navItem, index) => (
+                <a
+                  key={index}
+                  href={navItem.href}
+                  className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem]"
+                >
                   {navItem.title}
                 </a>
-                ))
-              }
+              ))}
             </div>
             {/* Connect Wallet Here */}
+            {user ? (
+              <div className="p-2 flex flex-col w-[40vw] mx-auto">
+                <ShowUIButton />
+                <DisconnectButton />
+              </div>
+            ) : (
+              <div className="p-2 text-center">
+                <ConnectButton />
+              </div>
+            )}
           </div>
         </div>
       </div>

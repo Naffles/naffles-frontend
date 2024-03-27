@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import MagicProvider from "../blockchain/context/MagicProvider";
+import { UserProvider } from "../blockchain/context/UserContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,8 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {children}
+      <body 
+        suppressHydrationWarning={true} 
+        className={inter.className}
+      >
+        <MagicProvider>
+          <UserProvider>{children}</UserProvider>
+        </MagicProvider>
       </body>
     </html>
   );
