@@ -1,6 +1,5 @@
-
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,slnt,wdth,wght,YTFI@8..144,-3,88.3,466,703&display=swap");
+@import '~typeface-bebas-neue';
+@import '~typeface-roboto';
 
 @tailwind base;
 @tailwind components;
@@ -19,12 +18,20 @@ h2,
 h3,
 h4,
 h5,
-h6,
-a {
+h6 {
   padding: 0;
   margin: 0;
-  font-family: "Bebas Neue", sans-serif;
-  font-weight: 400;
+  font-family: "Bebas Neue", cursive, sans-serif !important;
+}
+
+a {
+  font-family: "Bebas Neue", sans-serif !important;
+}
+
+p,
+span,
+label {
+  font-family: "Roboto", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {

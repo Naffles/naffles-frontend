@@ -1,22 +1,46 @@
 import Image from "next/image";
 import Button from "../Button/button";
+import Typography from "../Typography/typography";
 
 type CardProps = {
-  image: string;
   title: string;
   description: string;
   price: string;
   buttonText: string;
 };
 
-const Card: React.FC<CardProps> = ({ image, title, description, price, buttonText }) => {
+const Card: React.FC<CardProps> = ({ title, description, price, buttonText }) => {
   return (
-      <div className="flex flex-col items-center justify-center gap-4 p-4 bg-white shadow-lg rounded-lg">
-        <Image src={image} alt={title} className="w-32 h-32 rounded-full" />
-        <h2 className="text-title-lg font-semibold">{title}</h2>
-        <p className="text-body-base text-center">{description}</p>
-        <p className="text-title-lg font-semibold">{price}</p>
-        <Button label={buttonText} />
+      <div className="bg-nafl-grey-900 z-10 mx-auto overflow-hidden p-2.5 rounded-xl h-auto w-56 user-select-none">
+        <div className="relative bg-nafl-white rounded-xl mx-auto px-0 py-0 pb-7">
+        <div className="absolute bg-nafl-grey-900 rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" />
+          <Image src="/static/ape-dummy.png" alt={title} width={210} height={172}/>
+          <div className="flex justify-between">
+            <div className="h-16 flex-row ml-2 mt-5">
+              <h3 className="text-lg font-semibold text-nafl-charcoal-500">{title}</h3>
+              <h4 className="text-lg text-nafl-charcoal-500">{description}</h4>
+            </div>
+            <div className="flex mt-2">
+              <Typography size="text-5xl pr-2" color="accent-green">#9419</Typography>
+            </div>
+          </div>
+          <hr className="nafl-grey-100"/>
+          <div className="flex justify-between">
+            <div className="h-12 flex-row ml-2 mt-2">
+              <h4 className="text-lg font-semibold text-nafl-charcoal-500">tickets left</h4>
+              <h2 className="text-3xl font-semibold text-nafl-charcoal-500">69</h2>
+              <h4 className="text-lg font-semibold text-nafl-charcoal-500">of 23,000</h4>
+            </div>
+            <div className="flex-row mt-2 mr-2">
+              <h4 className="text-lg font-semibold text-nafl-charcoal-500 text-right">ticket price</h4>
+              <div className="flex">
+                <Image src="/static/eth-logo.png" alt="nafl-coin" width={20} height={20} style={{objectFit: 'contain'}}/>
+                <h2 className="text-3xl font-semibold text-nafl-charcoal-500 text-right">0.01</h2>
+              </div>
+              <h4 className="text-sm font-semibold text-nafl-charcoal-500 text-right">of 23,000</h4>
+            </div>
+          </div>
+        </div>
       </div>
     );
   };

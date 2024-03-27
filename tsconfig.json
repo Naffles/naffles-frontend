@@ -28,6 +28,7 @@
       "@type/*": ["./src/types/*"],
       "@image/*": ["./public/static/*"],
       "@api/*": ["./src/api/api.ts"],
+      "@assets/*": ["./public/static/*"],
       "react": [ "./node_modules/@types/react" ],
     }
   },
