@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMagic } from "../../blockchain/context/MagicProvider";
+import { useMagic } from "@blockchain/context/MagicProvider";
 
 const SignMessage = () => {
   // Use the MagicProvider to get the current instance of web3

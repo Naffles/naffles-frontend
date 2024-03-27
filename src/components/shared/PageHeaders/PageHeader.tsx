@@ -4,24 +4,23 @@ import Link from "next/link";
 import BrandIcon from "@components/icons/brandIcon";
 import { Menu, Transition } from "@headlessui/react";
 import { MdMenu } from "react-icons/md";
-import { FaDiscord, FaTwitter } from "react-icons/fa";
+import { FaDiscord, FaTwitter, FaChevronDown } from "react-icons/fa";
 
-import { useUser } from "../../../blockchain/context/UserContext";
-import {
-  ConnectButton,
-  DisconnectButton,
-  ShowUIButton,
-} from "../../../components/magic/index";
+import { useUser } from "@blockchain/context/UserContext";
+import { ConnectButton } from "@components/magic/index";
+import Login from "@components/shared/Button/login";
 
 type PageHeaderProps = {
   // onLogin?: () => void;
   // onLogout: () => void;
 };
 
-const PageHeader: React.FC<PageHeaderProps> = ({
-  // onLogin,
-  // onLogout,
-}) => {
+const PageHeader: React.FC<PageHeaderProps> = (
+  {
+    // onLogin,
+    // onLogout,
+  }
+) => {
   const { user } = useUser();
 
   const navigationOptions = [
@@ -119,12 +118,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({
                 </a>
               ))}
             </div>
-            {/* Connect Wallet Here */}
             {user ? (
-              <div className="p-2 flex flex-col w-[40vw] mx-auto">
-                <ShowUIButton />
-                <DisconnectButton />
-              </div>
+              <Login />
             ) : (
               <div className="p-2 text-center">
                 <ConnectButton />

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { useMagic } from "../../blockchain/context/MagicProvider";
-import { useUser } from "../../blockchain/context/UserContext";
+import { useMagic } from "@blockchain/context/MagicProvider";
+import { useUser } from "@blockchain/context/UserContext";
 
 const WalletDetail = () => {
   // Use the Web3Context to get the current instance of web3

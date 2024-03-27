@@ -1,6 +1,6 @@
-import { useMagic } from "../../blockchain/context/MagicProvider";
 import { useState } from "react";
-import { useUser } from "../../blockchain/context/UserContext";
+import { useMagic } from "@blockchain/context/MagicProvider";
+import { useUser } from "@blockchain/context/UserContext";
 
 const DisconnectButton = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,7 @@ const DisconnectButton = () => {
   return (
     <button
       type="button"
-      className="border border-white font-bold p-2 rounded-md text-color"
+      className="text-color"
       onClick={handleDisconnect}
     >
       {isLoading ? "Disconnecting..." : "Disconnect"}

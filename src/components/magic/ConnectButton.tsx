@@ -1,5 +1,5 @@
-import { useMagic } from "../../blockchain/context/MagicProvider";
-import { useUser } from "../../blockchain/context/UserContext";
+import { useMagic } from "@blockchain/context/MagicProvider";
+import { useUser } from "@blockchain/context/UserContext";
 
 const ConnectButton = () => {
   // Get the initializeWeb3 function from the Web3 context

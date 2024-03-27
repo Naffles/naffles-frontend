@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useMagic } from "../../blockchain/context/MagicProvider";
+import { useMagic } from "@blockchain/context/MagicProvider";
 
 const SendTransaction = () => {
   const { web3 } = useMagic();

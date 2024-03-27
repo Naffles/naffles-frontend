@@ -1,4 +1,4 @@
-import { useMagic } from "../../blockchain/context/MagicProvider";
+import { useMagic } from "@blockchain/context/MagicProvider";
 
 const ShowUIButton = () => {
   const { magic } = useMagic();
@@ -17,10 +17,10 @@ const ShowUIButton = () => {
   // Render the button component if showButton is true, otherwise render nothing
   return (
     <button
-      className="w-auto border border-white font-bold p-2 rounded-md text-color"
+      className="w-auto text-color"
       onClick={handleShowUI}
     >
-      Show UI
+      Account Details
     </button>
   );
 };
