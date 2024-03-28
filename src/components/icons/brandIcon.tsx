@@ -21,7 +21,7 @@ const iconStyles = cva("bg-cover mx-0 h-full w-full", {
 export const BrandIcon = ({ 
   colour = "yellow",
   size,
-  ...props 
+  ...props
 }: IconProps) => {
   return (
   <div className={iconStyles({ size })} {...props}>

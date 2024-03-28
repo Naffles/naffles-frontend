@@ -48,8 +48,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   ];
 
   return (
-    <div className="fixed top-0 w-full h-12 t bg-nafl-charcoal-600 z-10 mx-auto overflow:hidden">
-      <div className="relative bg-nafl-sponge-500 rounded-xl mt-4 mx-auto px-2 py-1 w-[calc(100%-2rem)]">
+    <div className="fixed top-0 w-full h-30 bg-nafl-charcoal-600 z-10 mx-auto overflow-hidden">
+      <div className="relative bg-nafl-sponge-500 rounded-lg mt-0 mx-auto px-2 py-1">
         <div className="absolute bg-nafl-charcoal-600 rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" />
         <div className="flex flex-row items-center py-2 px-4 justify-between max-w-[200rem] m-auto">
           <div className="flex flex-row lg:flex-row lg:space-x-8 items-center space-y-4 lg:space-y-0">

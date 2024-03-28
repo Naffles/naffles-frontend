@@ -37,7 +37,7 @@ const Card: React.FC<CardProps> = ({ title, description, price, buttonText }) =>
                 <Image src="/static/eth-logo.png" alt="nafl-coin" width={20} height={20} style={{objectFit: 'contain'}}/>
                 <h2 className="text-3xl font-semibold text-nafl-charcoal-500 text-right">0.01</h2>
               </div>
-              <h4 className="text-sm font-semibold text-nafl-charcoal-500 text-right">of 23,000</h4>
+              <Typography className="text-sm font-semibold text-right" color="accent-green">($16 USD)</Typography>
             </div>
           </div>
         </div>

@@ -68,6 +68,7 @@ module.exports = {
         900: "#181818",
       },
       "nafl-white": "#FFFFFF",
+      "nafl-purple": "#DC2ABF"
     },
     fontSize: {
       "title-base": [
