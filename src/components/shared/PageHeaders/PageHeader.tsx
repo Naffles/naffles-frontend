@@ -55,7 +55,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           <div className="flex flex-row lg:flex-row lg:space-x-8 items-center space-y-4 lg:space-y-0">
             <span className="relative h-6">
               <Link href="/">
-                <BrandIcon size="base" colour="black" />
+                <BrandIcon size="lg" colour="black" />
               </Link>
             </span>
             <div className="hidden lg:flex space-x-4 text-nafl-charcoal-800">
@@ -70,7 +70,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 
           <div className="flex items-center space-x-4 text-nafl-grey-900">
 
-            <div className="flex items-center space-x-4 hidden md:inline-block ">
+            <div className="flex items-center space-x-4 md:inline-block ">
               { navigationOptions.map((navItem, index) => (
                 <a
                   key={index}
