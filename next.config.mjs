@@ -8,10 +8,10 @@ const nextConfig = {
     domains: [
       "https://img.reservoir.tools/",
     ],
+    disableStaticImages: true,
     remotePatterns: [
       {
         protocol: "https",
-
         hostname: "**",
       },
     ],

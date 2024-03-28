@@ -1,6 +1,5 @@
-
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,slnt,wdth,wght,YTFI@8..144,-3,88.3,466,703&display=swap");
+@import '~typeface-bebas-neue';
+@import '~typeface-roboto';
 
 @tailwind base;
 @tailwind components;
@@ -10,6 +9,8 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 70, 70, 70;
   --background-end-rgb: 46, 45, 45;
+  --swiper-theme-color: #FEFF3D;
+  --swiper-navigation-size: 20px;
 }
 
 html,
@@ -19,12 +20,20 @@ h2,
 h3,
 h4,
 h5,
-h6,
-a {
+h6 {
   padding: 0;
   margin: 0;
-  font-family: "Bebas Neue", sans-serif;
-  font-weight: 400;
+  font-family: "Bebas Neue", cursive, sans-serif !important;
+}
+
+a {
+  font-family: "Bebas Neue", sans-serif !important;
+}
+
+p,
+span,
+label {
+  font-family: "Roboto", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -49,4 +58,36 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  /* text-align: center; */
+  /* font-size: 18px; */
+  /* background: #fff; */
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-button-prev, .swiper-button-next {
+  color: #FEFF3D !important;
+  background-color: #464646;
+  font-size: 20px !important;
+  padding: 20px !important;
+  height: 80px !important;
+  margin-top: 60px !important;
+}
+.swiper-button-next {
+  position: absolute;
+  right: 0 !important;
+}
+.swiper-button-prev {
+  position: absolute;
+  left: 0 !important;
 }
