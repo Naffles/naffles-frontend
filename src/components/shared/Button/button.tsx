@@ -9,7 +9,7 @@ interface ButtonProps {
   rightIcon?: React.ReactNode;
   isOutline?: boolean;
   defaultButton?: boolean;
-  children?: JSX.Element | JSX.Element[];
+  children?: JSX.Element | JSX.Element[] | React.ReactNode;
   className?: string;
   spinnerColour?: boolean;
   subClassName?: string;
@@ -20,11 +20,11 @@ const btnStyles = cva(
   {
     variants: {
       variant: {
-        primary: "bg-nafl-sponge-500 text-nafl-charcoal-800",
+        primary: "text-nafl-sponge-500 bg-nafl-charcoal-600",
         secondary: "bg-nafl-jade-500 text-nafl-charcoal-100",
         tertiary: "bg-nafl-charcoal-800 text-nafl-charcoal-100",
-        special:
-          "bg-gradient-to-r from-nafl-jade-500 to-nafl-sponge-500 text-nafl-charcoal-800",
+        special: "bg-gradient-to-r from-nafl-jade-500 to-nafl-sponge-500 text-nafl-charcoal-800",
+        outline: "border-2 border-nafl-charcoal-800 text-nafl-charcoal-800",
       },
       size: {
         sx: "!font-mono text-body-xs",
@@ -68,8 +68,6 @@ const Button: React.FC<ButtonProps> = ({
   subClassName,
   ...props
 }) => {
-  const isSpinnerActive = false;
-
   return (
     <button
       type="button"
@@ -82,30 +80,10 @@ const Button: React.FC<ButtonProps> = ({
       })} ${className} flex justify-center items-center`}
       {...props}
     >
-      <span className="flex space-x-2 items-center">
+      <span className="flex space-x-2 items-center flex-row justify-between">
+        {leftIcon && leftIcon}
         {children}
-        {isSpinnerActive ? (
-          <span className="flex space-x-2 items-center animate-pulse justify-center">
-            {spinnerColour ? (
-              <Image
-                src="/static/Dual Ring-1s-200px.gif"
-                width={24}
-                height={24}
-                alt="Spinner Black"
-              />
-            ) : (
-              <Image
-                src="/static/Dual Ring-white-1s-200px.gif"
-                width={24}
-                height={24}
-                alt="Spinner White"
-              />
-            )}
-            <span className={`${subClassName}`}>{label}...</span>
-          </span>
-        ) : (
-          <span className={`w-full ${subClassName}`}>{label}</span>
-        )}
+        {rightIcon && rightIcon}
       </span>
     </button>
   );
