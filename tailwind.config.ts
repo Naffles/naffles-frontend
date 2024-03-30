@@ -68,9 +68,9 @@ module.exports = {
         900: "#181818",
       },
       "nafl-white": "#FFFFFF",
+      "nafl-purple": "#DC2ABF"
     },
     fontSize: {
-      // TITLE SIZE
       "title-base": [
         "1rem",
         {
@@ -222,6 +222,18 @@ module.exports = {
       fontFamily: {
         "roboto-body": "Roboto Flex",
       },
+      fontSize: {
+        xs: "0.75rem",
+        sm: "0.875rem",
+        base: "1rem",
+        lg: "1.125rem",
+        xl: "1.25rem",
+        "2xl": "1.5rem",
+        "3xl": "1.875rem",
+        "4xl": "2.25rem",
+        "5xl": "3rem",
+        "6xl": "4rem",
+      },
       backgroundImage: {
         "gradient-nafl-rainbow":
           "linear-gradient(100deg, #02B1B1 -8.21%, #FEFF3D 104.81%)",
@@ -238,6 +250,11 @@ module.exports = {
       animation: {
         fade: "fadeOut 5s ease-in-out",
       },
+    },
+  },
+  variants: {
+    extend: {
+      userSelect: ['responsive', 'group-hover', 'focus'],
     },
   },
   plugins: [],
