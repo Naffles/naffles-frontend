@@ -28,11 +28,13 @@ const MagicProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_MAGIC_API_KEY) {
-      const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_API_KEY || "", {
+      const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_API_KEY as string, {
         network: {
-          rpcUrl: "https://rpc2.sepolia.org/",
+          rpcUrl: `https://eth-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
           chainId: 11155111,
         },
+        // testMode: true,
+        // deferPreload: true
       });
 
       setMagic(magic);
