@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import PageHeader from "@components/shared/PageHeaders/PageHeader";
+import MagicProvider from "@blockchain/context/MagicProvider";
+import { UserProvider } from "@blockchain/context/UserContext";
+import LoginModal from "@components/shared/Modal/LoginModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <PageHeader/>
-        {children}
+        <MagicProvider>
+          <UserProvider>
+            <PageHeader />
+            {children}
+            <LoginModal />
+          </UserProvider>
+        </MagicProvider>
       </body>
     </html>
   );

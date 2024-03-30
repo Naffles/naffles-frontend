@@ -16,10 +16,11 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.0.1",
-    "web3": "^4.3.0",
     "swiper": "^11.0.7",
     "typeface-bebas-neue": "^1.1.13",
-    "typeface-roboto": "^1.1.13"
+    "typeface-roboto": "^1.1.13",
+    "web3": "^4.3.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",
