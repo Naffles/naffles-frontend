@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@banxa-global/js-sdk": "^1.0.4",
     "@headlessui/react": "^1.7.18",
     "class-variance-authority": "^0.7.0",
     "magic-sdk": "^21.3.1",

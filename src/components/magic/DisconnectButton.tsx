@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useMagic } from "@blockchain/context/MagicProvider";
 import { useUser } from "@blockchain/context/UserContext";
+import { ButtonProps } from "@type/Buttons";
 
-const DisconnectButton = () => {
+const DisconnectButton = ({ active }: ButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   // Get the initializeWeb3 function from the Web3 context
   const { magic } = useMagic();
@@ -26,8 +27,9 @@ const DisconnectButton = () => {
   // Render the button component with the click event handler
   return (
     <button
-      type="button"
-      className="text-color"
+      className={`${
+        active ? "bg-nafl-yellow-500 text-white" : "text-gray-900"
+      } group flex w-full items-center rounded-md px-2 py-2 text-sm w-auto text-color`}
       onClick={handleDisconnect}
     >
       {isLoading ? "Disconnecting..." : "Disconnect"}

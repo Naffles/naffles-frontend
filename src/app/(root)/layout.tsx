@@ -7,7 +7,8 @@ import "swiper/css/navigation";
 import PageHeader from "@components/shared/PageHeaders/PageHeader";
 import MagicProvider from "@blockchain/context/MagicProvider";
 import { UserProvider } from "@blockchain/context/UserContext";
-import LoginModal from "@components/shared/Modal/LoginModal";
+import LoginModal from "@components/Modal/LoginModal";
+import DepositModal from "@components/Modal/DepositModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             <PageHeader />
             {children}
             <LoginModal />
+            <DepositModal />
           </UserProvider>
         </MagicProvider>
       </body>

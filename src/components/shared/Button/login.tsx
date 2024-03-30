@@ -6,6 +6,7 @@ import {
     ShowUIButton,
   } from "@components/magic/index";
   import WalletIcon from "@components/icons/walletIcon";
+import DepositButton from "@components/magic/DepositButton";
 
 const Login: React.FC = () => {
   return (
@@ -29,24 +30,17 @@ const Login: React.FC = () => {
             <div className="px-1 py-1 ">
               <Menu.Item>
                 {({ active }) => (
-                  <button
-                    className={`${
-                      active ? "bg-nafl-yellow-500 text-white" : "text-gray-900"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                  >
-                    <ShowUIButton />
-                  </button>
+                  <ShowUIButton active={active} />
                 )}
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <button
-                    className={`${
-                      active ? "bg-nafl-yellow-500 text-white" : "text-gray-900"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                  >
-                    <DisconnectButton />
-                  </button>
+                  <DepositButton active={active} />
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <DisconnectButton active={active} />
                 )}
               </Menu.Item>
             </div>
