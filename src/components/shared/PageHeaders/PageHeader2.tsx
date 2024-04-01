@@ -1,4 +1,5 @@
 "use client";
+
 import { Fragment, useState } from "react";
 import Link from "next/link";
 import BrandIcon from "@components/icons/brandIcon";
@@ -31,7 +32,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
     },
     {
       title: "Gaming",
-      href: "/gaming",
+      href: "/gamezone",
     },
     {
       title: "Leaderboards",
@@ -48,11 +49,24 @@ const PageHeader: React.FC<PageHeaderProps> = (
   ];
 
   return (
-    <div className="fixed top-0 w-full h-30 bg-nafl-charcoal-600 z-10 mx-auto overflow-hidden">
-      <div className="relative bg-nafl-sponge-500 rounded-lg mt-0 mx-auto px-2 py-1">
-        <div className="absolute bg-nafl-charcoal-600 rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" />
+    <div className="fixed top-0 w-full h-30 bg-transparent mx-auto px-[25px] pt-[25px] z-50">
+      <div className="relative rounded-lg mt-0 mx-auto px-2 py-1 overflow-hidden">
+        {/* <div className="absolute bg-nafl-charcoal-600 rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" /> */}
+
+        <div className="flex flex-row absolute inset-0 w-full h-full">
+          <div className="flex h-full w-full bg-[#ffff3d]/90"></div>
+          <div className="flex h-full w-[600px] bg-white">
+            <img
+              src={"/static/nav-mid-punch-hole.png"}
+              alt="Naffle"
+              className="flex w-full object-cover"
+            />
+          </div>
+          <div className="flex h-full w-full bg-[#ffff3d]/90"></div>
+        </div>
+
         <div className="flex flex-row items-center py-2 px-4 justify-between max-w-[200rem] m-auto">
-          <div className="flex flex-row lg:flex-row lg:space-x-8 items-center space-y-4 lg:space-y-0">
+          <div className="flex flex-row lg:flex-row lg:space-x-8 items-center space-y-4 lg:space-y-0 z-20 gap-[30px]">
             <span className="relative h-6">
               <Link href="/">
                 <BrandIcon size="lg" colour="black" />
@@ -68,7 +82,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
             </div>
           </div>
 
-          <div className="flex items-center space-x-4 text-nafl-grey-900">
+          <div className="flex items-center space-x-4 z-20">
             <div className="flex items-center space-x-4 md:inline-block ">
               {navigationOptions.map((navItem, index) => (
                 <a
@@ -76,13 +90,11 @@ const PageHeader: React.FC<PageHeaderProps> = (
                   href={navItem.href}
                   style={{
                     backgroundColor:
-                      selectedNavItem === index
-                        ? colorVariants["dark-accent"]
-                        : colorVariants["yellow"],
+                      selectedNavItem === index ? "#000" : "#00000000",
                     color:
                       selectedNavItem === index
-                        ? colorVariants["yellow"]
-                        : "#000",
+                        ? "#fff"
+                        : colorVariants["black"],
                   }}
                   className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
                   onClick={() =>

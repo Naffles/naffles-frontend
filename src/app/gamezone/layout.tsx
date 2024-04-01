@@ -4,17 +4,17 @@ import "../globals.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import PageHeader from "@components/shared/PageHeaders/PageHeader";
-import { Providers } from "../providers";
+import PageHeader from "@components/shared/PageHeaders/PageHeader2";
+import Footer from "@components/shared/Footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Naffle",
+  title: "Naffle: Game Zone",
   description: "WIN RAFFLES FOR",
 };
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -22,10 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
-          <PageHeader />
-          {children}
-        </Providers>
+        <PageHeader />
+        {children}
       </body>
     </html>
   );
