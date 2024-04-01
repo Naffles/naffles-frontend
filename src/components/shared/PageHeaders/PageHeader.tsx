@@ -4,12 +4,14 @@ import Link from "next/link";
 import BrandIcon from "@components/icons/brandIcon";
 import { Menu, Transition } from "@headlessui/react";
 import { MdMenu } from "react-icons/md";
-import { FaDiscord, FaTwitter, FaChevronDown } from "react-icons/fa";
+import { FaDiscord, FaTwitter, FaChevronDown, FaUser } from "react-icons/fa";
 
 import { useUser } from "@blockchain/context/UserContext";
 import { ConnectButton } from "@components/magic/index";
 import Login from "@components/shared/Button/login";
 import colorVariants from "@components/utils/constants";
+import { Modal } from "@components/shared/Modal";
+import { RegistrationForm, LoginForm } from "@components/shared/AuthForms";
 
 type PageHeaderProps = {
   // onLogin?: () => void;
@@ -24,6 +26,8 @@ const PageHeader: React.FC<PageHeaderProps> = (
 ) => {
   const { user } = useUser();
   const [selectedNavItem, setSelectedNavItem] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [showOtherModal, setShowOtherModal] = useState(false);
 
   const navigationOptions = [
     {
@@ -73,19 +77,28 @@ const PageHeader: React.FC<PageHeaderProps> = (
             </div>
           </div>
 
-          <div className="flex items-center space-x-4 text-nafl-grey-900">
-
-            <div className="flex items-center space-x-4 md:inline-block ">
-              { navigationOptions.map((navItem, index) => (
-                <a
-                  key={index}
-                  href={navItem.href}
-                  style={{
-                    backgroundColor: selectedNavItem === index ? colorVariants['dark-accent'] : colorVariants['yellow'],
-                    color: selectedNavItem === index ? colorVariants['yellow'] : '#000',
-                  }}
-                  className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
-                  onClick={() => selectedNavItem === index ? setSelectedNavItem(0) : setSelectedNavItem(index) }
+            <div className="flex items-center space-x-4 text-nafl-grey-900">
+              <div className="flex items-center space-x-4">
+                {navigationOptions.map((navItem, index) => (
+                  <a
+                    key={index}
+                    href={navItem.href}
+                    style={{
+                      backgroundColor:
+                        selectedNavItem === index
+                          ? colorVariants["dark-accent"]
+                          : colorVariants["yellow"],
+                      color:
+                        selectedNavItem === index
+                          ? colorVariants["yellow"]
+                          : "#000",
+                    }}
+                    className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
+                    onClick={() =>
+                      selectedNavItem === index
+                        ? setSelectedNavItem(0)
+                        : setSelectedNavItem(index)
+                    }
                   >
                     {navItem.title}
                 </a>

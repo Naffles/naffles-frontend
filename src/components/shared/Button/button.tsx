@@ -21,9 +21,10 @@ const btnStyles = cva(
     variants: {
       variant: {
         primary: "text-nafl-sponge-500 bg-nafl-charcoal-600",
-        secondary: "bg-nafl-jade-500 text-nafl-charcoal-100",
+        secondary: "bg-nafl-yellow-500 text-nafl-grey-900",
         tertiary: "bg-nafl-charcoal-800 text-nafl-charcoal-100",
-        special: "bg-gradient-to-r from-nafl-jade-500 to-nafl-sponge-500 text-nafl-charcoal-800",
+        special:
+          "bg-gradient-to-r from-nafl-jade-500 to-nafl-sponge-500 text-nafl-charcoal-800",
         outline: "border-2 border-nafl-charcoal-800 text-nafl-charcoal-800",
       },
       size: {
@@ -40,7 +41,8 @@ const btnStyles = cva(
       state: {
         default: "",
         loading: "pointer-events-none",
-        disabled: "opacity-60 bg-nafl-charcoal-500 text-nafl-charcoal-300 pointer-events-none",
+        disabled:
+          "opacity-60 bg-nafl-charcoal-500 text-nafl-charcoal-300 pointer-events-none",
       },
       weight: {
         bold: "font-bold",
@@ -51,7 +53,9 @@ const btnStyles = cva(
   }
 );
 
-interface ButtonProps extends VariantProps<typeof btnStyles>{}
+interface ButtonProps extends VariantProps<typeof btnStyles> {
+  type?: string;
+}
 const Button: React.FC<ButtonProps> = ({
   variant,
   label,

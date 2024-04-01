@@ -1,0 +1,17 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+import { theme } from "../tailwind.config.ts"
+
+<Meta name="Colors" />
+<ColorPalette>
+	{Object.entries(theme.colors).map((token, i) => {
+		const [color, swatch] = token;
+		return (
+			<ColorItem
+				key={i+color}
+				title={`${color}`}
+				subtitle={`theme.colors.${color}`}
+				colors={swatch}
+			/>
+		);
+	})}
+</ColorPalette>
