@@ -1,0 +1,37 @@
+import { ReactNode } from "react";
+import { useFormContext } from "react-hook-form";
+
+type TextInputProps = {
+  name: string;
+  label: string | ReactNode;
+  placeholder?: string;
+  type?: string;
+  notes?: string | ReactNode;
+};
+
+export const TextInput = ({
+  label,
+  name,
+  placeholder,
+  notes,
+  ...props
+}: TextInputProps) => {
+  const { register } = useFormContext() || {};
+  return (
+    <div className="flex flex-col items-start space-y-2 ">
+      {/* <label className="text-body-xs text-nafl-sponge-500">{label}</label> */}
+      <input
+        className="w-full bg-nafl-charcoal-600 text-body-base text-nafl-charcoal-100 border-[1px] rounded-lg p-2  border-nafl-sponge-500 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-nafl-sys-complete placeholder:text-nafl-charcoal-400 placeholder:text-body-base"
+        type="text"
+        placeholder={placeholder}
+        {...props}
+        {...register?.(name)}
+      />
+      {notes && (
+        <label className="text-body-xs text-nafl-charcoal-100 px-1">
+          {notes}
+        </label>
+      )}
+    </div>
+  );
+};
