@@ -5,7 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useMagic } from "@blockchain/context/MagicProvider";
 import { useUser } from "@blockchain/context/UserContext";
 import useStore from "../utils/store";
-import ModalContainer from "../shared/Modal/modal";
+import ModalContainer from "@components/shared/Modal/modal2";
 
 const LoginModal = () => {
   // Get the initializeWeb3 function from the Web3 context
