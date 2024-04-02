@@ -26,6 +26,7 @@ const GameZoneCreateGame = () => {
   const [betMultiplierChoice, setBetMultiplierChoice] = useState<number>(1);
   const [betMultiplierChoiceDropdown, setBetMultiplierChoiceDropdown] =
     useState<boolean>(false);
+  const [totalPayout, setTotalPayout] = useState<number>(0);
 
   let games_choice_options = ["ROCK, PAPERS, SCISSORS", "COIN TOSS"];
 
@@ -63,6 +64,10 @@ const GameZoneCreateGame = () => {
     let currencyName = currency_name?.filter((item) => item?.type == type);
     return currencyName[0]?.name;
   };
+
+  useEffect(() => {
+    setTotalPayout(balanceAmount * betMultiplierChoice);
+  }, [balanceAmount, betMultiplierChoice]);
 
   const currencyIconReturner = (type: string) => {
     if (type == "ETH") {
@@ -251,7 +256,7 @@ const GameZoneCreateGame = () => {
             <p className=" text-[#989898] text-[14px]">
               Payout:{" "}
               <a href="" className="text-[#fff] font-face-roboto italic">
-                XXX ETH
+                {totalPayout.toFixed(4)} ETH
               </a>
             </p>
           </div>
