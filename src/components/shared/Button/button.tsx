@@ -59,6 +59,7 @@ const btnStyles = cva(
 );
 
 interface ButtonProps extends VariantProps<typeof btnStyles> {
+  type?: ButtonTypes;
 }
 const Button: React.FC<ButtonProps> = ({
   variant,
