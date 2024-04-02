@@ -19,7 +19,7 @@
     ],
     "paths": {
       "@components/*": ["./src/components/*"],
-      "@contracts/*": ["./src/contracts/*"],
+      "@blockchain/*": ["./src/blockchain/*"],
       "@layout/*": ["./src/layouts/*"],
       "@store/*": ["./src/store/*"],
       "@hook/*": ["./src/hooks/*"],
