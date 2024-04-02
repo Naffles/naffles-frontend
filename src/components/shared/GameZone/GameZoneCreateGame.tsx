@@ -32,16 +32,41 @@ const GameZoneCreateGame = () => {
 
   let sample_balances_json = [
     {
+      id: 1,
       type: "ETH",
       balance: "1.2369",
       usd: "3569",
-      logo: "https%3A%2F%2Fcoinmarketcap.com%2Fcurrencies%2Fneo-tokyo%2F&psig=AOvVaw3nFeeDQ05dH9spMRsZHSSx&ust=1712032407845000&source=images&cd=vfe&opi=89978449&ved=0CBQQjhxqFwoTCPjuq-2XoIUDFQAAAAAdAAAAABAE",
     },
-    { type: "BTC", balance: "0.2369", usd: "3569" },
-    { type: "BYTES", balance: "23.2369", usd: "3569" },
-    { type: "SOL", balance: "5.2369", usd: "3569" },
-    { type: "NAFF", balance: "1.2369", usd: "3569" },
-    { type: "BTC", balance: "0.2369", usd: "3569" },
+    {
+      id: 2,
+      type: "BTC",
+      balance: "0.2369",
+      usd: "3569",
+    },
+    {
+      id: 3,
+      type: "BYTES",
+      balance: "23.2369",
+      usd: "3569",
+    },
+    {
+      id: 4,
+      type: "SOL",
+      balance: "5.2369",
+      usd: "3569",
+    },
+    {
+      id: 5,
+      type: "NAFF",
+      balance: "1.2369",
+      usd: "3569",
+    },
+    {
+      id: 6,
+      type: "BTC",
+      balance: "0.2369",
+      usd: "3569",
+    },
   ];
 
   let currency_name = [
@@ -129,6 +154,7 @@ const GameZoneCreateGame = () => {
                     setGameChoice(item);
                     setGameChoiceDropdown(false);
                   }}
+                  key={item}
                   className={`flex items-center w-full h-[54px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[20px] ${
                     gameChoice == item && "bg-[#fff]/30"
                   }`}
@@ -175,6 +201,7 @@ const GameZoneCreateGame = () => {
                         setBalanceType(item);
                         setBalanceTypeDropdown(false);
                       }}
+                      key={item.id}
                       className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${
                         balanceType.type == item?.type && "bg-[#fff]/30"
                       }`}
@@ -234,6 +261,7 @@ const GameZoneCreateGame = () => {
                       setBetMultiplierChoice(item);
                       setBetMultiplierChoiceDropdown(false);
                     }}
+                    key={item}
                     className={`flex items-center w-full h-[54px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[20px] ${
                       betMultiplierChoice == item && "bg-[#fff]/30"
                     }`}

@@ -147,8 +147,8 @@ const GameZoneMain = () => {
                   <a className="text-[#292929] font-face-roboto">
                     Join a game
                   </a>{" "}
-                  to amplify your crypto balance, while you're amplifying your
-                  points too! <br />
+                  to amplify your crypto balance, while you&apos;re amplifying
+                  your points too! <br />
                   <b>
                     Your points turn into $NAFF tokens when the air drop season
                     starts.
@@ -202,6 +202,7 @@ const GameZoneMain = () => {
                                 setGameType(item);
                                 setGameTypeDropdown(false);
                               }}
+                              key={item}
                               className={`flex items-center w-full px-[15px] rounded-[10px] hover:bg-[#fff]/30 duration-300 h-[37px] ${
                                 gameType == item && "bg-[#fff]/30"
                               }`}
