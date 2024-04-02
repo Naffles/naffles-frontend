@@ -135,7 +135,7 @@ export default function Home() {
             ))}
           </Swiper>
         </div>
-        <div className="top-[-6rem] relative ">
+        <div className="top-[-6rem] relative">
           <CardCarousel />
         </div>
       </div>
