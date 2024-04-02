@@ -9,15 +9,20 @@ type TypographyProps = {
 const Typography = ({
   children,
   className,
-  color = 'yellow',
+  color = "yellow",
   size,
-}: TypographyProps) =>  {
-
+}: TypographyProps) => {
   return (
-    <div className={`${className} ${size}`} style={{color: colorVariants[color], fontFamily: 'Bebas Neue, sans-serif'}}>
+    <div
+      className={`${className} ${size}`}
+      style={{
+        color: colorVariants[color],
+        fontFamily: "Bebas Neue, sans-serif",
+      }}
+    >
       {children}
     </div>
-  )
+  );
 };
 
 export default Typography;

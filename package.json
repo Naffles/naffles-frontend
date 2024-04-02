@@ -13,8 +13,10 @@
   "dependencies": {
     "@banxa-global/js-sdk": "^1.0.4",
     "@headlessui/react": "^1.7.18",
+    "@nextui-org/react": "^2.2.10",
     "@restart/ui": "^1.6.8",
     "class-variance-authority": "^0.7.0",
+    "framer-motion": "^11.0.24",
     "magic-sdk": "^21.3.1",
     "next": "14.1.4",
     "react": "^18",

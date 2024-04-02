@@ -1,5 +1,5 @@
-@import '~typeface-bebas-neue';
-@import '~typeface-roboto';
+@import "~typeface-bebas-neue";
+@import "~typeface-roboto";
 
 @tailwind base;
 @tailwind components;
@@ -9,8 +9,26 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 70, 70, 70;
   --background-end-rgb: 46, 45, 45;
-  --swiper-theme-color: #FEFF3D;
+  --swiper-theme-color: #feff3d;
   --swiper-navigation-size: 20px;
+  background-color: #464646;
+}
+
+/* :root ::-webkit-scrollbar {
+  display: none;
+} */
+
+:root::-webkit-scrollbar {
+  width: 0px;
+}
+
+:root::-webkit-scrollbar-thumb {
+  background-color: rgba(254, 255, 61, 0.8);
+  border-radius: 5px;
+}
+
+:root::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(83, 83, 83, 1);
 }
 
 html,
@@ -34,6 +52,14 @@ p,
 span,
 label {
   font-family: "Roboto", sans-serif;
+}
+
+.font-face-bebas {
+  font-family: "Bebas Neue", sans-serif !important;
+}
+
+.font-face-roboto {
+  font-family: "Roboto", sans-serif !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -69,8 +95,9 @@ body {
   justify-content: center;
   align-items: center;
 }
-.swiper-button-prev, .swiper-button-next {
-  color: #FEFF3D !important;
+.swiper-button-prev,
+.swiper-button-next {
+  color: #feff3d !important;
   background-color: #464646;
   font-size: 20px !important;
   padding: 20px !important;
@@ -100,4 +127,44 @@ body {
   content: "<";
   padding-right: 25px;
   font-size: 22px !important;
+}
+
+.hole {
+  box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.8);
+}
+
+.balance-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  background-color: #3e3e3e;
+  padding: 1px;
+  border-radius: 14px;
+}
+
+.balance-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(82, 81, 81, 0.8);
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.balance-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(83, 83, 83, 1);
+}
+
+.comments-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  background-color: #3e3e3e;
+  padding: 1px;
+  border-radius: 14px;
+}
+
+.comments-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(82, 81, 81, 0.8);
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.comments-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(83, 83, 83, 1);
 }
