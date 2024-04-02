@@ -2,7 +2,6 @@
 import { cva, VariantProps } from "class-variance-authority";
 import Image from "next/image";
 
-
 interface ButtonProps {
   label: string;
   leftIcon?: React.ReactNode;
@@ -13,7 +12,7 @@ interface ButtonProps {
   className?: string;
   spinnerColour?: boolean;
   subClassName?: string;
-};
+}
 
 const btnStyles = cva(
   "px-4 py-2 rounded-md font-roboto-body uppercase font-bold selection:transition-opacity ease-out duration-300 cursor-pointer hover:opacity-70 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-nafl-sys-complete",

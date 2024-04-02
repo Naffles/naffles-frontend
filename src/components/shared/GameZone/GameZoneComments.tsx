@@ -6,16 +6,47 @@ import { TfiMenu } from "react-icons/tfi";
 
 const GameZoneComments = () => {
   let sample_balances_json = [
-    { type: "ETH", balance: "1.2369", usd: "3569" },
-    { type: "BTC", balance: "0.2369", usd: "3569" },
-    { type: "BYTES", balance: "23.2369", usd: "3569" },
-    { type: "SOL", balance: "5.2369", usd: "3569" },
-    { type: "ETH", balance: "1.2369", usd: "3569" },
-    { type: "BTC", balance: "0.2369", usd: "3569" },
+    {
+      id: 1,
+      type: "ETH",
+      balance: "1.2369",
+      usd: "3569",
+    },
+    {
+      id: 2,
+      type: "BTC",
+      balance: "0.2369",
+      usd: "3569",
+    },
+    {
+      id: 3,
+      type: "BYTES",
+      balance: "23.2369",
+      usd: "3569",
+    },
+    {
+      id: 4,
+      type: "SOL",
+      balance: "5.2369",
+      usd: "3569",
+    },
+    {
+      id: 5,
+      type: "NAFF",
+      balance: "1.2369",
+      usd: "3569",
+    },
+    {
+      id: 6,
+      type: "BTC",
+      balance: "0.2369",
+      usd: "3569",
+    },
   ];
 
   let sample_comments_json = [
     {
+      id: 1,
       name: "You",
       image: "/static/sample-account-image-1.png",
       date: "16/02/2024",
@@ -24,6 +55,7 @@ const GameZoneComments = () => {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum. In placerat commodo justo,",
     },
     {
+      id: 2,
       name: "Joe",
       image: "/static/sample-account-image-2.png",
       date: "16/02/2024",
@@ -32,6 +64,7 @@ const GameZoneComments = () => {
         "Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum. In placerat commodo justo,",
     },
     {
+      id: 3,
       name: "PlayerOne",
       image: "/static/sample-account-image-3.png",
       date: "16/02/2024",
@@ -145,6 +178,7 @@ const GameZoneComments = () => {
               <div className="flex flex-col gap-[10px] w-full min-h-[114px] items-start justify-start">
                 {sample_balances_json.map((item) => (
                   <BalancesListOption
+                    key={item.id}
                     type={item.type}
                     balance={item.balance}
                     usd={item.usd}
@@ -160,6 +194,7 @@ const GameZoneComments = () => {
           <div className="flex flex-col min-h-[488px] w-full gap-[19px]">
             {sample_comments_json.map((item) => (
               <CommentSection
+                key={item.id}
                 name={item.name}
                 image={item.image}
                 date={item.date}
