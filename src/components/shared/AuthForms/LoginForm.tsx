@@ -1,5 +1,6 @@
 import { FormContext, TextInput } from "../Inputs";
 import { Button } from "../Button";
+import { ButtonTypes } from "../Button/button";
 
 export const LoginForm = () => {
   const onSubmit = () => alert("login clicked");
@@ -22,7 +23,7 @@ export const LoginForm = () => {
         label="submit"
         variant="secondary"
         size="lg"
-        type="submit"
+        type={ButtonTypes.submit}
         width="inhert"
         className="mx-2 my-2"
       >
