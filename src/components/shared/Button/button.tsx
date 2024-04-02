@@ -2,7 +2,7 @@
 import { cva, VariantProps } from "class-variance-authority";
 import Image from "next/image";
 
-enum ButtonTypes {
+export enum ButtonTypes {
   "button",
   "submit",
   "reset",

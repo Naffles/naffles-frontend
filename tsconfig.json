@@ -30,7 +30,11 @@
       "@api/*": ["./src/api/api.ts"],
       "@assets/*": ["./public/static/*"],
       "react": [ "./node_modules/@types/react" ],
-    }
+    },
+    "types": [
+      "node",
+      "mime",
+    ],
   },
   "include": [
     "next-env.d.ts",

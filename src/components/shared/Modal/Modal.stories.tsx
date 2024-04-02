@@ -1,6 +1,6 @@
 import { LoginForm } from "../AuthForms/LoginForm";
 import { RegistrationForm } from "../AuthForms/RegistrationForm";
-import { Modal } from "./Modal";
+import { Modal } from "./modal";
 
 const meta = {
   title: "Components/Modal",
