@@ -13,7 +13,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-2 pt-10">
-      <div className="w-full">
+      <div className="w-full bg-nafl-charcoal-700">
         <div className="w-full h-[48rem] overflow-hidden">
           <Swiper
             direction="vertical"
