@@ -33,7 +33,6 @@
     },
     "types": [
       "node",
-      "mime",
     ],
   },
   "include": [

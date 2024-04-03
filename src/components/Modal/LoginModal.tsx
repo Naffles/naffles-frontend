@@ -42,7 +42,7 @@ const LoginModal = () => {
   };
 
   return (
-    <ModalContainer 
+    <ModalContainer
       title={"Connect with your email"}
       content={<LoginModalContent />}
       category={"login"}
@@ -55,11 +55,15 @@ const LoginModal = () => {
 
 const LoginModalContent = () => {
   const setEmailAddress = useStore((state) => state.setEmailAddress);
-  return(
+  return (
     <div>
-      <input type="email" className="border border-black p-2 w-[300px]" onChange={(e) => setEmailAddress(e.target.value)} />
+      <input
+        type="email"
+        className="border border-[#000] rounded-[8px] p-2 w-[300px] text-[#000]"
+        onChange={(e) => setEmailAddress(e.target.value)}
+      />
     </div>
-  )
-}
+  );
+};
 
 export default LoginModal;

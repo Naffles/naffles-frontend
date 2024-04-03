@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import PageHeader from "@components/shared/PageHeaders/PageHeader2";
-import Footer from "@components/shared/Footer/Footer";
+import { GameZoneProvider } from "@components/context/GameZoneContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +22,10 @@ export default function Layout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <PageHeader />
-        {children}
+        <GameZoneProvider>
+          <PageHeader />
+          {children}
+        </GameZoneProvider>
       </body>
     </html>
   );

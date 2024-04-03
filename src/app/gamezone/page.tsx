@@ -5,16 +5,24 @@ import GameZoneComments from "@components/shared/GameZone/GameZoneComments";
 import GameZoneCreateGame from "@components/shared/GameZone/GameZoneCreateGame";
 import GameZoneGameChallenger from "@components/shared/GameZone/GameZoneGameChallenger";
 import GameZoneMain from "@components/shared/GameZone/GameZoneMain";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { GameZoneContext } from "../../components/context/GameZoneContext";
 
 const GameZone = () => {
-  const [seletedView, setSeletedView] = useState<string>("main");
+  const { selectedView } = useContext(GameZoneContext);
 
   // useEffect(() => {
   //   setTimeout(() => {
-  //     setSeletedView("main");
+  //     setSelectedView("main");
   //   }, 100);
   // }, []);
+
+  const setSelectedView = (modeType: string) => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    urlParams.set("mode", modeType);
+    urlParams.toString();
+  };
 
   return (
     <div className="flex flex-col items-center w-full relative">
@@ -30,19 +38,19 @@ const GameZone = () => {
       <div className="flex flex-col w-full absolute top-[120px] items-center justify-start">
         <div
           className={`flex flex-row items-center justify-start gap-[80px] pl-[25px] w-[1400px] mb-[30px] ${
-            seletedView == "main" ? "opacity-100 z-20" : "opacity-0 z-[-50]"
+            selectedView == "main" ? "opacity-100 z-20" : "opacity-0 z-[-50]"
           }`}
         >
           <p className="text-[48px] text-white font-face-bebas">GAME ZONE</p>
           <div className="flex items-center justify-center gap-[32px] ">
             <button
-              onClick={() => setSeletedView("create")}
+              onClick={() => setSelectedView("create")}
               className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
             >
               <p className="text-white text-[18px] font-bold">CREATE GAME</p>
             </button>
             <button
-              onClick={() => setSeletedView("challenge")}
+              onClick={() => setSelectedView("challenge")}
               className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
             >
               <p className="text-white text-[18px] font-bold">
@@ -54,7 +62,7 @@ const GameZone = () => {
 
         <div
           className={` flex-row items-start justify-center gap-[36px] duration-500 ${
-            seletedView == "main"
+            selectedView == "main"
               ? "opacity-100 z-20 flex"
               : "opacity-0 z-[-50] hidden"
           }`}
@@ -65,7 +73,7 @@ const GameZone = () => {
 
         <div
           className={`duration-500 pb-[300px] ${
-            seletedView == "create"
+            selectedView == "create"
               ? "opacity-100 z-20 flex"
               : "opacity-0 z-[-50] hidden"
           }`}
@@ -75,7 +83,7 @@ const GameZone = () => {
 
         <div
           className={`flex-row items-start justify-center gap-[36px] duration-500 pb-[300px] ${
-            seletedView == "challenge"
+            selectedView == "challenge"
               ? "opacity-100 z-20 flex"
               : "opacity-0 z-[-50] hidden"
           }`}

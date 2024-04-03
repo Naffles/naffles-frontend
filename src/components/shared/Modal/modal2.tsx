@@ -54,10 +54,10 @@ const ModalContainer = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md bg-nafl-white transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="flex flex-col items-center w-full max-w-md bg-nafl-white transform overflow-hidden rounded-2xl bg-white py-[40px] text-left align-middle shadow-xl gap-[16px] transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
+                  className="text-[32px] font-medium leading-6 text-[#353535]"
                 >
                   {title}
                 </Dialog.Title>
@@ -67,7 +67,7 @@ const ModalContainer = ({
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-[#dc2abf] px-[20px] py-2 text-[20px] font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={handleOnClick}
                     >
                       Login
