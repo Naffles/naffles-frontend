@@ -10,10 +10,11 @@ import Button from "@components/shared/Button/button";
 import MagnifyingIcon from "@components/icons/magnifyingIcon";
 import Image from "next/image";
 import Footer from "@components/shared/Footer/Footer";
+import CollectionItem from "@components/shared/Collection/collection";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between mt-2 pt-10">
+    <main className="flex min-h-screen flex-col items-center justify-between mt-1 pt-10">
       <div className="w-full bg-nafl-charcoal-700">
         <div className="w-full h-[48rem] overflow-hidden">
           <Swiper
@@ -164,6 +165,28 @@ export default function Home() {
               </SwiperSlide>
             ))}
           </Swiper>
+        </div>
+      </div>
+      <div className="w-full px-24 bg-nafl-grey-600 h-auto p-5 flex flex-col">
+        <h1 className="text-[2.2rem] md:text-[5rem] lg:text-[6rem] uppercase leading-[2rem] md:leading-[5rem] text-nafl-white tracking-tight text-center mt-10">
+          Hottest collections
+        </h1>
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => (
+              <div key={index} 
+                className="flex flex-col items-center justify-center p-4"
+              >
+                <CollectionItem
+                  title="Boared Ape"
+                  description="Yacht Club"
+                  price="$9.99"
+                  buttonText="Buy Now"
+                  notchColor="bg-nafl-grey-600"
+                />
+              </div>
+            ))
+          }
         </div>
       </div>
       <Footer />

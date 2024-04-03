@@ -76,11 +76,10 @@ const PageHeader: React.FC<PageHeaderProps> = (
               </a>
             </div>
           </div>
-
             <div className="flex items-center space-x-4 text-nafl-grey-900">
               <div className="flex items-center space-x-4">
                 {navigationOptions.map((navItem, index) => (
-                  <a
+                  <Link
                     key={index}
                     href={navItem.href}
                     style={{
@@ -97,7 +96,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                     onClick={() => setSelectedNavItem(index)}
                   >
                     {navItem.title}
-                </a>
+                  </Link>
               ))}
             </div>
             {user ? (

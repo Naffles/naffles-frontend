@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -10,6 +9,7 @@ import MagicProvider from "@blockchain/context/MagicProvider";
 import { UserProvider } from "@blockchain/context/UserContext";
 import LoginModal from "@components/Modal/LoginModal";
 import DepositModal from "@components/Modal/DepositModal";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
