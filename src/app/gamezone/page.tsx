@@ -17,7 +17,7 @@ const GameZone = () => {
   // }, []);
 
   return (
-    <div className="flex flex-col items-center w-full relative">
+    <div className="flex flex-col items-center w-full">
       <div className="flex flex-col w-full absolute top-[-100px]">
         <img
           src={"/static/gamezone-bg.jpeg"}

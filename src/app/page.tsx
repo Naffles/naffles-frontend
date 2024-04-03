@@ -9,6 +9,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import Button from "@components/shared/Button/button";
 import MagnifyingIcon from "@components/icons/magnifyingIcon";
 import Image from "next/image";
+import Footer from "@components/shared/Footer/Footer";
 
 export default function Home() {
   return (
@@ -61,18 +62,18 @@ export default function Home() {
                         alt="Naffle"
                         width={350}
                         height={350}
-                        objectFit="cover"
+                        sizes="350px"
                         className="absolute top-0 left-4"
-                        style={{ zIndex: 2 }}
+                        style={{ zIndex: 2, objectFit: "contain"}}
                       />
                       <Image
                         src={"/static/hero-img2.png"}
                         alt="Naffle"
                         width={290}
                         height={290}
-                        objectFit="cover"
+                        sizes="290px"
                         className="absolute top-8 left-56"
-                        style={{ zIndex: 1 }}
+                        style={{ zIndex: 1, objectFit: "contain"}}
                       />
                     </div>
                     <div className="mt-[26rem] flex flex-col ml-[10rem]">
@@ -88,6 +89,7 @@ export default function Home() {
                               alt="nafl-coin"
                               width={20}
                               height={20}
+                              sizes="20px"
                               style={{ objectFit: "contain" }}
                             />
                             <h2 className="text-3xl font-semibold text-nafl-charcoal-500 text-right">
@@ -113,6 +115,7 @@ export default function Home() {
                                 alt="nafl-coin"
                                 width={20}
                                 height={20}
+                                sizes="20px"
                                 style={{ objectFit: "contain" }}
                               />
                               <h2 className="text-3xl font-semibold text-nafl-charcoal-500 text-right">
@@ -163,6 +166,7 @@ export default function Home() {
           </Swiper>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }
