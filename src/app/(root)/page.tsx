@@ -74,19 +74,19 @@ export default function Home() {
             wagering, raffles and lotteries
           </p>
 
-          <div className="flex lg:flex-row flex-col items-center justify-center gap-[16px] mt-[65px] w-full">
+          <div className="flex flex-col items-center justify-center gap-[16px] mt-[65px] w-full">
             <a
               href="https://discord.gg/naffles"
-              className="flex items-center justify-center h-[54px] lg:w-[253px] w-[90%] bg-[#464646] rounded-[8px] gap-[10px] group"
+              className="flex items-center justify-center h-[54px] lg:w-[364px] w-[90%] bg-[#464646] rounded-[8px] gap-[10px] group"
             >
               <FaDiscord className="text-nafl-sponge-500 text-[24px] group-hover:text-[#5865f2] duration-500" />
               <p className="font-bold text-nafl-sponge-500 text-[18px] truncate group-hover:text-[#fff] duration-500">
-                JOIN THE DISCORD
+                JOIN THE NAFFLES COMMUNITY
               </p>
             </a>
             <a
               href="mailto:support@naffles.com"
-              className="flex items-center justify-center h-[54px] lg:w-[327px] w-[90%] bg-[#464646] rounded-[8px] gap-[10px] group"
+              className="flex items-center justify-center h-[54px] lg:w-[364px] w-[90%] bg-[#464646] rounded-[8px] gap-[10px] group"
             >
               <MdEmail className="text-nafl-sponge-500 text-[24px] group-hover:text-[#fff] duration-500" />
               <p className="font-bold text-nafl-sponge-500 text-[18px] truncate group-hover:text-[#fff] duration-500">
@@ -103,7 +103,7 @@ export default function Home() {
           className="absolute top-[-21px] w-full h-full object-cover mb-[-250px] z-10"
         />
 
-        <div className="flex flex-col w-full items-center z-20 xl:py-[70px] py-0 xl:pt-0 pt-[70px] lg:gap-[50px] gap-[20px] xl:pb-[140px] pb-0">
+        <div className="flex flex-col w-full items-center z-20 xl:py-[70px] py-0 xl:pt-0 pt-[70px] lg:gap-[50px] gap-[20px]">
           <div className="flex flex-col items-center justify-center lg:gap-[30px] gap-[10px] z-30">
             <p className="lg:text-[110px] text-[70px] font-face-bebas">
               It&apos;s Coming
@@ -227,59 +227,59 @@ export default function Home() {
           </div>
 
           <div className="flex xl:w-[1200px] w-[80%] h-[2px] bg-[#fff] lg:mt-[60px] mt-[30px] lg:mb-[30px] mb-[15px]"></div>
-          <div className="flex lg:flex-row w-full flex-col items-center justify-center lg:gap-[10px] gap-0 lg:mt-0 mt-[-50px]">
-            <div className="w-[580px] h-[290px] relative lg:scale-100 md:scale-75 scale-50">
+          <div className="flex flex-col w-full items-center justify-center lg:gap-[10px] gap-0 lg:mt-0 mt-[-100px]">
+            <div className="w-[860px] h-[410px] relative lg:scale-100 md:scale-75 scale-[40%]">
               <img
                 src="/static/cd-ticket-1.png"
                 alt="Ticket Qoute"
-                className="w-[260px] object-contain absolute left-0 top-[3%] z-20"
+                className="w-[330px] object-contain absolute left-[5%] top-[3%] z-20"
               />
               <img
                 src="/static/cd-ticket-2.png"
                 alt="Ticket Qoute"
-                className="w-[220px] object-contain absolute right-[20%] top-0 z-10"
+                className="w-[300px] object-contain absolute right-[25%] top-0 z-10"
               />
               <img
                 src="/static/cd-ticket-3.png"
                 alt="Ticket Qoute"
-                className="w-[240px] object-contain absolute left-0 bottom-[24%] z-10"
+                className="w-[300px] object-contain absolute left-0 top-[27%] z-10"
               />
               <img
                 src="/static/cd-ticket-4.png"
                 alt="Ticket Qoute"
-                className="w-[190px] object-contain absolute right-0 bottom-[27%] z-20"
+                className="w-[260px] object-contain absolute right-0 top-[20%] z-20"
               />
               <img
                 src="/static/cd-ticket-5.png"
                 alt="Ticket Qoute"
-                className="w-[200px] object-contain absolute left-[23%] bottom-[8%] z-20"
+                className="w-[260px] object-contain absolute left-[25%] bottom-[8%] z-20"
               />
               <img
                 src="/static/cd-ticket-6.png"
                 alt="Ticket Qoute"
-                className="w-[200px] object-contain absolute right-[15%] bottom-0 z-10"
+                className="w-[300px] object-contain absolute right-[12%] bottom-0 z-10"
               />
             </div>
-            <div className="w-[325px] h-[300px] relative lg:scale-100 md:scale-75 scale-50 lg:mt-0 mt-[-100px]">
-              <img
-                src="/static/cd-partner-1.png"
-                alt="Partners"
-                className="w-[120px] object-contain absolute left-0 top-0"
-              />
-              <img
-                src="/static/cd-partner-2.png"
-                alt="Partners"
-                className="w-[200px] object-contain absolute right-0 top-[60px]"
-              />
+            <div className="flex flex-row flex-wrap items-center justify-center w-full relative lg:scale-100 scale-75 lg:gap-[80px] gap-[30px] lg:mt-0 mt-[-70px]">
               <img
                 src="/static/cd-partner-3.png"
                 alt="Partners"
-                className="w-[150px] object-contain absolute left-0 top-[170px]"
+                className="h-[64px] object-contain"
+              />
+              <img
+                src="/static/cd-partner-1.png"
+                alt="Partners"
+                className="h-[80px] object-contain"
               />
               <img
                 src="/static/cd-partner-4.png"
                 alt="Partners"
-                className="w-[170px] object-contain absolute right-[20px] bottom-0"
+                className="h-[80px] object-contain"
+              />
+              <img
+                src="/static/cd-partner-2.png"
+                alt="Partners"
+                className="h-[90px] object-contain"
               />
             </div>
           </div>
