@@ -6,9 +6,16 @@ import GameZoneCreateGame from "@components/shared/GameZone/GameZoneCreateGame";
 import GameZoneGameChallenger from "@components/shared/GameZone/GameZoneGameChallenger";
 import GameZoneMain from "@components/shared/GameZone/GameZoneMain";
 import { useEffect, useState } from "react";
+import useGame from "../../components/utils/gamezone";
 
 const GameZone = () => {
-  const [seletedView, setSeletedView] = useState<string>("main");
+  const currentScreen = useGame((state) => state.screen);
+  const currentGameMode = useGame((state) => state.mode);
+  const currentGameType = useGame((state) => state.type);
+
+  const setCurrentScreen = useGame((state) => state.setScreen);
+  const setGameMode = useGame((state) => state.setMode);
+  const setGameType = useGame((state) => state.setType);
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -30,23 +37,76 @@ const GameZone = () => {
       <div className="flex flex-col w-full absolute top-[120px] items-center justify-start">
         <div
           className={`flex flex-row items-center justify-start gap-[80px] pl-[25px] w-[1400px] mb-[30px] ${
-            seletedView == "main" ? "opacity-100 z-20" : "opacity-0 z-[-50]"
+            currentScreen == "main" ? "opacity-100 z-20" : "opacity-0 z-[-50]"
           }`}
         >
           <p className="text-[48px] text-white font-face-bebas">GAME ZONE</p>
           <div className="flex items-center justify-center gap-[32px] ">
             <button
-              onClick={() => setSeletedView("create")}
+              onClick={() => setCurrentScreen("create")}
               className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
             >
               <p className="text-white text-[18px] font-bold">CREATE GAME</p>
             </button>
             <button
-              onClick={() => setSeletedView("challenge")}
+              onClick={() => setCurrentScreen("ingame")}
               className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
             >
               <p className="text-white text-[18px] font-bold">
                 PLAY FOR POINTS
+              </p>
+            </button>
+
+            <button className="flex items-center justify-center px-[10px] h-[40px] border-[2px] border-[#fff] rounded-[10px]">
+              <p
+                onClick={() => {
+                  setCurrentScreen("ingame");
+                  setGameMode("host");
+                  setGameType("Rock Paper Scissor");
+                }}
+                className="text-[12px] text-center font-face-bebas"
+              >
+                rock, paper, scissor demo (Host)
+              </p>
+            </button>
+
+            <button className="flex items-center justify-center px-[10px] h-[40px] border-[2px] border-[#fff] rounded-[10px]">
+              {" "}
+              <p
+                onClick={() => {
+                  setCurrentScreen("ingame");
+                  setGameMode("challenger");
+                  setGameType("Rock Paper Scissor");
+                }}
+                className="text-[12px] text-center font-face-bebas"
+              >
+                rock, paper, scissor demo (Challenger)
+              </p>
+            </button>
+
+            <button className="flex items-center justify-center px-[10px] h-[40px] border-[2px] border-[#fff] rounded-[10px]">
+              <p
+                onClick={() => {
+                  setCurrentScreen("ingame");
+                  setGameMode("host");
+                  setGameType("Coin Toss");
+                }}
+                className="text-[12px] text-center font-face-bebas"
+              >
+                coin toss demo (Host)
+              </p>
+            </button>
+
+            <button className="flex items-center justify-center px-[10px] h-[40px] border-[2px] border-[#fff] rounded-[10px]">
+              <p
+                onClick={() => {
+                  setCurrentScreen("ingame");
+                  setGameMode("challenger");
+                  setGameType("Coin Toss");
+                }}
+                className="text-[12px] text-center font-face-bebas"
+              >
+                coin toss demo (Challenger)
               </p>
             </button>
           </div>
@@ -54,7 +114,7 @@ const GameZone = () => {
 
         <div
           className={` flex-row items-start justify-center gap-[36px] duration-500 ${
-            seletedView == "main"
+            currentScreen == "main"
               ? "opacity-100 z-20 flex"
               : "opacity-0 z-[-50] hidden"
           }`}
@@ -65,7 +125,7 @@ const GameZone = () => {
 
         <div
           className={`duration-500 pb-[300px] ${
-            seletedView == "create"
+            currentScreen == "create"
               ? "opacity-100 z-20 flex"
               : "opacity-0 z-[-50] hidden"
           }`}
@@ -75,12 +135,12 @@ const GameZone = () => {
 
         <div
           className={`flex-row items-start justify-center gap-[36px] duration-500 pb-[300px] ${
-            seletedView == "challenge"
+            currentScreen == "ingame"
               ? "opacity-100 z-20 flex"
               : "opacity-0 z-[-50] hidden"
           }`}
         >
-          <GameZoneGameChallenger />
+          {currentGameMode == "challenger" && <GameZoneGameChallenger />}
           <GameZoneComments />
         </div>
 

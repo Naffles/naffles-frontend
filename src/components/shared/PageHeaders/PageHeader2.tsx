@@ -97,11 +97,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                         : colorVariants["black"],
                   }}
                   className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
-                  onClick={() =>
-                    selectedNavItem === index
-                      ? setSelectedNavItem(0)
-                      : setSelectedNavItem(index)
-                  }
+                  onClick={() => setSelectedNavItem(index)}
                 >
                   {navItem.title}
                 </a>
