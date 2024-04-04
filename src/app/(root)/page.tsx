@@ -85,7 +85,7 @@ export default function Home() {
               </p>
             </a>
             <a
-              href="mailto:nft@naffles.com"
+              href="mailto:support@naffles.com"
               className="flex items-center justify-center h-[54px] lg:w-[327px] w-[90%] bg-[#464646] rounded-[8px] gap-[10px] group"
             >
               <MdEmail className="text-nafl-sponge-500 text-[24px] group-hover:text-[#fff] duration-500" />
