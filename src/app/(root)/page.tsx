@@ -13,6 +13,14 @@ export default function Home() {
   const [countdownSeconds, setCountdownSeconds] = useState<string>("00");
 
   useEffect(() => {
+    const script = document.createElement("script");
+
+    script.src =
+      "https://163a3d88-a381-4928-873c-19ebd4bd977d.snippet.anjouangaming.org/anj-seal.js";
+    // script.async = true;
+    // script.onload;
+    document.body.appendChild(script);
+
     var countDownDate = new Date("April 20, 2024 04:01:00 UTC").getTime();
     let cdInterval = setInterval(function () {
       var now = new Date().getTime();
@@ -32,6 +40,7 @@ export default function Home() {
 
     return () => {
       clearInterval(cdInterval);
+      document.body.removeChild(script);
     };
   }, []);
 
@@ -39,8 +48,8 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start w-full">
-      <div className="w-full py-[23px] px-[31px] bg-nafl-charcoal-600">
-        <div className="flex flex-col w-full bg-nafl-sponge-500 rounded-[16px] h-[694px] relative items-center justify-center py-[100px]">
+      <div className="w-full lg:py-[23px] py-[13px] lg:px-[31px] px-[18px] bg-nafl-charcoal-600">
+        <div className="flex flex-col w-full bg-nafl-sponge-500 rounded-[16px] relative items-center justify-center py-[100px]">
           <div className="absolute bg-nafl-charcoal-600 rounded-full h-8 w-8 top-[-1rem]" />
 
           <div className="absolute left-[18px] top-[20px]">
@@ -51,7 +60,7 @@ export default function Home() {
             </span>
           </div>
 
-          <p className="mt-[48px] text-[119px] font-face-bebas leading-[100%] xl:w-[900px] w-[90%] text-center text-[#000]">
+          <p className="mt-[48px] lg:text-[119px] text-[65px] font-face-bebas leading-[100%] lg:w-[900px] w-[90%] text-center text-[#000]">
             the leading CHOICE FOR{" "}
             <a href="" className="text-[#00E0DF] cursor-text">
               DEGEN
@@ -59,28 +68,28 @@ export default function Home() {
             crypto Gamers
           </p>
 
-          <p className="mt-[55px] text-[23px] text-[#000] text-left xl:w-[890px] w-[90%]">
+          <p className="mt-[55px] lg:text-[23px] text-[16px] text-[#000] text-left lg:w-[890px] w-[90%]">
             Naffles provides the Gamble-Fi Infrastructure for Games Developers
             without a Gambling License, to integrate PvP and P2P crypto
             wagering, raffles and lotteries
           </p>
 
-          <div className="flex md:flex-row flex-col items-center justify-center gap-[16px] mt-[65px]">
+          <div className="flex lg:flex-row flex-col items-center justify-center gap-[16px] mt-[65px] w-full">
             <a
               href="https://discord.gg/naffles"
-              className="flex items-center justify-center px-[30px] h-[54px] bg-[#464646] rounded-[8px] gap-[10px]"
+              className="flex items-center justify-center h-[54px] lg:w-[253px] w-[90%] bg-[#464646] rounded-[8px] gap-[10px] group"
             >
-              <FaDiscord className="text-nafl-sponge-500 text-[24px]" />
-              <p className="font-bold text-nafl-sponge-500 text-[18px]">
+              <FaDiscord className="text-nafl-sponge-500 text-[24px] group-hover:text-[#5865f2] duration-500" />
+              <p className="font-bold text-nafl-sponge-500 text-[18px] truncate group-hover:text-[#fff] duration-500">
                 JOIN THE DISCORD
               </p>
             </a>
             <a
               href="mailto:nft@naffles.com"
-              className="flex items-center justify-center px-[30px] h-[54px] bg-[#464646] rounded-[8px] gap-[10px]"
+              className="flex items-center justify-center h-[54px] lg:w-[327px] w-[90%] bg-[#464646] rounded-[8px] gap-[10px] group"
             >
-              <MdEmail className="text-nafl-sponge-500 text-[24px]" />
-              <p className="font-bold text-nafl-sponge-500 text-[18px]">
+              <MdEmail className="text-nafl-sponge-500 text-[24px] group-hover:text-[#fff] duration-500" />
+              <p className="font-bold text-nafl-sponge-500 text-[18px] truncate group-hover:text-[#fff] duration-500">
                 WRITE US A LOVELY LETTER
               </p>
             </a>
@@ -91,13 +100,15 @@ export default function Home() {
         <img
           src="/static/countdown-bg.png"
           alt="Countdown Background"
-          className="w-full h-full object-cover mt-[-21px] mb-[-250px]"
+          className="absolute top-[-21px] w-full h-full object-cover mb-[-250px] z-10"
         />
 
-        <div className="flex flex-col items-center absolute top-0 z-20 py-[70px] gap-[50px]">
-          <div className="flex flex-col items-center justify-center gap-[30px]">
-            <p className="text-[110px] font-face-bebas">It&apos;s Coming</p>
-            <div className="flex flex-row items-center justify-center gap-[15px]">
+        <div className="flex flex-col w-full items-center z-20 xl:py-[70px] py-0 xl:pt-0 pt-[70px] lg:gap-[50px] gap-[20px] xl:pb-[140px] pb-0">
+          <div className="flex flex-col items-center justify-center lg:gap-[30px] gap-[10px] z-30">
+            <p className="lg:text-[110px] text-[70px] font-face-bebas">
+              It&apos;s Coming
+            </p>
+            <div className="flex flex-row items-center justify-center gap-[15px] lg:scale-100 md:scale-75 scale-50">
               <div className="flex flex-row items-center justify-center gap-[5px] relative">
                 <div className="flex items-center justify-center w-[70px] h-[106px] relative">
                   <img
@@ -215,9 +226,9 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex w-[1200px] h-[2px] bg-[#fff] mt-[60px] mb-[30px]"></div>
-          <div className="flex flex-row items-center justify-center gap-[10px]">
-            <div className="w-[580px] h-[290px] relative">
+          <div className="flex xl:w-[1200px] w-[80%] h-[2px] bg-[#fff] lg:mt-[60px] mt-[30px] lg:mb-[30px] mb-[15px]"></div>
+          <div className="flex lg:flex-row w-full flex-col items-center justify-center lg:gap-[10px] gap-0 lg:mt-0 mt-[-50px]">
+            <div className="w-[580px] h-[290px] relative lg:scale-100 md:scale-75 scale-50">
               <img
                 src="/static/cd-ticket-1.png"
                 alt="Ticket Qoute"
@@ -249,7 +260,7 @@ export default function Home() {
                 className="w-[200px] object-contain absolute right-[15%] bottom-0 z-10"
               />
             </div>
-            <div className="w-[325px] h-[300px] relative">
+            <div className="w-[325px] h-[300px] relative lg:scale-100 md:scale-75 scale-50 lg:mt-0 mt-[-100px]">
               <img
                 src="/static/cd-partner-1.png"
                 alt="Partners"
@@ -273,36 +284,43 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-[10px] items-center justify-center mt-[50px]">
-            <p className="text-[64px] font-face-bebas w-[1053px]">
+          <div className="flex flex-col gap-[10px] items-center justify-center lg:mt-[50px] mt-[20px]">
+            <p className="lg:text-[64px] text-[34px] font-face-bebas xl:w-[1053px] w-[95%] text-center">
               <a className="cursor-text text-nafl-sponge-500">
                 Naffles brings the license.
               </a>{" "}
               You Bring the games.
             </p>
-            <p className="text-[38px] font-face-bebas w-[1053px] text-center">
+            <p className="lg:text-[38px] text-[18px] font-face-bebas xl:w-[1053px] w-[95%] text-center">
               the first-ever gamble-fi platform for{" "}
               <a className="cursor-text text-[#02B1B1]">p2P and pvP</a> crypto
               gaming, empowering third-party developers with a unique gambling
               license.
             </p>
           </div>
+          <div className="flex xl:hidden w-full h-[140px] bg-[#1c1c1c] z-10"></div>
         </div>
       </div>
 
-      <div className="flex lg:flex-row flex-col md:items-start items-center justify-center pt-[60px] xl:pb-[125px] pb-[250px] w-full xl:gap-[90px] gap-[40px] relative bg-[#181818]">
+      <div className="flex lg:flex-row flex-col lg:items-start items-center justify-center pt-[60px] lg:pb-[125px] pb-[250px] w-full xl:gap-[90px] gap-[40px] relative bg-[#181818]">
         <img
           src="/static/naffles-text-logo.png"
           alt="Naffles Text Logo"
-          className="lg:w-[350px] w-[80%] object-contain"
+          className="xl:w-[350px] lg:w-[250px] md:w-[50%] w-[80%] object-contain"
         />
-        <div className="flex flex-row items-start justify-center gap-[7px]">
-          <img
-            src="/static/footer-shield.png"
+        <div className="flex md:flex-row flex-col items-center justify-center gap-[7px]">
+          {/* <img
+            src="/static/footer-secure-check.png"
             alt="Naffles Text Logo"
             className="w-[75px] object-contain"
-          />
-          <div className="flex flex-col lg:w-[960px] w-[90%] gap-[12px]">
+          /> */}
+          <div
+            id="anj-163a3d88-a381-4928-873c-19ebd4bd977d"
+            data-anj-seal-id="163a3d88-a381-4928-873c-19ebd4bd977d"
+            data-anj-image-size="75"
+            data-anj-image-type="basic-small"
+          ></div>
+          <div className="flex flex-col xl:w-[960px] lg:w-[600px] md:w-[80%] w-[90%] gap-[12px]">
             <p className="text-[16px]">
               https://naffles.com/ is owned and operated by Degentralised
               Interactive Limited (Registration Number: 2134682) with the
@@ -322,15 +340,27 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div className="flex flex-row items-center justify-between w-full h-[120px] absolute bottom-0 bg-[#181818] px-[270px] text-[23px]">
-          <p className="text-[#626262] font-face-bebas">
+        <div className="flex lg:flex-row flex-col items-center lg:justify-between center w-full py-[40px] absolute bottom-0 bg-[#181818] xl:px-[270px] lg:px-[50px] px-0 text-[23px]">
+          <p className="text-[#626262] font-face-bebas text-center">
             © Copyright 2022 naffles All Rights Reserved.
           </p>
 
           <div className="flex flex-row items-center justify-center gap-[6px]">
-            <p className="text-[#626262] font-face-bebas">PRIVACY POLICY</p>
+            <a
+              href="https://www.dropbox.com/scl/fi/og0mx4uquayhldpzm3hdi/Terms-and-Conditions.pdf?rlkey=zgg66vph42826xl8wqjy5tum0&dl=0"
+              target="_blank"
+              className="text-[#626262] font-face-bebas hover:text-[#fff] duration-500"
+            >
+              PRIVACY POLICY
+            </a>
             <p className="text-[#626262] font-face-bebas">|</p>
-            <p className="text-[#626262] font-face-bebas">TERMS OF USE</p>
+            <a
+              href="https://www.dropbox.com/scl/fi/28jmch0e45pwfwnjvea1j/Responsible-Gambling-Policy.pdf?rlkey=5oqm08umlcvizj56rkmlup19n&dl=0"
+              target="_blank"
+              className="text-[#626262] font-face-bebas hover:text-[#fff] duration-500"
+            >
+              TERMS OF USE
+            </a>
           </div>
         </div>
       </div>
