@@ -100,12 +100,12 @@ export default function Home() {
         <img
           src="/static/countdown-bg.png"
           alt="Countdown Background"
-          className="absolute top-[-21px] w-full h-full object-cover mb-[-250px] z-10"
+          className="absolute top-0 w-full h-full object-cover z-10"
         />
 
-        <div className="flex flex-col w-full items-center z-20 xl:py-[70px] py-0 xl:pt-0 pt-[70px] lg:gap-[50px] gap-[20px]">
+        <div className="flex flex-col w-full items-center z-20 py-[70px] lg:gap-[50px] gap-[20px]">
           <div className="flex flex-col items-center justify-center lg:gap-[30px] gap-[10px] z-30">
-            <p className="lg:text-[110px] text-[70px] font-face-bebas">
+            <p className="lg:text-[110px] text-[70px] font-face-bebas text-[#fff]">
               It&apos;s Coming
             </p>
             <div className="flex flex-row items-center justify-center gap-[15px] lg:scale-100 md:scale-75 scale-50">
@@ -131,7 +131,7 @@ export default function Home() {
                     {countdownDays.substring(1, 2)}
                   </p>
                 </div>
-                <p className="absolute top-[130px] text-[23px] font-face-bebas">
+                <p className="absolute top-[130px] text-[23px] font-face-bebas text-[#fff]">
                   {" "}
                   DAYS
                 </p>
@@ -160,7 +160,7 @@ export default function Home() {
                     {countdownHours.substring(1, 2)}
                   </p>
                 </div>
-                <p className="absolute top-[130px] text-[23px] font-face-bebas">
+                <p className="absolute top-[130px] text-[23px] font-face-bebas text-[#fff]">
                   {" "}
                   HOURS
                 </p>
@@ -189,7 +189,7 @@ export default function Home() {
                     {countdownMinutes.substring(1, 2)}
                   </p>
                 </div>
-                <p className="absolute top-[130px] text-[23px] font-face-bebas">
+                <p className="absolute top-[130px] text-[23px] font-face-bebas text-[#fff]">
                   {" "}
                   MINUTES
                 </p>
@@ -218,7 +218,7 @@ export default function Home() {
                     {countdownSeconds.substring(1, 2)}
                   </p>
                 </div>
-                <p className="absolute top-[130px] text-[23px] font-face-bebas">
+                <p className="absolute top-[130px] text-[23px] font-face-bebas text-[#fff]">
                   {" "}
                   SECONDS
                 </p>
@@ -261,11 +261,11 @@ export default function Home() {
               />
             </div>
             <div className="flex flex-row flex-wrap items-center justify-center w-full relative lg:scale-100 scale-75 lg:gap-[80px] gap-[30px] lg:mt-0 mt-[-70px]">
-              <img
+              {/* <img
                 src="/static/cd-partner-3.png"
                 alt="Partners"
                 className="h-[64px] object-contain"
-              />
+              /> */}
               <img
                 src="/static/cd-partner-1.png"
                 alt="Partners"
@@ -285,20 +285,19 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-[10px] items-center justify-center lg:mt-[50px] mt-[20px]">
-            <p className="lg:text-[64px] text-[34px] font-face-bebas xl:w-[1053px] w-[95%] text-center">
+            <p className="lg:text-[64px] text-[34px] font-face-bebas xl:w-[1053px] w-[95%] text-center text-[#fff]">
               <a className="cursor-text text-nafl-sponge-500">
                 Naffles brings the license.
               </a>{" "}
               You Bring the games.
             </p>
-            <p className="lg:text-[38px] text-[18px] font-face-bebas xl:w-[1053px] w-[95%] text-center">
+            <p className="lg:text-[38px] text-[18px] font-face-bebas xl:w-[1053px] w-[95%] text-center text-[#fff]">
               the first-ever gamble-fi platform for{" "}
               <a className="cursor-text text-[#02B1B1]">p2P and pvP</a> crypto
               gaming, empowering third-party developers with a unique gambling
               license.
             </p>
           </div>
-          <div className="flex xl:hidden w-full h-[140px] bg-[#1c1c1c] z-10"></div>
         </div>
       </div>
 
@@ -321,19 +320,21 @@ export default function Home() {
             data-anj-image-type="basic-small"
           ></div>
           <div className="flex flex-col xl:w-[960px] lg:w-[600px] md:w-[80%] w-[90%] gap-[12px]">
-            <p className="text-[16px]">
+            <p className="text-[16px] text-[#fff]">
               https://naffles.com/ is owned and operated by Degentralised
               Interactive Limited (Registration Number: 2134682) with the
               Registered Address: Intershore Chambers, Road Town, Tortola,
               British Virgin Islands.
             </p>
-            <p className="text-[16px]">Contact us nft@naffles.com.</p>
-            <p className="text-[16px]">
+            <p className="text-[16px] text-[#fff]">
+              Contact us nft@naffles.com.
+            </p>
+            <p className="text-[16px] text-[#fff]">
               naffles.com is licensed and regulated by the Government of the
               Autonomous Island of Anjouan, Union of Comoros and operates under
               License No. ALSI-062403009-F16.
             </p>
-            <p className="text-[16px]">
+            <p className="text-[16px] text-[#fff]">
               naffles.com has passed all regulatory compliance and is legally
               authorized to conduct gaming operations for any and all games of
               chance and wagering.
@@ -347,15 +348,15 @@ export default function Home() {
 
           <div className="flex flex-row items-center justify-center gap-[6px]">
             <a
-              href="https://www.dropbox.com/scl/fi/og0mx4uquayhldpzm3hdi/Terms-and-Conditions.pdf?rlkey=zgg66vph42826xl8wqjy5tum0&dl=0"
+              href="https://www.dropbox.com/scl/fi/28jmch0e45pwfwnjvea1j/Responsible-Gambling-Policy.pdf?rlkey=5oqm08umlcvizj56rkmlup19n&dl=0"
               target="_blank"
               className="text-[#626262] font-face-bebas hover:text-[#fff] duration-500"
             >
-              PRIVACY POLICY
+              RESPONSIBLE GAMBLING POLICY
             </a>
             <p className="text-[#626262] font-face-bebas">|</p>
             <a
-              href="https://www.dropbox.com/scl/fi/28jmch0e45pwfwnjvea1j/Responsible-Gambling-Policy.pdf?rlkey=5oqm08umlcvizj56rkmlup19n&dl=0"
+              href="https://www.dropbox.com/scl/fi/og0mx4uquayhldpzm3hdi/Terms-and-Conditions.pdf?rlkey=zgg66vph42826xl8wqjy5tum0&dl=0"
               target="_blank"
               className="text-[#626262] font-face-bebas hover:text-[#fff] duration-500"
             >
