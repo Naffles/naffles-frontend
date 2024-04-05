@@ -16,6 +16,8 @@
     "@nextui-org/react": "^2.2.10",
     "@restart/ui": "^1.6.8",
     "class-variance-authority": "^0.7.0",
+    "flowbite": "^2.3.0",
+    "flowbite-react": "^0.8.0",
     "framer-motion": "^11.0.24",
     "magic-sdk": "^21.3.1",
     "next": "14.1.4",

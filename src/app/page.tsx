@@ -171,11 +171,11 @@ export default function Home() {
         <h1 className="text-[2.2rem] md:text-[5rem] lg:text-[6rem] uppercase leading-[2rem] md:leading-[5rem] text-nafl-white tracking-tight text-center mt-10">
           Hottest collections
         </h1>
-        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10 mb-10">
           {
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => (
+            [1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
               <div key={index} 
-                className="flex flex-col items-center justify-center p-4"
+                className="flex flex-col items-center"
               >
                 <CollectionItem
                   title="Boared Ape"
@@ -188,6 +188,13 @@ export default function Home() {
             ))
           }
         </div>
+        {/* a button with a label explore all our collections with a yellow background */}
+        <button
+          className="bg-nafl-yellow-500 text-nafl-charcoal-800 p-2 rounded-lg w-[25rem] mx-auto mt-10 text-xl flex items-center justify-center mb-10"
+        >
+          <MagnifyingIcon size="sm" colour="yellow" />
+          Explore all our collections
+        </button>
       </div>
       <Footer />
     </main>
