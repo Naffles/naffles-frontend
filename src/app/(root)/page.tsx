@@ -68,7 +68,7 @@ export default function Home() {
             crypto Gamers
           </p>
 
-          <p className="mt-[55px] lg:text-[23px] text-[16px] text-[#000] text-left lg:w-[890px] w-[90%]">
+          <p className="mt-[55px] lg:text-[23px] text-[16px] text-[#000] lg:w-[890px] w-[90%] text-center">
             Naffles provides the Gamble-Fi Infrastructure for Games Developers
             without a Gambling License, to integrate PvP and P2P crypto
             wagering, raffles and lotteries
@@ -77,6 +77,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center gap-[16px] mt-[65px] w-full">
             <a
               href="https://discord.gg/naffles"
+              target="_blank"
               className="flex items-center justify-center h-[54px] lg:w-[364px] w-[90%] bg-[#464646] rounded-[8px] gap-[10px] group"
             >
               <FaDiscord className="text-nafl-sponge-500 text-[24px] group-hover:text-[#5865f2] duration-500" />
