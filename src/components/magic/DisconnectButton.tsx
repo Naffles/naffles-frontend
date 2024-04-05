@@ -29,7 +29,7 @@ const DisconnectButton = ({ active }: ButtonProps) => {
     <button
       className={`${
         active ? "bg-nafl-yellow-500 text-white" : "text-gray-900"
-      } group flex w-full items-center rounded-md px-2 py-2 text-sm w-auto text-color`}
+      } group flex w-full items-center rounded-md px-2 py-2 text-sm text-color`}
       onClick={handleDisconnect}
     >
       {isLoading ? "Disconnecting..." : "Disconnect"}

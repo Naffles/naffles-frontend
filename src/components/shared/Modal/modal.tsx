@@ -25,7 +25,7 @@ export const Modal = ({
           className="fixed z-49 bg-black/40 w-full h-full top-0 left-0"
         />
       )}
-      className="flex w-full min-h-full flex items-center justify-center outline-none absolute top-0 left-0 z-50"
+      className="flex w-full min-h-full items-center justify-center outline-none absolute top-0 left-0 z-50"
     >
       <div className="modal-container rounded-md bg-nafl-charcoal-500 min-w-64 text-2xl">
         {title && (
