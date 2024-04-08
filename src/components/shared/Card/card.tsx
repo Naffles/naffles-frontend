@@ -14,7 +14,8 @@ type CardProps = {
 const Card: React.FC<CardProps> = ({ title, description, price, buttonText }) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push(`/${title}`);
+    // router.push(`/${title}`); redirect to its nft profile page
+    console.log("to redirect in nft page");
   };
 
   return (
