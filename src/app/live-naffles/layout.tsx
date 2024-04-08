@@ -23,11 +23,7 @@ export default function Layout({
 }>) {
   return (
     <Fragment>
-      {/* <body className={inter.className}> */}
-        {/* <PageHeader /> */}
-        {children}
-        {/* <Footer /> */}
-      {/* </body> */}
+      {children}
     </Fragment>
   );
 }

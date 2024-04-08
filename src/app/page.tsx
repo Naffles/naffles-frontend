@@ -9,10 +9,12 @@ import { Autoplay, Pagination } from "swiper/modules";
 import Button from "@components/shared/Button/button";
 import MagnifyingIcon from "@components/icons/magnifyingIcon";
 import Image from "next/image";
+import Footer from "@components/shared/Footer/Footer";
+import CollectionItem from "@components/shared/Collection/collection";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between mt-2 pt-10">
+    <main className="flex min-h-screen flex-col items-center justify-between mt-1 pt-10">
       <div className="w-full bg-nafl-charcoal-700">
         <div className="w-full h-[48rem] overflow-hidden">
           <Swiper
@@ -61,18 +63,18 @@ export default function Home() {
                         alt="Naffle"
                         width={350}
                         height={350}
-                        objectFit="cover"
+                        sizes="350px"
                         className="absolute top-0 left-4"
-                        style={{ zIndex: 2 }}
+                        style={{ zIndex: 2, objectFit: "contain"}}
                       />
                       <Image
                         src={"/static/hero-img2.png"}
                         alt="Naffle"
                         width={290}
                         height={290}
-                        objectFit="cover"
+                        sizes="290px"
                         className="absolute top-8 left-56"
-                        style={{ zIndex: 1 }}
+                        style={{ zIndex: 1, objectFit: "contain"}}
                       />
                     </div>
                     <div className="mt-[26rem] flex flex-col ml-[10rem]">
@@ -88,6 +90,7 @@ export default function Home() {
                               alt="nafl-coin"
                               width={20}
                               height={20}
+                              sizes="20px"
                               style={{ objectFit: "contain" }}
                             />
                             <h2 className="text-3xl font-semibold text-nafl-charcoal-500 text-right">
@@ -113,6 +116,7 @@ export default function Home() {
                                 alt="nafl-coin"
                                 width={20}
                                 height={20}
+                                sizes="20px"
                                 style={{ objectFit: "contain" }}
                               />
                               <h2 className="text-3xl font-semibold text-nafl-charcoal-500 text-right">
@@ -163,6 +167,36 @@ export default function Home() {
           </Swiper>
         </div>
       </div>
+      <div className="w-full px-24 bg-nafl-grey-600 h-auto p-5 flex flex-col">
+        <h1 className="text-[2.2rem] md:text-[5rem] lg:text-[6rem] uppercase leading-[2rem] md:leading-[5rem] text-nafl-white tracking-tight text-center mt-10">
+          Hottest collections
+        </h1>
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10 mb-10">
+          {
+            [1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
+              <div key={index} 
+                className="flex flex-col items-center"
+              >
+                <CollectionItem
+                  title="Boared Ape"
+                  description="Yacht Club"
+                  price="$9.99"
+                  buttonText="Buy Now"
+                  notchColor="bg-nafl-grey-600"
+                />
+              </div>
+            ))
+          }
+        </div>
+        {/* a button with a label explore all our collections with a yellow background */}
+        <button
+          className="bg-nafl-yellow-500 text-nafl-charcoal-800 p-2 rounded-lg w-[25rem] mx-auto mt-10 text-xl flex items-center justify-center mb-10"
+        >
+          <MagnifyingIcon size="sm" colour="yellow" />
+          Explore all our collections
+        </button>
+      </div>
+      <Footer />
     </main>
   );
 }
