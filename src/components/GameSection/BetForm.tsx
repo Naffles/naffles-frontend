@@ -1,53 +1,15 @@
 import { useEffect, useState } from "react";
-import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { RiExpandUpDownLine } from "react-icons/ri";
-import { TbCurrencySolana } from "react-icons/tb";
 
 let sample_balances_json = [
   {
     id: 1,
-    type: "ETH",
+    type: "PTS",
     balance: "1.2369",
     usd: "3569",
   },
-  {
-    id: 2,
-    type: "BTC",
-    balance: "0.2369",
-    usd: "3569",
-  },
-  {
-    id: 3,
-    type: "BYTES",
-    balance: "23.2369",
-    usd: "3569",
-  },
-  {
-    id: 4,
-    type: "SOL",
-    balance: "5.2369",
-    usd: "3569",
-  },
-  {
-    id: 5,
-    type: "NAFF",
-    balance: "1.2369",
-    usd: "3569",
-  },
-  {
-    id: 6,
-    type: "BTC",
-    balance: "0.2369",
-    usd: "3569",
-  },
 ];
-let currency_name = [
-  { type: "ETH", name: "Ethereum" },
-  { type: "BTC", name: "Bitcoin" },
-  { type: "BYTES", name: "Neo Tokyo" },
-  { type: "SOL", name: "Solana" },
-  { type: "NAFF", name: "Naffles" },
-];
+let currency_name = [{ type: "PTS", name: "Points" }];
 
 export const BetForm = (props: { onSubmit: (x?: any) => any }) => {
   const { onSubmit } = props;
@@ -85,32 +47,6 @@ export const BetForm = (props: { onSubmit: (x?: any) => any }) => {
     setTotalPayout(balanceAmount * betMultiplierChoice);
   }, [balanceAmount, betMultiplierChoice]);
 
-  const currencyIconReturner = (type: string) => {
-    if (type == "ETH") {
-      return <FaEthereum className="text-[#fff]" />;
-    } else if (type == "BTC") {
-      return <FaBitcoin className="text-[#fff]" />;
-    } else if (type == "SOL") {
-      return <TbCurrencySolana className="text-[#fff]" />;
-    } else if (type == "NAFF") {
-      return (
-        <img
-          src="/static/naff-icon.png"
-          alt="Bytes Icon"
-          className="w-[12px] object-contain"
-        />
-      );
-    } else if (type == "BYTES") {
-      return (
-        <img
-          src="/static/bytes-icon.png"
-          alt="Bytes Icon"
-          className="w-[12px] object-contain"
-        />
-      );
-    }
-  };
-
   return (
     <div className="flex flex-col items-center w-full gap-[20px]">
       <div className="flex flex-col w-full gap-[4px]">
@@ -122,11 +58,7 @@ export const BetForm = (props: { onSubmit: (x?: any) => any }) => {
 
       <div className="flex flex-row items-center gap-[24px]">
         <div className="flex items-center w-[250px] relative">
-          <button
-            onClick={() => setBalanceTypeDropdown(!balanceTypeDropdown)}
-            className="flex items-center gap-[10px] justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B]"
-          >
-            {currencyIconReturner(balanceType?.type)}
+          <button className="flex items-center gap-[10px] justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] cursor-default">
             <p className="text-[#fff] text-[16px] font-face-bebas">
               {currencyNameConverter(balanceType?.type)}
             </p>
@@ -134,7 +66,6 @@ export const BetForm = (props: { onSubmit: (x?: any) => any }) => {
               BALANCE: {`${balanceType?.balance} ${balanceType?.type}`}
             </p>
           </button>
-          <RiExpandUpDownLine className="absolute text-[20px] right-[20px] text-nafl-sponge-500" />
           {balanceTypeDropdown && (
             <div className="flex absolute top-[60px] w-full h-[160px] z-40 p-[10px] rounded-[10px] bg-[#4B4B4B] overflow-hidden overflow-y-scroll balance-scrollbar">
               <div className="flex flex-col w-full gap-[6px]">
@@ -149,7 +80,6 @@ export const BetForm = (props: { onSubmit: (x?: any) => any }) => {
                       balanceType.type == item?.type && "bg-[#fff]/30"
                     }`}
                   >
-                    {currencyIconReturner(item?.type)}
                     <p className="text-[#fff] text-[16px] font-face-bebas">
                       {currencyNameConverter(item?.type)}
                     </p>
@@ -219,13 +149,13 @@ export const BetForm = (props: { onSubmit: (x?: any) => any }) => {
           <p className=" text-[#989898] text-[14px]">
             Buy-in:{" "}
             <a href="" className="text-[#fff] font-face-roboto italic">
-              0.0001 ETH
+              0.0001 PTS
             </a>
           </p>
           <p className=" text-[#989898] text-[14px]">
             Payout:{" "}
             <a href="" className="text-[#fff] font-face-roboto italic">
-              {totalPayout.toFixed(4)} ETH
+              {totalPayout.toFixed(4)} PTS
             </a>
           </p>
         </div>
