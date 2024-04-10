@@ -22,12 +22,12 @@ export const Modal = ({
       renderBackdrop={(props) => (
         <div
           {...props}
-          className="fixed z-49 bg-black/40 w-full h-full top-0 left-0"
+          className="fixed z-50 bg-black/40 w-full h-full top-0 left-0"
         />
       )}
-      className="flex w-full min-h-full flex items-center justify-center outline-none absolute top-0 left-0 z-50"
+      className="fixed z-[51] top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 shadow-lg p-5"
     >
-      <div className="modal-container rounded-md bg-nafl-charcoal-500 min-w-64 text-2xl">
+      <div className="modal-container rounded-2xl bg-nafl-charcoal-500 min-w-64 text-2xl">
         {title && (
           <div className="modal-header rounded-t-md bg-nafl-charcoal-600 py-1 px-2 relative flex items-center justify-center">
             <div className="modal-close mr-auto invisible">
