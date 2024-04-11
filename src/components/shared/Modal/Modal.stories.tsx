@@ -21,11 +21,7 @@ export const LoginModal = {
   args: {
     show: true,
     title: "Login",
-    children: (
-      <div className="w-80">
-        <LoginForm />
-      </div>
-    ),
+    children: <LoginForm handleLogin={() => {}} />,
   },
 };
 
@@ -33,10 +29,6 @@ export const RegistrationModal = {
   args: {
     show: true,
     title: "Register",
-    children: (
-      <div className="w-80">
-        <RegistrationForm />
-      </div>
-    ),
+    children: <RegistrationForm />,
   },
 };

@@ -13,7 +13,7 @@ type VerificationFormData = {
   verificationCode: string;
 };
 
-export const RegistrationForm = (props) => {
+export const RegistrationForm = () => {
   const { login } = useBasicUser();
   const [previousData, setPreviousData] = useState<RegistrationFormData | null>(
     null
@@ -28,15 +28,17 @@ export const RegistrationForm = (props) => {
   };
   const onSubmitVerification = async (data: VerificationFormData) => {
     try {
-      const response = await axios.post("user/signup", {
-        email: previousData?.emailAddress,
-        password: previousData?.password,
-        verificationCode: data.verificationCode,
-      });
-      login({
-        identifier: previousData?.emailAddress,
-        password: previousData?.password,
-      });
+      if (previousData?.emailAddress && previousData.password) {
+        const response = await axios.post("user/signup", {
+          email: previousData.emailAddress,
+          password: previousData.password,
+          verificationCode: data.verificationCode,
+        });
+        login({
+          identifier: previousData.emailAddress,
+          password: previousData.password,
+        });
+      }
     } catch (err) {
       console.log(err);
     }
