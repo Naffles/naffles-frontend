@@ -1,9 +1,8 @@
-"use client";
 
 const Footer = () => {
   return (
     <>
-      <div className="w-full h-[557px] bg-[#292929] relative pt-[67px] z-50">
+      <div className="w-full h-[557px] bg-[#292929] relative pt-[67px] z-50 bottom-0">
         <div className="flex flex-row w-full items-start justify-between px-[270px]">
           <img
             src="/static/naffles-text-logo.png"

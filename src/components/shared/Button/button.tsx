@@ -1,6 +1,7 @@
 "use-client";
 import { cva, VariantProps } from "class-variance-authority";
 import Image from "next/image";
+import { MouseEventHandler } from "react";
 
 export enum ButtonTypes {
   "button",
@@ -18,7 +19,7 @@ interface ButtonProps {
   spinnerColour?: boolean;
   subClassName?: string;
   type?: ButtonTypes;
-};
+}
 
 const btnStyles = cva(
   "px-4 py-2 rounded-md font-roboto-body uppercase font-bold selection:transition-opacity ease-out duration-300 cursor-pointer hover:opacity-70 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-nafl-sys-complete",
@@ -60,6 +61,7 @@ const btnStyles = cva(
 
 interface ButtonProps extends VariantProps<typeof btnStyles> {
   type?: ButtonTypes;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 const Button: React.FC<ButtonProps> = ({
   variant,
