@@ -7,6 +7,7 @@ type TextInputProps = {
   placeholder?: string;
   type?: string;
   notes?: string | ReactNode;
+  minLength?: number;
 };
 
 export const TextInput = ({
@@ -14,9 +15,11 @@ export const TextInput = ({
   name,
   placeholder,
   notes,
+  minLength,
   ...props
 }: TextInputProps) => {
-  const { register } = useFormContext() || {};
+  const { register, formState } = useFormContext() || {};
+  const inputErrors = formState?.errors?.[name]?.message;
   return (
     <div className="flex flex-col items-start space-y-2 ">
       {/* <label className="text-body-xs text-nafl-sponge-500">{label}</label> */}
@@ -25,8 +28,18 @@ export const TextInput = ({
         type="text"
         placeholder={placeholder}
         {...props}
-        {...register?.(name)}
+        {...register?.(name, {
+          minLength: {
+            value: minLength,
+            message: "Minimum length is " + minLength,
+          },
+        })}
       />
+      {inputErrors && (
+        <label className="text-body-xs text-nafl-sys-error px-1">
+          {inputErrors}
+        </label>
+      )}
       {notes && (
         <label className="text-body-xs text-nafl-charcoal-100 px-1">
           {notes}
