@@ -3,7 +3,11 @@ import { CoinToss } from "@components/CoinToss";
 import { RockPaperScissors } from "@components/RockPaperScissors";
 import { Button } from "@components/shared/Button";
 import { Modal } from "@components/shared/Modal";
-import { BetForm } from "./BetForm";
+import { RegistrationForm } from "@components/shared/AuthForms";
+
+const DAILY_PLAYS_THRESHOLD = 1;
+const handChoices = ["rock", "paper", "scissors"];
+const coinChoices = ["heads", "tails"];
 
 export const GameSection = () => {
   const [timeleft, setTimeleft] = useState(25);
@@ -13,7 +17,14 @@ export const GameSection = () => {
   const [rpsLocked, setRPSLocked] = useState(false);
   const [coinLocked, setCoinLocked] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [modalGame, setModalGame] = useState("rps");
+  const [playsToday, setPlaysToday] = useState(0);
+
+  useEffect(() => {
+    // getting stored value
+    const saved = localStorage.getItem("daily-plays");
+    const initialValue = saved ? Number(JSON.parse(saved)) : 0;
+    setPlaysToday(initialValue);
+  }, []);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -34,21 +45,27 @@ export const GameSection = () => {
     const rndNum = Math.random();
     setRPSLocked((isLocked) => {
       if (isLocked) {
-        const handResult = ["rock", "paper", "scissors"][
-          Math.floor(rndNum * 3)
-        ];
+        const handResult = handChoices[Math.floor(rndNum * 3)];
         setWinningHand(handResult);
       }
       return false;
     });
     setCoinLocked((isLocked) => {
       if (isLocked) {
-        const faceResult = ["heads", "tails"][Math.floor(rndNum * 2)];
+        const faceResult = coinChoices[Math.floor(rndNum * 2)];
         setWinningFace(faceResult);
       }
       return false;
     });
     setIsCountingDown(false);
+    setPlaysToday((prevPlays) => {
+      const plays = prevPlays + 1;
+      localStorage.setItem("daily-plays", plays.toString());
+      if (plays >= DAILY_PLAYS_THRESHOLD) {
+        setOpenModal(true);
+      }
+      return plays;
+    });
   };
 
   const handlePlayClick = () => {
@@ -56,26 +73,26 @@ export const GameSection = () => {
     setTimeleft(5);
   };
 
-  const betFormSubmit = () => {
-    if (modalGame === "rps") {
-      setRPSLocked(true);
-      setOpenModal(false);
-    }
-    if (modalGame === "coin") {
-      setCoinLocked(true);
-      setOpenModal(false);
-    }
-  };
+  // const betFormSubmit = () => {
+  //   if (modalGame === "rps") {
+  //     setRPSLocked(true);
+  //     setOpenModal(false);
+  //   }
+  //   if (modalGame === "coin") {
+  //     setCoinLocked(true);
+  //     setOpenModal(false);
+  //   }
+  // };
 
   return (
     <>
       <div className="flex-row flex justify-center py-4">
         <Modal
+          title="Register now to save your points"
           show={openModal}
           hideModal={() => setOpenModal(false)}
-          title="Set bet amounts"
         >
-          <BetForm onSubmit={betFormSubmit} />
+          <RegistrationForm />
         </Modal>
         <Button
           size="xl"
@@ -97,18 +114,18 @@ export const GameSection = () => {
             winningChoice={winningHand}
             isLocked={rpsLocked}
             onChoice={() => {
-              setOpenModal(true);
-              setModalGame("rps");
+              setRPSLocked(true);
             }}
+            choices={handChoices}
           />
           <CoinToss
             timeleft={timeleft}
             winningChoice={winningFace}
             isLocked={coinLocked}
             onChoice={() => {
-              setOpenModal(true);
-              setModalGame("coin");
+              setCoinLocked(true);
             }}
+            choices={coinChoices}
           />
         </div>
         <div className="flex-col flex stats-container w-[380px] bg-nafl-grey-700 rounded-3xl"></div>

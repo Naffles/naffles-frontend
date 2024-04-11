@@ -14,8 +14,8 @@ const coinTossArray = [
 ];
 
 export const CoinToss = (props: GameContainer) => {
-  const { timeleft, winningChoice, isLocked, onChoice } = props;
-  const [selectedFace, setSelectedFace] = useState("");
+  const { timeleft, winningChoice, isLocked, onChoice, choices } = props;
+  const [selectedChoice, setSelectedChoice] = useState("");
   const [coin, setCoin] = useState(0);
   const videosRef = useRef<(HTMLVideoElement | null)[]>([]);
 
@@ -27,7 +27,6 @@ export const CoinToss = (props: GameContainer) => {
         (item) => item.number === coinNumber && item.face === winningChoice
       );
       videosRef?.current[refIndex]?.play();
-      console.log(refIndex);
     }
   }, [winningChoice, isLocked]);
 
@@ -35,34 +34,32 @@ export const CoinToss = (props: GameContainer) => {
     if (coinVid === coin && faceVid === winningChoice) return "";
     return "hidden";
   };
-  const handleChoiceClick = (faceClicked: string) => {
+  const handleChoiceClick = (choiceClicked: string) => {
     if (!isLocked) {
-      setSelectedFace(faceClicked);
+      setSelectedChoice(choiceClicked);
       onChoice();
     }
   };
 
   return (
     <div className="flex-row flex">
-      <div className="flex-col flex gap-4 -mr-4 z-10 pt-4  w-[155px]">
-        <Button
-          size="lg"
-          variant={selectedFace === "heads" ? "secondary" : "primary"}
-          label="Heads"
-          onClick={() => handleChoiceClick("heads")}
-          width="span"
-        >
-          Heads
-        </Button>
-        <Button
-          size="lg"
-          variant={selectedFace === "tails" ? "secondary" : "primary"}
-          label="Tails"
-          onClick={() => handleChoiceClick("tails")}
-          width="span"
-        >
-          Tails
-        </Button>
+      <div className="flex-col flex gap-2 -mr-4 z-10 pt-4  w-[155px]">
+        {choices.map((choice) => (
+          <Button
+            size="lg"
+            variant={
+              selectedChoice === choice
+                ? "secondary-outline"
+                : "primary-outline"
+            }
+            label={choice}
+            onClick={() => handleChoiceClick(choice)}
+            width="span"
+            key={choice}
+          >
+            {choice}
+          </Button>
+        ))}
       </div>
       <div className="flex-col flex bg-nafl-grey-700 w-[500px] rounded-3xl overflow-hidden">
         <div className="h-[188px]">
@@ -76,7 +73,10 @@ export const CoinToss = (props: GameContainer) => {
                 videosRef.current[idx] = ref;
               }}
               onEnded={() => {
-                !isLocked && setSelectedFace("");
+                 if (selectedChoice === winningChoice) {
+                   alert("You won Coin Toss");
+                 }
+                !isLocked && setSelectedChoice("");
               }}
             >
               <source

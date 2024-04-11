@@ -3,4 +3,5 @@ export interface GameContainer {
   winningChoice: string;
   isLocked: boolean;
   onChoice: (x?: any) => any;
+  choices: string[];
 }
