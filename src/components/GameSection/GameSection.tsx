@@ -3,7 +3,7 @@ import { CoinToss } from "@components/CoinToss";
 import { RockPaperScissors } from "@components/RockPaperScissors";
 import { Button } from "@components/shared/Button";
 import { Modal } from "@components/shared/Modal";
-import { BetForm } from "./BetForm";
+import { RegistrationForm } from "@components/shared/AuthForms";
 
 const DAILY_PLAYS_THRESHOLD = 1;
 const handChoices = ["rock", "paper", "scissors"];
@@ -17,7 +17,6 @@ export const GameSection = () => {
   const [rpsLocked, setRPSLocked] = useState(false);
   const [coinLocked, setCoinLocked] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [modalGame, setModalGame] = useState("rps");
   const [playsToday, setPlaysToday] = useState(0);
 
   useEffect(() => {
@@ -63,7 +62,7 @@ export const GameSection = () => {
       const plays = prevPlays + 1;
       localStorage.setItem("daily-plays", plays.toString());
       if (plays >= DAILY_PLAYS_THRESHOLD) {
-        console.log("test" + plays);
+        setOpenModal(true);
       }
       return plays;
     });
@@ -88,13 +87,13 @@ export const GameSection = () => {
   return (
     <>
       <div className="flex-row flex justify-center py-4">
-        {/* <Modal
+        <Modal
+          title="Register now to save your points"
           show={openModal}
           hideModal={() => setOpenModal(false)}
-          title="Set bet amounts"
         >
-          <BetForm onSubmit={betFormSubmit} />
-        </Modal> */}
+          <RegistrationForm />
+        </Modal>
         <Button
           size="xl"
           variant={

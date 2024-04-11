@@ -21,6 +21,7 @@ export const RockPaperScissors = (props: GameContainer) => {
 
   useEffect(() => {
     if (winningChoice && !isLocked) {
+      console.log({ winningChoice });
       const coinNumber = Math.floor(Math.random() * 4);
       setCoin(coinNumber);
       const refIndex = coinTossArray.findIndex(
@@ -40,6 +41,10 @@ export const RockPaperScissors = (props: GameContainer) => {
       onChoice();
     }
   };
+  if (selectedChoice && selectedChoice === winningChoice) {
+    alert("You won RPS");
+    setSelectedChoice("");
+  }
 
   return (
     <div className="flex-row flex">
@@ -73,6 +78,9 @@ export const RockPaperScissors = (props: GameContainer) => {
                 videosRef.current[idx] = ref;
               }}
               onEnded={() => {
+                if (selectedChoice === winningChoice) {
+                  alert("You won RPS");
+                }
                 !isLocked && setSelectedChoice("");
               }}
             >

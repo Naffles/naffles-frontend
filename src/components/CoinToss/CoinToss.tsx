@@ -73,6 +73,9 @@ export const CoinToss = (props: GameContainer) => {
                 videosRef.current[idx] = ref;
               }}
               onEnded={() => {
+                 if (selectedChoice === winningChoice) {
+                   alert("You won Coin Toss");
+                 }
                 !isLocked && setSelectedChoice("");
               }}
             >
