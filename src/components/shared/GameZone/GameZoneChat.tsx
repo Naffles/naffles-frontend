@@ -4,7 +4,7 @@ import { BiSend } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { TfiMenu } from "react-icons/tfi";
 
-const GameZoneComments = () => {
+const GameZoneChat = () => {
   let sample_balances_json = [
     {
       id: 1,
@@ -236,4 +236,4 @@ const GameZoneComments = () => {
   );
 };
 
-export default GameZoneComments;
+export default GameZoneChat;

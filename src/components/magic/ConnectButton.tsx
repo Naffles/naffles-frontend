@@ -3,10 +3,11 @@ import useStore from "../utils/store";
 import { useMagic } from "@blockchain/context/MagicProvider";
 import { useUser } from "@blockchain/context/UserContext";
 import { useEffect } from "react";
+import Cookies from "js-cookie";
 
 const ConnectButton = () => {
   const { magic } = useMagic();
-  const { fetchUser } = useUser();
+  const { setJWT, fetchUser } = useUser();
 
   const handleConnect = async () => {
     try {
@@ -35,14 +36,50 @@ const ConnectButton = () => {
     console.log("userInfo:", userInfo);
 
     const idToken = await magic?.user.getIdToken();
+    console.log("idToken:", idToken);
+    idToken && loginUsingDID(idToken);
 
-    if (process.env.SERVER_SECRET && !idToken) return;
-    console.log("generated new idtoken");
-    const newIdToken = await magic?.user.generateIdToken({
-      attachment: process.env.SERVER_SECRET,
-    });
+    if (process.env.SERVER_SECRET && !idToken) {
+      console.log("generated new idtoken");
+      const newIdToken = await magic?.user.generateIdToken({
+        attachment: process.env.SERVER_SECRET,
+      });
+      newIdToken && loginUsingDID(newIdToken);
 
-    console.log("idToken:", newIdToken);
+      console.log("newIdToken:", newIdToken);
+    }
+  };
+
+  const loginUsingDID = async (DIDtoken: string | undefined) => {
+    console.log("DIDtoken:", DIDtoken);
+    try {
+      let url = "https://dev.api.naffles.com/user/login/wallet";
+
+      await fetch(url, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "a8182a19-2aae-48e6-97a7-4c7836d7004b",
+          Authorization: "Bearer " + DIDtoken,
+        },
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
+        })
+        .then((result) => {
+          if (result) {
+            console.log("wallet login result:", result);
+            // setJWT(result?.token);
+            // Cookies.set("token", result?.token, { expires: 7, secure: true });
+          } else {
+            console.log("error");
+          }
+        });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // Render the button component with the click event handler

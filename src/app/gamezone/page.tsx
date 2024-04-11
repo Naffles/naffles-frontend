@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "@components/shared/Footer/Footer";
-import GameZoneComments from "@components/shared/GameZone/GameZoneComments";
+import GameZoneChat from "@components/shared/GameZone/GameZoneChat";
 import GameZoneCreateGame from "@components/shared/GameZone/GameZoneCreateGame";
 import GameZoneMain from "@components/shared/GameZone/GameZoneMain";
 import { useEffect, useState } from "react";
@@ -125,7 +125,7 @@ const GameZone = () => {
           }`}
         >
           <GameZoneMain />
-          <GameZoneComments />
+          <GameZoneChat />
         </div>
 
         <div
@@ -146,7 +146,7 @@ const GameZone = () => {
           }`}
         >
           <GameZoneGame />
-          <GameZoneComments />
+          <GameZoneChat />
         </div>
 
         <Footer />
