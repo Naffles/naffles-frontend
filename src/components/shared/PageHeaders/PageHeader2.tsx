@@ -49,8 +49,8 @@ const PageHeader: React.FC<PageHeaderProps> = (
   ];
 
   return (
-    <div className="fixed top-0 w-full h-30 bg-transparent mx-auto px-[25px] pt-[25px] z-50">
-      <div className="relative rounded-lg mt-0 mx-auto px-2 py-1 overflow-hidden">
+    <div className="w-full h-30 bg-transparent mx-auto px-[25px] pt-[25px]">
+      <div className="relative rounded-lg mt-0 mx-auto px-2 py-1 overflow-hidden z-50">
         {/* <div className="absolute bg-nafl-charcoal-600 rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" /> */}
 
         <div className="flex flex-row absolute inset-0 w-full h-full">
@@ -97,11 +97,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                         : colorVariants["black"],
                   }}
                   className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
-                  onClick={() =>
-                    selectedNavItem === index
-                      ? setSelectedNavItem(0)
-                      : setSelectedNavItem(index)
-                  }
+                  onClick={() => setSelectedNavItem(index)}
                 >
                   {navItem.title}
                 </a>
