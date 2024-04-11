@@ -1,9 +1,21 @@
 import { FormContext, TextInput } from "../Inputs";
 import { Button } from "../Button";
-import { ButtonTypes } from "../Button/button";
+import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+export type LoginSubmitData = { emailAddress: string; password: string };
+type LoginProps = {
+  handleLogin: (data: any) => any;
+};
 
-export const LoginForm = () => {
-  const onSubmit = () => alert("login clicked");
+export const LoginForm = (props: LoginProps) => {
+  const { handleLogin } = props;
+  const { login } = useBasicUser();
+  const onSubmit = async (data: LoginSubmitData) => {
+    const response = await login({
+      identifier: data.emailAddress,
+      password: data.password,
+    });
+    handleLogin(response);
+  };
   return (
     <FormContext onSubmit={onSubmit} className="flex flex-col gap-4 min-w-64">
       <TextInput
@@ -12,7 +24,7 @@ export const LoginForm = () => {
         placeholder="Email Address"
       />
       <TextInput
-        name="emailAddress"
+        name="password"
         label="Password"
         placeholder="Password*"
         type="password"
@@ -23,7 +35,7 @@ export const LoginForm = () => {
         label="submit"
         variant="secondary"
         size="lg"
-        type={ButtonTypes.submit}
+        type="submit"
         width="inhert"
         className="mx-2 my-2"
       >

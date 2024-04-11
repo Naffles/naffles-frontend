@@ -10,6 +10,7 @@ import { UserProvider } from "@blockchain/context/UserContext";
 import LoginModal from "@components/Modal/LoginModal";
 import DepositModal from "@components/Modal/DepositModal";
 import "./globals.css";
+import { BasicUserProvider } from "@components/context/BasicUser/BasicUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,10 +30,12 @@ export default function RootLayout({
         <Providers>
           <MagicProvider>
             <UserProvider>
-              <PageHeader />
-              {children}
-              <LoginModal />
-              <DepositModal />
+              <BasicUserProvider>
+                <PageHeader />
+                {children}
+                <LoginModal />
+                <DepositModal />
+              </BasicUserProvider>
             </UserProvider>
           </MagicProvider>
         </Providers>

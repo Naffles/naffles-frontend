@@ -3,11 +3,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import Image from "next/image";
 import { MouseEventHandler } from "react";
 
-export enum ButtonTypes {
-  "button",
-  "submit",
-  "reset",
-}
+export type ButtonTypes = "submit" | "reset" | "button";
 interface ButtonProps {
   label: string;
   leftIcon?: React.ReactNode;
@@ -81,12 +77,12 @@ const Button: React.FC<ButtonProps> = ({
   isOutline,
   spinnerColour,
   subClassName,
-  type = ButtonTypes.button,
+  type = "button",
   ...props
 }) => {
   return (
     <button
-      type="button"
+      type={type}
       className={`${btnStyles({
         variant,
         width,
