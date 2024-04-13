@@ -2,12 +2,14 @@
 import useStore from "../utils/store";
 import { useMagic } from "@blockchain/context/MagicProvider";
 import { useUser } from "@blockchain/context/UserContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { IoMdLogOut } from "react-icons/io";
 
 const ConnectButton = () => {
   const { magic } = useMagic();
   const { setJWT, fetchUser } = useUser();
+  const [walletLoggedIn, setWalletLoggedIn] = useState(false);
 
   const handleConnect = async () => {
     try {
@@ -38,6 +40,8 @@ const ConnectButton = () => {
     const idToken = await magic?.user.getIdToken();
     console.log("idToken:", idToken);
     idToken && loginUsingDID(idToken);
+
+    idToken && setWalletLoggedIn(true);
 
     if (process.env.SERVER_SECRET && !idToken) {
       console.log("generated new idtoken");
@@ -82,18 +86,50 @@ const ConnectButton = () => {
     }
   };
 
+  const handleShowUI = async () => {
+    try {
+      // Try to show the magic wallet user interface
+      await magic?.wallet.showUI();
+    } catch (error) {
+      // Log any errors that occur during the process
+      console.error("handleShowUI:", error);
+    }
+  };
+
+  const handleDisconnect = async () => {
+    try {
+      // Try to disconnect the user's wallet using Magic's logout method
+      await magic?.user.logout();
+      await fetchUser();
+    } catch (error) {
+      // Log any errors that occur during the disconnection process
+      console.log("handleDisconnect:", error);
+    }
+  };
+
   // Render the button component with the click event handler
   return (
-    <button
-      type="button"
-      className="w-auto border border-white text-color font-bold p-2 rounded-md"
-      onClick={() => {
-        // setIsOpen(true);
-        handleConnect();
-      }}
-    >
-      Connect
-    </button>
+    <div className="flex flex-row items-center justify-center w-full relative">
+      <button
+        className="flex flex-row items-center justify-start w-full"
+        onClick={() => {
+          // setIsOpen(true);
+          walletLoggedIn ? handleShowUI() : handleConnect();
+        }}
+      >
+        <p className="font-face-bebas leading-[100%] text-[#000]">
+          {walletLoggedIn ? "Wallet Account Details" : "Wallet Login"}
+        </p>
+      </button>
+      {walletLoggedIn && (
+        <button
+          onClick={() => handleDisconnect()}
+          className="flex items-center justify-center w-[24px] h-[24px] rounded-md bg-[#ff4747] absolute right-[-10px] shadow-xl"
+        >
+          <IoMdLogOut className="text-[#fff]" />
+        </button>
+      )}
+    </div>
   );
 };
 

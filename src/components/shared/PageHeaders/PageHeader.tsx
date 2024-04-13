@@ -202,7 +202,9 @@ const PageHeader: React.FC<PageHeaderProps> = (
                       Login
                     </li>
                   )}
-
+                  <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                    <ConnectButton />
+                  </li>
                   <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                     Settings
                   </li>
