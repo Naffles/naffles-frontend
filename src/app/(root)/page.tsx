@@ -21,7 +21,7 @@ export default function Home() {
     // script.onload;
     document.body.appendChild(script);
 
-    var countDownDate = new Date("April 20, 2024 04:01:00 UTC").getTime();
+    var countDownDate = new Date("May 27, 2024 22:00:00 UTC").getTime();
     let cdInterval = setInterval(function () {
       var now = new Date().getTime();
       var distance = countDownDate - now;
