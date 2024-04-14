@@ -29,15 +29,17 @@ export const TextInput = ({
         placeholder={placeholder}
         {...props}
         {...register?.(name, {
-          minLength: {
-            value: minLength,
-            message: "Minimum length is " + minLength,
-          },
+          ...(minLength && {
+            minLength: {
+              value: minLength,
+              message: "Minimum length is " + minLength,
+            },
+          }),
         })}
       />
       {inputErrors && (
         <label className="text-body-xs text-nafl-sys-error px-1">
-          {inputErrors}
+          {inputErrors as string}
         </label>
       )}
       {notes && (

@@ -1,10 +1,10 @@
 "use client";
 
 import Footer from "@components/shared/Footer/Footer";
-import GameZoneComments from "@components/shared/GameZone/GameZoneComments";
-import GameZoneCreateGame from "@components/shared/GameZone/GameZoneCreateGame";
-import GameZoneGameChallenger from "@components/shared/GameZone/GameZoneGameChallenger";
-import GameZoneMain from "@components/shared/GameZone/GameZoneMain";
+// import GameZoneComments from "@components/shared/GameZone/GameZoneComments";
+// import GameZoneCreateGame from "@components/shared/GameZone/GameZoneCreateGame";
+// import GameZoneGameChallenger from "@components/shared/GameZone/GameZoneGameChallenger";
+// import GameZoneMain from "@components/shared/GameZone/GameZoneMain";
 import { useEffect, useState } from "react";
 
 const GameZone = () => {

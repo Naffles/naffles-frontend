@@ -29,15 +29,18 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const { user } = useUser();
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null); // Use useRef for dropdown element reference
+  const dropdownRef = useRef<HTMLDivElement>(null); // Use useRef for dropdown element reference
 
   const [showModal, setShowModal] = useState(false);
   const [showOtherModal, setShowOtherModal] = useState(false);
 
   const { jwt, user: basicUser, login, logout } = useBasicUser();
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setOpen(false);
     }
   };
