@@ -254,6 +254,9 @@ module.exports = {
       animation: {
         fade: "fadeOut 5s ease-in-out",
       },
+      dropShadow: {
+        "nafl-sponge-2xl": "0 0px 20px rgba(254, 255, 61, 0.5)",
+      },
     },
   },
   variants: {

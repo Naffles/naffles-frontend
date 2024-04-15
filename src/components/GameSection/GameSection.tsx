@@ -4,6 +4,7 @@ import { RockPaperScissors } from "@components/RockPaperScissors";
 import { Button } from "@components/shared/Button";
 import { Modal } from "@components/shared/Modal";
 import { RegistrationForm } from "@components/shared/AuthForms";
+import DemoPointsLeaderboards from "./DemoPointsLeaderboards";
 
 const DAILY_PLAYS_THRESHOLD = 1;
 const handChoices = ["rock", "paper", "scissors"];
@@ -128,7 +129,8 @@ export const GameSection = () => {
             choices={coinChoices}
           />
         </div>
-        <div className="flex-col flex stats-container w-[380px] bg-nafl-grey-700 rounded-3xl"></div>
+        {/* <div className="flex-col flex stats-container w-[380px] bg-nafl-grey-700 rounded-3xl"></div> */}
+        <DemoPointsLeaderboards />
       </div>
     </>
   );
