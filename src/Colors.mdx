@@ -5,6 +5,13 @@ import { theme } from "../tailwind.config.ts"
 <ColorPalette>
 	{Object.entries(theme.colors).map((token, i) => {
 		const [color, swatch] = token;
+		if(typeof swatch === "string") 
+			return <ColorItem
+				key={i+color}
+				title={`${color}`}
+				subtitle={`theme.colors.${color}`}
+				colors={{[color]: swatch}}
+			/>
 		return (
 			<ColorItem
 				key={i+color}

@@ -73,9 +73,9 @@ export const CoinToss = (props: GameContainer) => {
                 videosRef.current[idx] = ref;
               }}
               onEnded={() => {
-                 if (selectedChoice === winningChoice) {
-                   alert("You won Coin Toss");
-                 }
+                if (selectedChoice === winningChoice) {
+                  alert("You won Coin Toss");
+                }
                 !isLocked && setSelectedChoice("");
               }}
             >
@@ -94,7 +94,7 @@ export const CoinToss = (props: GameContainer) => {
             <source src="/static/coin-toss/waiting.webm" type="video/webm" />
           </video>
         </div>
-        <div className="bg-[#DC2ABF] h-50 pb-1 px-4 flex-row flex justify-between">
+        <div className="bg-nafl-purple h-50 pb-1 px-4 flex-row flex justify-between">
           <div className="text-md leading-tight">
             Starting in
             <br />
