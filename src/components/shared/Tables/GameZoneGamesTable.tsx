@@ -159,8 +159,8 @@ const GameZoneGamesTable = () => {
     try {
       const response = await fetch("http://localhost:4000/game", {
         method: "GET",
-        mode: "cors",
-        cache: "no-cache",
+        // mode: "cors",
+        // cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,

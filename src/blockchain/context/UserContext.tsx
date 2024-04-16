@@ -48,6 +48,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     fetchUserAccount();
   }, [web3]);
 
+  useEffect(() => {
+    console.log("userJWT: ", userJWT);
+  }, [userJWT]);
+
   return (
     <UserContext.Provider
       value={{

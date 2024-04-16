@@ -127,6 +127,9 @@ const GameZoneCreateGame = () => {
 
   const createGame = async () => {
     var jwt = user?.jwt;
+
+    console.log("jwt", jwt);
+
     if (!socket) {
       console.error("Socket not connected");
       return;

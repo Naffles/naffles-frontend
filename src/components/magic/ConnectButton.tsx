@@ -75,7 +75,7 @@ const ConnectButton = () => {
         .then((result) => {
           if (result) {
             console.log("wallet login result:", result);
-            // setJWT(result?.token);
+            setJWT(result?.data?.token);
             // Cookies.set("token", result?.token, { expires: 7, secure: true });
           } else {
             console.log("error");
