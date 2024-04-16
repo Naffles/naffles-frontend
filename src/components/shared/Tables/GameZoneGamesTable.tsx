@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser } from "@blockchain/context/UserContext";
 import {
   Table,
   TableHeader,
@@ -10,6 +11,7 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 interface tableRow {
   id: number;
@@ -23,6 +25,9 @@ interface tableRow {
 }
 
 const GameZoneGamesTable = () => {
+  const { user } = useUser();
+  const [socket, setSocket] = useState<Socket | null>(null);
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
 
@@ -120,12 +125,61 @@ const GameZoneGamesTable = () => {
   ];
 
   useEffect(() => {
-    fetchTableData();
-    setIsLoading(false);
+    const newSocket = io("http://localhost:4000", {
+      transports: ["websocket"],
+    });
+
+    setSocket(newSocket);
+
+    // Setup the event listener for newGameCreated
+
+    newSocket.on("newGameCreated", (data: any) => {
+      // this is for the general chat function data.
+      console.log("event", data);
+    });
+
+    newSocket.on("challengerJoinRequest", (data: any) => {
+      // ay may bagong challenger
+      console.log("data: ", data);
+    });
   }, []);
 
-  const fetchTableData = () => {
-    setTableData(sample_games_json);
+  useEffect(() => {
+    socket && fetchTableData();
+  }, [socket]);
+
+  const fetchTableData = async () => {
+    var jwt = user?.jwt;
+
+    if (!socket) {
+      console.error("Socket not connected");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:4000/game", {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // result && setTableData(result);
+        result && setIsLoading(false);
+        console.log("RESULT :", result);
+        // socket.emit("notificationRoom", { data: userId });
+      } else {
+        console.error("Failed to create game: ", result.message);
+      }
+    } catch (error) {
+      console.error("Error creating game: ", error);
+    }
   };
 
   const shortenWalletAddress = (address: string) => {

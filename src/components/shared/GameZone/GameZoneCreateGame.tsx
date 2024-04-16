@@ -1,12 +1,18 @@
 "use client";
 
 import BrandIcon from "@components/icons/brandIcon";
+import { useUser } from "@blockchain/context/UserContext";
 import { useEffect, useState } from "react";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
+import { io, Socket } from "socket.io-client";
+import useGame from "@components/utils/gamezone";
 
 const GameZoneCreateGame = () => {
+  const { user } = useUser();
+  const currentGameType = useGame((state) => state.type);
+
   const [gameChoice, setGameChoice] = useState<string>(
     "ROCK, PAPERS, SCISSORS"
   );
@@ -27,6 +33,7 @@ const GameZoneCreateGame = () => {
   const [betMultiplierChoiceDropdown, setBetMultiplierChoiceDropdown] =
     useState<boolean>(false);
   const [totalPayout, setTotalPayout] = useState<number>(0);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   let games_choice_options = ["ROCK, PAPERS, SCISSORS", "COIN TOSS"];
 
@@ -80,6 +87,30 @@ const GameZoneCreateGame = () => {
   let bet_multiplier_options = [1, 2, 3, 4, 5, 10];
 
   useEffect(() => {
+    const newSocket = io("http://localhost:4000", {
+      transports: ["websocket"],
+    });
+    setSocket(newSocket);
+
+    // Setup the event listener for newGameCreated
+
+    newSocket.on("newGameCreated", (data: any) => {
+      // this is for the general chat function data.
+      console.log("event", data);
+    });
+
+    newSocket.on("challengerJoinRequest", (data: any) => {
+      // ay may bagong challenger
+      console.log("data: ", data);
+    });
+
+    // return () => {
+    //   newSocket.off("hello");
+    //   newSocket.close();
+    // };
+  }, []);
+
+  useEffect(() => {
     if (balanceType.type == "") {
       setBalanceType(sample_balances_json[0]);
     }
@@ -93,6 +124,46 @@ const GameZoneCreateGame = () => {
   useEffect(() => {
     setTotalPayout(balanceAmount * betMultiplierChoice);
   }, [balanceAmount, betMultiplierChoice]);
+
+  const createGame = async () => {
+    var jwt = user?.jwt;
+    if (!socket) {
+      console.error("Socket not connected");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:4000/game", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+        body: JSON.stringify({
+          gameType:
+            currentGameType == "Rock, Paper, Scissors"
+              ? "rockPaperScissors"
+              : "coinToss",
+          coinType: balanceType,
+          betAmount: balanceAmount,
+          odds: betMultiplierChoice,
+        }),
+      });
+
+      const result = await response.json();
+
+      console.log("RESULT :", result);
+
+      if (response.ok) {
+        console.log("GAME CREATED");
+        // socket.emit("notificationRoom", { data: userId });
+      } else {
+        console.error("Failed to create game: ", result.message);
+      }
+    } catch (error) {
+      console.error("Error creating game: ", error);
+    }
+  };
 
   const currencyIconReturner = (type: string) => {
     if (type == "ETH") {
@@ -292,7 +363,10 @@ const GameZoneCreateGame = () => {
 
         <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
 
-        <button className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] bg-nafl-sponge-500 mb-[17px]">
+        <button
+          onClick={() => createGame()}
+          className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] bg-nafl-sponge-500 mb-[17px]"
+        >
           <p className="text-[#000] text-[18px] font-bold">CREATE GAME</p>
         </button>
       </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import "swiper/css";
@@ -19,12 +20,5 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <PageHeader />
-        {children}
-      </body>
-    </html>
-  );
+  return <Fragment>{children}</Fragment>;
 }

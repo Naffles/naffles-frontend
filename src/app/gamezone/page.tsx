@@ -7,6 +7,7 @@ import GameZoneMain from "@components/shared/GameZone/GameZoneMain";
 import { useEffect, useState } from "react";
 import useGame from "../../components/utils/gamezone";
 import GameZoneGame from "@components/shared/GameZone/GameZoneGame";
+import GameZoneJoining from "@components/shared/GameZone/GameZoneJoining";
 
 const GameZone = () => {
   const currentScreen = useGame((state) => state.screen);
@@ -49,7 +50,7 @@ const GameZone = () => {
               <p className="text-white text-[18px] font-bold">CREATE GAME</p>
             </button>
             <button
-              onClick={() => setCurrentScreen("ingame")}
+              onClick={() => setCurrentScreen("joining")}
               className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
             >
               <p className="text-white text-[18px] font-bold">
@@ -117,37 +118,37 @@ const GameZone = () => {
           </div>
         </div>
 
-        <div
-          className={` flex-row items-start justify-center gap-[36px] duration-500 ${
-            currentScreen == "main"
-              ? "opacity-100 z-20 flex"
-              : "opacity-0 z-[-50] hidden"
-          }`}
-        >
-          <GameZoneMain />
-          <GameZoneChat />
-        </div>
+        {currentScreen == "main" && (
+          <div className="flex flex-row items-start justify-center gap-[36px] duration-500 z-20">
+            <GameZoneMain />
+            <GameZoneChat />
+          </div>
+        )}
 
-        <div
-          className={`duration-500 pb-[300px] ${
-            currentScreen == "create"
-              ? "opacity-100 z-20 flex"
-              : "opacity-0 z-[-50] hidden"
-          }`}
-        >
-          <GameZoneCreateGame />
-        </div>
+        {currentScreen == "create" && (
+          <div className="flex duration-500 pb-[300px] z-20">
+            <GameZoneCreateGame />
+          </div>
+        )}
 
-        <div
-          className={`flex-row items-start justify-center gap-[36px] duration-500 pb-[300px] ${
-            currentScreen == "ingame"
-              ? "opacity-100 z-20 flex"
-              : "opacity-0 z-[-50] hidden"
-          }`}
-        >
-          <GameZoneGame />
-          <GameZoneChat />
-        </div>
+        {currentScreen == "joining" && (
+          <div className="flex duration-500 pb-[300px] z-20">
+            <GameZoneJoining />
+          </div>
+        )}
+
+        {currentScreen == "accepting" && (
+          <div className="flex duration-500 pb-[300px] z-20">
+            <GameZoneCreateGame />
+          </div>
+        )}
+
+        {currentScreen == "ingame" && (
+          <div className="flex flex-row items-start justify-center gap-[36px] duration-500 pb-[300px] z-20">
+            <GameZoneGame />
+            <GameZoneChat />
+          </div>
+        )}
 
         <Footer />
       </div>

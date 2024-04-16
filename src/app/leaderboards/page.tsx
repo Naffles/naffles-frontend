@@ -34,7 +34,7 @@ const Leaderboards = () => {
         <div className="absolute inset-0 w-full bg-gradient-to-b from-[#ffffff00] to-[#464646] z-10"></div>
       </div>
 
-      <div className="flex flex-col w-full absolute top-[50px] items-center justify-start">
+      <div className="flex flex-col w-full absolute top-[120px] items-center justify-start">
         <div className="flex flex-row items-center justify-start gap-[80px] pl-[25px] w-[1400px] mb-[30px] z-20">
           <p className="text-[32px] text-white font-face-bebas">LEADERBOARDS</p>
         </div>
