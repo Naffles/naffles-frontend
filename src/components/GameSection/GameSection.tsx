@@ -15,6 +15,7 @@ const coinChoices = ["heads", "tails"];
 
 export const GameSection = () => {
   const { user, addPoints } = useBasicUser();
+  const { user, addPoints } = useBasicUser();
   const [timeleft, setTimeleft] = useState(GAME_START_SECS);
   const [isCountingDown, setIsCountingDown] = useState(false);
   const [rpsResult, setRPSResult] = useState("");
@@ -39,8 +40,8 @@ export const GameSection = () => {
       data: { data },
     } = await axios.post("game/demo/rock-paper-scissors");
     setRPSResult(data.result);
-    setCoinPoints(data?.score || 0);
-  }, [rpsLocked]);
+    addPoints(data?.score || 0);
+  }, [rpsLocked, addPoints]);
 
   const triggerCoinTossGame = useCallback(async () => {
     if (!coinLocked) return;
@@ -48,8 +49,8 @@ export const GameSection = () => {
       data: { data },
     } = await axios.post("game/demo/cointoss");
     setCointossResult(data.result);
-    setRPSPoints(data?.score || 0);
-  }, [coinLocked]);
+    addPoints(data?.score || 0);
+  }, [coinLocked, addPoints]);
 
   const testTrigger = useCallback(() => {
     triggerRPSGame();
