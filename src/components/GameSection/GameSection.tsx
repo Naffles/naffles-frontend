@@ -40,8 +40,8 @@ export const GameSection = () => {
       data: { data },
     } = await axios.post("game/demo/rock-paper-scissors");
     setRPSResult(data.result);
-    addPoints(data?.score || 0);
-  }, [rpsLocked, addPoints]);
+    setCoinPoints(data?.score || 0);
+  }, [rpsLocked]);
 
   const triggerCoinTossGame = useCallback(async () => {
     if (!coinLocked) return;
@@ -49,8 +49,8 @@ export const GameSection = () => {
       data: { data },
     } = await axios.post("game/demo/cointoss");
     setCointossResult(data.result);
-    addPoints(data?.score || 0);
-  }, [coinLocked, addPoints]);
+    setRPSPoints(data?.score || 0);
+  }, [coinLocked]);
 
   const testTrigger = useCallback(() => {
     triggerRPSGame();
