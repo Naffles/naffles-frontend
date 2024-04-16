@@ -21,6 +21,8 @@ export const GameSection = () => {
   const [cointossResult, setCointossResult] = useState("");
   const [rpsLocked, setRPSLocked] = useState(false);
   const [coinLocked, setCoinLocked] = useState(false);
+  const [rpsPoints, setRPSPoints] = useState(0);
+  const [coinPoints, setCoinPoints] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [playsToday, setPlaysToday] = useState(0);
 
@@ -37,8 +39,8 @@ export const GameSection = () => {
       data: { data },
     } = await axios.post("game/demo/rock-paper-scissors");
     setRPSResult(data.result);
-    addPoints(data?.score || 0);
-  }, [rpsLocked, addPoints]);
+    setCoinPoints(data?.score || 0);
+  }, [rpsLocked]);
 
   const triggerCoinTossGame = useCallback(async () => {
     if (!coinLocked) return;
@@ -46,8 +48,8 @@ export const GameSection = () => {
       data: { data },
     } = await axios.post("game/demo/cointoss");
     setCointossResult(data.result);
-    addPoints(data?.score || 0);
-  }, [coinLocked, addPoints]);
+    setRPSPoints(data?.score || 0);
+  }, [coinLocked]);
 
   const testTrigger = useCallback(() => {
     triggerRPSGame();
@@ -80,6 +82,8 @@ export const GameSection = () => {
 
   const handlePlayClick = () => {
     if (!isCountingDown) {
+      setRPSPoints(0);
+      setCoinPoints(0);
       setIsCountingDown(true);
       setTimeleft(GAME_START_SECS);
     }
@@ -105,7 +109,10 @@ export const GameSection = () => {
               handlePlayClick();
             }}
             choices={handChoices}
-            triggerUnlock={() => setRPSLocked(false)}
+            triggerUnlock={() => {
+              setRPSLocked(false);
+              addPoints(rpsPoints);
+            }}
           />
           <CoinToss
             timeleft={timeleft}
@@ -116,7 +123,10 @@ export const GameSection = () => {
               handlePlayClick();
             }}
             choices={coinChoices}
-            triggerUnlock={() => setCoinLocked(false)}
+            triggerUnlock={() => {
+              setCoinLocked(false);
+              addPoints(coinPoints);
+            }}
           />
         </div>
         {/* <div className="flex-col flex stats-container w-[380px] bg-nafl-grey-700 rounded-3xl"></div> */}
