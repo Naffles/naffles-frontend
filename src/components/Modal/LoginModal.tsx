@@ -24,9 +24,9 @@ const LoginModal = () => {
     try {
       // Try to connect to the wallet using Magic's user interface
       if (!magic) return;
-      // await magic.wallet.connectWithUI();
-      const did = await magic.auth.loginWithEmailOTP({ email: emailAddress });
-      console.log(did);
+      await magic.wallet.connectWithUI();
+      // const did = await magic.auth.loginWithEmailOTP({ email: emailAddress });
+      // console.log(did);
 
       const userInfo = await magic.user.getInfo();
       console.log(userInfo);
@@ -59,7 +59,7 @@ const LoginModalContent = () => {
     <div>
       <input
         type="email"
-        className="border border-[#000] rounded-[8px] p-2 w-[300px] text-[#000]"
+        className="border border-black p-2 w-[300px]"
         onChange={(e) => setEmailAddress(e.target.value)}
       />
     </div>

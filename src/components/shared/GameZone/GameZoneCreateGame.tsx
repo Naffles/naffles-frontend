@@ -232,7 +232,7 @@ const GameZoneCreateGame = () => {
 
         <div className="flex flex-col w-full gap-[4px]">
           <p className="text-[20px] text-nafl-sponge-500 font-face-bebas">
-            2. SET THE BET
+            3. SET THE ODDS
           </p>
           <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
         </div>

@@ -5,17 +5,20 @@ import { useMagic } from "./MagicProvider";
 // Define the type for the user
 type User = {
   address: string;
+  jwt: string;
 };
 
 // Define the type for the user context.
 type UserContextType = {
   user: User | null;
+  setJWT: (jwt: string | null) => void;
   fetchUser: () => Promise<void>;
 };
 
 // Create a context for user data.
 const UserContext = createContext<UserContextType>({
   user: null,
+  setJWT: () => {},
   fetchUser: async () => {},
 });
 
@@ -29,6 +32,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Initialize user state to hold user's account information.
   const [address, setAddress] = useState<string | null>(null);
+  const [userJWT, setUserJWT] = useState<string | null>(null);
 
   // Function to retrieve and set user's account.
   const fetchUserAccount = async () => {
@@ -47,7 +51,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <UserContext.Provider
       value={{
-        user: address ? { address: address } : null,
+        user: address && userJWT ? { address: address, jwt: userJWT } : null,
+        setJWT: setUserJWT,
         fetchUser: fetchUserAccount,
       }}
     >
