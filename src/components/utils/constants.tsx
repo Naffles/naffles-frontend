@@ -4,6 +4,7 @@ interface ColorVariants {
 } 
 
 const colorVariants: ColorVariants = {
+  white: "#ffffff",
   yellow: "#FEFF3D",
   "dark-accent": "rgba(65, 65, 65, 0.82)",
   black: "rgba(41, 41, 41, 1)",
