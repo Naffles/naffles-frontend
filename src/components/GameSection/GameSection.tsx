@@ -15,7 +15,7 @@ const coinChoices = ["heads", "tails"];
 
 export const GameSection = () => {
   const { user, addPoints } = useBasicUser();
-  const { user, addPoints } = useBasicUser();
+  // const { user, addPoints } = useBasicUser();
   const [timeleft, setTimeleft] = useState(GAME_START_SECS);
   const [isCountingDown, setIsCountingDown] = useState(false);
   const [rpsResult, setRPSResult] = useState("");
