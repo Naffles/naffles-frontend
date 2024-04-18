@@ -117,7 +117,7 @@ const GameZoneChat = () => {
             alt="Account Image"
             className="w-[40px] h-[38px] rounded-full object-contain"
           />
-          <div className="flex flex-col w-[350px] items-start justify-start gap-[11px]">
+          <div className="flex flex-col w-full items-start justify-start gap-[11px]">
             <div className="flex flex-row items-end justify-start gap-[6px]">
               <p className="text-[#DC2ABF] text-[14px] font-bold leading-[100%]">
                 {name}
@@ -132,9 +132,9 @@ const GameZoneChat = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start bg-[#383838] rounded-[16px] w-[457px] h-[963px]">
-      <div className="flex flex-col items-center justify-start py-[13px] px-[20px] rounded-t-[16px] border-b-[1px] border-nafl-sponge-500/50">
-        <div className="flex flex-row items-center justify-between py-[7px] px-[20px] rounded-[13px] border-[1px] border-[#DC2ABF] h-[54px] w-[394px]">
+    <div className="flex flex-col items-center justify-start bg-[#383838] rounded-[16px] lg:w-[457px] max-w-[457px] w-[90%]">
+      <div className="flex flex-col items-center justify-start py-[13px] px-[20px] rounded-t-[16px] border-b-[1px] border-nafl-sponge-500/50 w-full">
+        <div className="flex flex-row items-center justify-between py-[7px] px-[20px] rounded-[13px] border-[1px] border-[#DC2ABF] h-[54px] lg:w-[394px] w-full">
           <div className="flex flex-row items-center justify-center gap-[19px]">
             <img
               src="/static/naffles-jackpot-token.png"
@@ -174,7 +174,7 @@ const GameZoneChat = () => {
             </button>
           </div>
           <div className="w-full py-[14px] px-[12px] bg-[#4B4B4B] rounded-b-[10px] ">
-            <div className="w-full h-[118px]  overflow-hidden overflow-y-scroll balance-scrollbar">
+            <div className="w-full h-[118px] overflow-hidden overflow-y-scroll balance-scrollbar">
               <div className="flex flex-col gap-[10px] w-full min-h-[114px] items-start justify-start">
                 {sample_balances_json.map((item) => (
                   <BalancesListOption

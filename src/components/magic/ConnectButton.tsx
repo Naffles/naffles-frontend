@@ -57,7 +57,8 @@ const ConnectButton = () => {
   const loginUsingDID = async (DIDtoken: string | undefined) => {
     console.log("DIDtoken:", DIDtoken);
     try {
-      let url = "https://dev.api.naffles.com/user/login/wallet";
+      // let url = "https://dev.api.naffles.com/user/login/wallet";
+      let url = "http://localhost:4000/user/login/wallet";
 
       await fetch(url, {
         method: "POST",

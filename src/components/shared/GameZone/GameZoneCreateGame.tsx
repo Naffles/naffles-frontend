@@ -141,13 +141,14 @@ const GameZoneCreateGame = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
+          "x-api-key": "a8182a19-2aae-48e6-97a7-4c7836d7004b",
         },
         body: JSON.stringify({
           gameType:
             currentGameType == "Rock, Paper, Scissors"
               ? "rockPaperScissors"
               : "coinToss",
-          coinType: balanceType,
+          coinType: "points",
           betAmount: balanceAmount,
           odds: betMultiplierChoice,
         }),
@@ -195,11 +196,11 @@ const GameZoneCreateGame = () => {
   };
 
   return (
-    <div className="flex flex-col w-[500px] bg-[#383838] rounded-[16px]">
+    <div className="flex flex-col md:w-[500px] max-w-[500px] w-[90%] bg-[#383838] rounded-[16px]">
       <div className="flex items-center justify-center w-full h-[76px] bg-[#202020] rounded-t-[16px]">
         <p className="text-[40px] text-[#fff] font-face-bebas">CREATE GAME</p>
       </div>
-      <div className="flex flex-col items-center w-full px-[51px] py-[20px] gap-[20px]">
+      <div className="flex flex-col items-center w-full md:px-[51px] px-[20px] py-[20px] gap-[20px]">
         <div className="flex flex-col w-full gap-[4px]">
           <p className="text-[20px] text-nafl-sponge-500 font-face-bebas">
             1. CHOOSE YOUR GAME
@@ -249,7 +250,7 @@ const GameZoneCreateGame = () => {
           <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
         </div>
 
-        <div className="flex flex-row items-center gap-[24px]">
+        <div className="flex flex-row flex-wrap items-center gap-[20px]">
           <div className="flex items-center w-[250px] relative">
             <button
               onClick={() =>

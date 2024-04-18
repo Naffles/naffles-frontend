@@ -30,19 +30,19 @@ const GameZone = () => {
         <img
           src={"/static/gamezone-bg.jpeg"}
           alt="Naffle"
-          className="w-full object-contain opacity-30 z-10 ml-[-2px]"
+          className="w-full h-[1000px] object-cover object-top opacity-30 z-10 ml-[-2px]"
         />
         <div className="absolute inset-0 w-full bg-gradient-to-b from-[#ffffff00] to-[#464646] z-10"></div>
       </div>
 
       <div className="flex flex-col w-full absolute top-[120px] items-center justify-start">
         <div
-          className={`flex flex-row items-center justify-start gap-[80px] pl-[25px] w-[1400px] mb-[30px] ${
+          className={`flex flex-row flex-wrap items-center xl:justify-start justify-center xl:gap-[80px] gap-[20px] md:pl-[25px] 2xl:w-[1400px] w-[90%] mb-[30px] ${
             currentScreen == "main" ? "opacity-100 z-20" : "opacity-0 z-[-50]"
           }`}
         >
           <p className="text-[48px] text-white font-face-bebas">GAME ZONE</p>
-          <div className="flex items-center justify-center gap-[32px] ">
+          <div className="flex flex-wrap items-center justify-center gap-[32px] ">
             <button
               onClick={() => setCurrentScreen("create")}
               className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
@@ -57,7 +57,7 @@ const GameZone = () => {
                 PLAY FOR POINTS
               </p>
             </button>
-            <div className="flex flex-row items-center justify-center gap-[10px]">
+            {/* <div className="flex flex-row flex-wrap items-center justify-center gap-[10px]">
               <button className="flex flex-col items-center justify-center px-[10px] h-[40px] border-[2px] border-[#fff] rounded-[10px] hover:bg-nafl-white duration-500 hover:text-[#000]">
                 <p
                   onClick={() => {
@@ -114,19 +114,19 @@ const GameZone = () => {
                 </p>
                 <p className="text-[8px] mt-[-6px]">DEV MODE</p>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
 
         {currentScreen == "main" && (
-          <div className="flex flex-row items-start justify-center gap-[36px] duration-500 z-20">
+          <div className="flex flex-row flex-wrap items-start justify-center gap-[36px] duration-500 z-20 w-full pb-[100px]">
             <GameZoneMain />
             <GameZoneChat />
           </div>
         )}
 
         {currentScreen == "create" && (
-          <div className="flex duration-500 pb-[300px] z-20">
+          <div className="flex items-start justify-center duration-500 pb-[300px] z-20 w-full">
             <GameZoneCreateGame />
           </div>
         )}
