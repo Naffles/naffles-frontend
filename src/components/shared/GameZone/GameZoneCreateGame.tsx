@@ -6,12 +6,14 @@ import { useEffect, useState } from "react";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
-import { io, Socket } from "socket.io-client";
 import useGame from "@components/utils/gamezone";
+import { AiOutlineLoading } from "react-icons/ai";
+import toast, { Toaster } from "react-hot-toast";
+import { error } from "console";
 
 const GameZoneCreateGame = () => {
-  const { user } = useUser();
-  const currentGameType = useGame((state) => state.type);
+  const { user, socket } = useUser();
+  const setCurrentScreen = useGame((state) => state.setScreen);
 
   const [gameChoice, setGameChoice] = useState<string>(
     "ROCK, PAPERS, SCISSORS"
@@ -33,7 +35,7 @@ const GameZoneCreateGame = () => {
   const [betMultiplierChoiceDropdown, setBetMultiplierChoiceDropdown] =
     useState<boolean>(false);
   const [totalPayout, setTotalPayout] = useState<number>(0);
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   let games_choice_options = ["ROCK, PAPERS, SCISSORS", "COIN TOSS"];
 
@@ -87,23 +89,6 @@ const GameZoneCreateGame = () => {
   let bet_multiplier_options = [1, 2, 3, 4, 5, 10];
 
   useEffect(() => {
-    const newSocket = io("http://localhost:4000", {
-      transports: ["websocket"],
-    });
-    setSocket(newSocket);
-
-    newSocket.on("challengerJoinRequest", (data: any) => {
-      // ay may bagong challenger
-      console.log("challengerJoinRequest data: ", data);
-    });
-
-    // return () => {
-    //   newSocket.off("hello");
-    //   newSocket.close();
-    // };
-  }, []);
-
-  useEffect(() => {
     if (balanceType.type == "") {
       setBalanceType(sample_balances_json[0]);
     }
@@ -119,6 +104,7 @@ const GameZoneCreateGame = () => {
   }, [balanceAmount, betMultiplierChoice]);
 
   const createGame = async () => {
+    setIsLoading(true);
     var jwt = user?.jwt;
 
     console.log("jwt", jwt);
@@ -138,7 +124,7 @@ const GameZoneCreateGame = () => {
         },
         body: JSON.stringify({
           gameType:
-            currentGameType == "Rock, Paper, Scissors"
+            gameChoice == "ROCK, PAPERS, SCISSORS"
               ? "rockPaperScissors"
               : "coinToss",
           coinType: "points",
@@ -152,15 +138,18 @@ const GameZoneCreateGame = () => {
       console.log("RESULT :", result);
 
       if (response.ok) {
-        console.log("GAME CREATED");
+        console.log("GAME CREATED", result?.data?.game?._id);
         result &&
-          socket.emit("notificationRoom", { id: result?.data.game._id });
+          socket.emit("notificationRoom", { id: result?.data?.game?._id });
+        setCurrentScreen("main");
+        toast.success("Game Created");
       } else {
         console.error("Failed to create game: ", result.message);
       }
     } catch (error) {
       console.error("Error creating game: ", error);
     }
+    setIsLoading(false);
   };
 
   const currencyIconReturner = (type: string) => {
@@ -362,10 +351,18 @@ const GameZoneCreateGame = () => {
         <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
 
         <button
-          onClick={() => user?.jwt && createGame()}
+          onClick={() =>
+            user?.jwt
+              ? createGame()
+              : toast.error("Login first before making a game.")
+          }
           className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] bg-nafl-sponge-500 mb-[17px]"
         >
-          <p className="text-[#000] text-[18px] font-bold">CREATE GAME</p>
+          {isLoading ? (
+            <AiOutlineLoading className="text-[#000] text-[20px] animate-spin" />
+          ) : (
+            <p className="text-[#000] text-[18px] font-bold">CREATE GAME</p>
+          )}
         </button>
       </div>
     </div>

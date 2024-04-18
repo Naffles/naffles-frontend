@@ -35,8 +35,7 @@ interface gamezoneReturnArr {
 }
 
 const GameZoneGamesTable = () => {
-  const { user } = useUser();
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const { user, socket } = useUser();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
@@ -135,26 +134,6 @@ const GameZoneGamesTable = () => {
   ];
 
   useEffect(() => {
-    const newSocket = io("http://localhost:4000", {
-      transports: ["websocket"],
-    });
-
-    setSocket(newSocket);
-
-    // Setup the event listener for newGameCreated
-
-    newSocket.on("newGameCreated", (data: any) => {
-      // this is for the general chat function data.
-      console.log("event", data);
-    });
-
-    newSocket.on("challengerJoinRequest", (data: any) => {
-      // ay may bagong challenger
-      console.log("data: ", data);
-    });
-  }, []);
-
-  useEffect(() => {
     socket && fetchTableData();
   }, [socket]);
 
@@ -219,7 +198,7 @@ const GameZoneGamesTable = () => {
     console.log("currentDate", currentDate);
     socket?.emit("pendingChallengerRequest", {
       userId: user?.id,
-      creatorId: gameId,
+      creatorId: hostId,
       gameId: gameId,
       timeout: currentDate,
     });
@@ -231,6 +210,7 @@ const GameZoneGamesTable = () => {
   return (
     <div className="w-full px-[20px] bg-[#383838] mt-[30px]">
       <Table
+        aria-label="Gamezone games table"
         removeWrapper
         classNames={{
           th: "bg-[#383838] border-y-[1px] border-[#fff] text-[#fff] font-face-roboto",

@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import useGame from "../../components/utils/gamezone";
 import GameZoneGame from "@components/shared/GameZone/GameZoneGame";
 import GameZoneJoining from "@components/shared/GameZone/GameZoneJoining";
+import { io, Socket } from "socket.io-client";
+import GameZoneChatMobile from "@components/shared/GameZone/GameZoneChatMobile";
 
 const GameZone = () => {
   const currentScreen = useGame((state) => state.screen);
@@ -17,12 +19,6 @@ const GameZone = () => {
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setGameMode = useGame((state) => state.setMode);
   const setGameType = useGame((state) => state.setType);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setSeletedView("main");
-  //   }, 100);
-  // }, []);
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -150,6 +146,7 @@ const GameZone = () => {
           </div>
         )}
 
+        <GameZoneChatMobile />
         <Footer />
       </div>
     </div>

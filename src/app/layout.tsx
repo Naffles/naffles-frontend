@@ -11,6 +11,7 @@ import LoginModal from "@components/Modal/LoginModal";
 import DepositModal from "@components/Modal/DepositModal";
 import "./globals.css";
 import { BasicUserProvider } from "@components/context/BasicUser/BasicUser";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,22 @@ export default function RootLayout({
                 {children}
                 <LoginModal />
                 <DepositModal />
+                <Toaster
+                  position="bottom-right"
+                  reverseOrder={false}
+                  gutter={8}
+                  containerClassName="z-50"
+                  containerStyle={{}}
+                  toastOptions={{
+                    // Define default options
+                    className: "",
+                    duration: 5000,
+                    style: {
+                      background: "#feff3d",
+                      color: "#000",
+                    },
+                  }}
+                />
               </BasicUserProvider>
             </UserProvider>
           </MagicProvider>

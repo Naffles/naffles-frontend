@@ -12,6 +12,7 @@ import Image from "next/image";
 import Footer from "@components/shared/Footer/Footer";
 import CollectionItem from "@components/shared/Collection/collection";
 import { GameSection } from "@components/GameSection";
+import { Toaster } from "react-hot-toast";
 
 export default function Home() {
   return (
