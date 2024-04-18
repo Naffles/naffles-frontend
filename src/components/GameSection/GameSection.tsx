@@ -99,7 +99,7 @@ export const GameSection = () => {
       >
         <RegistrationForm />
       </Modal>
-      <div className="flex-row flex justify-center gamezone-container gap-4 pt-8">
+      <div className="flex-row flex justify-center gamezone-container gap-4 pt-8 md:hidden sm:hidden xs:hidden lg:flex">
         <div className="flex-col flex games-container gap-8">
           <RockPaperScissors
             timeleft={timeleft}
@@ -130,8 +130,42 @@ export const GameSection = () => {
             }}
           />
         </div>
-        {/* <div className="flex-col flex stats-container w-[380px] bg-nafl-grey-700 rounded-3xl"></div> */}
-        <DemoPointsLeaderboards />
+        <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl">
+          <DemoPointsLeaderboards />
+        </div>
+      </div>
+      <div className="md:flex sm:flex xs:flex lg:hidden flex-col h-auto">
+        <RockPaperScissors
+          timeleft={timeleft}
+          result={rpsResult}
+          isLocked={rpsLocked}
+          onChoice={() => {
+            setRPSLocked(true);
+            handlePlayClick();
+          }}
+          choices={handChoices}
+          triggerUnlock={() => {
+            setRPSLocked(false);
+            addPoints(rpsPoints);
+          }}
+        />
+        <CoinToss
+          timeleft={timeleft}
+          result={cointossResult}
+          isLocked={coinLocked}
+          onChoice={() => {
+            setCoinLocked(true);
+            handlePlayClick();
+          }}
+          choices={coinChoices}
+          triggerUnlock={() => {
+            setCoinLocked(false);
+            addPoints(coinPoints);
+          }}
+        />
+        {/* <div className="h-auto ">
+          <DemoPointsLeaderboards />
+        </div> */}
       </div>
     </>
   );
