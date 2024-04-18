@@ -6,12 +6,14 @@ import { useMagic } from "./MagicProvider";
 type User = {
   address: string;
   jwt: string;
+  id: string;
 };
 
 // Define the type for the user context.
 type UserContextType = {
   user: User | null;
   setJWT: (jwt: string | null) => void;
+  setId: (id: string | null) => void;
   fetchUser: () => Promise<void>;
 };
 
@@ -19,6 +21,7 @@ type UserContextType = {
 const UserContext = createContext<UserContextType>({
   user: null,
   setJWT: () => {},
+  setId: () => {},
   fetchUser: async () => {},
 });
 
@@ -33,6 +36,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Initialize user state to hold user's account information.
   const [address, setAddress] = useState<string | null>(null);
   const [userJWT, setUserJWT] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   // Function to retrieve and set user's account.
   const fetchUserAccount = async () => {
@@ -49,14 +53,18 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [web3]);
 
   useEffect(() => {
-    console.log("userJWT: ", userJWT);
-  }, [userJWT]);
+    console.log("user data: ", userJWT, userId, address);
+  }, [userJWT, userId, address]);
 
   return (
     <UserContext.Provider
       value={{
-        user: address && userJWT ? { address: address, jwt: userJWT } : null,
+        user:
+          address && userJWT && userId
+            ? { address: address, jwt: userJWT, id: userId }
+            : null,
         setJWT: setUserJWT,
+        setId: setUserId,
         fetchUser: fetchUserAccount,
       }}
     >

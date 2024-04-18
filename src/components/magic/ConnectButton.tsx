@@ -8,7 +8,7 @@ import { IoMdLogOut } from "react-icons/io";
 
 const ConnectButton = () => {
   const { magic } = useMagic();
-  const { setJWT, fetchUser } = useUser();
+  const { setJWT, setId, fetchUser } = useUser();
   const [walletLoggedIn, setWalletLoggedIn] = useState(false);
 
   const handleConnect = async () => {
@@ -77,6 +77,7 @@ const ConnectButton = () => {
           if (result) {
             console.log("wallet login result:", result);
             setJWT(result?.data?.token);
+            setId(result?.data?.user?._id);
             // Cookies.set("token", result?.token, { expires: 7, secure: true });
           } else {
             console.log("error");

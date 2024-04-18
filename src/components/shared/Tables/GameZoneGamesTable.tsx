@@ -17,6 +17,7 @@ interface tableRow {
   id: string;
   game: string;
   player: string;
+  playerId: string;
   image: string;
   buyin: number;
   payout: number;
@@ -27,7 +28,7 @@ interface tableRow {
 interface gamezoneReturnArr {
   _id: string;
   gameType: string;
-  creator: { profileImage: string; username: string };
+  creator: { profileImage: string; username: string; _id: string };
   betAmount: { $numberDecimal: number };
   odds: { $numberDecimal: number };
   status: string;
@@ -154,13 +155,10 @@ const GameZoneGamesTable = () => {
   }, []);
 
   useEffect(() => {
-    socket && user?.jwt && fetchTableData();
-  }, [socket, user]);
+    socket && fetchTableData();
+  }, [socket]);
 
   const fetchTableData = async () => {
-    var jwt = user?.jwt;
-    console.log("jwt", jwt);
-
     try {
       const response = await fetch("http://localhost:4000/game", {
         method: "GET",
@@ -168,7 +166,6 @@ const GameZoneGamesTable = () => {
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
           "x-api-key": "a8182a19-2aae-48e6-97a7-4c7836d7004b",
         },
       });
@@ -202,6 +199,7 @@ const GameZoneGamesTable = () => {
         id: item._id,
         game: item.gameType,
         player: item.creator.username,
+        playerId: item.creator._id,
         image: item.creator.profileImage,
         buyin: item.betAmount.$numberDecimal,
         payout: item.betAmount.$numberDecimal * item.odds.$numberDecimal,
@@ -213,8 +211,21 @@ const GameZoneGamesTable = () => {
     setTableData(tableData);
   };
 
-  const joinGame = async (id: string, jwt: string | undefined) => {
-    socket?.emit("pendingChallengerRequest", { data: "hello" });
+  const joinGame = (hostId: string, gameId: string) => {
+    console.log("joined a game start");
+    var currentDate = new Date();
+    currentDate.setSeconds(currentDate.getSeconds() + 10);
+
+    console.log("currentDate", currentDate);
+    socket?.emit("pendingChallengerRequest", {
+      userId: user?.id,
+      creatorId: gameId,
+      gameId: gameId,
+      timeout: currentDate,
+    });
+    // socket?.emit("challengerJoinRequest", { data: "hello" });
+    // socket?.emit("notificationRoom", { data: id });
+    console.log("joined a game end");
   };
 
   return (
@@ -277,7 +288,7 @@ const GameZoneGamesTable = () => {
                   </div>
                   {item.allowJoin && (
                     <button
-                      onClick={() => joinGame(item.id, user?.jwt)}
+                      onClick={() => joinGame(item.playerId, item.id)}
                       className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] border-[#DC2ABF] border-[1px] bg-trasparent"
                     >
                       <p className="text-[18px] font-bold">JOIN</p>

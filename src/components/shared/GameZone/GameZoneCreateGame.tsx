@@ -92,16 +92,9 @@ const GameZoneCreateGame = () => {
     });
     setSocket(newSocket);
 
-    // Setup the event listener for newGameCreated
-
-    newSocket.on("newGameCreated", (data: any) => {
-      // this is for the general chat function data.
-      console.log("event", data);
-    });
-
     newSocket.on("challengerJoinRequest", (data: any) => {
       // ay may bagong challenger
-      console.log("data: ", data);
+      console.log("challengerJoinRequest data: ", data);
     });
 
     // return () => {
@@ -160,7 +153,8 @@ const GameZoneCreateGame = () => {
 
       if (response.ok) {
         console.log("GAME CREATED");
-        // socket.emit("notificationRoom", { data: userId });
+        result &&
+          socket.emit("notificationRoom", { id: result?.data.game._id });
       } else {
         console.error("Failed to create game: ", result.message);
       }
@@ -368,7 +362,7 @@ const GameZoneCreateGame = () => {
         <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
 
         <button
-          onClick={() => createGame()}
+          onClick={() => user?.jwt && createGame()}
           className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] bg-nafl-sponge-500 mb-[17px]"
         >
           <p className="text-[#000] text-[18px] font-bold">CREATE GAME</p>
