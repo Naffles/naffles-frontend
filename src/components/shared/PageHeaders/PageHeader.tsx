@@ -14,6 +14,8 @@ import { Modal } from "@components/shared/Modal";
 import { RegistrationForm, LoginForm } from "@components/shared/AuthForms";
 import WalletIcon from "@components/icons/walletIcon";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import { BurgerIcon } from "@components/icons/burgerIcon";
+import { CloseBurger } from "@components/icons/closeBurgerIcon";
 
 type PageHeaderProps = {
   // onLogin?: () => void;
@@ -33,6 +35,17 @@ const PageHeader: React.FC<PageHeaderProps> = (
 
   const [showModal, setShowModal] = useState(false);
   const [showOtherModal, setShowOtherModal] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const { jwt, user: basicUser, login, logout } = useBasicUser();
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setOpen(false);
+    }
+  };
 
   const { jwt, user: basicUser, login, logout } = useBasicUser();
 
@@ -126,17 +139,16 @@ const PageHeader: React.FC<PageHeaderProps> = (
           </Modal>
         </>
       )}
-
-      <div className="relative bg-nafl-sponge-500 rounded-lg mt-0 mx-auto px-2 py-1">
+      <div className="relative bg-nafl-sponge-500 rounded-tr-lg rounded-tl-lg mt-3 mx-3 px-2 py-1 z-[20] ">
         <div className="absolute bg-nafl-charcoal-600 rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" />
-        <div className="flex flex-row items-center py-2 px-4 justify-between max-w-[200rem] m-auto">
+        <div className="flex flex-row items-center py-2 px-4 justify-between w-full m-auto flex-wrap">
           <div className="flex flex-row lg:flex-row lg:space-x-8 items-center space-y-4 lg:space-y-0">
             <span className="relative h-6">
               <Link href="/">
                 <BrandIcon size="lg" colour="black" />
               </Link>
             </span>
-            <div className="hidden lg:flex space-x-4 text-nafl-charcoal-800">
+            <div className="md:hidden sm:hidden xs:hidden lg:flex space-x-4 text-nafl-charcoal-800">
               <a href="https://twitter.com/Nafflesofficial" target="_blank">
                 <FaTwitter className="hover:text-nafl-sponge-700 transition-colors ease-out duration-150 cursor-pointer text-body-xl" />
               </a>
@@ -145,7 +157,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
               </a>
             </div>
           </div>
-          <div className="flex items-center space-x-4 text-nafl-grey-900">
+          <div className="md:hidden sm:hidden xs:hidden lg:flex flex items-center space-x-4 text-nafl-grey-900">
             <div className="flex items-center space-x-4">
               {navigationOptions.map((navItem, index) => (
                 <Link
@@ -205,7 +217,6 @@ const PageHeader: React.FC<PageHeaderProps> = (
                       Login
                     </li>
                   )}
-
                   <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                     Settings
                   </li>
@@ -225,6 +236,42 @@ const PageHeader: React.FC<PageHeaderProps> = (
             </div>
           </div>
         </div>
+      </div>
+      <div className="md:flex sm:flex xs:flex lg:hidden flex flex-col items-center bg-nafl-sponge-500 mx-3 justify-end">
+        {showMobileMenu &&
+          navigationOptions.map((navItem, index) => (
+            <Link
+              key={index}
+              href={navItem.href}
+              style={{
+                backgroundColor:
+                  selectedNavItem === index
+                    ? colorVariants["dark-accent"]
+                    : colorVariants["yellow"],
+                color:
+                  selectedNavItem === index ? colorVariants["yellow"] : "#000",
+              }}
+              className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
+              onClick={() => setSelectedNavItem(index)}
+            >
+              {navItem.title}
+            </Link>
+          ))}
+        {showMobileMenu && (
+          <button
+            onClick={() => setOpen(!open)} // Toggle open state on button click
+            type="button"
+            className="focus:outline-none rounded-full p-2 hover:bg-gray-300"
+            // onBlur={() => setOpen(!open)}
+          >
+            <WalletIcon
+              colour="black"
+              // onClick={() => setShowModal(true)}
+              size="lg"
+              className="cursor-pointer"
+            />
+          </button>
+        )}
       </div>
     </div>
   );

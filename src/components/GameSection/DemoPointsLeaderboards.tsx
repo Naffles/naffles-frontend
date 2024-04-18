@@ -12,6 +12,7 @@ import {
   Spinner,
   Checkbox,
 } from "@nextui-org/react";
+import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 
 interface tableRow {
   id: number;
@@ -19,93 +20,96 @@ interface tableRow {
   profile: string;
   points: number;
 }
+const sample_demo_leaderboards_json = [
+  {
+    id: 1,
+    rank: 1,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 2,
+    rank: 2,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 3,
+    rank: 3,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 4,
+    rank: 4,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 5,
+    rank: 5,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 6,
+    rank: 6,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 7,
+    rank: 7,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 8,
+    rank: 8,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 9,
+    rank: 9,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 10,
+    rank: 10,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 11,
+    rank: 11,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 12,
+    rank: 12,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+  {
+    id: 13,
+    rank: 13,
+    profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    points: 265262.5,
+  },
+];
 
 const DemoPointsLeaderboards = () => {
+  const { points } = useBasicUser();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
 
-  let sample_demo_leaderboards_json = [
-    {
-      id: 1,
-      rank: 1,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 2,
-      rank: 2,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 3,
-      rank: 3,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 4,
-      rank: 4,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 5,
-      rank: 5,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 6,
-      rank: 6,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 7,
-      rank: 7,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 8,
-      rank: 8,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 9,
-      rank: 9,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 10,
-      rank: 10,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 11,
-      rank: 11,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 12,
-      rank: 12,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-    {
-      id: 13,
-      rank: 13,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      points: 265262.5,
-    },
-  ];
-
   useEffect(() => {
+    const fetchTableData = () => {
+      setTableData(sample_demo_leaderboards_json);
+    };
     fetchTableData();
     setIsLoading(false);
   }, []);
@@ -129,7 +133,7 @@ const DemoPointsLeaderboards = () => {
               YOUR POINTS
             </p>
             <p className="font-face-bebas text-[20px] text-nafl-white leading-[100%]">
-              6969.69
+              {points}
             </p>
           </div>
 
