@@ -4,7 +4,7 @@ import { Navigation } from 'swiper/modules';
 
 const CardCarousel = ({ children }: any) => {
   return (
-    <div className="w-full">
+    <div className="w-full px-4">
     <Swiper
       spaceBetween={50}
       slidesPerView={7}

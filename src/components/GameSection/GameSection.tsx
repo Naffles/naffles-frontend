@@ -3,12 +3,14 @@ import { Modal } from "@components/shared/Modal";
 import { RegistrationForm } from "@components/shared/AuthForms";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import DemoPointsLeaderboards from "./DemoPointsLeaderboards";
+import useScreenSize from "@hook/useScreenSize";
 import { RockPaperScissorsGame, CoinTossGame } from "./Games";
 
 const DAILY_PLAYS_THRESHOLD = 20;
 
 export const GameSection = () => {
   const { user } = useBasicUser();
+  const { isMobile } = useScreenSize();
   const [openModal, setOpenModal] = useState(false);
   const [playsToday, setPlaysToday] = useState(0);
 
@@ -47,13 +49,14 @@ export const GameSection = () => {
           <DemoPointsLeaderboards />
         </div>
       </div>
-      <div className="md:flex sm:flex xs:flex lg:hidden flex-col h-auto">
-        <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
-        <CoinTossGame handlePlayCount={onPlayEnd} />
-        {/* <div className="h-auto ">
-          <DemoPointsLeaderboards />
-        </div> */}
-      </div>
+      {
+        isMobile && (
+          <div className="md:flex sm:flex xs:flex lg:hidden flex-col h-auto">
+            <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
+            <CoinTossGame handlePlayCount={onPlayEnd} />
+          </div>
+        )
+      }
     </>
   );
 };

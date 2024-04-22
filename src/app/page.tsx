@@ -45,18 +45,27 @@ export default function Home() {
                         nfts
                       </h1>
                       <p className="text-body-lg text-nafl-charcoal-800 py-4">
-                        Win NFTs raffled by our community of trusted degens,
-                        where profits can be verifiably-fair and fun for
-                        everyone. Please degen responsibly!
+                        Win Raffles and Play PVP games against our community of trusted degens, where profits can be verifiably-fair and fun for everyone.  Please degen responsibly!
                       </p>
-                      <Button
-                        size="base"
-                        variant={"primary"}
-                        label="Explore"
-                        leftIcon={<MagnifyingIcon size="sm" colour="black" />}
-                      >
-                        Explore
-                      </Button>
+                      <div className="flex flex-row w-5/12 justify-between">
+                        <Button
+                          size="base"
+                          variant={"primary"}
+                          label="Play our games"
+                          // leftIcon={<MagnifyingIcon size="sm" colour="black" />}
+                        >
+                          Play our games
+                        </Button>
+
+                        <Button
+                          size="base"
+                          variant={"primary"}
+                          label="explore live naffles"
+                          // leftIcon={<MagnifyingIcon size="sm" colour="black" />}
+                        >
+                          explore live naffles
+                        </Button>
+                      </div>
                     </div>
                   </div>
                   <div className="w-5/12">
@@ -146,18 +155,16 @@ export default function Home() {
               <div className="w-full">
                 <div className="mt-24">
                   <h1 className="text-[2.2rem] md:text-[5rem] lg:text-[6rem] uppercase leading-[2rem] md:leading-[5rem] text-nafl-charcoal-800 tracking-tight">
-                    Win Raffles for
+                    Wager & Win
                     <span className="text-nafl-jade-500 !font-mono">
                       {" "}
                       <br />
                       Life-changing
                     </span>{" "}
-                    nfts
+                    nfts & Crypto
                   </h1>
                   <p className="text-body-lg text-nafl-charcoal-800 py-4">
-                    Win NFTs raffled by our community of trusted degens,
-                    where profits can be verifiably-fair and fun for
-                    everyone. Please degen responsibly!
+                    Win Raffles and Play PVP games against our community of trusted degens, where profits can be verifiably-fair and fun for everyone.  Please degen responsibly!
                   </p>
                   <div className="flex flex-row gap-8">
                     <Button
