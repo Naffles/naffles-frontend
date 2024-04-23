@@ -31,9 +31,9 @@ const GameZone = () => {
         <div className="absolute inset-0 w-full bg-gradient-to-b from-[#ffffff00] to-[#464646] z-10"></div>
       </div>
 
-      <div className="flex flex-col w-full absolute top-[120px] items-center justify-start">
+      <div className="flex flex-col w-full absolute top-[160px] items-center justify-start">
         <div
-          className={`flex flex-row flex-wrap items-center xl:justify-start justify-center xl:gap-[80px] gap-[20px] md:pl-[25px] 2xl:w-[1400px] w-[90%] mb-[30px] ${
+          className={`flex flex-row flex-wrap items-center xl:justify-start justify-center xl:gap-[80px] gap-[20px] md:pl-[25px] lg:w-[1400px] w-[90%] mb-[30px] ${
             currentScreen == "main" ? "opacity-100 z-20" : "opacity-0 z-[-50]"
           }`}
         >

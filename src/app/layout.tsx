@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import PageHeader from "@components/shared/PageHeaders/PageHeader";
+import PageHeader from "@components/shared/PageHeaders/PageHeader2";
 import { Providers } from "./providers";
 import MagicProvider from "@blockchain/context/MagicProvider";
 import { UserProvider } from "@blockchain/context/UserContext";
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-[#464646]`}>
         <Providers>
           <MagicProvider>
             <UserProvider>
@@ -41,7 +41,7 @@ export default function RootLayout({
                   reverseOrder={false}
                   gutter={8}
                   containerClassName="z-50"
-                  containerStyle={{}}
+                  // containerStyle={{}}
                   toastOptions={{
                     // Define default options
                     className: "",
@@ -49,6 +49,7 @@ export default function RootLayout({
                     style: {
                       background: "#feff3d",
                       color: "#000",
+                      fontWeight: "normal",
                     },
                   }}
                 />

@@ -91,6 +91,7 @@ export const BasicUserProvider = ({
       setUser(data?.user);
       setJWT(data?.token);
       setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
+      console.log("data:", data);
       return data;
     },
     [setJWT, setUser, setPoints]

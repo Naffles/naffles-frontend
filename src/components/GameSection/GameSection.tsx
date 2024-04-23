@@ -99,7 +99,7 @@ export const GameSection = () => {
       >
         <RegistrationForm />
       </Modal>
-      <div className="flex-row flex justify-center gamezone-container gap-4 pt-8 md:hidden sm:hidden xs:hidden lg:flex">
+      <div className="flex-row flex-wrap justify-center items-center gamezone-container gap-4 pt-8 hidden lg:flex">
         <div className="flex-col flex games-container gap-8">
           <RockPaperScissors
             timeleft={timeleft}
@@ -130,11 +130,11 @@ export const GameSection = () => {
             }}
           />
         </div>
-        <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl">
+        <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl xl:mt-0 lg:mt-[100px]">
           <DemoPointsLeaderboards />
         </div>
       </div>
-      <div className="md:flex sm:flex xs:flex lg:hidden flex-col h-auto">
+      <div className="lg:hidden flex flex-col items-center h-auto">
         <RockPaperScissors
           timeleft={timeleft}
           result={rpsResult}
@@ -163,9 +163,9 @@ export const GameSection = () => {
             addPoints(coinPoints);
           }}
         />
-        {/* <div className="h-auto ">
+        <div className="h-auto lg:w-[374px] max-w-[374px] w-full">
           <DemoPointsLeaderboards />
-        </div> */}
+        </div>
       </div>
     </>
   );

@@ -164,12 +164,13 @@ const LeaderboardGamersTable = () => {
   };
 
   return (
-    <div className="flex flex-col w-full px-[20px] bg-[#383838] mb-[50px] gap-[30px] mt-[80px] min-h-[800px]">
+    <div className="flex flex-col w-full lg:px-[20px] px-[10px] bg-[#383838] mb-[50px] gap-[30px] mt-[80px] min-h-[800px]">
       <Table
         aria-label="Admin transactions table"
         removeWrapper
         classNames={{
           th: "h-[36px] bg-[#383838] border-y-[1px] border-[#fff] text-[#fff] text-[16px] font-face-roboto",
+          base: "h-[800px] w-full overflow-scroll balance-scrollbar",
         }}
       >
         <TableHeader>

@@ -3,7 +3,7 @@ import { FaDiscord, FaTwitter } from "react-icons/fa";
 const Footer = () => {
   return (
     <>
-      <div className="flex flex-col w-full bg-[#292929] z-30">
+      <div className="flex flex-col w-full bg-[#292929] z-20">
         <div className="flex xl:flex-row flex-col w-full items-center justify-center py-[67px] xl:gap-[300px]">
           <img
             src="/static/naffles-text-logo.png"
@@ -78,7 +78,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="xs:flex md:flex sm:flex lg:hidden xl:hidden flex-col w-full h-[557px] bg-[#292929] relative pt-[67px] z-50 bottom-0">
+      <div className="xs:flex md:flex sm:flex lg:hidden xl:hidden flex-col w-full h-[557px] bg-[#292929] relative pt-[67px] z-30 bottom-0">
         <img
           src="/static/naffles-text-logo.png"
           alt="Naffles Text Logo"

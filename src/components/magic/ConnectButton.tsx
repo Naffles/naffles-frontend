@@ -5,6 +5,7 @@ import { useUser } from "@blockchain/context/UserContext";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { IoMdLogOut } from "react-icons/io";
+import WalletIcon from "@components/icons/walletIcon";
 
 const ConnectButton = () => {
   const { magic } = useMagic();
@@ -12,7 +13,7 @@ const ConnectButton = () => {
   const [walletLoggedIn, setWalletLoggedIn] = useState(false);
 
   useEffect(() => {
-    user?.jwt && setWalletLoggedIn(true);
+    user?.jwt ? setWalletLoggedIn(true) : setWalletLoggedIn(false);
   }, [user]);
 
   const handleConnect = async () => {
@@ -51,22 +52,20 @@ const ConnectButton = () => {
 
   // Render the button component with the click event handler
   return (
-    <div className="flex flex-row items-center justify-center w-full relative">
+    <div className="flex flex-row items-center justify-center relative gap-[12px]">
       <button
-        className="flex flex-row items-center justify-start w-full"
+        className="flex flex-row items-center justify-start"
         onClick={() => {
           // setIsOpen(true);
           walletLoggedIn ? handleShowUI() : handleConnect();
         }}
       >
-        <p className="font-face-bebas leading-[100%] text-[#000]">
-          {walletLoggedIn ? "Wallet Account Details" : "Wallet Login"}
-        </p>
+        <WalletIcon colour="black" size="lg" className="cursor-pointer" />
       </button>
       {walletLoggedIn && (
         <button
           onClick={() => handleDisconnect()}
-          className="flex items-center justify-center w-[24px] h-[24px] rounded-md bg-[#ff4747] absolute right-[-10px] shadow-xl"
+          className="flex items-center justify-center w-[24px] h-[24px] rounded-md bg-[#ff4747] shadow-xl"
         >
           <IoMdLogOut className="text-[#fff]" />
         </button>

@@ -164,7 +164,7 @@ const GameZoneChatMobile = () => {
   return (
     <>
       <div
-        className={`flex xl:hidden flex-col md:items-end items-center justify-center fixed bottom-0 right-0 z-50 md:pr-[20px] pr-0 md:pb-[20px] pb-0 ${showChat ? "w-full md:w-[457px] md:pt-[100px] pt-[40px] h-screen md:bg-transparent bg-black/50 md:backdrop-blur-0 backdrop-blur-md" : "w-[90px] h-[90px]"} duration-500`}
+        className={`flex xl:hidden flex-col md:items-end items-center justify-center fixed bottom-0 right-0 z-50 md:pr-[20px] pr-0 md:pb-[20px] pb-0 ${showChat ? "w-full md:w-[457px] md:pt-[100px] pt-[40px] h-screen md:bg-transparent bg-black/50 md:backdrop-blur-0 backdrop-blur-md" : "w-[70px] h-[70px]"} duration-500`}
       >
         {showChat ? (
           <>
@@ -320,9 +320,9 @@ const GameZoneChatMobile = () => {
         ) : (
           <button
             onClick={() => setShowChat(true)}
-            className="flex items-center justify-center w-[80px] h-[80px] rounded-[16px] bg-nafl-sponge-500"
+            className="flex items-center justify-center w-[60px] h-[60px] rounded-[10px] bg-nafl-sponge-500"
           >
-            <BsFillChatLeftTextFill className="text-[#000] text-[40px]" />
+            <BsFillChatLeftTextFill className="text-[#000] text-[30px]" />
           </button>
         )}
       </div>

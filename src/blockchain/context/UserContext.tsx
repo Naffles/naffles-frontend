@@ -8,12 +8,16 @@ type User = {
   address: string;
   jwt: string;
   id: string;
+  name: string | null;
+  image: string | null;
 };
 
 // Define the type for the user context.
 type UserContextType = {
   user: User | null;
   socket: Socket | null;
+  setProfileName: (name: string | null) => void;
+  setProfileImage: (imgURL: string | null) => void;
   setJWT: (jwt: string | null) => void;
   setId: (id: string | null) => void;
   fetchUser: () => Promise<void>;
@@ -23,6 +27,8 @@ type UserContextType = {
 const UserContext = createContext<UserContextType>({
   user: null,
   socket: null,
+  setProfileName: () => {},
+  setProfileImage: () => {},
   setJWT: () => {},
   setId: () => {},
   fetchUser: async () => {},
@@ -39,6 +45,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Initialize user state to hold user's account information.
   const [address, setAddress] = useState<string | null>(null);
   const [userJWT, setUserJWT] = useState<string | null>(null);
+  const [profileName, setProfileName] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
 
@@ -60,6 +68,22 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (!magic?.user) return;
     getUserData();
   }, [magic]);
+
+  // useEffect(() => {
+  //   const newSocket = io("http://localhost:4000", {
+  //     transports: ["websocket"],
+  //   });
+  //   setSocket(newSocket);
+
+  //   newSocket.on("challengerJoinRequest", (data: any) => {
+  //     console.log("challengerJoinRequest data: ", data);
+  //   });
+
+  //   return () => {
+  //     newSocket.off("hello");
+  //     newSocket.close();
+  //   };
+  // }, []);
 
   const getUserData = async () => {
     const userInfo = await magic?.user.getInfo();
@@ -112,30 +136,22 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  useEffect(() => {
-    const newSocket = io("http://localhost:4000", {
-      transports: ["websocket"],
-    });
-    setSocket(newSocket);
-
-    newSocket.on("challengerJoinRequest", (data: any) => {
-      console.log("challengerJoinRequest data: ", data);
-    });
-
-    return () => {
-      newSocket.off("hello");
-      newSocket.close();
-    };
-  }, []);
-
   return (
     <UserContext.Provider
       value={{
         user:
           address && userJWT && userId
-            ? { address: address, jwt: userJWT, id: userId }
+            ? {
+                address: address,
+                jwt: userJWT,
+                id: userId,
+                name: profileName,
+                image: profileImage,
+              }
             : null,
         socket: socket,
+        setProfileName: setProfileName,
+        setProfileImage: setProfileImage,
         setJWT: setUserJWT,
         setId: setUserId,
         fetchUser: fetchUserAccount,
