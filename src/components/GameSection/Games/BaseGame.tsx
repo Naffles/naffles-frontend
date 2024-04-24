@@ -53,11 +53,15 @@ export const BaseGame = (props: BaseGameProps) => {
 
   const triggerGame = useCallback(async () => {
     setIsLocked(true);
-    const { result = null } = (await gameCall()) || {};
+    let result;
+    if (selectedChoice) {
+      const data = (await gameCall()) || {};
+      result = data?.result;
+    }
     const randomResult = randomFromArray(results);
     setResult(result ?? randomResult);
     onCountdownFinish();
-  }, [gameCall, onCountdownFinish, results]);
+  }, [gameCall, onCountdownFinish, results, selectedChoice]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -144,6 +148,10 @@ export const BaseGame = (props: BaseGameProps) => {
       onWinNotify();
     }
     if (isLocked) {
+      setTimeout(() => {
+        setResult("");
+        setDisplayVideo(null);
+      }, 1700);
       setSelectedChoice("");
       setDisplayChoice("");
       setIsLocked(false);
