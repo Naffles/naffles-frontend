@@ -114,6 +114,10 @@ const DemoPointsLeaderboards = () => {
     setIsLoading(false);
   }, []);
 
+  const fetchTableData = () => {
+    setTableData(sample_demo_leaderboards_json);
+  };
+
   const shortenWalletAddress = (address: string) => {
     if (address?.length > 10) {
       return address.slice(0, 5) + "..." + address.slice(-7, -1);
@@ -121,7 +125,7 @@ const DemoPointsLeaderboards = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start w-[374px] h-[560px] rounded-[16px] relative bg-[#383838] pt-[65px] px-[5px] gap-[36px] pb-[8px] mt-[32px]">
+    <div className="flex flex-col items-center justify-start w-full lg:h-[560px] h-[580px] rounded-[16px] relative bg-[#383838] pt-[65px] px-[5px] gap-[36px] pb-[8px] lg:mt-[32px] mt-[132px]">
       <div className="flex items-center justify-center w-full absolute top-[-40px]">
         <div className="flex flex-row items-center justify-between w-full bg-[#444444] rounded-[16px] border-[1px] border-[#464646] drop-shadow-nafl-sponge-2xl h-[54px] px-[14px]">
           <div className="flex flex-col gap-[3px]">
@@ -150,7 +154,7 @@ const DemoPointsLeaderboards = () => {
         <img
           src="/static/jackpot-img.png"
           alt="Jackpot Image"
-          className="w-[180px] object-contain absolute top-[-75px]"
+          className="w-[180px] object-contain absolute top-[-75px] shake"
         />
       </div>
       <div className="w-full px-[18px]">
@@ -159,7 +163,7 @@ const DemoPointsLeaderboards = () => {
           aria-label="Demo Games Leaderboards table"
           removeWrapper
           classNames={{
-            base: "max-h-[410px] overflow-hidden overflow-y-scroll balance-scrollbar",
+            base: "max-h-[430px] overflow-hidden overflow-y-scroll balance-scrollbar",
             table: "min-h-[360px]",
             th: "h-[36px] bg-[#383838] border-y-[1px] border-[#fff] text-[#fff] text-[16px] font-face-roboto",
           }}
@@ -203,7 +207,7 @@ const DemoPointsLeaderboards = () => {
         </Table>
       </div>
 
-      <button className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-full h-[45px] gap-[30px]">
+      <button className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-[96%] h-[45px] gap-[30px]">
         <img
           src="/static/challenge-img.png"
           alt="Challenge Mate Image"

@@ -20,20 +20,20 @@ const GameZoneMain = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center w-[966px] z-20 pb-[27px]">
+      <div className="flex flex-col items-center lg:w-[966px] w-[90%] z-20 pb-[27px]">
         <div className="flex flex-col items-center justify-start bg-[#383838] rounded-[16px] w-full p-[13px]">
-          <div className="flex flex-col w-full h-[131px] rounded-lg overflow-hidden relative">
+          <div className="flex flex-col w-full rounded-lg overflow-hidden relative">
             <img
               src={"/static/gamezone-header-bg.png"}
               alt="Naffle"
-              className="w-full h-full object-cover object-center"
+              className="w-full object-cover object-center absolute top-0 left-0"
             />
-            <div className="flex flex-col absolute inset-0 w-full h-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[33px] py-[10px]">
+            <div className="flex flex-col w-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[33px] py-[10px] z-20">
               <p className="text-[26px] font-face-bebas text-white underline">
                 PLAY OR WAGER AND EARN POINTS
               </p>
-              <div className="flex flex-row items-start justify-between">
-                <p className="w-[650px] text-left text-[16px]">
+              <div className="flex lg:flex-row flex-col items-start justify-between">
+                <p className="w-full text-left text-[16px]">
                   Earn points by playing the games or participating in the
                   raffles. <br />
                   <a className="text-[#292929] font-face-roboto">
@@ -55,7 +55,7 @@ const GameZoneMain = () => {
             </div>
           </div>
 
-          <div className="flex flex-row items-end justify-between mt-[36px] w-full px-[20px]">
+          <div className="flex flex-row flex-wrap lg:items-end items-center md:justify-between justify-center mt-[36px] w-full px-[20px] lg:gap-0 gap-[20px]">
             <div className="flex items-center w-[220px] h-[37px] relative">
               <input
                 type="text"
@@ -65,13 +65,13 @@ const GameZoneMain = () => {
               <MdOutlineSearch className="absolute right-[12px] text-[20px] text-[#E9E9E9]" />
             </div>
 
-            <div className="flex flex-row items-end justify-center gap-[13px]">
+            <div className="flex flex-row flex-wrap items-end justify-center gap-[13px]">
               <div className="flex flex-col gap-[11px]">
                 <p className="text-[13px] text-[#FEFF3D] leading-[100%]">
                   FILTER
                 </p>
 
-                <div className="flex flex-row items-center gap-[13px]">
+                <div className="flex md:flex-row flex-col items-center gap-[13px]">
                   <div className="w-[154px] relative">
                     <button
                       onClick={() =>
@@ -116,11 +116,11 @@ const GameZoneMain = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[11px]">
+              <div className="flex flex-col gap-[11px] md:items-start items-center">
                 <p className="text-[13px] text-[#7E7E7E] leading-[100%]">
                   BET AMOUNT
                 </p>
-                <div className="flex items-center justify-center gap-[20px]">
+                <div className="flex flex-row md:scale-100 scale-75 items-center justify-center gap-[20px]">
                   <input
                     type="text"
                     placeholder="MIN"
@@ -131,6 +131,7 @@ const GameZoneMain = () => {
                     <div className="w-[10px] h-[5px] bg-[#383838] absolute left-0 top-2 z-10"></div>
                     <div className="w-[10px] h-[5px] bg-[#383838] absolute right-0 top-2 z-10"></div>
                     <Slider
+                      aria-label="Min Max Value slider"
                       size="sm"
                       step={50}
                       minValue={0}
@@ -138,7 +139,7 @@ const GameZoneMain = () => {
                       defaultValue={[0, 1000]}
                       classNames={{
                         base: "w-[170px]",
-                        track: "bg-[#000]/30 w-[500px] w-full",
+                        track: "bg-[#000]/30 w-full",
                         filler: "bg-nafl-sponge-500",
                       }}
                       renderThumb={({ index, ...props }) => (

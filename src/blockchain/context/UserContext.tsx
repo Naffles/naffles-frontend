@@ -1,24 +1,36 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useMagic } from "./MagicProvider";
+import { io, Socket } from "socket.io-client";
 
 // Define the type for the user
 type User = {
   address: string;
   jwt: string;
+  id: string;
+  name: string | null;
+  image: string | null;
 };
 
 // Define the type for the user context.
 type UserContextType = {
   user: User | null;
+  socket: Socket | null;
+  setProfileName: (name: string | null) => void;
+  setProfileImage: (imgURL: string | null) => void;
   setJWT: (jwt: string | null) => void;
+  setId: (id: string | null) => void;
   fetchUser: () => Promise<void>;
 };
 
 // Create a context for user data.
 const UserContext = createContext<UserContextType>({
   user: null,
+  socket: null,
+  setProfileName: () => {},
+  setProfileImage: () => {},
   setJWT: () => {},
+  setId: () => {},
   fetchUser: async () => {},
 });
 
@@ -28,11 +40,15 @@ export const useUser = () => useContext(UserContext);
 // Provider component that wraps parts of the app that need user context.
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Use the web3 context.
-  const { web3 } = useMagic();
+  const { web3, magic } = useMagic();
 
   // Initialize user state to hold user's account information.
   const [address, setAddress] = useState<string | null>(null);
   const [userJWT, setUserJWT] = useState<string | null>(null);
+  const [profileName, setProfileName] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   // Function to retrieve and set user's account.
   const fetchUserAccount = async () => {
@@ -48,11 +64,96 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     fetchUserAccount();
   }, [web3]);
 
+  useEffect(() => {
+    if (!magic?.user) return;
+    getUserData();
+  }, [magic]);
+
+  // useEffect(() => {
+  //   const newSocket = io("http://localhost:4000", {
+  //     transports: ["websocket"],
+  //   });
+  //   setSocket(newSocket);
+
+  //   newSocket.on("challengerJoinRequest", (data: any) => {
+  //     console.log("challengerJoinRequest data: ", data);
+  //   });
+
+  //   return () => {
+  //     newSocket.off("hello");
+  //     newSocket.close();
+  //   };
+  // }, []);
+
+  const getUserData = async () => {
+    const userInfo = await magic?.user.getInfo();
+    console.log("userInfo:", userInfo);
+
+    const idToken = await magic?.user.getIdToken();
+
+    idToken && loginUsingDID(idToken);
+
+    if (process.env.SERVER_SECRET && !idToken) {
+      console.log("generated new idtoken");
+      const newIdToken = await magic?.user.generateIdToken({
+        attachment: process.env.SERVER_SECRET,
+      });
+      newIdToken && loginUsingDID(newIdToken);
+    }
+  };
+
+  const loginUsingDID = async (DIDtoken: string | undefined) => {
+    console.log("DIDtoken:", DIDtoken);
+    try {
+      // let url = "https://dev.api.naffles.com/user/login/wallet";
+      let url = "http://localhost:4000/user/login/wallet";
+
+      await fetch(url, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "a8182a19-2aae-48e6-97a7-4c7836d7004b",
+          Authorization: "Bearer " + DIDtoken,
+        },
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
+        })
+        .then((result) => {
+          if (result) {
+            console.log("wallet login result:", result);
+            setUserJWT(result?.data?.token);
+            setUserId(result?.data?.user?._id);
+            // Cookies.set("token", result?.token, { expires: 7, secure: true });
+          } else {
+            console.log("error");
+          }
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
-        user: address && userJWT ? { address: address, jwt: userJWT } : null,
+        user:
+          address && userJWT && userId
+            ? {
+                address: address,
+                jwt: userJWT,
+                id: userId,
+                name: profileName,
+                image: profileImage,
+              }
+            : null,
+        socket: socket,
+        setProfileName: setProfileName,
+        setProfileImage: setProfileImage,
         setJWT: setUserJWT,
+        setId: setUserId,
         fetchUser: fetchUserAccount,
       }}
     >

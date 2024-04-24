@@ -1,16 +1,18 @@
 import { create } from "zustand";
 
 interface GameState {
-  screen: "main" | "create" | "ingame";
+  screen: "main" | "create" | "joining" | "accepting" | "ingame";
   mode: "challenger" | "host" | null;
-  type: string | null;
+  type: "Rock, Paper, Scissors" | "Coin Toss" | null;
   gameId: string | null;
 }
 
 interface GameActions {
-  setScreen: (screen: "main" | "create" | "ingame") => void;
+  setScreen: (
+    screen: "main" | "create" | "joining" | "accepting" | "ingame"
+  ) => void;
   setMode: (mode: "challenger" | "host") => void;
-  setType: (type: string | null) => void;
+  setType: (type: "Rock, Paper, Scissors" | "Coin Toss" | null) => void;
   setGameId: (gameId: string | null) => void;
 }
 

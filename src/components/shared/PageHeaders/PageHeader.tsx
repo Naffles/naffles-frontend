@@ -5,6 +5,7 @@ import BrandIcon from "@components/icons/brandIcon";
 import { Menu, Transition } from "@headlessui/react";
 import { MdMenu } from "react-icons/md";
 import { FaDiscord, FaTwitter, FaChevronDown, FaUser } from "react-icons/fa";
+import { HiMenu } from "react-icons/hi";
 
 import { useUser } from "@blockchain/context/UserContext";
 import { ConnectButton } from "@components/magic/index";
@@ -85,7 +86,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const handleLogin = (response: any) => {};
 
   return (
-    <div className="fixed top-0 w-full h-30 bg-nafl-charcoal-600 mx-auto z-50">
+    <div className="fixed top-0 lg:w-full h-[84px] lg:bg-nafl-charcoal-600 bg-transparent mx-auto z-50 p-[25px]">
       {!basicUser && (
         <>
           <Modal
@@ -128,16 +129,23 @@ const PageHeader: React.FC<PageHeaderProps> = (
           </Modal>
         </>
       )}
-      <div className="relative bg-nafl-sponge-500 rounded-tr-lg rounded-tl-lg mt-3 mx-3 px-2 py-1 z-[20] ">
-        <div className="absolute bg-nafl-charcoal-600 rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" />
+      <div className="relative lg:bg-nafl-sponge-500 bg-transparent rounded-tr-lg rounded-tl-lg z-[20] ">
+        <div className="absolute lg:bg-nafl-charcoal-600 bg-transparent rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" />
         <div className="flex flex-row items-center py-2 px-4 justify-between w-full m-auto flex-wrap">
-          <div className="flex flex-row lg:flex-row lg:space-x-8 items-center space-y-4 lg:space-y-0">
-            <span className="relative h-6">
+          <div className="flex flex-row lg:flex-row lg:space-x-8 items-center space-y-0">
+            <span className="hidden lg:flex relative h-6">
               <Link href="/">
                 <BrandIcon size="lg" colour="black" />
               </Link>
             </span>
-            <div className="md:hidden sm:hidden xs:hidden lg:flex space-x-4 text-nafl-charcoal-800">
+            <span
+              className="lg:hidden flex cursor-pointer"
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+            >
+              <HiMenu className="text-nafl-sponge-500 text-[40px]" />
+            </span>
+
+            <div className="hidden lg:flex space-x-4 text-nafl-charcoal-800">
               <a href="https://twitter.com/Nafflesofficial" target="_blank">
                 <FaTwitter className="hover:text-nafl-sponge-700 transition-colors ease-out duration-150 cursor-pointer text-body-xl" />
               </a>
@@ -146,23 +154,20 @@ const PageHeader: React.FC<PageHeaderProps> = (
               </a>
             </div>
           </div>
-          <div className="md:hidden sm:hidden xs:hidden lg:flex flex items-center space-x-4 text-nafl-grey-900">
-            <div className="flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-4 text-nafl-grey-900">
+            <div className="flex items-center gap-[30px]">
               {navigationOptions.map((navItem, index) => (
                 <Link
                   key={index}
                   href={navItem.href}
                   style={{
                     backgroundColor:
-                      selectedNavItem === index
-                        ? colorVariants["dark-accent"]
-                        : colorVariants["yellow"],
-                    color:
-                      selectedNavItem === index
-                        ? colorVariants["yellow"]
-                        : "#000",
+                      selectedNavItem === index ? "#000" : "#00000000",
+                    color: selectedNavItem === index ? "#fff" : "#000",
+                    paddingLeft: "32px",
+                    paddingRight: "32px",
                   }}
-                  className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
+                  className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg"
                   onClick={() => setSelectedNavItem(index)}
                 >
                   {navItem.title}
@@ -224,54 +229,118 @@ const PageHeader: React.FC<PageHeaderProps> = (
               )}
             </div>
           </div>
-          <div className="md:flex sm:flex xs:flex lg:hidden space-x-4 text-nafl-charcoal-800">
-            <span 
+          <div className="flex lg:hidden space-x-4 text-nafl-charcoal-800">
+            {/* <span
               className="cursor-pointer"
               onClick={() => setShowMobileMenu(!showMobileMenu)}
-            > 
-            { showMobileMenu ?
-              <CloseBurger colour="black" size="base"/> :
-              <BurgerIcon colour="black" size="base" />
-            }
-            </span>
+            >
+              {showMobileMenu ? (
+                <CloseBurger colour="black" size="base" />
+              ) : (
+                <BurgerIcon colour="black" size="base" />
+              )}
+            </span> */}
           </div>
         </div>
       </div>
-      <div className="md:flex sm:flex xs:flex lg:hidden flex flex-col items-center bg-nafl-sponge-500 mx-3 justify-end">
-      { showMobileMenu && navigationOptions.map((navItem, index) => (
-        <Link
-          key={index}
-          href={navItem.href}
-          style={{
-            backgroundColor:
-              selectedNavItem === index
-                ? colorVariants["dark-accent"]
-                : colorVariants["yellow"],
-            color:
-              selectedNavItem === index
-                ? colorVariants["yellow"]
-                : "#000",
-          }}
-          className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
-          onClick={() => setSelectedNavItem(index)}
-        >
-          {navItem.title}
-        </Link>
-      ))}
-      { showMobileMenu && <button
-        onClick={() => setOpen(!open)} // Toggle open state on button click
-        type="button"
-        className="focus:outline-none rounded-full p-2 hover:bg-gray-300"
-        // onBlur={() => setOpen(!open)}
+      <div
+        className={`lg:hidden flex fixed left-0 top-0 h-screen overflow-hidden ${showMobileMenu ? "w-full " : "duration-[1500ms] w-0"}`}
       >
-        <WalletIcon
-          colour="black"
-          // onClick={() => setShowModal(true)}
-          size="lg"
-          className="cursor-pointer"
+        <div
+          onClick={() => setShowMobileMenu(false)}
+          className={`z-10 w-full h-screen bg-[#000]/30 backdrop-blur-md duration-300 ${showMobileMenu ? "opacity-100" : "opacity-0"}`}
         />
-      </button>
-      }
+        <div
+          className={`absolute top-0 h-screen flex lg:hidden flex-col items-center bg-nafl-sponge-500 justify-between w-[200px] py-[50px] duration-500 z-20 ${showMobileMenu ? "left-0" : "left-[-200px]"}`}
+        >
+          <div className="flex flex-col items-center w-full gap-[40px]">
+            <Link href="/" className="w-[90%]">
+              <img
+                src="/static/naffles-text-logo-dark.png"
+                alt="Naffles Dark Logo"
+                className="w-full object-contain"
+              />
+            </Link>
+            <div className="flex flex-col items-center">
+              {navigationOptions.map((navItem, index) => (
+                <Link
+                  key={index}
+                  href={navItem.href}
+                  style={{
+                    backgroundColor:
+                      selectedNavItem === index
+                        ? colorVariants["dark-accent"]
+                        : colorVariants["yellow"],
+                    color:
+                      selectedNavItem === index
+                        ? colorVariants["yellow"]
+                        : "#000",
+                  }}
+                  className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
+                  onClick={() => setSelectedNavItem(index)}
+                >
+                  {navItem.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div
+            ref={dropdownRef}
+            className={`flex flex-col relative items-center w-[90%] bg-white rounded-[10px] duration-500 overflow-hidden border-[2px] border-[#252525] ${open ? "h-[200px]" : "h-[43px]"}`}
+          >
+            {" "}
+            {/* Assign ref to outer div */}
+            <button
+              onClick={() => setOpen(!open)} // Toggle open state on button click
+              type="button"
+              className="flex items-center justify-center focus:outline-none rounded-[10px] p-2 w-full"
+              // onBlur={() => setOpen(!open)}
+            >
+              <WalletIcon
+                colour="black"
+                // onClick={() => setShowModal(true)}
+                size="lg"
+                className="cursor-pointer"
+              />
+            </button>
+            <ul
+              onBlur={() => setOpen(false)}
+              className={`flex flex-col w-[90%] rounded-md bg-white dark:bg-gray-800 overflow-hidden duration-500 ${open ? "h-[140px]" : "h-[0px]"}`}
+            >
+              {basicUser ? (
+                <Link
+                  href={"/profile/aaa"}
+                  className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                >
+                  View Profile
+                  {/* if user then View Profile else Login button */}
+                </Link>
+              ) : (
+                <li
+                  className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  onClick={() => setShowOtherModal(true)}
+                >
+                  Login
+                </li>
+              )}
+              <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <ConnectButton />
+              </li>
+              <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                Settings
+              </li>
+              {basicUser && (
+                <li
+                  className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  onClick={logout}
+                >
+                  Logout
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,20 @@
 "use client";
 
 import BrandIcon from "@components/icons/brandIcon";
+import { useUser } from "@blockchain/context/UserContext";
 import { useEffect, useState } from "react";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
+import useGame from "@components/utils/gamezone";
+import { AiOutlineLoading } from "react-icons/ai";
+import toast, { Toaster } from "react-hot-toast";
+import { error } from "console";
 
 const GameZoneCreateGame = () => {
+  const { user, socket } = useUser();
+  const setCurrentScreen = useGame((state) => state.setScreen);
+
   const [gameChoice, setGameChoice] = useState<string>(
     "ROCK, PAPERS, SCISSORS"
   );
@@ -27,6 +35,7 @@ const GameZoneCreateGame = () => {
   const [betMultiplierChoiceDropdown, setBetMultiplierChoiceDropdown] =
     useState<boolean>(false);
   const [totalPayout, setTotalPayout] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   let games_choice_options = ["ROCK, PAPERS, SCISSORS", "COIN TOSS"];
 
@@ -94,6 +103,55 @@ const GameZoneCreateGame = () => {
     setTotalPayout(balanceAmount * betMultiplierChoice);
   }, [balanceAmount, betMultiplierChoice]);
 
+  const createGame = async () => {
+    setIsLoading(true);
+    var jwt = user?.jwt;
+
+    console.log("jwt", jwt);
+
+    if (!socket) {
+      console.error("Socket not connected");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:4000/game", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+          "x-api-key": "a8182a19-2aae-48e6-97a7-4c7836d7004b",
+        },
+        body: JSON.stringify({
+          gameType:
+            gameChoice == "ROCK, PAPERS, SCISSORS"
+              ? "rockPaperScissors"
+              : "coinToss",
+          coinType: "points",
+          betAmount: balanceAmount,
+          odds: betMultiplierChoice,
+        }),
+      });
+
+      const result = await response.json();
+
+      console.log("RESULT :", result);
+
+      if (response.ok) {
+        console.log("GAME CREATED", result?.data?.game?._id);
+        result &&
+          socket.emit("notificationRoom", { id: result?.data?.game?._id });
+        setCurrentScreen("main");
+        toast.success("Game Created");
+      } else {
+        console.error("Failed to create game: ", result.message);
+      }
+    } catch (error) {
+      console.error("Error creating game: ", error);
+    }
+    setIsLoading(false);
+  };
+
   const currencyIconReturner = (type: string) => {
     if (type == "ETH") {
       return <FaEthereum className="text-[#fff]" />;
@@ -121,11 +179,11 @@ const GameZoneCreateGame = () => {
   };
 
   return (
-    <div className="flex flex-col w-[500px] bg-[#383838] rounded-[16px]">
+    <div className="flex flex-col md:w-[500px] max-w-[500px] w-[90%] bg-[#383838] rounded-[16px]">
       <div className="flex items-center justify-center w-full h-[76px] bg-[#202020] rounded-t-[16px]">
         <p className="text-[40px] text-[#fff] font-face-bebas">CREATE GAME</p>
       </div>
-      <div className="flex flex-col items-center w-full px-[51px] py-[20px] gap-[20px]">
+      <div className="flex flex-col items-center w-full md:px-[51px] px-[20px] py-[20px] gap-[20px]">
         <div className="flex flex-col w-full gap-[4px]">
           <p className="text-[20px] text-nafl-sponge-500 font-face-bebas">
             1. CHOOSE YOUR GAME
@@ -175,7 +233,7 @@ const GameZoneCreateGame = () => {
           <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
         </div>
 
-        <div className="flex flex-row items-center gap-[24px]">
+        <div className="flex flex-row flex-wrap items-center gap-[20px]">
           <div className="flex items-center w-[250px] relative">
             <button
               onClick={() =>
@@ -292,8 +350,19 @@ const GameZoneCreateGame = () => {
 
         <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
 
-        <button className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] bg-nafl-sponge-500 mb-[17px]">
-          <p className="text-[#000] text-[18px] font-bold">CREATE GAME</p>
+        <button
+          onClick={() =>
+            user?.jwt
+              ? createGame()
+              : toast.error("Login first before making a game.")
+          }
+          className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] bg-nafl-sponge-500 mb-[17px]"
+        >
+          {isLoading ? (
+            <AiOutlineLoading className="text-[#000] text-[20px] animate-spin" />
+          ) : (
+            <p className="text-[#000] text-[18px] font-bold">CREATE GAME</p>
+          )}
         </button>
       </div>
     </div>

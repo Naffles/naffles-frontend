@@ -10,44 +10,65 @@ type CollectionProps = {
   notchColor?: string;
 };
 
-const CollectionItem: React.FC<CollectionProps> = ({ 
+const CollectionItem: React.FC<CollectionProps> = ({
   title,
   description,
   price,
   buttonText,
-  notchColor
+  notchColor,
 }) => {
   return (
     <div className="bg-nafl-grey-900 z-10 mx-auto overflow-hidden rounded-xl h-[372px] w-[305px] user-select-none">
-      <div className="relative bg-nafl-grey-900 rounded-xl mx-auto px-0 py-0 pb-12">
-      <div className={`absolute ${ notchColor ? notchColor : 'bg-nafl-grey-900'} rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]`} />
+      <div className="flex flex-col items-center justify-start relative bg-nafl-grey-900 rounded-xl mx-auto px-0 py-0 pb-12">
+        <div
+          className={`absolute ${notchColor ? notchColor : "bg-nafl-grey-900"} rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]`}
+        />
         {/* <Image src="/static/ape-dummy.png" alt={title} width={310} height={209} className="rounded-none"/> */}
-        <img src="/static/ape-dummy.png" alt={title} className="h-[305px] w-[305px] object-contain overflow-hidden"/>
-        <div className="flex justify-between flex-col px-5 relative bg-nafl-grey-900 top-[-90px] pt-3">
-          <Typography size="text-3xl" color="white" className="pb-2">CRYPTOPUNKS</Typography>
-          <span className="bg-nafl-charcoal-300 h-[.5px] w-[285px] opacity-55 left-[-10px] relative"/>
-          <div className="flex flex-row justify-around pb-5">
-            <div className="h-12 flex-col ml-2 mt-2">
-              <h4 className="text-sm font-semibold text-nafl-white">floor price</h4>
-              <div className="flex flex-row">
-                <Image src="/static/eth-light-logo.png" alt="nafl-coin" width={14} height={14} sizes="14px" style={{objectFit: 'contain'}}/>
-                <h2 className="text-lg font-semibold text-nafl-white text-right pl-1">0.01</h2>
+        <img
+          src="/static/collection-sample-img.png"
+          alt={title}
+          className="w-full h-[70%] object-cover overflow-hidden"
+        />
+        <div className="flex justify-start flex-col items-center px-5 relative bg-nafl-grey-900 bottom-0 pt-3 w-full gap-[7px]">
+          <div className="flex flex-col w-full items-center py-[16px] border-b-[1px] border-[#fff]/20">
+            <p className="text-[30px] text-[#fff] font-face-bebas leading-[100%]">
+              CRYPTOPUNKS
+            </p>
+          </div>
+          <div className="flex flex-row justify-around pb-5 w-full">
+            <div className="flex flex-col items-start w-[50%] px-[15px] py-[5px] gap-[2px] border-r-[1px] border-[#fff]/20">
+              <p className="text-[10px] font-face-bebas text-[#fff] leading-[100%] ml-[15px]">
+                FLOOR PRICE
+              </p>
+              <div className="flex flex-row items-center justify-center w-full gap-[6px]">
+                <img
+                  src="/static/eth-logo.png"
+                  alt="ETH Logo"
+                  className="w-[16px] object-contain"
+                />
+                <p className="text-[21px] font-bold font-face-bebas text-[#fff] leading-[100%]">
+                  0.005
+                </p>
               </div>
-              <Typography className="text-sm font-semibold pl-3" color="accent-green">($16 USD)</Typography>
+
+              <p className="flex items-center justify-center w-full text-[11px] font-face-bebas text-[#02B1B1] leading-[100%]">
+                ($ 16 USD)
+              </p>
             </div>
-            <div className="border-l bg-nafl-white h-full w-[50px] border-spacing-0"></div>
-            <div className="h-12 flex-col ml-2 mt-2">
-              <h4 className="text-sm font-semibold text-nafl-white">floor price</h4>
-              <div className="flex flex-row">
-                <Image src="/static/eth-light-logo.png" alt="nafl-coin" width={14} height={14} sizes="14px" style={{objectFit: 'contain'}}/>
-                <h2 className="text-lg font-semibold text-nafl-white text-right pl-1">0.01</h2>
+            <div className="flex flex-col items-start w-[50%] px-[15px] py-[5px] gap-[2px]">
+              <p className="text-[10px] font-face-bebas text-[#fff] leading-[100%] ml-[15px]">
+                ON SALE
+              </p>
+              <div className="flex flex-row items-center justify-center w-full gap-[6px]">
+                <p className="text-[21px] font-bold font-face-bebas text-[#fff] leading-[100%]">
+                  0.005
+                </p>
               </div>
-              <Typography className="text-sm font-semibold pl-3" color="accent-green">($16 USD)</Typography>
             </div>
           </div>
         </div>
       </div>
     </div>
-    );
-  };
+  );
+};
 export default CollectionItem;

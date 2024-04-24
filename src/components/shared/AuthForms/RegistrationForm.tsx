@@ -4,6 +4,8 @@ import { ButtonTypes } from "../Button/button";
 import { useEffect, useState } from "react";
 import axios from "@components/utils/axios";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import { AiOutlineLoading } from "react-icons/ai";
+import { useFormContext } from "react-hook-form";
 
 type RegistrationFormData = {
   emailAddress: string;
@@ -14,6 +16,8 @@ type VerificationFormData = {
 };
 
 export const RegistrationForm = () => {
+  const { register, formState } = useFormContext() || {};
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useBasicUser();
   const [previousData, setPreviousData] = useState<RegistrationFormData | null>(
     null
@@ -25,15 +29,21 @@ export const RegistrationForm = () => {
     const response = await axios.post("user/send-email-verification", {
       email: data.emailAddress,
     });
+
+    console.log("send email verification response:", response);
   };
   const onSubmitVerification = async (data: VerificationFormData) => {
     try {
       if (previousData?.emailAddress && previousData.password) {
+        setIsLoading(true);
         const response = await axios.post("user/signup", {
           email: previousData.emailAddress,
           password: previousData.password,
           verificationCode: data.verificationCode,
         });
+
+        console.log("registration response:", response);
+
         login({
           identifier: previousData.emailAddress,
           password: previousData.password,
@@ -42,6 +52,8 @@ export const RegistrationForm = () => {
     } catch (err) {
       console.log(err);
     }
+
+    setIsLoading(false);
   };
   return (
     <>
@@ -82,17 +94,18 @@ export const RegistrationForm = () => {
             label="Verification Code"
             placeholder="Verification Code"
           />
-
-          <Button
-            label="submit"
-            variant="secondary"
-            size="lg"
+          <button
+            name=""
             type="submit"
-            width="inhert"
-            className="mx-2 my-2"
+            className="flex items-center justify-center text-[#000] h-[45px] w-full rounded-[10px] bg-nafl-sponge-500 mb-1"
+            disabled={isLoading}
           >
-            Submit
-          </Button>
+            {isLoading ? (
+              <AiOutlineLoading className="animate-spin" />
+            ) : (
+              "Submit"
+            )}
+          </button>
         </FormContext>
       )}
     </>
