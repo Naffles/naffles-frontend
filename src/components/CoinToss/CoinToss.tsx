@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@components/shared/Button";
 import { GameContainer } from "@type/GameSection";
 import toast from "react-hot-toast";
+import { MdOpacity } from "react-icons/md";
 
 const coinTossArray = [
   { number: 0, face: "heads", fileName: "doge" },
@@ -26,6 +27,8 @@ export const CoinToss = (props: GameContainer) => {
   const [selectedChoice, setSelectedChoice] = useState("");
   const [displayChoice, setDisplayChoice] = useState("");
   const [coin, setCoin] = useState(0);
+  const [hideVid, setHideVid] = useState(true);
+
   const videosRef = useRef<(HTMLVideoElement | null)[]>([]);
   const winningChoice = useCallback(
     (result: string) =>
@@ -41,6 +44,7 @@ export const CoinToss = (props: GameContainer) => {
 
   useEffect(() => {
     if (result && isLocked && timeleft === 0) {
+      setHideVid(false);
       const coinNumber = Math.floor(Math.random() * 4);
       setCoin(coinNumber);
       const refIndex = coinTossArray.findIndex(
@@ -85,13 +89,13 @@ export const CoinToss = (props: GameContainer) => {
           ))}
         </div>
         <div className="flex-col flex items-center justify-start bg-nafl-grey-700 lg:w-[530px] w-full rounded-3xl overflow-hidden h-[269px] relative">
-          <div className="lg:w-[600px] w-[180%] h-[240px]">
+          <div className="lg:w-[600px] w-[180%] h-[240px] relative flex items-center justify-center">
             {coinTossArray.map(({ number, face, fileName }, idx) => (
               <video
                 playsInline={true}
                 preload="auto"
                 muted
-                className={isVideoHidden(number, face)}
+                className={`${isVideoHidden(number, face)} absolute top-0 ${hideVid ? "opacity-0" : "opacity-100"}`}
                 key={fileName + number}
                 ref={(ref) => {
                   videosRef.current[idx] = ref;
@@ -104,6 +108,7 @@ export const CoinToss = (props: GameContainer) => {
                     setDisplayChoice("");
                     triggerUnlock();
                   }
+                  setHideVid(true);
                 }}
               >
                 <source
@@ -117,7 +122,7 @@ export const CoinToss = (props: GameContainer) => {
               preload="auto"
               autoPlay
               loop
-              className={result ? "hidden" : ""}
+              className={`absolute top-0`}
             >
               <source src="/static/coin-toss/waiting.webm" type="video/webm" />
             </video>
