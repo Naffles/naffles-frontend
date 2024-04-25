@@ -5,9 +5,9 @@ import { io, Socket } from "socket.io-client";
 
 // Define the type for the user
 type User = {
-  address: string;
-  jwt: string;
-  id: string;
+  address: string | null;
+  jwt: string | null;
+  id: string | null;
   name: string | null;
   image: string | null;
 };
@@ -16,6 +16,7 @@ type User = {
 type UserContextType = {
   user: User | null;
   socket: Socket | null;
+  socketId: string | null;
   setProfileName: (name: string | null) => void;
   setProfileImage: (imgURL: string | null) => void;
   setJWT: (jwt: string | null) => void;
@@ -27,6 +28,7 @@ type UserContextType = {
 const UserContext = createContext<UserContextType>({
   user: null,
   socket: null,
+  socketId: null,
   setProfileName: () => {},
   setProfileImage: () => {},
   setJWT: () => {},
@@ -49,6 +51,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [socketId, setSocketId] = useState<string>("");
 
   // Function to retrieve and set user's account.
   const fetchUserAccount = async () => {
@@ -74,10 +77,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       transports: ["websocket"],
     });
     setSocket(newSocket);
+    console.log("socket", socket);
 
-    newSocket.on("challengerJoinRequest", (data: any) => {
-      console.log("challengerJoinRequest data: ", data);
-    });
+    userId && newSocket
+      ? newSocket?.emit("register", { userId: userId })
+      : newSocket?.emit("register", { userId: "Anonymous" });
+
+    newSocket?.on("registered", (data) => setSocketId(data.userId));
 
     return () => {
       newSocket.off("hello");
@@ -125,6 +131,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             console.log("wallet login result:", result);
             setUserJWT(result?.data?.token);
             setUserId(result?.data?.user?._id);
+            console.log("wallet login id:", result?.data?.user?._id);
             // Cookies.set("token", result?.token, { expires: 7, secure: true });
           } else {
             console.log("error");
@@ -149,6 +156,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
               }
             : null,
         socket: socket,
+        socketId: socketId,
         setProfileName: setProfileName,
         setProfileImage: setProfileImage,
         setJWT: setUserJWT,

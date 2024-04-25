@@ -115,7 +115,7 @@ const GameZoneCreateGame = () => {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/game`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}game`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,8 +139,8 @@ const GameZoneCreateGame = () => {
 
       if (response.ok) {
         console.log("GAME CREATED", result?.data?.game?._id);
-        result &&
-          socket.emit("notificationRoom", { id: result?.data?.game?._id });
+        // result &&
+        //   socket.emit("notificationRoom", { id: result?.data?.game?._id });
         setCurrentScreen("main");
         toast.success("Game Created");
       } else {
