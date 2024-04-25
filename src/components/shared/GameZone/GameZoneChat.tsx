@@ -25,9 +25,14 @@ const GameZoneChat = () => {
     socket?.on("receiveGlobalChatMessage", (data) => {
       console.log("receiveGlobalChatMessage", data);
       setChatData((oldData) => [...oldData, data]);
-      scrollToBottom();
     });
   }, [socket]);
+
+  useEffect(() => {
+    if (chatData.length > 0) {
+      scrollToBottom();
+    }
+  }, [chatData]);
 
   const randomString = (length: number, chars: string) => {
     var result = "";
@@ -262,7 +267,7 @@ const GameZoneChat = () => {
           className="flex flex-col h-[488px] w-full overflow-hidden overflow-y-scroll pt-[15px] comments-scrollbar"
           ref={bottomChat}
         >
-          <div className="flex flex-col w-full gap-[19px] pb-[100px]">
+          <div className="flex flex-col w-full gap-[19px]">
             {chatData.map((item) => (
               <CommentSection
                 key={randomString(
@@ -289,7 +294,7 @@ const GameZoneChat = () => {
             onKeyDown={(e) =>
               e.key == "Enter" && message && sendGlobalChatMessage(message)
             }
-            minLength={50}
+            maxLength={50}
             className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
           />
           <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />

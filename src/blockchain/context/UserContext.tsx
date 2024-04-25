@@ -5,9 +5,9 @@ import { io, Socket } from "socket.io-client";
 
 // Define the type for the user
 type User = {
-  address: string;
-  jwt: string;
-  id: string;
+  address: string | null;
+  jwt: string | null;
+  id: string | null;
   name: string | null;
   image: string | null;
 };
@@ -77,11 +77,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       transports: ["websocket"],
     });
     setSocket(newSocket);
-
-    newSocket.on("challengerJoinRequest", (data: any) => {
-      console.log("challengerJoinRequest data: ", data);
-    });
-
     console.log("socket", socket);
 
     userId && newSocket
@@ -136,6 +131,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             console.log("wallet login result:", result);
             setUserJWT(result?.data?.token);
             setUserId(result?.data?.user?._id);
+            console.log("wallet login id:", result?.data?.user?._id);
             // Cookies.set("token", result?.token, { expires: 7, secure: true });
           } else {
             console.log("error");

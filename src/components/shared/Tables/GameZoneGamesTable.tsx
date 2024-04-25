@@ -11,6 +11,7 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
 
 interface tableRow {
@@ -23,6 +24,7 @@ interface tableRow {
   payout: number;
   currency: string | null;
   allowJoin: boolean;
+  myId: string | null | undefined;
 }
 
 interface gamezoneReturnArr {
@@ -134,12 +136,18 @@ const GameZoneGamesTable = () => {
   ];
 
   useEffect(() => {
-    socket && fetchTableData();
+    socket && fetchTableData(user?.id);
+  }, [socket, user]);
+
+  useEffect(() => {
+    socket?.on("gameJoinRequest", (data: any) => {
+      console.log("gameJoinRequest data: ", data);
+    });
   }, [socket]);
 
-  const fetchTableData = async () => {
+  const fetchTableData = async (userId: string | null | undefined) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/game`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}game`, {
         method: "GET",
         mode: "cors",
         cache: "no-cache",
@@ -153,7 +161,7 @@ const GameZoneGamesTable = () => {
 
       if (response.ok) {
         console.log("RESULT :", result);
-        result && tableDataSetter(result.data.games);
+        result && tableDataSetter(result.data.games, userId);
         result && setIsLoading(false);
         // socket.emit("notificationRoom", { data: userId });
       } else {
@@ -172,7 +180,10 @@ const GameZoneGamesTable = () => {
     } else return address;
   };
 
-  const tableDataSetter = (apiData: gamezoneReturnArr[]) => {
+  const tableDataSetter = (
+    apiData: gamezoneReturnArr[],
+    userId: string | null | undefined
+  ) => {
     let tableData = apiData?.map((item) => {
       return {
         id: item._id,
@@ -184,21 +195,21 @@ const GameZoneGamesTable = () => {
         payout: item.betAmount.$numberDecimal * item.odds.$numberDecimal,
         currency: "",
         allowJoin: item.status == "waiting" ? true : false,
+        myId: userId,
       };
     });
     console.log("tableData: ", tableData);
     setTableData(tableData);
   };
 
-  const joinGame = (hostId: string, gameId: string) => {
-    console.log("joined a game start");
+  const joinGame = (gameId: string, userId: string | null) => {
+    // console.log("joined a game start");
     var currentDate = new Date();
     currentDate.setSeconds(currentDate.getSeconds() + 10);
 
     console.log("currentDate", currentDate);
-    socket?.emit("pendingChallengerRequest", {
-      userId: user?.id,
-      creatorId: hostId,
+    socket?.emit("joinGame", {
+      userId: userId,
       gameId: gameId,
       timeout: currentDate,
     });
@@ -208,7 +219,7 @@ const GameZoneGamesTable = () => {
   };
 
   return (
-    <div className="w-full px-[20px] bg-[#383838] mt-[30px]">
+    <div className="flex flex-col w-full px-[20px] bg-[#383838] mt-[30px]">
       <Table
         aria-label="Gamezone games table"
         removeWrapper
@@ -229,7 +240,7 @@ const GameZoneGamesTable = () => {
           isLoading={isLoading}
           loadingContent={<Spinner label="Loading..." />}
         >
-          {(item) => (
+          {tableData.map((item) => (
             <TableRow key={item.id}>
               <TableCell>
                 <div className="flex flex-row items-center gap-[7px] h-[70px]">
@@ -268,7 +279,11 @@ const GameZoneGamesTable = () => {
                   </div>
                   {item.allowJoin && (
                     <button
-                      onClick={() => joinGame(item.playerId, item.id)}
+                      onClick={() =>
+                        item.myId
+                          ? joinGame(item.id, item.myId)
+                          : toast.error("You must login first!")
+                      }
                       className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] border-[#DC2ABF] border-[1px] bg-trasparent"
                     >
                       <p className="text-[18px] font-bold">JOIN</p>
@@ -277,7 +292,7 @@ const GameZoneGamesTable = () => {
                 </div>
               </TableCell>
             </TableRow>
-          )}
+          ))}
         </TableBody>
       </Table>
     </div>
