@@ -49,13 +49,14 @@ export const GameSection = () => {
           <DemoPointsLeaderboards />
         </div>
       </div>
-      <div className="lg:hidden flex flex-col items-center h-auto">
-        <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
-        <CoinTossGame handlePlayCount={onPlayEnd} />
-        <div className="h-auto lg:w-[374px] max-w-[374px] w-full">
-          <DemoPointsLeaderboards />
-        </div>
-      </div>
+      {
+        isMobile && (
+          <div className="flex lg:hidden xl:hidden flex-col h-auto">
+            <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
+            <CoinTossGame handlePlayCount={onPlayEnd} />
+          </div>
+        )
+      }
     </>
   );
 };
