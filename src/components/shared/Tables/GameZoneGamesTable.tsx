@@ -139,13 +139,13 @@ const GameZoneGamesTable = () => {
 
   const fetchTableData = async () => {
     try {
-      const response = await fetch("http://localhost:4000/game", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/game`, {
         method: "GET",
         mode: "cors",
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": "a8182a19-2aae-48e6-97a7-4c7836d7004b",
+          "x-api-key": `${process.env.NEXT_PUBLIC_API_KEY}`,
         },
       });
 

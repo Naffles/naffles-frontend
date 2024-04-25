@@ -69,21 +69,21 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     getUserData();
   }, [magic]);
 
-  // useEffect(() => {
-  //   const newSocket = io("http://localhost:4000", {
-  //     transports: ["websocket"],
-  //   });
-  //   setSocket(newSocket);
+  useEffect(() => {
+    const newSocket = io(`${process.env.NEXT_PUBLIC_ENDPOINT}`, {
+      transports: ["websocket"],
+    });
+    setSocket(newSocket);
 
-  //   newSocket.on("challengerJoinRequest", (data: any) => {
-  //     console.log("challengerJoinRequest data: ", data);
-  //   });
+    newSocket.on("challengerJoinRequest", (data: any) => {
+      console.log("challengerJoinRequest data: ", data);
+    });
 
-  //   return () => {
-  //     newSocket.off("hello");
-  //     newSocket.close();
-  //   };
-  // }, []);
+    return () => {
+      newSocket.off("hello");
+      newSocket.close();
+    };
+  }, []);
 
   const getUserData = async () => {
     const userInfo = await magic?.user.getInfo();
@@ -105,8 +105,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const loginUsingDID = async (DIDtoken: string | undefined) => {
     console.log("DIDtoken:", DIDtoken);
     try {
-      // let url = "https://dev.api.naffles.com/user/login/wallet";
-      let url = "http://localhost:4000/user/login/wallet";
+      let url = process.env.NEXT_PUBLIC_ENDPOINT + "user/login/wallet";
 
       await fetch(url, {
         method: "POST",
@@ -114,7 +113,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": "a8182a19-2aae-48e6-97a7-4c7836d7004b",
+          "x-api-key": `${process.env.NEXT_PUBLIC_API_KEY}`,
           Authorization: "Bearer " + DIDtoken,
         },
       })
