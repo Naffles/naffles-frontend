@@ -27,7 +27,6 @@ export const BaseGame = (props: BaseGameProps) => {
     onVideoFinish = () => {},
     onChoiceClicked = () => {},
   } = props;
-  const [isFirst, setIsFirst] = useState(true);
   const [timeleft, setTimeleft] = useState(DEFAULT_TIMER);
   const [isCountingDown, setIsCountingDown] = useState(true);
   const [result, setResult] = useState("");
@@ -134,12 +133,9 @@ export const BaseGame = (props: BaseGameProps) => {
       setSelectedChoice(choiceClicked);
       setDisplayChoice(choiceClicked);
       onChoiceClicked();
-      if (isFirst) {
-        setIsCountingDown(false);
-        setTimeleft(0);
-        setIsFirst(false);
-        triggerGame();
-      }
+      setIsCountingDown(false);
+      setTimeleft(0);
+      triggerGame();
     }
   };
 
