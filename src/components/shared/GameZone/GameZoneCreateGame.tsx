@@ -115,12 +115,12 @@ const GameZoneCreateGame = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:4000/game", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/game`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
-          "x-api-key": "a8182a19-2aae-48e6-97a7-4c7836d7004b",
+          "x-api-key": `${process.env.NEXT_PUBLIC_API_KEY}`,
         },
         body: JSON.stringify({
           gameType:
