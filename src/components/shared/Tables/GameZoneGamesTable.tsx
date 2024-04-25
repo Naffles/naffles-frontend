@@ -249,7 +249,9 @@ const GameZoneGamesTable = () => {
                     alt="Game Icon"
                     className="w-[33px] h-[33px] bg-[#D9D9D9] border-[1px] border-[#DC2ABF] rounded-full"
                   />{" "}
-                  <p className="text-[16px] font-bold">{item.game}</p>
+                  <p className="text-[16px] font-bold text-[#fff]">
+                    {item.game}
+                  </p>
                 </div>
               </TableCell>
               <TableCell>
@@ -259,23 +261,31 @@ const GameZoneGamesTable = () => {
                     alt="Game Icon"
                     className="w-[33px] h-[33px] bg-[#D9D9D9] rounded-full"
                   />{" "}
-                  <p className="text-[16px] font-bold">
+                  <p className="text-[16px] font-bold text-[#fff]">
                     {shortenWalletAddress(item.player)}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-center gap-[6px]">
-                  <p className="text-[16px] font-bold">{item.buyin}</p>
-                  <p className="text-[16px] font-bold">{item.currency}</p>
+                  <p className="text-[16px] font-bold text-[#fff]">
+                    {item.buyin}
+                  </p>
+                  <p className="text-[16px] font-bold text-[#fff]">
+                    {item.currency}
+                  </p>
                 </div>
               </TableCell>
 
               <TableCell>
                 <div className="flex flex-row items-center justify-between gap-[7px]">
                   <div className="flex flex-row items-center justify-center gap-[6px]">
-                    <p className="text-[16px] font-bold">{item.payout}</p>
-                    <p className="text-[16px] font-bold">{item.currency}</p>
+                    <p className="text-[16px] font-bold text-[#fff]">
+                      {item.payout}
+                    </p>
+                    <p className="text-[16px] font-bold text-[#fff]">
+                      {item.currency}
+                    </p>
                   </div>
                   {item.allowJoin && (
                     <button
