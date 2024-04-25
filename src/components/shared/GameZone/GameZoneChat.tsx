@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@blockchain/context/UserContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { TfiMenu } from "react-icons/tfi";
@@ -13,27 +13,19 @@ interface Message {
   message: string | null;
 }
 const GameZoneChat = () => {
-  const { socket, user } = useUser();
+  const { socket, socketId } = useUser();
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [currentUserId, setCurrentUserId] = useState<string>("");
+
+  const chatContainer = useRef<HTMLDivElement>(null);
+  const bottomChat = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log("socket", socket);
-
-    user?.id && socket
-      ? socket?.emit("register", { userId: user?.id })
-      : socket?.emit("register", { userId: "Anonymous" });
-
-    socket?.on("registered", (data) => setCurrentUserId(data.userId));
-
     socket && socket?.emit("joinGlobalChat");
-  }, [user, socket]);
-
-  useEffect(() => {
     socket?.on("receiveGlobalChatMessage", (data) => {
       console.log("receiveGlobalChatMessage", data);
       setChatData((oldData) => [...oldData, data]);
+      scrollToBottom();
     });
   }, [socket]);
 
@@ -43,10 +35,6 @@ const GameZoneChat = () => {
       result += chars[Math.floor(Math.random() * chars.length)];
     return result;
   };
-
-  useEffect(() => {
-    console.log("currentUserId: ", currentUserId);
-  }, [currentUserId]);
 
   let sample_balances_json = [
     {
@@ -123,6 +111,12 @@ const GameZoneChat = () => {
     setMessage("");
   };
 
+  const scrollToBottom = () => {
+    if (bottomChat.current) {
+      bottomChat.current.scrollTop = bottomChat.current.scrollHeight;
+    }
+  };
+
   const BalancesListOption = ({
     type,
     balance,
@@ -153,7 +147,7 @@ const GameZoneChat = () => {
     timestamp,
     message,
   }: {
-    currentId: string;
+    currentId: string | null;
     senderId: string;
     sender: string;
     image: string;
@@ -264,15 +258,18 @@ const GameZoneChat = () => {
         </div>
       </div>
       <div className="flex flex-col py-[10px] px-[21px] gap-[10px] w-full">
-        <div className="flex flex-col h-[488px] w-full overflow-hidden overflow-y-scroll pt-[15px] comments-scrollbar">
-          <div className="flex flex-col min-h-[488px] w-full gap-[19px]">
+        <div
+          className="flex flex-col h-[488px] w-full overflow-hidden overflow-y-scroll pt-[15px] comments-scrollbar"
+          ref={bottomChat}
+        >
+          <div className="flex flex-col w-full gap-[19px] pb-[100px]">
             {chatData.map((item) => (
               <CommentSection
                 key={randomString(
                   12,
                   "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 )}
-                currentId={currentUserId}
+                currentId={socketId}
                 senderId={item.sender._id}
                 sender={item.sender.username}
                 image={item.sender.profileImage}
@@ -281,21 +278,23 @@ const GameZoneChat = () => {
               />
             ))}
           </div>
+          {/* <div ref={bottomChat} /> */}
         </div>
         <div className="flex items-center w-full relative">
           <input
             type="text"
             placeholder="Message"
             value={message}
-            onChange={(e) => e.target.value && setMessage(e.target.value)}
+            onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) =>
-              e.key == "Enter" && sendGlobalChatMessage(message)
+              e.key == "Enter" && message && sendGlobalChatMessage(message)
             }
+            minLength={50}
             className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
           />
           <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
           <BiSend
-            onClick={() => sendGlobalChatMessage(message)}
+            onClick={() => message && sendGlobalChatMessage(message)}
             className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer"
           />
         </div>

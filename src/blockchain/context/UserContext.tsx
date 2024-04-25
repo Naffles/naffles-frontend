@@ -16,6 +16,7 @@ type User = {
 type UserContextType = {
   user: User | null;
   socket: Socket | null;
+  socketId: string | null;
   setProfileName: (name: string | null) => void;
   setProfileImage: (imgURL: string | null) => void;
   setJWT: (jwt: string | null) => void;
@@ -27,6 +28,7 @@ type UserContextType = {
 const UserContext = createContext<UserContextType>({
   user: null,
   socket: null,
+  socketId: null,
   setProfileName: () => {},
   setProfileImage: () => {},
   setJWT: () => {},
@@ -49,6 +51,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [socketId, setSocketId] = useState<string>("");
 
   // Function to retrieve and set user's account.
   const fetchUserAccount = async () => {
@@ -78,6 +81,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     newSocket.on("challengerJoinRequest", (data: any) => {
       console.log("challengerJoinRequest data: ", data);
     });
+
+    console.log("socket", socket);
+
+    userId && newSocket
+      ? newSocket?.emit("register", { userId: userId })
+      : newSocket?.emit("register", { userId: "Anonymous" });
+
+    newSocket?.on("registered", (data) => setSocketId(data.userId));
 
     return () => {
       newSocket.off("hello");
@@ -149,6 +160,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
               }
             : null,
         socket: socket,
+        socketId: socketId,
         setProfileName: setProfileName,
         setProfileImage: setProfileImage,
         setJWT: setUserJWT,
