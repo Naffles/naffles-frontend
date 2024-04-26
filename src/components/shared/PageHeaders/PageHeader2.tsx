@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, ChangeEvent } from "react";
 import Link from "next/link";
 import { FaDiscord, FaTwitter, FaUserCircle } from "react-icons/fa";
 import colorVariants from "@components/utils/constants";
 import { useUser } from "@blockchain/context/UserContext";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import WalletIcon from "@components/icons/walletIcon";
+import UserIcon from "@components/icons/userIcon";
+import DeleteIcon from "@components/icons/deleteIcon";
 import { ConnectButton } from "@components/magic";
 import { Modal } from "@components/shared/Modal";
 import { RegistrationForm, LoginForm } from "@components/shared/AuthForms";
+import { ProfileForm, ProfileSubmitData } from "../AuthForms/ProfileForm";
+import axios from "@components/utils/axios";
 import { HiMenu } from "react-icons/hi";
 
 type PageHeaderProps = {
@@ -81,9 +85,32 @@ const PageHeader: React.FC<PageHeaderProps> = (
     console.log(response);
   };
 
+  const [openModal, setOpenModal] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event?.target?.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setImageUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpload = () => {
+    console.log("Image uploaded:", imageFile);
+  };
+
+  const handleProfileEditSubmit = (data: ProfileSubmitData) => {
+    const form = new FormData();
+    if (data?.username) form.append("username", data.username);
+    if (imageFile) form.append("file", imageFile);
+    axios.patch("user/profile", form);
+  };
+
   return (
     <div className="fixed top-0 flex items-center justify-center w-full bg-transparent px-[25px] pt-[25px] z-50">
-      {!basicUser && (
+      {!basicUser ? (
         <>
           <Modal
             title="REGISTER"
@@ -124,6 +151,103 @@ const PageHeader: React.FC<PageHeaderProps> = (
             </div>
           </Modal>
         </>
+      ) : (
+        <Modal
+          show={openModal}
+          hideModal={() => setOpenModal(false)}
+          title="Edit Profile"
+        >
+          <div className="flex flex-col items-start h-auto">
+            <div className="flex flex-row items-center">
+              <div className="relative">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className={`w-[180px] h-[180px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 ${
+                    imageFile && "bg-gray-200 rounded-full"
+                  }`}
+                  onChange={handleChange}
+                />
+                <div
+                  className={`w-[180px] h-[180px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${
+                    !imageFile && "bg-gray-300"
+                  }`}
+                  style={
+                    !imageUrl
+                      ? { backgroundImage: `url(/static/nft-dummy.png)` }
+                      : { backgroundImage: `url(${imageUrl})` }
+                  }
+                  onClick={handleUpload}
+                >
+                  {!imageFile && (
+                    <div className="flex items-center justify-center h-full text-white bg-black bg-opacity-30 rounded-full">
+                      Click to upload
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <ProfileForm handleSubmit={handleProfileEditSubmit} />
+            </div>
+            <div className="flex flex-col w-full mt-3 items-center">
+              <label htmlFor="wallet" className="text-nafl-white tex-sm mt-5">
+                <h5 className="text-nafl-sponge-500 text-sm">
+                  Connected Wallet(s)
+                </h5>
+              </label>
+              <div className="flex flex-col items-center justify-between w-full">
+                {/* not input, but a row displaying the wallet address plus delete icon button in the right of it */}
+                <div className="flex flex-row items-center justify-between w-[300px] mt-1">
+                  <input
+                    type="text"
+                    name="wallet"
+                    placeholder="0xb794f5ea0...ba74279579268"
+                    className="border border-black p-2 w-[300px]"
+                    disabled
+                  />
+                  <DeleteIcon
+                    size="sm"
+                    colour="yellow"
+                    className="mt-[2px] ml-3 cursor-pointer"
+                  />
+                </div>
+                <div className="flex flex-row items-center justify-between w-[300px] mt-1">
+                  <input
+                    type="text"
+                    name="wallet"
+                    placeholder="0xb794f5ea0...ba74279579268"
+                    className="border border-black p-2 w-[300px]"
+                    disabled
+                  />
+                  <DeleteIcon
+                    size="sm"
+                    colour="yellow"
+                    className="mt-[2px] ml-3 cursor-pointer"
+                  />
+                </div>
+                <div className="flex flex-row items-center justify-between w-[300px] mt-1">
+                  <input
+                    type="text"
+                    name="wallet"
+                    placeholder="0xb794f5ea0...ba74279579268"
+                    className="border border-black p-2 w-[300px]"
+                    disabled
+                  />
+                  <DeleteIcon
+                    size="sm"
+                    colour="yellow"
+                    className="mt-[2px] ml-3 cursor-pointer"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col items-center w-full">
+              <button className="mt-4 bg-nafl-sponge-500 px-5 py-1 rounded-md align-middle">
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </Modal>
       )}
 
       <div className="lg:flex hidden flex-row items-center justify-between rounded-lg h-[84px] w-full relative px-[19px]">
@@ -199,12 +323,20 @@ const PageHeader: React.FC<PageHeaderProps> = (
                       className="absolute z-50 right-0 mt-2 w-48 rounded-md shadow-sm bg-white dark:bg-gray-800 overflow-hidden"
                     >
                       {basicUser ? (
-                        <Link
-                          href={"/profile/aaa"}
-                          className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                        >
-                          View Profile
-                        </Link>
+                        <>
+                          <Link
+                            href={"/profile/aaa"}
+                            className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                          >
+                            View Profile
+                          </Link>
+                          <li
+                            className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                            onClick={() => setOpenModal(true)}
+                          >
+                            Edit Profile
+                          </li>
+                        </>
                       ) : (
                         <li
                           className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
@@ -352,7 +484,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
               className="flex items-center justify-center focus:outline-none rounded-[10px] p-2 w-full"
               // onBlur={() => setOpen(!open)}
             >
-              <WalletIcon
+              <UserIcon
                 colour="black"
                 // onClick={() => setShowModal(true)}
                 size="lg"
@@ -394,6 +526,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 </li>
               )}
             </ul>
+            <WalletIcon colour="black" size="lg" className="cursor-pointer" />
           </div>
         </div>
       </div>

@@ -88,8 +88,8 @@ export const BasicUserProvider = ({
         identifier,
         password,
       });
-      setUser(data?.user);
-      setJWT(data?.token);
+      setUser(data?.user ?? null);
+      setJWT(data?.token ?? null);
       setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
       console.log("data:", data);
       return data;
@@ -104,7 +104,7 @@ export const BasicUserProvider = ({
   }, [removeJWT, removeUser, removePoints]);
 
   const contextValue = useMemo(() => {
-    const points = pointsObject?.points || 0;
+    const points = pointsObject?.points ?? 0;
     return { jwt, user, points, addPoints, login, logout };
   }, [jwt, user, login, logout, pointsObject, addPoints]);
 
