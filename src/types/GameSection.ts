@@ -8,11 +8,11 @@ export interface BaseGameProps {
   triggerUnlock?: () => any;
   gameCall?: () => any;
   onCountdownFinish?: () => any;
-  onVideoFinish?: () => any;
+  onVideoFinish?: (hasSelected: boolean) => any;
   onChoiceClicked?: () => any;
   onWinNotify?: () => any;
 }
 
 export interface GameContainerProps {
-  handlePlayCount?: () => any;
+  handlePlayCount?: (hasSelected?: boolean) => any;
 }

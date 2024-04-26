@@ -107,6 +107,12 @@ const PageHeader: React.FC<PageHeaderProps> = (
     if (imageFile) form.append("file", imageFile);
     axios.patch("user/profile", form);
   };
+  const handleLogout = () => {
+    setShowModal(false);
+    setShowOtherModal(false);
+    setOpenModal(false);
+    logout();
+  };
 
   return (
     <div className="fixed top-0 flex items-center justify-center w-full bg-transparent px-[25px] pt-[25px] z-50">
@@ -351,7 +357,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                       {basicUser && (
                         <li
                           className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                          onClick={logout}
+                          onClick={handleLogout}
                         >
                           Logout
                         </li>
@@ -520,7 +526,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
               {basicUser && (
                 <li
                   className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                  onClick={logout}
+                  onClick={handleLogout}
                 >
                   Logout
                 </li>

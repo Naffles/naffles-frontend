@@ -2,6 +2,7 @@
 import React, { createContext, useCallback, useContext, useMemo } from "react";
 import { useLocalStorage } from "@hook/useLocalStorage";
 import axios from "@components/utils/axios";
+import unixToString from "@components/utils/unixToString";
 
 type LoginParams = {
   identifier: string;
@@ -23,9 +24,6 @@ type BasicUserContextType = {
   login: (data: LoginParams) => Record<string, any> | void;
   logout: () => void;
 };
-
-const unixToString = (unixTimestamp: number) =>
-  new Date(unixTimestamp).toISOString().split("T")[0];
 
 // // Create a context for user data.
 const BasicUserContext = createContext<BasicUserContextType>({

@@ -153,7 +153,7 @@ export const BaseGame = (props: BaseGameProps) => {
       setIsLocked(false);
       setIsCountingDown(true);
       setTimeleft(DEFAULT_TIMER);
-      onVideoFinish();
+      onVideoFinish(!!selectedChoice);
     }
   };
 
