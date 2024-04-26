@@ -1,10 +1,46 @@
 "use client";
 
+import { useUser } from "@blockchain/context/UserContext";
+import { useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { TfiMenu } from "react-icons/tfi";
+import moment from "moment";
 
+interface Message {
+  sender: { username: string; profileImage: string; _id: string };
+  timestamp: Date;
+  message: string | null;
+}
 const GameZoneChat = () => {
+  const { socket, socketId } = useUser();
+  const [chatData, setChatData] = useState<Message[]>([]);
+  const [message, setMessage] = useState<string>("");
+
+  const chatContainer = useRef<HTMLDivElement>(null);
+  const bottomChat = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    socket && socket?.emit("joinGlobalChat");
+    socket?.on("receiveGlobalChatMessage", (data) => {
+      console.log("receiveGlobalChatMessage", data);
+      setChatData((oldData) => [...oldData, data]);
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    if (chatData.length > 0) {
+      scrollToBottom();
+    }
+  }, [chatData]);
+
+  const randomString = (length: number, chars: string) => {
+    var result = "";
+    for (var i = length; i > 0; --i)
+      result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+  };
+
   let sample_balances_json = [
     {
       id: 1,
@@ -74,6 +110,18 @@ const GameZoneChat = () => {
     },
   ];
 
+  const sendGlobalChatMessage = (message: string) => {
+    console.log("message:", message);
+    socket?.emit("sendGlobalChatMessage", { message: message });
+    setMessage("");
+  };
+
+  const scrollToBottom = () => {
+    if (bottomChat.current) {
+      bottomChat.current.scrollTop = bottomChat.current.scrollHeight;
+    }
+  };
+
   const BalancesListOption = ({
     type,
     balance,
@@ -97,34 +145,59 @@ const GameZoneChat = () => {
   };
 
   const CommentSection = ({
-    name,
+    currentId,
+    senderId,
+    sender,
     image,
-    date,
-    time,
-    comment,
+    timestamp,
+    message,
   }: {
-    name: string;
+    currentId: string | null;
+    senderId: string;
+    sender: string;
     image: string;
-    date: string;
-    time: string;
-    comment: string;
+    timestamp: Date;
+    message: string | null;
   }): React.JSX.Element => {
+    var options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+
+    const messageTimeStamp = new Date(timestamp);
+
+    const shortenUsername = (username: string) => {
+      if (username?.length > 15) {
+        return username.slice(0, 15) + "...";
+      } else return username;
+    };
+
     return (
       <>
         <div className="flex flex-row items-start justify-start gap-[19px] w-full">
           <img
-            src={image}
+            src={image == "" ? "/static/user-circle.png" : image}
             alt="Account Image"
             className="w-[40px] h-[38px] rounded-full object-contain"
           />
-          <div className="flex flex-col w-[350px] items-start justify-start gap-[11px]">
+          <div className="flex flex-col w-full items-start justify-start gap-[11px]">
             <div className="flex flex-row items-end justify-start gap-[6px]">
-              <p className="text-[#DC2ABF] text-[14px] font-bold leading-[100%]">
-                {name}
+              {currentId == senderId ? (
+                <p className="text-[#DC2ABF] text-[14px] font-bold leading-[100%]">
+                  You
+                </p>
+              ) : (
+                <p className="text-nafl-sponge-500 text-[14px] font-bold leading-[100%]">
+                  {shortenUsername(sender)}
+                </p>
+              )}
+              <p className="text-[#fff]/50 text-[10px]">
+                {moment(messageTimeStamp).format("MM/DD/YYYY h:mmA")}
               </p>
-              <p className="text-[#fff]/50 text-[10px]">{`${date} ${time}`}</p>
             </div>
-            <p className="w-full text-[#B7B4B4] text-[16px]">{comment}</p>
+            <p className="w-full text-[#B7B4B4] text-[16px]">{message}</p>
           </div>
         </div>
       </>
@@ -132,9 +205,9 @@ const GameZoneChat = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start bg-[#383838] rounded-[16px] w-[457px] h-[963px]">
-      <div className="flex flex-col items-center justify-start py-[13px] px-[20px] rounded-t-[16px] border-b-[1px] border-nafl-sponge-500/50">
-        <div className="flex flex-row items-center justify-between py-[7px] px-[20px] rounded-[13px] border-[1px] border-[#DC2ABF] h-[54px] w-[394px]">
+    <div className="xl:flex hidden flex-col items-center justify-start bg-[#383838] rounded-[16px] lg:w-[457px] max-w-[457px] w-[90%]">
+      <div className="flex flex-col items-center justify-start py-[13px] px-[20px] rounded-t-[16px] border-b-[1px] border-nafl-sponge-500/50 w-full">
+        <div className="flex flex-row items-center justify-between py-[7px] px-[20px] rounded-[13px] border-[1px] border-[#DC2ABF] h-[54px] lg:w-[394px] w-full">
           <div className="flex flex-row items-center justify-center gap-[19px]">
             <img
               src="/static/naffles-jackpot-token.png"
@@ -174,7 +247,7 @@ const GameZoneChat = () => {
             </button>
           </div>
           <div className="w-full py-[14px] px-[12px] bg-[#4B4B4B] rounded-b-[10px] ">
-            <div className="w-full h-[118px]  overflow-hidden overflow-y-scroll balance-scrollbar">
+            <div className="w-full h-[118px] overflow-hidden overflow-y-scroll balance-scrollbar">
               <div className="flex flex-col gap-[10px] w-full min-h-[114px] items-start justify-start">
                 {sample_balances_json.map((item) => (
                   <BalancesListOption
@@ -189,29 +262,46 @@ const GameZoneChat = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col py-[10px] px-[10px] gap-[10px]">
-        <div className="flex flex-col h-[488px] w-full overflow-hidden overflow-y-scroll pt-[15px] comments-scrollbar">
-          <div className="flex flex-col min-h-[488px] w-full gap-[19px]">
-            {sample_comments_json.map((item) => (
+      <div className="flex flex-col py-[10px] px-[21px] gap-[10px] w-full">
+        <div
+          className="flex flex-col h-[488px] w-full overflow-hidden overflow-y-scroll pt-[15px] comments-scrollbar"
+          ref={bottomChat}
+        >
+          <div className="flex flex-col w-full gap-[19px]">
+            {chatData.map((item) => (
               <CommentSection
-                key={item.id}
-                name={item.name}
-                image={item.image}
-                date={item.date}
-                time={item.time}
-                comment={item.comment}
+                key={randomString(
+                  12,
+                  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                )}
+                currentId={socketId}
+                senderId={item.sender._id}
+                sender={item.sender.username}
+                image={item.sender.profileImage}
+                timestamp={item.timestamp}
+                message={item.message}
               />
             ))}
           </div>
+          {/* <div ref={bottomChat} /> */}
         </div>
         <div className="flex items-center w-full relative">
           <input
             type="text"
             placeholder="Message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) =>
+              e.key == "Enter" && message && sendGlobalChatMessage(message)
+            }
+            maxLength={50}
             className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
           />
           <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
-          <BiSend className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
+          <BiSend
+            onClick={() => message && sendGlobalChatMessage(message)}
+            className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer"
+          />
         </div>
 
         <div className="w-full h-[58px] rounded-[10px] relative overflow-hidden">

@@ -11,7 +11,12 @@ type CardProps = {
   buttonText: string;
 };
 
-const Card: React.FC<CardProps> = ({ title, description, price, buttonText }) => {
+const Card: React.FC<CardProps> = ({
+  title,
+  description,
+  price,
+  buttonText,
+}) => {
   const router = useRouter();
   const handleClick = () => {
     // router.push(`/${title}`); redirect to its nft profile page
@@ -19,42 +24,68 @@ const Card: React.FC<CardProps> = ({ title, description, price, buttonText }) =>
   };
 
   return (
-      <>
-        <button 
-          className="bg-nafl-grey-900 z-10 mx-auto overflow-hidden p-2.5 rounded-2xl min-w-[210px] user-select-none h-[312px]"
-          onClick={handleClick}
-        >
-          <div className="relative bg-nafl-white rounded-xl mx-auto px-0 py-0 pb-7 h-[292px]">
+    <>
+      <button
+        className="bg-nafl-grey-900 border-nafl-grey-900 border-[6px] z-10 overflow-hidden rounded-[21px] w-[210px] user-select-none h-[312px] "
+        onClick={handleClick}
+      >
+        <div className="flex flex-col relative rounded-[6px] h-full w-full overflow-hidden">
           <div className="absolute bg-nafl-grey-900 z-10 overflow-hidden rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" />
-            <Image src="/static/ape-dummy.png" alt={title} width={210} height={172} sizes="210px"/>
-            <div className="flex justify-between relative top-[-70px] bg-nafl-white">
-              <div className="h-12 flex-row ml-2 mt-3">
-                <h3 className="text-lg font-semibold text-nafl-charcoal-500">{title}</h3>
-                <h4 className="text-lg text-nafl-charcoal-500">{description}</h4>
+          <img
+            src="/static/sample-nft-image-1.png"
+            alt="Sample NFT Card Image"
+            className="w-full h-[70%] object-cover rounded-t-[14px]"
+          />
+          <div className="flex flex-col px-[15px] items-center justify-start bg-nafl-white gap-[7px] absolute bottom-0 w-full py-[12px]">
+            <div className="flex items-center justify-between border-[#000]/20 border-b-[1px] w-full ">
+              <div className="flex-col items-start justify-center ">
+                <p className="text-[13px] text-nafl-charcoal-500 font-face-bebas leading-[110%]">
+                  {title}
+                </p>
+                <p className="text-[13px] text-nafl-charcoal-500 font-face-bebas leading-[100%]">
+                  {description}
+                </p>
               </div>
-              <div className="flex mt-2">
-                <Typography size="text-5xl pr-2" color="accent-green">#9419</Typography>
-              </div>
+              <p className="text-[#02B1B1] text-[40px] font-face-bebas leading-[100%]">
+                #9419
+              </p>
             </div>
-            <hr className="nafl-grey-100 relative top-[-75px]"/>
-            <div className="flex justify-between relative top-[-72px] pb-2">
-              <div className="h-12 flex-row ml-2 mt-1">
-                <h4 className="text-sm font-semibold text-nafl-charcoal-500">tickets left</h4>
-                <h2 className="text-xl font-semibold text-nafl-charcoal-500">69</h2>
-                <h4 className="text-xs font-semibold text-nafl-charcoal-500">of 23,000</h4>
+            <div className="flex flex-row items-center justify-between w-full">
+              <div className="flex flex-col items-start w-[80px] border-r-[1px] border-[#000]/20 gap-[3px]">
+                <p className="text-[10px] font-face-bebas text-[#464646] leading-[100%]">
+                  TICKETS LEFT
+                </p>
+                <p className="text-[21px] font-bold font-face-bebas text-[#464646] leading-[100%]">
+                  69
+                </p>
+                <p className="text-[10px] font-face-bebas text-[#464646] leading-[100%]">
+                  OF 23,000
+                </p>
               </div>
-              <div className="flex-row mt-1 mr-2">
-                <h4 className="text-sm font-semibold text-nafl-charcoal-500 text-right">ticket price</h4>
-                <div className="flex">
-                  <Image src="/static/eth-logo.png" alt="nafl-coin" width={20} height={20} sizes="20px" style={{objectFit: 'contain'}}/>
-                  <h2 className="text-xl font-semibold text-nafl-charcoal-500 text-right">0.01</h2>
+              <div className="flex flex-col items-start w-[100px] px-[15px] py-[5px] gap-[2px]">
+                <p className="text-[10px] font-face-bebas text-[#464646] leading-[100%]">
+                  TICKETS PRICE
+                </p>
+                <div className="flex flex-row items-center justify-center w-full gap-[6px]">
+                  <img
+                    src="/static/eth-logo.png"
+                    alt="ETH Logo"
+                    className="w-[16px] object-contain"
+                  />
+                  <p className="text-[21px] font-bold font-face-bebas text-[#464646] leading-[100%]">
+                    0.005
+                  </p>
                 </div>
-                <Typography className="text-xs font-semibold text-right" color="accent-green">($16 USD)</Typography>
+
+                <p className="flex items-center justify-center w-full text-[11px] font-face-bebas text-[#02B1B1] leading-[100%]">
+                  ($ 16 USD)
+                </p>
               </div>
             </div>
           </div>
-        </button>
-      </>
-    );
-  };
+        </div>
+      </button>
+    </>
+  );
+};
 export default Card;

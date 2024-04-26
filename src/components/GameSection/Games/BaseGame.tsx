@@ -27,7 +27,6 @@ export const BaseGame = (props: BaseGameProps) => {
     onVideoFinish = () => {},
     onChoiceClicked = () => {},
   } = props;
-  const [isFirst, setIsFirst] = useState(true);
   const [timeleft, setTimeleft] = useState(DEFAULT_TIMER);
   const [isCountingDown, setIsCountingDown] = useState(true);
   const [result, setResult] = useState("");
@@ -53,11 +52,15 @@ export const BaseGame = (props: BaseGameProps) => {
 
   const triggerGame = useCallback(async () => {
     setIsLocked(true);
-    const { result = null } = (await gameCall()) || {};
+    let result;
+    if (selectedChoice) {
+      const data = (await gameCall()) || {};
+      result = data?.result;
+    }
     const randomResult = randomFromArray(results);
     setResult(result ?? randomResult);
     onCountdownFinish();
-  }, [gameCall, onCountdownFinish, results]);
+  }, [gameCall, onCountdownFinish, results, selectedChoice]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -130,12 +133,9 @@ export const BaseGame = (props: BaseGameProps) => {
       setSelectedChoice(choiceClicked);
       setDisplayChoice(choiceClicked);
       onChoiceClicked();
-      if (isFirst) {
-        setIsCountingDown(false);
-        setTimeleft(0);
-        setIsFirst(false);
-        triggerGame();
-      }
+      setIsCountingDown(false);
+      setTimeleft(0);
+      triggerGame();
     }
   };
 
@@ -144,6 +144,10 @@ export const BaseGame = (props: BaseGameProps) => {
       onWinNotify();
     }
     if (isLocked) {
+      setTimeout(() => {
+        setResult("");
+        setDisplayVideo(null);
+      }, 1700);
       setSelectedChoice("");
       setDisplayChoice("");
       setIsLocked(false);
@@ -155,8 +159,8 @@ export const BaseGame = (props: BaseGameProps) => {
 
   return (
     <>
-      <div className="flex-row flex mt-5">
-        <div className="flex-col flex gap-2 -mr-4 z-10 pt-4 w-[155px] xs:hidden sm:hidden md:hidden lg:flex">
+      <div className="flex-row flex items-center justify-center">
+        <div className="flex-col gap-2 -mr-4 z-10 pt-4 w-[155px] hidden lg:flex">
           {choices.map((choice) => (
             <Button
               size="lg"
@@ -174,8 +178,8 @@ export const BaseGame = (props: BaseGameProps) => {
             </Button>
           ))}
         </div>
-        <div className="flex-col flex bg-nafl-grey-700 w-[500px] rounded-3xl overflow-hidden">
-          <div className="lg:h-[188px] sm:h-[135px] xs:h-[135px] md:h-[135px]">
+        <div className="flex-col flex items-center justify-start bg-nafl-grey-700 lg:w-[530px] w-full rounded-3xl overflow-hidden h-[269px] relative">
+          <div className="lg:w-[600px] w-[180%] h-[240px]">
             {videoArray.map(({ choice, result: vidResult, variant }, idx) => (
               <video
                 playsInline={true}
@@ -208,18 +212,26 @@ export const BaseGame = (props: BaseGameProps) => {
             </video>
           </div>
           <div
-            className={`${barColor} h-50 pb-1 px-4 flex-row flex justify-between`}
+            className={`${barColor} flex items-center bg-nafl-aqua-500 h-[50px] px-[20px] flex-row justify-between absolute bottom-0 w-full`}
           >
-            <div className="text-md leading-tight">
-              Starting in
-              <br />
-              <div className="text-xl leading-tight">{timeleft} sec</div>
+            <div className="flex flex-col items-start justify-center mt-[5px]">
+              <p className="text-[12px] leading-[100%] font-face-bebas">
+                Starting in
+              </p>
+              <div className="text-[25px] leading-[100%]">
+                {timeleft} {""}
+                <span className="text-[16px] cursor-text font-face-bebas">
+                  seconds
+                </span>
+              </div>
             </div>
-            <div className="flex items-center text-lg">PLAY & EARN</div>
+            <div className="flex items-center text-[18px] leading-[100%]">
+              PLAY & EARN
+            </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-row sm:flex md:flex xs:flex lg:hidden xl:hidden my-3">
+      <div className="flex flex-row sm:flex md:flex xs:flex lg:hidden xl:hidden my-3 gap-[6px]">
         {choices.map((choice) => (
           <Button
             size="sm"

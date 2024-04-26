@@ -5,9 +5,6 @@ import "../globals.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import PageHeader from "@components/shared/PageHeaders/PageHeader2";
-import Footer from "@components/shared/Footer/Footer";
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,13 +18,5 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <Fragment>
-      {/* <body className={inter.className}> */}
-        {/* <PageHeader /> */}
-        {children}
-        {/* <Footer /> */}
-      {/* </body> */}
-    </Fragment>
-  );
+  return <Fragment>{children}</Fragment>;
 }

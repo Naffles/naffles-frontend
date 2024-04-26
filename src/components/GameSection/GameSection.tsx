@@ -40,18 +40,18 @@ export const GameSection = () => {
       >
         <RegistrationForm />
       </Modal>
-      <div className="flex-row flex justify-center gamezone-container gap-4 pt-8 md:hidden sm:hidden xs:hidden lg:flex">
+      <div className="flex-row flex-wrap justify-center items-center gamezone-container gap-4 pt-8 hidden lg:flex">
         <div className="flex-col flex games-container gap-8">
           <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
           <CoinTossGame handlePlayCount={onPlayEnd} />
         </div>
-        <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl">
+        <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl xl:mt-0 lg:mt-[100px]">
           <DemoPointsLeaderboards />
         </div>
       </div>
       {
         isMobile && (
-          <div className="md:flex sm:flex xs:flex lg:hidden flex-col h-auto">
+          <div className="flex lg:hidden xl:hidden flex-col h-auto">
             <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
             <CoinTossGame handlePlayCount={onPlayEnd} />
           </div>

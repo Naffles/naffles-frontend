@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser } from "@blockchain/context/UserContext";
 import {
   Table,
   TableHeader,
@@ -10,19 +11,34 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { io, Socket } from "socket.io-client";
 
 interface tableRow {
-  id: number;
+  id: string;
   game: string;
   player: string;
+  playerId: string;
   image: string;
   buyin: number;
   payout: number;
-  currency: string;
+  currency: string | null;
   allowJoin: boolean;
+  myId: string | null | undefined;
+}
+
+interface gamezoneReturnArr {
+  _id: string;
+  gameType: string;
+  creator: { profileImage: string; username: string; _id: string };
+  betAmount: { $numberDecimal: number };
+  odds: { $numberDecimal: number };
+  status: string;
 }
 
 const GameZoneGamesTable = () => {
+  const { user, socket } = useUser();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
 
@@ -120,26 +136,98 @@ const GameZoneGamesTable = () => {
   ];
 
   useEffect(() => {
-    fetchTableData();
-    setIsLoading(false);
-  }, []);
+    socket && fetchTableData(user?.id);
+  }, [socket, user]);
 
-  const fetchTableData = () => {
-    setTableData(sample_games_json);
+  useEffect(() => {
+    socket?.on("gameJoinRequest", (data: any) => {
+      console.log("gameJoinRequest data: ", data);
+    });
+  }, [socket]);
+
+  const fetchTableData = async (userId: string | null | undefined) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}game`, {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": `${process.env.NEXT_PUBLIC_API_KEY}`,
+        },
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("RESULT :", result);
+        result && tableDataSetter(result.data.games, userId);
+        result && setIsLoading(false);
+        // socket.emit("notificationRoom", { data: userId });
+      } else {
+        console.error("Failed to create game: ", result.message);
+      }
+    } catch (error) {
+      console.error("Error creating game: ", error);
+    }
   };
 
   const shortenWalletAddress = (address: string) => {
-    if (address?.length > 10) {
+    if (address?.length > 30) {
       return address.slice(0, 5) + "..." + address.slice(-7, -1);
+    } else if (address?.length > 15) {
+      return address.slice(0, 15) + "...";
     } else return address;
   };
+
+  const tableDataSetter = (
+    apiData: gamezoneReturnArr[],
+    userId: string | null | undefined
+  ) => {
+    let tableData = apiData?.map((item) => {
+      return {
+        id: item._id,
+        game: item.gameType,
+        player: item.creator.username,
+        playerId: item.creator._id,
+        image: item.creator.profileImage,
+        buyin: item.betAmount.$numberDecimal,
+        payout: item.betAmount.$numberDecimal * item.odds.$numberDecimal,
+        currency: "",
+        allowJoin: item.status == "waiting" ? true : false,
+        myId: userId,
+      };
+    });
+    console.log("tableData: ", tableData);
+    setTableData(tableData);
+  };
+
+  const joinGame = (gameId: string, userId: string | null) => {
+    // console.log("joined a game start");
+    var currentDate = new Date();
+    currentDate.setSeconds(currentDate.getSeconds() + 10);
+
+    console.log("currentDate", currentDate);
+    socket?.emit("joinGame", {
+      userId: userId,
+      gameId: gameId,
+      timeout: currentDate,
+    });
+    // socket?.emit("challengerJoinRequest", { data: "hello" });
+    // socket?.emit("notificationRoom", { data: id });
+    console.log("joined a game end");
+  };
+
   return (
-    <div className="w-full px-[20px] bg-[#383838] mt-[30px]">
+    <div className="flex flex-col w-full px-[20px] bg-[#383838] mt-[30px]">
       <Table
+        aria-label="Gamezone games table"
         removeWrapper
         classNames={{
           th: "bg-[#383838] border-y-[1px] border-[#fff] text-[#fff] font-face-roboto",
+          base: "h-[800px] w-full overflow-scroll balance-scrollbar",
         }}
+        isHeaderSticky
       >
         <TableHeader>
           <TableColumn>GAME</TableColumn>
@@ -152,7 +240,7 @@ const GameZoneGamesTable = () => {
           isLoading={isLoading}
           loadingContent={<Spinner label="Loading..." />}
         >
-          {(item) => (
+          {tableData.map((item) => (
             <TableRow key={item.id}>
               <TableCell>
                 <div className="flex flex-row items-center gap-[7px] h-[70px]">
@@ -161,7 +249,9 @@ const GameZoneGamesTable = () => {
                     alt="Game Icon"
                     className="w-[33px] h-[33px] bg-[#D9D9D9] border-[1px] border-[#DC2ABF] rounded-full"
                   />{" "}
-                  <p className="text-[16px] font-bold">{item.game}</p>
+                  <p className="text-[16px] font-bold text-[#fff]">
+                    {item.game}
+                  </p>
                 </div>
               </TableCell>
               <TableCell>
@@ -171,33 +261,48 @@ const GameZoneGamesTable = () => {
                     alt="Game Icon"
                     className="w-[33px] h-[33px] bg-[#D9D9D9] rounded-full"
                   />{" "}
-                  <p className="text-[16px] font-bold">
+                  <p className="text-[16px] font-bold text-[#fff]">
                     {shortenWalletAddress(item.player)}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-center gap-[6px]">
-                  <p className="text-[16px] font-bold">{item.buyin}</p>
-                  <p className="text-[16px] font-bold">{item.currency}</p>
+                  <p className="text-[16px] font-bold text-[#fff]">
+                    {item.buyin}
+                  </p>
+                  <p className="text-[16px] font-bold text-[#fff]">
+                    {item.currency}
+                  </p>
                 </div>
               </TableCell>
 
               <TableCell>
                 <div className="flex flex-row items-center justify-between gap-[7px]">
                   <div className="flex flex-row items-center justify-center gap-[6px]">
-                    <p className="text-[16px] font-bold">{item.payout}</p>
-                    <p className="text-[16px] font-bold">{item.currency}</p>
+                    <p className="text-[16px] font-bold text-[#fff]">
+                      {item.payout}
+                    </p>
+                    <p className="text-[16px] font-bold text-[#fff]">
+                      {item.currency}
+                    </p>
                   </div>
                   {item.allowJoin && (
-                    <button className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] border-[#DC2ABF] border-[1px] bg-trasparent">
+                    <button
+                      onClick={() =>
+                        item.myId
+                          ? joinGame(item.id, item.myId)
+                          : toast.error("You must login first!")
+                      }
+                      className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] border-[#DC2ABF] border-[1px] bg-trasparent"
+                    >
                       <p className="text-[18px] font-bold">JOIN</p>
                     </button>
                   )}
                 </div>
               </TableCell>
             </TableRow>
-          )}
+          ))}
         </TableBody>
       </Table>
     </div>

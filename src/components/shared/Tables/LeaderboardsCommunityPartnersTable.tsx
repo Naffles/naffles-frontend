@@ -160,6 +160,7 @@ const LeaderboardsCommunityPartnersTable = () => {
       removeWrapper
       classNames={{
         th: "h-[36px] bg-[#383838] border-y-[1px] border-[#fff] text-[#fff] text-[16px] font-face-roboto",
+        base: "h-[800px] w-full overflow-scroll balance-scrollbar",
       }}
     >
       <TableHeader>

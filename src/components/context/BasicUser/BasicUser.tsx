@@ -3,6 +3,11 @@ import React, { createContext, useCallback, useContext, useMemo } from "react";
 import { useLocalStorage } from "@hook/useLocalStorage";
 import axios from "@components/utils/axios";
 
+type LoginParams = {
+  identifier: string;
+  password: string;
+};
+
 // Define the type for the user
 type BasicUser = Record<string, any>;
 type PointsObject = {
@@ -22,7 +27,7 @@ type BasicUserContextType = {
 const unixToString = (unixTimestamp: number) =>
   new Date(unixTimestamp).toISOString().split("T")[0];
 
-// Create a context for user data.
+// // Create a context for user data.
 const BasicUserContext = createContext<BasicUserContextType>({
   user: null,
   jwt: null,
@@ -34,11 +39,6 @@ const BasicUserContext = createContext<BasicUserContextType>({
 
 // Custom hook for accessing user context data.
 export const useBasicUser = () => useContext(BasicUserContext);
-
-type LoginParams = {
-  identifier: string;
-  password: string;
-};
 
 // Provider component that wraps parts of the app that need user context.
 export const BasicUserProvider = ({
@@ -91,6 +91,7 @@ export const BasicUserProvider = ({
       setUser(data?.user);
       setJWT(data?.token);
       setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
+      console.log("data:", data);
       return data;
     },
     [setJWT, setUser, setPoints]
