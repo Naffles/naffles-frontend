@@ -5,15 +5,16 @@ import useGame from "@components/utils/gamezone";
 import { CircularProgress } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 
-const GameZoneJoining = () => {
-  const { socket } = useUser();
+const GameZoneAccepting = () => {
+  const { socket, user } = useUser();
   const [countdownTimer, setCountdownTimer] = useState<number>(200);
 
-  const currentScreen = useGame((state) => state.screen);
   const currentGameType = useGame((state) => state.type);
   const currentCoinType = useGame((state) => state.coinType);
   const currentBetAmount = useGame((state) => state.betAmount);
   const currentOdds = useGame((state) => state.betOdds);
+  const currentGameId = useGame((state) => state.gameId);
+  const currentChallengerId = useGame((state) => state.challengerId);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setGameType = useGame((state) => state.setType);
@@ -36,11 +37,11 @@ const GameZoneJoining = () => {
 
   useEffect(() => {
     socket?.on("gameStarted", (data: any) => {
-      if (data.gameId && currentScreen != "ingame") {
+      if (data.gameId) {
         setCurrentScreen("ingame");
-        setDefaultChosen(data.initialChoices.challenger);
+        setDefaultChosen(data.initialChoices.creator);
         setCurrentGameId(data.gameId);
-        setCurrentGameMode("challenger");
+        setCurrentGameMode("host");
       }
     });
   }, [socket]);
@@ -63,11 +64,19 @@ const GameZoneJoining = () => {
     setBetOdds(null);
   };
 
+  const acceptGame = () => {
+    console.log("accept game data: ", currentGameId, currentChallengerId);
+    socket?.emit("acceptJoinRequest", {
+      gameId: currentGameId,
+      challengerId: currentChallengerId,
+    });
+  };
+
   return (
     <div className="flex flex-col w-[500px] bg-[#383838] rounded-[16px]">
       <div className="flex items-center justify-center w-full h-[76px] bg-[#202020] rounded-t-[16px]">
         <p className="text-[40px] text-[#fff] font-face-bebas">
-          GET READY TO PLAY
+          You’ve got a challenger!
         </p>
       </div>
       <div className="flex flex-col items-center justify-start py-[25px] gap-[10px]">
@@ -75,7 +84,7 @@ const GameZoneJoining = () => {
           {currentGameType}
         </p>
         <p className="text-nafl-white text-[12px] leading-[100%]">
-          Waiting for players to join
+          Start the game before the timer runs out!
         </p>
         <div className="flex flex-col items-center">
           <p className=" text-[#989898] text-[14px]">
@@ -119,17 +128,23 @@ const GameZoneJoining = () => {
             SECONDS
           </p>
         </div>
-        <button
-          onClick={() => cancelGame()}
-          className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500 mb-[17px]"
-        >
-          <p className="text-nafl-sponge-500 text-[18px] font-bold">
-            CANCEL GAME
-          </p>
-        </button>
+        <div className="flex flex-row items-center justify-center gap-[20px]">
+          <button
+            onClick={() => cancelGame()}
+            className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500 mb-[17px]"
+          >
+            <p className="text-[#fff] text-[18px] font-bold">REJECT</p>
+          </button>
+          <button
+            onClick={() => currentChallengerId && acceptGame()}
+            className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500 bg-nafl-sponge-500 mb-[17px]"
+          >
+            <p className="text-[#000] text-[18px] font-bold">ACCEPT</p>
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default GameZoneJoining;
+export default GameZoneAccepting;

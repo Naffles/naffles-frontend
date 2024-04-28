@@ -37,7 +37,7 @@ export default function RootLayout({
                 <LoginModal />
                 <DepositModal />
                 <Toaster
-                  position="bottom-right"
+                  position="bottom-center"
                   reverseOrder={false}
                   gutter={8}
                   containerClassName="z-50"

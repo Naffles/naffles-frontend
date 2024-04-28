@@ -207,7 +207,7 @@ const DemoPointsLeaderboards = () => {
         </Table>
       </div>
 
-      <button className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-[96%] h-[45px] gap-[30px]">
+      <button className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-[96%] h-[45px] gap-[30px] relative bottom-[8px]">
         <img
           src="/static/challenge-img.png"
           alt="Challenge Mate Image"

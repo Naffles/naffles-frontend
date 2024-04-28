@@ -12,7 +12,6 @@ import { TfiMenu } from "react-icons/tfi";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { useUser } from "@blockchain/context/UserContext";
 import moment from "moment";
-import useGame from "@components/utils/gamezone";
 
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
@@ -20,7 +19,7 @@ interface Message {
   message: string | null;
 }
 
-const GameZoneChatMobile = () => {
+const GameZoneChatGlobalMobile = () => {
   const [showChat, setShowChat] = useState(false);
   const [showBalances, setShowBalances] = useState(false);
   const { socket, socketId } = useUser();
@@ -30,20 +29,13 @@ const GameZoneChatMobile = () => {
   const chatContainer = useRef<HTMLDivElement>(null);
   const bottomChat = useRef<HTMLDivElement>(null);
 
-  const currentGameId = useGame((state) => state.gameId);
-
-  const [msgSent, setMsgSent] = useState<boolean>(false);
   useEffect(() => {
-    if (msgSent) {
-      console.log("pwet");
-      // socket?.emit("joinGlobalChat");
-      socket?.on("receivePrivateChatRoomMessage", (data) => {
-        console.log("receivePrivateChatRoomMessage", data);
-        setChatData((oldData) => [...oldData, data]);
-      });
-      setMsgSent(false);
-    }
-  }, [msgSent]);
+    socket && socket?.emit("joinGlobalChat");
+    socket?.on("receiveGlobalChatMessage", (data) => {
+      console.log("receiveGlobalChatMessage", data);
+      setChatData((oldData) => [...oldData, data]);
+    });
+  }, [socket]);
 
   useEffect(() => {
     if (chatData.length > 0) {
@@ -127,13 +119,9 @@ const GameZoneChatMobile = () => {
     },
   ];
 
-  const sendChatMessage = (message: string) => {
+  const sendGlobalChatMessage = (message: string) => {
     console.log("message:", message);
-    currentGameId &&
-      socket?.emit("sendChatMessage", {
-        message: message,
-        gameId: currentGameId,
-      });
+    socket?.emit("sendGlobalChatMessage", { message: message });
     setMessage("");
   };
 
@@ -363,19 +351,17 @@ const GameZoneChatMobile = () => {
                       placeholder="Message"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      onKeyDown={(e) => {
-                        e.key == "Enter" && message && sendChatMessage(message);
-                        e.key == "Enter" && setMsgSent(true);
-                      }}
+                      onKeyDown={(e) =>
+                        e.key == "Enter" &&
+                        message &&
+                        sendGlobalChatMessage(message)
+                      }
                       maxLength={50}
                       className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
                     />
                     <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
                     <BiSend
-                      onClick={() => {
-                        message && sendChatMessage(message);
-                        setMsgSent(true);
-                      }}
+                      onClick={() => message && sendGlobalChatMessage(message)}
                       className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer"
                     />
                   </div>
@@ -414,4 +400,4 @@ const GameZoneChatMobile = () => {
   );
 };
 
-export default GameZoneChatMobile;
+export default GameZoneChatGlobalMobile;

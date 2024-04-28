@@ -1,24 +1,21 @@
 "use client";
 
 import Footer from "@components/shared/Footer/Footer";
-import GameZoneChat from "@components/shared/GameZone/GameZoneChat";
 import GameZoneCreateGame from "@components/shared/GameZone/GameZoneCreateGame";
 import GameZoneMain from "@components/shared/GameZone/GameZoneMain";
-import { useEffect, useState } from "react";
 import useGame from "../../components/utils/gamezone";
 import GameZoneGame from "@components/shared/GameZone/GameZoneGame";
 import GameZoneJoining from "@components/shared/GameZone/GameZoneJoining";
-import { io, Socket } from "socket.io-client";
+import GameZoneChatGlobalMobile from "@components/shared/GameZone/GameZoneChatGlobalMobile";
+import GameZoneGlobalChat from "@components/shared/GameZone/GameZoneGlobalChat";
+import GameZoneAccepting from "@components/shared/GameZone/GameZoneAccepting";
+import GameZoneChat from "@components/shared/GameZone/GameZoneChat";
 import GameZoneChatMobile from "@components/shared/GameZone/GameZoneChatMobile";
 
 const GameZone = () => {
   const currentScreen = useGame((state) => state.screen);
-  const currentGameMode = useGame((state) => state.mode);
-  const currentGameType = useGame((state) => state.type);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
-  const setGameMode = useGame((state) => state.setMode);
-  const setGameType = useGame((state) => state.setType);
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -117,7 +114,8 @@ const GameZone = () => {
         {currentScreen == "main" && (
           <div className="flex flex-row flex-wrap items-start justify-center gap-[36px] duration-500 z-20 w-full pb-[100px]">
             <GameZoneMain />
-            <GameZoneChat />
+            <GameZoneGlobalChat />
+            <GameZoneChatGlobalMobile />
           </div>
         )}
 
@@ -135,7 +133,7 @@ const GameZone = () => {
 
         {currentScreen == "accepting" && (
           <div className="flex duration-500 pb-[300px] z-20">
-            <GameZoneCreateGame />
+            <GameZoneAccepting />
           </div>
         )}
 
@@ -143,10 +141,10 @@ const GameZone = () => {
           <div className="flex flex-row items-start justify-center gap-[36px] duration-500 pb-[300px] z-20">
             <GameZoneGame />
             <GameZoneChat />
+            <GameZoneChatMobile />
           </div>
         )}
 
-        <GameZoneChatMobile />
         <Footer />
       </div>
     </div>

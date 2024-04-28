@@ -41,6 +41,12 @@ const GameZoneCreateGame = () => {
 
   let sample_balances_json = [
     {
+      id: 11,
+      type: "Points",
+      balance: "10000",
+      usd: "N/A",
+    },
+    {
       id: 1,
       type: "ETH",
       balance: "1.2369",
@@ -79,6 +85,7 @@ const GameZoneCreateGame = () => {
   ];
 
   let currency_name = [
+    { type: "PTS", name: "Points" },
     { type: "ETH", name: "Ethereum" },
     { type: "BTC", name: "Bitcoin" },
     { type: "BYTES", name: "Neo Tokyo" },
@@ -209,13 +216,17 @@ const GameZoneCreateGame = () => {
               {games_choice_options.map((item) => (
                 <button
                   onClick={() => {
-                    setGameChoice(item);
-                    setGameChoiceDropdown(false);
+                    if (item == "ROCK, PAPERS, SCISSORS") {
+                      setGameChoice(item);
+                      setGameChoiceDropdown(false);
+                    } else {
+                      toast.error("Coin Toss Game mode coming soon");
+                    }
                   }}
                   key={item}
                   className={`flex items-center w-full h-[54px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[20px] ${
                     gameChoice == item && "bg-[#fff]/30"
-                  }`}
+                  } ${item != "ROCK, PAPERS, SCISSORS" && "opacity-20"}`}
                 >
                   <p className="text-[#fff] text-[16px] font-face-bebas">
                     {item}
@@ -256,13 +267,17 @@ const GameZoneCreateGame = () => {
                   {sample_balances_json.map((item) => (
                     <button
                       onClick={() => {
-                        setBalanceType(item);
-                        setBalanceTypeDropdown(false);
+                        if (item.type != "Points") {
+                          toast.error("Using this balance is not allowed");
+                        } else {
+                          setBalanceType(item);
+                          setBalanceTypeDropdown(false);
+                        }
                       }}
                       key={item.id}
                       className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${
                         balanceType.type == item?.type && "bg-[#fff]/30"
-                      }`}
+                      } ${item.type == "Points" ? "opacity-100" : "opacity-30"}`}
                     >
                       {currencyIconReturner(item?.type)}
                       <p className="text-[#fff] text-[16px] font-face-bebas">
@@ -336,13 +351,15 @@ const GameZoneCreateGame = () => {
             <p className=" text-[#989898] text-[14px]">
               Buy-in:{" "}
               <a href="" className="text-[#fff] font-face-roboto italic">
-                0.0001 ETH
+                {balanceAmount.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
+                {balanceType.type}
               </a>
             </p>
             <p className=" text-[#989898] text-[14px]">
               Payout:{" "}
               <a href="" className="text-[#fff] font-face-roboto italic">
-                {totalPayout.toFixed(4)} ETH
+                {totalPayout.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
+                {balanceType.type}
               </a>
             </p>
           </div>
