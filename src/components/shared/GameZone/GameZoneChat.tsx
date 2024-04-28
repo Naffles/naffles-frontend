@@ -25,17 +25,18 @@ const GameZoneChat = () => {
 
   const [msgSent, setMsgSent] = useState<boolean>(false);
 
+  // Add a dedicated useEffect for initializing the socket event listeners
   useEffect(() => {
-    if (msgSent) {
-      console.log("pwet");
-      // socket?.emit("joinGlobalChat");
-      socket?.on("receivePrivateChatRoomMessage", (data) => {
-        console.log("receivePrivateChatRoomMessage", data);
-        setChatData((oldData) => [...oldData, data]);
-      });
-      setMsgSent(false);
-    }
-  }, [msgSent]);
+    const receiveMessage = (data: any) => {
+      console.log("receivePrivateChatRoomMessage", data);
+      setChatData((oldData) => [...oldData, data]);
+    };
+    socket?.on("receivePrivateChatRoomMessage", receiveMessage);
+    // Clean up the listener when the component unmounts or when socket changes
+    return () => {
+      socket?.off("receivePrivateChatRoomMessage", receiveMessage);
+    };
+  }, [socket]); // Dependency on the socket ensures this runs once or when the socket is recreated
 
   useEffect(() => {
     if (chatData.length > 0) {
