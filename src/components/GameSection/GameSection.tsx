@@ -1,34 +1,66 @@
 import { useState, useEffect } from "react";
+import { useLocalStorage } from "@hook/useLocalStorage";
 import { Modal } from "@components/shared/Modal";
 import { RegistrationForm } from "@components/shared/AuthForms";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import DemoPointsLeaderboards from "./DemoPointsLeaderboards";
 import useScreenSize from "@hook/useScreenSize";
 import { RockPaperScissorsGame, CoinTossGame } from "./Games";
+import unixToString from "@components/utils/unixToString";
 
 const DAILY_PLAYS_THRESHOLD = 20;
+type PlaysObject = {
+  plays: number;
+  date: number;
+};
 
 export const GameSection = () => {
   const { user } = useBasicUser();
   const { isMobile } = useScreenSize();
+  const [playsToday, setPlaysToday] = useLocalStorage<PlaysObject | null>(
+    "daily-plays",
+    null,
+    {
+      initializeWithValue: false,
+    }
+  );
   const [openModal, setOpenModal] = useState(false);
-  const [playsToday, setPlaysToday] = useState(0);
 
   useEffect(() => {
-    // getting stored value
-    const saved = localStorage.getItem("daily-plays");
-    const initialValue = saved ? Number(JSON.parse(saved)) : 0;
-    setPlaysToday(initialValue);
-  }, []);
-
-  useEffect(() => {
-    if (playsToday > DAILY_PLAYS_THRESHOLD) {
+    let isPlaysCountToday = false;
+    if (playsToday?.date) {
+      const currentDateNumber = Date.now();
+      const currentDate = unixToString(currentDateNumber);
+      const previousDate = unixToString(playsToday.date);
+      isPlaysCountToday = previousDate === currentDate;
+    }
+    if (
+      isPlaysCountToday &&
+      playsToday?.plays &&
+      playsToday.plays > DAILY_PLAYS_THRESHOLD
+    ) {
       setOpenModal(true);
     }
   }, [playsToday]);
 
   const onPlayEnd = () => {
-    setPlaysToday((plays) => plays + 1);
+    if (!user) {
+      setPlaysToday((playsObject) => {
+        if (playsObject?.date) {
+          const currentDateNumber = Date.now();
+          const currentDate = unixToString(currentDateNumber);
+          const previousDate = unixToString(playsObject.date);
+          if (previousDate === currentDate) {
+            const currentPlays = playsObject?.plays || 0;
+            return {
+              plays: currentPlays + 1,
+              date: currentDateNumber,
+            };
+          }
+        }
+        return { plays: 1, date: Date.now() };
+      });
+    }
   };
 
   return (
@@ -49,14 +81,12 @@ export const GameSection = () => {
           <DemoPointsLeaderboards />
         </div>
       </div>
-      {
-        isMobile && (
-          <div className="flex lg:hidden xl:hidden flex-col h-auto">
-            <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
-            <CoinTossGame handlePlayCount={onPlayEnd} />
-          </div>
-        )
-      }
+      {isMobile && (
+        <div className="flex lg:hidden xl:hidden flex-col h-auto">
+          <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
+          <CoinTossGame handlePlayCount={onPlayEnd} />
+        </div>
+      )}
     </>
   );
 };

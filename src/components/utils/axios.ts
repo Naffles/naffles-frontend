@@ -9,7 +9,12 @@ const instance = axios.create({
 
 instance.interceptors.request.use((config) => {
   const token = localStorage.getItem("naffles-auth");
-  if (token) config.headers["Authorization"] = `Bearer ${token}`;
+  try {
+    if (token) config.headers["Authorization"] = `Bearer ${JSON.parse(token)}`;
+    return config;
+  } catch (err) {
+    console.error("Api interceptor Error: ", err);
+  }
   return config;
 });
 export default instance;

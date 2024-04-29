@@ -17,9 +17,11 @@ export const CoinTossGame = (props: GameContainerProps) => {
     return data;
   }, []);
 
-  const handleVideoEnd = () => {
-    addPoints(points);
-    handlePlayCount?.();
+  const handleVideoEnd = (hasSelected?: boolean) => {
+    if (hasSelected) {
+      addPoints(points);
+      handlePlayCount?.(hasSelected);
+    }
   };
 
   return (
