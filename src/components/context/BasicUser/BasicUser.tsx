@@ -2,6 +2,7 @@
 import React, { createContext, useCallback, useContext, useMemo } from "react";
 import { useLocalStorage } from "@hook/useLocalStorage";
 import axios from "@components/utils/axios";
+import unixToString from "@components/utils/unixToString";
 
 type LoginParams = {
   identifier: string;
@@ -23,9 +24,6 @@ type BasicUserContextType = {
   login: (data: LoginParams) => Record<string, any> | void;
   logout: () => void;
 };
-
-const unixToString = (unixTimestamp: number) =>
-  new Date(unixTimestamp).toISOString().split("T")[0];
 
 // // Create a context for user data.
 const BasicUserContext = createContext<BasicUserContextType>({
@@ -88,8 +86,8 @@ export const BasicUserProvider = ({
         identifier,
         password,
       });
-      setUser(data?.user);
-      setJWT(data?.token);
+      setUser(data?.user ?? null);
+      setJWT(data?.token ?? null);
       setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
       console.log("data:", data);
       return data;
@@ -104,7 +102,7 @@ export const BasicUserProvider = ({
   }, [removeJWT, removeUser, removePoints]);
 
   const contextValue = useMemo(() => {
-    const points = pointsObject?.points || 0;
+    const points = pointsObject?.points ?? 0;
     return { jwt, user, points, addPoints, login, logout };
   }, [jwt, user, login, logout, pointsObject, addPoints]);
 
