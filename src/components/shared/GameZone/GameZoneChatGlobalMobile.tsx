@@ -12,7 +12,6 @@ import { TfiMenu } from "react-icons/tfi";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { useUser } from "@blockchain/context/UserContext";
 import moment from "moment";
-import useGame from "@components/utils/gamezone";
 
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
@@ -20,7 +19,7 @@ interface Message {
   message: string | null;
 }
 
-const GameZoneChatMobile = () => {
+const GameZoneChatGlobalMobile = () => {
   const [showChat, setShowChat] = useState(false);
   const [showBalances, setShowBalances] = useState(false);
   const { socket, socketId } = useUser();
@@ -30,16 +29,18 @@ const GameZoneChatMobile = () => {
   const chatContainer = useRef<HTMLDivElement>(null);
   const bottomChat = useRef<HTMLDivElement>(null);
 
-  const currentGameId = useGame((state) => state.gameId);
-
   useEffect(() => {
-    const receiveMessage = (data: any) => {
-      console.log("receivePrivateChatRoomMessage", data);
+    socket?.emit("joinGlobalChat");
+
+    const receiveGlobalChat = (data: any) => {
+      console.log("receiveGlobalChatMessage", data);
       setChatData((oldData) => [...oldData, data]);
     };
-    socket?.on("receivePrivateChatRoomMessage", receiveMessage);
+
+    socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
+
     return () => {
-      socket?.off("receivePrivateChatRoomMessage", receiveMessage);
+      socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
     };
   }, [socket]);
 
@@ -125,13 +126,9 @@ const GameZoneChatMobile = () => {
     },
   ];
 
-  const sendChatMessage = (message: string) => {
+  const sendGlobalChatMessage = (message: string) => {
     console.log("message:", message);
-    currentGameId &&
-      socket?.emit("sendChatMessage", {
-        message: message,
-        gameId: currentGameId,
-      });
+    socket?.emit("sendGlobalChatMessage", { message: message });
     setMessage("");
   };
 
@@ -225,7 +222,7 @@ const GameZoneChatMobile = () => {
   return (
     <>
       <div
-        className={`flex xl:hidden flex-col md:items-end items-center justify-center fixed bottom-0 right-0 z-50 md:pr-[20px] pr-0 md:pb-[20px] pb-0 ${showChat ? "w-full md:w-[457px] md:pt-[150px] pt-[40px] h-screen md:bg-transparent bg-black/50 md:backdrop-blur-0 backdrop-blur-md" : "w-[70px] h-[70px]"} duration-500`}
+        className={`flex xl:hidden flex-col md:items-end items-center justify-center fixed bottom-0 right-0 z-50 md:pr-[20px] pr-0 md:pb-[20px] pb-0 ${showChat ? "w-full md:w-[457px] md:pt-[100px] pt-[40px] h-screen md:bg-transparent bg-black/50 md:backdrop-blur-0 backdrop-blur-md" : "w-[70px] h-[70px]"} duration-500`}
       >
         {showChat ? (
           <>
@@ -362,14 +359,16 @@ const GameZoneChatMobile = () => {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       onKeyDown={(e) =>
-                        e.key == "Enter" && message && sendChatMessage(message)
+                        e.key == "Enter" &&
+                        message &&
+                        sendGlobalChatMessage(message)
                       }
                       maxLength={50}
                       className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
                     />
                     <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
                     <BiSend
-                      onClick={() => message && sendChatMessage(message)}
+                      onClick={() => message && sendGlobalChatMessage(message)}
                       className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer"
                     />
                   </div>
@@ -408,4 +407,4 @@ const GameZoneChatMobile = () => {
   );
 };
 
-export default GameZoneChatMobile;
+export default GameZoneChatGlobalMobile;

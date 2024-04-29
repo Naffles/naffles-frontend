@@ -8,6 +8,7 @@ import useGame from "@components/utils/gamezone";
 
 const GameZoneChangeBet = () => {
   const setCurrentScreen = useGame((state) => state.setScreen);
+  const setChangingBet = useGame((state) => state.setChangingBet);
 
   const [balanceType, setBalanceType] = useState<{
     type: string;
@@ -117,7 +118,7 @@ const GameZoneChangeBet = () => {
   };
 
   return (
-    <div className="absolute top-[-100px] flex flex-col items-center py-[20px] gap-[20px] w-[540px] z-20 bg-[#383838]">
+    <div className="flex flex-col items-center py-[20px] gap-[20px] w-[540px] z-20 bg-[#383838]">
       <div className="flex flex-col w-full gap-[4px]">
         <p className="text-[20px] text-nafl-sponge-500 font-face-bebas">
           1. SET THE BET
@@ -244,13 +245,13 @@ const GameZoneChangeBet = () => {
 
       <div className="flex flex-row items-center justify-center gap-[20px]">
         <button
-          onClick={() => setCurrentScreen("ingame")}
+          onClick={() => setChangingBet(false)}
           className="flex items-center justify-center px-[30px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500"
         >
           <p className="text-[#fff] text-[18px] font-bold">BACK</p>
         </button>
         <button
-          onClick={() => setCurrentScreen("ingame")}
+          // onClick={() => setCurrentScreen("ingame")}
           className="flex items-center justify-center px-[30px] h-[54px] rounded-[8px] bg-nafl-sponge-500"
         >
           <p className="text-[#000] text-[18px] font-bold">CHANGE BET</p>

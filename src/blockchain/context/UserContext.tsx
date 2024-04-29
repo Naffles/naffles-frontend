@@ -79,17 +79,19 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     setSocket(newSocket);
     console.log("socket", socket);
 
-    userId && newSocket
-      ? newSocket?.emit("register", { userId: userId })
-      : newSocket?.emit("register", { userId: "Anonymous" });
-
-    newSocket?.on("registered", (data) => setSocketId(data.userId));
-
     return () => {
       newSocket.off("hello");
       newSocket.close();
     };
   }, []);
+
+  useEffect(() => {
+    userId && socket
+      ? socket?.emit("register", { userId: userId })
+      : socket?.emit("register", { userId: "Anonymous" });
+
+    socket?.on("registered", (data) => setSocketId(data.userId));
+  }, [userId, socket]);
 
   const getUserData = async () => {
     const userInfo = await magic?.user.getInfo();
@@ -131,6 +133,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             console.log("wallet login result:", result);
             setUserJWT(result?.data?.token);
             setUserId(result?.data?.user?._id);
+            setProfileName(result?.data?.user?.username);
             console.log("wallet login id:", result?.data?.user?._id);
             // Cookies.set("token", result?.token, { expires: 7, secure: true });
           } else {
