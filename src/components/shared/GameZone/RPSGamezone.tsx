@@ -82,11 +82,12 @@ export const RPSGamezone = () => {
   };
 
   useEffect(() => {
-    socket?.on("timerUpdate", (data) => {
+    const timerUpdater = (data: any) => {
       setTimeleft(data.timeLeft);
-    });
+    };
+    socket?.on("timerUpdate", timerUpdater);
 
-    socket?.on("gameResult", (data) => {
+    const gameResult = (data: any) => {
       console.log("gameResult socket data:", data);
 
       if (data.challengerChoice == data.creatorChoice) {
@@ -94,15 +95,16 @@ export const RPSGamezone = () => {
       } else {
         data.winner == user?.id ? setResult("win") : setResult("lose");
       }
-
       setShowVideo(true);
-    });
+    };
 
-    socket?.on("error", (data) => {
-      console.log("error data:", data);
-    });
+    socket?.on("gameResult", gameResult);
 
-    socket?.on("gameStarted", (data: any) => {
+    // socket?.on("error", (data) => {
+    //   console.log("error data:", data);
+    // });
+
+    const gameZoneStart = (data: any) => {
       console.log("gameStarted data: ", data);
       setResult("");
       setShowResultUI(false);
@@ -112,7 +114,15 @@ export const RPSGamezone = () => {
           ? setSelectedChoice(data.initialChoices.creator)
           : setSelectedChoice(data.initialChoices.challenger);
       }
-    });
+    };
+
+    socket?.on("gameStarted", gameZoneStart);
+
+    return () => {
+      socket?.off("timerUpdate", timerUpdater);
+      socket?.off("gameResult", gameResult);
+      socket?.off("gameStarted", gameZoneStart);
+    };
   }, [socket]);
 
   useEffect(() => {
@@ -212,10 +222,24 @@ export const RPSGamezone = () => {
         <GameResultMessage result={result} />
       </div>
       {showWaitingReplayUI && (
-        <div className="w-full flex flex-col items-center justify-center mb-[40px]">
-          <p className="text-[24px] text-nafl-white">
+        <div className="w-full flex flex-col items-center justify-center ">
+          <p className="text-[24px] text-nafl-white mb-[90px]">
             Waiting for Challenger ...
           </p>
+          <div className="flex flex-row items-center justify-center gap-[20px] mb-[20px]">
+            <p className="text-[#989898] text-[12px]">
+              Payout:{" "}
+              <a href="" className="font-bold text-[#fff] font-face-roboto">
+                {currentBetAmount} {currentCoinType}
+              </a>
+            </p>
+            <p className="text-[#989898] text-[12px]">
+              Buy-in:{" "}
+              <a href="" className="font-bold text-[#fff] font-face-roboto">
+                {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
+              </a>
+            </p>
+          </div>
           <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
           <div className="flex flex-row items-center justify-center gap-[14px]">
             <button
@@ -255,26 +279,6 @@ export const RPSGamezone = () => {
               </p>
               <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
               <div className="flex flex-row items-center justify-center gap-[23px] mt-[10px]">
-                {/* {choices.map((choice, index) => (
-                <>
-                  <button
-                    key={index}
-                    onClick={() => handleChoiceClick(choice)}
-                    disabled={timeleft <= 0}
-                    className={`rounded-[8px] border-[1px] px-[31px] h-[54px] duration-300 uppercase ${
-                      selectedChoice == choice
-                        ? "border-nafl-purple bg-nafl-purple"
-                        : "border-nafl-sponge-500 bg-transparent"
-                    }`}
-                  >
-                    <p className="text-[#fff] text-[18px]">{choice}</p>
-                  </button>
-                  {choices.length - 1 != index && (
-                    <p className="text-[#fff] text-[18px]">OR</p>
-                  )}
-                </>
-              ))} */}
-
                 <button
                   onClick={() => handleChoiceClick("rock")}
                   disabled={timeleft <= 0}

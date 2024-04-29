@@ -30,11 +30,18 @@ const GameZoneChatGlobalMobile = () => {
   const bottomChat = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    socket && socket?.emit("joinGlobalChat");
-    socket?.on("receiveGlobalChatMessage", (data) => {
+    socket?.emit("joinGlobalChat");
+
+    const receiveGlobalChat = (data: any) => {
       console.log("receiveGlobalChatMessage", data);
       setChatData((oldData) => [...oldData, data]);
-    });
+    };
+
+    socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
+
+    return () => {
+      socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
+    };
   }, [socket]);
 
   useEffect(() => {

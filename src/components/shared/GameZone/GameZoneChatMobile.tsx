@@ -32,18 +32,16 @@ const GameZoneChatMobile = () => {
 
   const currentGameId = useGame((state) => state.gameId);
 
-  const [msgSent, setMsgSent] = useState<boolean>(false);
   useEffect(() => {
-    if (msgSent) {
-      console.log("pwet");
-      // socket?.emit("joinGlobalChat");
-      socket?.on("receivePrivateChatRoomMessage", (data) => {
-        console.log("receivePrivateChatRoomMessage", data);
-        setChatData((oldData) => [...oldData, data]);
-      });
-      setMsgSent(false);
-    }
-  }, [msgSent]);
+    const receiveMessage = (data: any) => {
+      console.log("receivePrivateChatRoomMessage", data);
+      setChatData((oldData) => [...oldData, data]);
+    };
+    socket?.on("receivePrivateChatRoomMessage", receiveMessage);
+    return () => {
+      socket?.off("receivePrivateChatRoomMessage", receiveMessage);
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (chatData.length > 0) {
@@ -227,7 +225,7 @@ const GameZoneChatMobile = () => {
   return (
     <>
       <div
-        className={`flex xl:hidden flex-col md:items-end items-center justify-center fixed bottom-0 right-0 z-50 md:pr-[20px] pr-0 md:pb-[20px] pb-0 ${showChat ? "w-full md:w-[457px] md:pt-[100px] pt-[40px] h-screen md:bg-transparent bg-black/50 md:backdrop-blur-0 backdrop-blur-md" : "w-[70px] h-[70px]"} duration-500`}
+        className={`flex xl:hidden flex-col md:items-end items-center justify-center fixed bottom-0 right-0 z-50 md:pr-[20px] pr-0 md:pb-[20px] pb-0 ${showChat ? "w-full md:w-[457px] md:pt-[150px] pt-[40px] h-screen md:bg-transparent bg-black/50 md:backdrop-blur-0 backdrop-blur-md" : "w-[70px] h-[70px]"} duration-500`}
       >
         {showChat ? (
           <>
@@ -363,19 +361,15 @@ const GameZoneChatMobile = () => {
                       placeholder="Message"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      onKeyDown={(e) => {
-                        e.key == "Enter" && message && sendChatMessage(message);
-                        e.key == "Enter" && setMsgSent(true);
-                      }}
+                      onKeyDown={(e) =>
+                        e.key == "Enter" && message && sendChatMessage(message)
+                      }
                       maxLength={50}
                       className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
                     />
                     <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
                     <BiSend
-                      onClick={() => {
-                        message && sendChatMessage(message);
-                        setMsgSent(true);
-                      }}
+                      onClick={() => message && sendChatMessage(message)}
                       className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer"
                     />
                   </div>

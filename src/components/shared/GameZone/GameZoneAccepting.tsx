@@ -36,14 +36,20 @@ const GameZoneAccepting = () => {
   }, []);
 
   useEffect(() => {
-    socket?.on("gameStarted", (data: any) => {
+    const gameStart = (data: any) => {
       if (data.gameId) {
         setCurrentScreen("ingame");
         setDefaultChosen(data.initialChoices.creator);
         setCurrentGameId(data.gameId);
         setCurrentGameMode("host");
       }
-    });
+    };
+
+    socket?.on("gameStarted", gameStart);
+
+    return () => {
+      socket?.off("gameStarted", gameStart);
+    };
   }, [socket]);
 
   const setPayOut = (betAmount: string | null, betOdds: string | null) => {

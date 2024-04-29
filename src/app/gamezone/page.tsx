@@ -112,7 +112,7 @@ const GameZone = () => {
         </div>
 
         {currentScreen == "main" && (
-          <div className="flex flex-row flex-wrap items-start justify-center gap-[36px] duration-500 z-20 w-full pb-[100px]">
+          <div className="flex flex-row flex-wrap items-start justify-center gap-[36px] duration-500 z-30 w-full pb-[100px]">
             <GameZoneMain />
             <GameZoneGlobalChat />
             <GameZoneChatGlobalMobile />
@@ -138,7 +138,7 @@ const GameZone = () => {
         )}
 
         {currentScreen == "ingame" && (
-          <div className="flex flex-row items-start justify-center gap-[36px] duration-500 pb-[300px] z-20">
+          <div className="flex flex-row items-start justify-center gap-[36px] duration-500 pb-[300px] z-30">
             <GameZoneGame />
             <GameZoneChat />
             <GameZoneChatMobile />

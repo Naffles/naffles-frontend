@@ -151,7 +151,7 @@ const GameZoneGamesTable = () => {
   }, [socket, user]);
 
   useEffect(() => {
-    socket?.on("gameJoinRequest", (data: any) => {
+    const gameJoinRequest = (data: any) => {
       console.log("gameJoinRequest data: ", data);
       setCurrentScreen("accepting");
       setGameType(
@@ -164,7 +164,13 @@ const GameZoneGamesTable = () => {
       setBetOdds(data.game.odds.$numberDecimal);
       setGameId(data.game._id);
       setChallengerId(data.challengerId);
-    });
+    };
+
+    socket?.on("gameJoinRequest", gameJoinRequest);
+
+    return () => {
+      socket?.off("gameJoinRequest", gameJoinRequest);
+    };
   }, [socket]);
 
   const fetchTableData = async (

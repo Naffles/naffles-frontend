@@ -23,20 +23,16 @@ const GameZoneChat = () => {
 
   const currentGameId = useGame((state) => state.gameId);
 
-  const [msgSent, setMsgSent] = useState<boolean>(false);
-
-  // Add a dedicated useEffect for initializing the socket event listeners
   useEffect(() => {
     const receiveMessage = (data: any) => {
       console.log("receivePrivateChatRoomMessage", data);
       setChatData((oldData) => [...oldData, data]);
     };
     socket?.on("receivePrivateChatRoomMessage", receiveMessage);
-    // Clean up the listener when the component unmounts or when socket changes
     return () => {
       socket?.off("receivePrivateChatRoomMessage", receiveMessage);
     };
-  }, [socket]); // Dependency on the socket ensures this runs once or when the socket is recreated
+  }, [socket]);
 
   useEffect(() => {
     if (chatData.length > 0) {
@@ -305,19 +301,15 @@ const GameZoneChat = () => {
             placeholder="Message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => {
-              e.key == "Enter" && message && sendChatMessage(message);
-              e.key == "Enter" && setMsgSent(true);
-            }}
+            onKeyDown={(e) =>
+              e.key == "Enter" && message && sendChatMessage(message)
+            }
             maxLength={50}
             className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
           />
           <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
           <BiSend
-            onClick={() => {
-              message && sendChatMessage(message);
-              setMsgSent(true);
-            }}
+            onClick={() => message && sendChatMessage(message)}
             className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer"
           />
         </div>

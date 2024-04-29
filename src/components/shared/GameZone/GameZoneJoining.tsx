@@ -35,16 +35,21 @@ const GameZoneJoining = () => {
   }, []);
 
   useEffect(() => {
-    socket?.on("gameStarted", (data: any) => {
-      if (data.gameId && currentScreen != "ingame") {
+    const gameStart = (data: any) => {
+      if (data.gameId) {
         setCurrentScreen("ingame");
         setDefaultChosen(data.initialChoices.challenger);
         setCurrentGameId(data.gameId);
         setCurrentGameMode("challenger");
       }
-    });
-  }, [socket]);
+    };
 
+    socket?.on("gameStarted", gameStart);
+
+    return () => {
+      socket?.off("gameStarted", gameStart);
+    };
+  }, [socket]);
   const setPayOut = (betAmount: string | null, betOdds: string | null) => {
     let betAmountValue = 0;
     let betOddsValue = 0;
