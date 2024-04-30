@@ -8,7 +8,7 @@ import useScreenSize from "@hook/useScreenSize";
 import { RockPaperScissorsGame, CoinTossGame } from "./Games";
 import unixToString from "@components/utils/unixToString";
 
-const DAILY_PLAYS_THRESHOLD = 20;
+const DAILY_PLAYS_THRESHOLD = 10;
 type PlaysObject = {
   plays: number;
   date: number;
@@ -38,7 +38,7 @@ export const GameSection = () => {
     if (
       isPlaysCountToday &&
       playsToday?.plays &&
-      playsToday.plays > DAILY_PLAYS_THRESHOLD
+      playsToday.plays >= DAILY_PLAYS_THRESHOLD
     ) {
       setOpenModal(true);
     }
@@ -47,7 +47,7 @@ export const GameSection = () => {
   const onPlayEnd = () => {
     if (!user) {
       setPlaysToday((playsObject) => {
-        if (playsObject?.date) {
+        if (playsObject?.date && playsObject?.plays < DAILY_PLAYS_THRESHOLD) {
           const currentDateNumber = Date.now();
           const currentDate = unixToString(currentDateNumber);
           const previousDate = unixToString(playsObject.date);
