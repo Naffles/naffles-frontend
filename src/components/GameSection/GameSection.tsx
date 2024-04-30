@@ -8,7 +8,7 @@ import useScreenSize from "@hook/useScreenSize";
 import { RockPaperScissorsGame, CoinTossGame } from "./Games";
 import unixToString from "@components/utils/unixToString";
 
-const DAILY_PLAYS_THRESHOLD = 20;
+const DAILY_PLAYS_THRESHOLD = 10;
 type PlaysObject = {
   plays: number;
   date: number;
@@ -25,6 +25,7 @@ export const GameSection = () => {
     }
   );
   const [openModal, setOpenModal] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     let isPlaysCountToday = false;
@@ -37,7 +38,7 @@ export const GameSection = () => {
     if (
       isPlaysCountToday &&
       playsToday?.plays &&
-      playsToday.plays > DAILY_PLAYS_THRESHOLD
+      playsToday.plays >= DAILY_PLAYS_THRESHOLD
     ) {
       setOpenModal(true);
     }
@@ -46,7 +47,7 @@ export const GameSection = () => {
   const onPlayEnd = () => {
     if (!user) {
       setPlaysToday((playsObject) => {
-        if (playsObject?.date) {
+        if (playsObject?.date && playsObject?.plays < DAILY_PLAYS_THRESHOLD) {
           const currentDateNumber = Date.now();
           const currentDate = unixToString(currentDateNumber);
           const previousDate = unixToString(playsObject.date);
@@ -74,8 +75,18 @@ export const GameSection = () => {
       </Modal>
       <div className="flex-row flex-wrap justify-center items-center gamezone-container gap-4 pt-8 hidden lg:flex">
         <div className="flex-col flex games-container gap-8">
-          <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
-          <CoinTossGame handlePlayCount={onPlayEnd} />
+          <RockPaperScissorsGame
+            handlePlayCount={onPlayEnd}
+            onGameStart={() => setIsPaused(true)}
+            onGameReset={() => setIsPaused(false)}
+            isPaused={isPaused}
+          />
+          <CoinTossGame
+            handlePlayCount={onPlayEnd}
+            onGameStart={() => setIsPaused(true)}
+            onGameReset={() => setIsPaused(false)}
+            isPaused={isPaused}
+          />
         </div>
         <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl xl:mt-0 lg:mt-[100px]">
           <DemoPointsLeaderboards />
