@@ -3,6 +3,7 @@ import { Button } from "../Button";
 import { useState } from "react";
 import axios from "@components/utils/axios";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import { AiOutlineLoading } from "react-icons/ai";
 
 type RegistrationFormData = {
   emailAddress: string;
@@ -12,11 +13,14 @@ type RegistrationFormData = {
 
 export const RegistrationForm = () => {
   const { login } = useBasicUser();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [previousData, setPreviousData] = useState<RegistrationFormData | null>(
     null
   );
   const [showNext, setShowNext] = useState(false);
   const onSubmit = async (data: RegistrationFormData) => {
+    setIsLoading(prev => !prev);
     if (!showNext) {
       setPreviousData(data);
       const response = await axios.post("user/send-email-verification", {
@@ -38,8 +42,10 @@ export const RegistrationForm = () => {
         }
       } catch (err) {
         console.log(err);
+        setIsError(true);
       }
     }
+    setIsLoading(prev => !prev);
   };
   return (
     <FormContext onSubmit={onSubmit} className="flex flex-col gap-4 w-64">
@@ -67,6 +73,13 @@ export const RegistrationForm = () => {
           placeholder="Verification Code"
         />
       )}
+      {
+        isError && (
+          <label className="text-xs text-[#ecc8c8]">
+            Something went wrong in verification.
+          </label>
+        )
+      }
       <Button
         label="submit"
         variant="secondary"
@@ -75,7 +88,9 @@ export const RegistrationForm = () => {
         width="inhert"
         className="mx-2 my-2"
       >
-        Submit
+        {
+          isLoading ? <AiOutlineLoading className="animate-spin" /> : "Submit"
+        }
       </Button>
     </FormContext>
   );
