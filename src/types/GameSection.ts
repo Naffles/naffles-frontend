@@ -11,8 +11,13 @@ export interface BaseGameProps {
   onVideoFinish?: (hasSelected: boolean) => any;
   onChoiceClicked?: () => any;
   onWinNotify?: () => any;
+  onGameReset?: () => any;
+  isPaused?: boolean;
 }
 
 export interface GameContainerProps {
   handlePlayCount?: (hasSelected?: boolean) => any;
+  isPaused?: boolean;
+  onGameStart?: () => any;
+  onGameReset?: () => any;
 }
