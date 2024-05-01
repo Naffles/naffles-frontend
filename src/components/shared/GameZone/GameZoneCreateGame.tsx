@@ -145,7 +145,7 @@ const GameZoneCreateGame = () => {
       console.log("RESULT :", result);
 
       if (result.statusCode == 200 && response.ok) {
-        console.log("GAME CREATED", result?.data?.game?._id);
+        // console.log("GAME CREATED", result?.data?.game?._id);
 
         socket?.emit("createNewGame", { gameId: result?.data?.game?._id });
         // result &&
