@@ -148,15 +148,15 @@ export const BetForm = (props: { onSubmit: (x?: any) => any }) => {
         <div className="flex flex-col">
           <p className=" text-[#989898] text-[14px]">
             Buy-in:{" "}
-            <a href="" className="text-[#fff] font-face-roboto italic">
+            <span className="text-[#fff] font-face-roboto italic">
               0.0001 PTS
-            </a>
+            </span>
           </p>
           <p className=" text-[#989898] text-[14px]">
             Payout:{" "}
-            <a href="" className="text-[#fff] font-face-roboto italic">
+            <span className="text-[#fff] font-face-roboto italic">
               {totalPayout.toFixed(4)} PTS
-            </a>
+            </span>
           </p>
         </div>
       </div>

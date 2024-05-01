@@ -71,8 +71,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [web3]);
 
   useEffect(() => {
-    if (!magic?.user) return;
-    getUserData();
+    if (magic?.user) {
+      getUserData();
+    }
   }, [magic]);
 
   useEffect(() => {
@@ -109,6 +110,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [userId, socket]);
 
   const getUserData = async () => {
+    if (!magic?.user) return;
     const userInfo = await magic?.user.getInfo();
     console.log("userInfo:", userInfo);
 

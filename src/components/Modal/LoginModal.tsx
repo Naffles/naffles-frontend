@@ -23,13 +23,12 @@ const LoginModal = () => {
   const handleConnect = async () => {
     try {
       // Try to connect to the wallet using Magic's user interface
-      if (!magic) return;
+      if (!magic?.user) return;
       await magic.wallet.connectWithUI();
       // const did = await magic.auth.loginWithEmailOTP({ email: emailAddress });
       // console.log(did);
-
-      const userInfo = await magic.user.getInfo();
-      console.log(userInfo);
+      let userInfo = await magic.user.getInfo();
+      console.log("userInfo:", userInfo);
 
       // @note Send the `did` to server
       await fetchUser();

@@ -249,17 +249,17 @@ const GameZoneChangeBet = () => {
         <div className="flex flex-col">
           <p className=" text-[#989898] text-[14px]">
             Buy-in:{" "}
-            <a href="" className="text-[#fff] font-face-roboto italic">
+            <span className="text-[#fff] font-face-roboto italic">
               {balanceAmount.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
               {balanceType.type}
-            </a>
+            </span>
           </p>
           <p className=" text-[#989898] text-[14px]">
             Payout:{" "}
-            <a href="" className="text-[#fff] font-face-roboto italic">
+            <span className="text-[#fff] font-face-roboto italic">
               {totalPayout.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
               {balanceType.type}
-            </a>
+            </span>
           </p>
         </div>
       </div>

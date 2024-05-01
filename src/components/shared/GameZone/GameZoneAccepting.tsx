@@ -31,10 +31,16 @@ const GameZoneAccepting = () => {
       setCountdownTimer((prevCountdown) => prevCountdown - 0.5);
     }, 1000);
 
+    window.scrollTo(0, 0);
+
     return () => {
       clearInterval(intervalId);
     };
   }, []);
+
+  useEffect(() => {
+    countdownTimer <= 0 && rejectGame();
+  }, [countdownTimer]);
 
   useEffect(() => {
     const gameStart = (data: any) => {
@@ -46,13 +52,13 @@ const GameZoneAccepting = () => {
       }
     };
 
+    socket?.on("gameStarted", gameStart);
+
     const cancelMessage = (data: any) => {
       console.log("cancelMessage", data);
       cancelGame();
       toast.error("Other player cancelled request");
     };
-
-    socket?.on("gameStarted", gameStart);
 
     socket?.on("joinRequestCancelled", cancelMessage);
 
@@ -113,15 +119,15 @@ const GameZoneAccepting = () => {
         <div className="flex flex-col items-center">
           <p className=" text-[#989898] text-[14px]">
             Buy-in:{" "}
-            <a href="" className="text-[#fff] font-face-roboto italic">
+            <span className="text-[#fff] font-face-roboto italic">
               {currentBetAmount} {currentCoinType}
-            </a>
+            </span>
           </p>
           <p className=" text-[#989898] text-[14px]">
             Payout:{" "}
-            <a href="" className="text-[#fff] font-face-roboto italic">
+            <span className="text-[#fff] font-face-roboto italic">
               {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
-            </a>
+            </span>
           </p>
         </div>
         <div className="flex flex-col items-center relative w-full gap-[10px]">

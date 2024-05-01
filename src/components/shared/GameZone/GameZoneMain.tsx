@@ -36,9 +36,9 @@ const GameZoneMain = () => {
                 <p className="w-full text-left text-[16px]">
                   Earn points by playing the games or participating in the
                   raffles. <br />
-                  <a className="text-[#292929] font-face-roboto">
+                  <span className="text-[#292929] font-bold">
                     Join a game
-                  </a>{" "}
+                  </span>{" "}
                   to amplify your crypto balance, while you&apos;re amplifying
                   your points too! <br />
                   <b>
