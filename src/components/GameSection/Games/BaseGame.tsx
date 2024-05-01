@@ -88,6 +88,7 @@ export const BaseGame = (props: BaseGameProps) => {
       restInterval = setInterval(() => {
         if (restTimeleft <= 1) {
           setIsRestingDown(false);
+          setIsLocked(false);
           setIsCountingDown(true);
           setTimeleft(DEFAULT_TIMER);
           clearInterval(restInterval);
@@ -184,7 +185,6 @@ export const BaseGame = (props: BaseGameProps) => {
       }, 1700);
       setSelectedChoice("");
       setDisplayChoice("");
-      setIsLocked(false);
       setIsRestingDown(true);
       setRestTimeleft(REST_TIMER);
       onVideoFinish(!!selectedChoice);
