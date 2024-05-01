@@ -4,6 +4,7 @@ import { useUser } from "@blockchain/context/UserContext";
 import useGame from "@components/utils/gamezone";
 import { CircularProgress } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const GameZoneAccepting = () => {
   const { socket, user } = useUser();
@@ -45,10 +46,19 @@ const GameZoneAccepting = () => {
       }
     };
 
+    const cancelMessage = (data: any) => {
+      console.log("cancelMessage", data);
+      cancelGame();
+      toast.error("Other player cancelled request");
+    };
+
     socket?.on("gameStarted", gameStart);
+
+    socket?.on("joinRequestCancelled", cancelMessage);
 
     return () => {
       socket?.off("gameStarted", gameStart);
+      socket?.off("joinRequestCancelled", cancelMessage);
     };
   }, [socket]);
 
@@ -76,6 +86,14 @@ const GameZoneAccepting = () => {
       gameId: currentGameId,
       challengerId: currentChallengerId,
     });
+  };
+
+  const rejectGame = () => {
+    socket?.emit("rejectJoinRequest", {
+      gameId: currentGameId,
+      challengerId: currentChallengerId,
+    });
+    cancelGame();
   };
 
   return (
@@ -114,7 +132,7 @@ const GameZoneAccepting = () => {
                 svg: "w-[160px] h-[160px] drop-shadow-md",
                 indicator: "stroke-[#00e0df]",
                 track: "stroke-[#ee26ff]",
-                value: "text-3xl font-semibold text-white",
+                value: "text-3xl font-semibold text-nafl-white",
               }}
               value={countdownTimer / 2}
               maxValue={100}
@@ -136,7 +154,7 @@ const GameZoneAccepting = () => {
         </div>
         <div className="flex flex-row items-center justify-center gap-[20px]">
           <button
-            onClick={() => cancelGame()}
+            onClick={() => rejectGame()}
             className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500 mb-[17px]"
           >
             <p className="text-[#fff] text-[18px] font-bold">REJECT</p>

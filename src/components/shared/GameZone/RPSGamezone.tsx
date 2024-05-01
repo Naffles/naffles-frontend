@@ -7,6 +7,7 @@ import useGame from "@components/utils/gamezone";
 import { io } from "socket.io-client";
 import { useUser } from "@blockchain/context/UserContext";
 import toast from "react-hot-toast";
+import { FaEthereum } from "react-icons/fa";
 
 type GameVideo = {
   variant: number | string;
@@ -38,9 +39,16 @@ export const RPSGamezone = () => {
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setChangingBet = useGame((state) => state.setChangingBet);
+  const setCurrentBetAmount = useGame((state) => state.setBetAmount);
+  const setCurrentBetOdds = useGame((state) => state.setBetOdds);
+
   const [showVideo, setShowVideo] = useState<boolean>(false);
   const [showResultUI, setShowResultUI] = useState<boolean>(false);
   const [showWaitingReplayUI, setshowWaitingReplayUI] = useState(false);
+
+  const [requestedBetAmount, setRequestedBetAmount] = useState<string | null>();
+  const [requestedBetOdds, setRequestedBetOdds] = useState<string | null>();
+  const [showAcceptChangeBet, setShowAcceptChangeBet] = useState(false);
 
   const GameResultMessage = ({
     result,
@@ -118,10 +126,45 @@ export const RPSGamezone = () => {
 
     socket?.on("gameStarted", gameZoneStart);
 
+    const playerHasLeft = (data: any) => {
+      console.log("player left data:", data);
+      setCurrentScreen("main");
+    };
+
+    socket?.on("playerLeft", playerHasLeft);
+
+    const betUpdates = (data: any) => {
+      console.log("Bet Updated: ", data);
+      if (data.status) {
+        setCurrentBetAmount(data.game.betAmount.$numberDecimal);
+        setCurrentBetOdds(data.game.odds.$numberDecimal);
+        toast.dismiss();
+        toast.success("Bet successfully changed");
+      } else {
+        toast.dismiss();
+        toast.error("Opposing player has rejected the change bet request");
+      }
+      setShowAcceptChangeBet(false);
+    };
+
+    socket?.on("betUpdated", betUpdates);
+
+    const betRequest = (data: any) => {
+      console.log("Bet Requested: ", data);
+      setRequestedBetAmount(data.game.betAmount);
+      setRequestedBetOdds(data.game.odds);
+      setShowAcceptChangeBet(true);
+    };
+
+    socket?.on("betRequest", betRequest);
+
     return () => {
       socket?.off("timerUpdate", timerUpdater);
       socket?.off("gameResult", gameResult);
       socket?.off("gameStarted", gameZoneStart);
+      socket?.off("playerLeft", playerHasLeft);
+      socket?.off("betUpdated", betUpdates);
+      socket?.off("betRequest", betRequest);
     };
   }, [socket]);
 
@@ -136,7 +179,6 @@ export const RPSGamezone = () => {
     if (currentGameId && user?.id) {
       socket?.emit("playerChoice", {
         gameId: currentGameId,
-        userId: user?.id,
         choice: choiceClicked,
       });
       console.log("choiceSelected: ", choiceClicked);
@@ -147,7 +189,6 @@ export const RPSGamezone = () => {
     if (result == "draw") {
       socket?.emit("rematch", {
         gameId: currentGameId,
-        userId: user?.id,
       });
       setResult("");
       toast("Match Draw! Restarting match", {
@@ -163,19 +204,30 @@ export const RPSGamezone = () => {
   const playAgain = () => {
     socket?.emit("rematch", {
       gameId: currentGameId,
-      userId: user?.id,
     });
     setResult("");
     setshowWaitingReplayUI(true);
   };
 
   const leaveGame = () => {
-    // socket?.emit("rematch", {
-    //   gameId: currentGameId,
-    //   userId: user?.id,
-    // });
+    socket?.emit("leaveGame", { gameId: currentGameId });
 
     setCurrentScreen("main");
+  };
+
+  const acceptBet = (gameId: string) => {
+    console.log("Bet Accepted");
+
+    socket?.emit("acceptBetChangeRequest", {
+      gameId: gameId,
+    });
+  };
+
+  const rejectBet = (gameId: string) => {
+    console.log("Bet Rejected");
+    socket?.emit("rejectBetChangeRequest", {
+      gameId: gameId,
+    });
   };
 
   return (
@@ -216,11 +268,13 @@ export const RPSGamezone = () => {
         </div>
       </div>
 
-      <div
-        className={`w-full flex flex-col items-center justify-center duration-500 ${showResultUI ? "opacity-100" : "opacity-0"}`}
-      >
-        <GameResultMessage result={result} />
-      </div>
+      {!changingBet && !showAcceptChangeBet && (
+        <div
+          className={`w-full flex flex-col items-center justify-center duration-500 ${showResultUI ? "opacity-100" : "opacity-0"}`}
+        >
+          <GameResultMessage result={result} />
+        </div>
+      )}
       {showWaitingReplayUI && (
         <div className="w-full flex flex-col items-center justify-center ">
           <p className="text-[24px] text-nafl-white mb-[90px]">
@@ -251,8 +305,76 @@ export const RPSGamezone = () => {
           </div>
         </div>
       )}
+      {showAcceptChangeBet && (
+        <div className="w-full flex flex-col items-center justify-center ">
+          <div className="flex items-center justify-start w-full">
+            <p className="text-[20px] text-nafl-sponge-500 font-face-bebas">
+              GAME OWNER HAS CHANGED THE BET
+            </p>
+          </div>
+
+          <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
+          <div className="flex flex-row items-center justify-center w-full my-[80px] gap-[16px]">
+            <p className="text-[11px] text-nafl-white">
+              Game owner has change the bet to
+            </p>
+            <div className="flex flex-row items-center justify-center gap-[3px]">
+              <FaEthereum className="text-nafl-white text-[20px]" />
+              <p className="text-[22px] text-nafl-white font-face-bebas">
+                {requestedBetAmount}
+              </p>
+            </div>
+            <p className="text-[14px] text-nafl-white font-bold">
+              at {requestedBetOdds} : 1 odds
+            </p>
+          </div>
+          <div className="flex flex-row items-center justify-center gap-[20px] mt-[20px]">
+            <p className="text-[#989898] text-[12px]">
+              Payout:{" "}
+              <a href="" className="font-bold text-[#fff] font-face-roboto">
+                {currentBetAmount} {currentCoinType}
+              </a>
+            </p>
+            <p className="text-[#989898] text-[12px]">
+              Buy-in:{" "}
+              <a href="" className="font-bold text-[#fff] font-face-roboto">
+                {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
+              </a>
+            </p>
+          </div>
+          <div className="flex flex-col w-full ">
+            <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
+            {result != "draw" && (
+              <div
+                className={`flex flex-row items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
+              >
+                <button
+                  onClick={() => leaveGame()}
+                  className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
+                >
+                  <p className="text-[#fff] text-[18px] font-bold">
+                    LEAVE GAME
+                  </p>
+                </button>
+                <button
+                  onClick={() => currentGameId && rejectBet(currentGameId)}
+                  className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 bg-nafl-sponge-500 my-[20px]"
+                >
+                  <p className="text-[#000] text-[18px] font-bold">REJECT</p>
+                </button>
+                <button
+                  onClick={() => currentGameId && acceptBet(currentGameId)}
+                  className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 bg-nafl-sponge-500 my-[20px]"
+                >
+                  <p className="text-[#000] text-[18px] font-bold">ACCEPT</p>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       {changingBet && <GameZoneChangeBet />}
-      {result && !changingBet && (
+      {result && !changingBet && !showAcceptChangeBet && (
         <div className="flex flex-row items-center justify-center gap-[20px] mt-[20px]">
           <p className="text-[#989898] text-[12px]">
             Payout:{" "}
@@ -270,6 +392,7 @@ export const RPSGamezone = () => {
       )}
 
       {!showWaitingReplayUI &&
+        !showAcceptChangeBet &&
         (!result ? (
           <>
             {" "}
@@ -328,7 +451,7 @@ export const RPSGamezone = () => {
                     svg: "w-[160px] h-[160px] drop-shadow-md",
                     indicator: "stroke-[#00e0df]",
                     track: "stroke-[#ee26ff]",
-                    value: "text-3xl font-semibold text-white",
+                    value: "text-3xl font-semibold text-nafl-white",
                   }}
                   value={timeleft}
                   minValue={0}
@@ -369,7 +492,9 @@ export const RPSGamezone = () => {
           <div className="flex flex-col w-full ">
             <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
             {result != "draw" && (
-              <div className="flex flex-row items-center justify-center gap-[14px]">
+              <div
+                className={`flex flex-row items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
+              >
                 <button
                   onClick={() => leaveGame()}
                   className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
@@ -400,7 +525,9 @@ export const RPSGamezone = () => {
             <div className="flex flex-col w-full ">
               <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
               {result != "draw" && (
-                <div className="flex flex-row items-center justify-center gap-[14px]">
+                <div
+                  className={`flex flex-row items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
+                >
                   <button
                     onClick={() => leaveGame()}
                     className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"

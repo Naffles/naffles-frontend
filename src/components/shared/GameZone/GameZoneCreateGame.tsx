@@ -144,14 +144,17 @@ const GameZoneCreateGame = () => {
 
       console.log("RESULT :", result);
 
-      if (response.ok) {
+      if (result.statusCode == 200 && response.ok) {
         console.log("GAME CREATED", result?.data?.game?._id);
+
+        socket?.emit("createNewGame", { gameId: result?.data?.game?._id });
         // result &&
         //   socket.emit("notificationRoom", { id: result?.data?.game?._id });
         setCurrentScreen("main");
         toast.success("Game Created");
       } else {
         console.error("Failed to create game: ", result.message);
+        toast.error(result.message);
       }
     } catch (error) {
       console.error("Error creating game: ", error);

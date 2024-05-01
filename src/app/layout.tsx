@@ -29,9 +29,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-[#464646]`}>
         <Providers>
-          <MagicProvider>
-            <UserProvider>
-              <BasicUserProvider>
+          <BasicUserProvider>
+            <MagicProvider>
+              <UserProvider>
                 <PageHeader />
                 {children}
                 <LoginModal />
@@ -53,9 +53,9 @@ export default function RootLayout({
                     },
                   }}
                 />
-              </BasicUserProvider>
-            </UserProvider>
-          </MagicProvider>
+              </UserProvider>
+            </MagicProvider>
+          </BasicUserProvider>
         </Providers>
       </body>
     </html>

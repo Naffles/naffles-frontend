@@ -118,7 +118,7 @@ const UserProfile = () => {
                     </Table.Head>
                     <Table.Body className="divide-y border-none">
                       <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
+                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
                           {'Apple MacBook Pro 17"'}
                         </Table.Cell>
                         <Table.Cell>Sliver</Table.Cell>
@@ -130,7 +130,7 @@ const UserProfile = () => {
                         <Table.Cell>WINNER</Table.Cell>
                       </Table.Row>
                       <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
+                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
                           Microsoft Surface Pro
                         </Table.Cell>
                         <Table.Cell>White</Table.Cell>
@@ -142,7 +142,7 @@ const UserProfile = () => {
                         <Table.Cell>WINNER</Table.Cell>
                       </Table.Row>
                       <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
+                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
                           Magic Mouse 2
                         </Table.Cell>
                         <Table.Cell>Black</Table.Cell>
@@ -171,7 +171,7 @@ const UserProfile = () => {
                     </Table.Head>
                     <Table.Body className="divide-y border-none">
                       <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
+                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
                           {'Apple MacBook Pro 17"'}
                         </Table.Cell>
                         <Table.Cell>Sliver</Table.Cell>
@@ -183,7 +183,7 @@ const UserProfile = () => {
                         <Table.Cell>WINNER</Table.Cell>
                       </Table.Row>
                       <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
+                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
                           Microsoft Surface Pro
                         </Table.Cell>
                         <Table.Cell>White</Table.Cell>
@@ -195,7 +195,7 @@ const UserProfile = () => {
                         <Table.Cell>WINNER</Table.Cell>
                       </Table.Row>
                       <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
+                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
                           Magic Mouse 2
                         </Table.Cell>
                         <Table.Cell>Black</Table.Cell>
@@ -229,7 +229,7 @@ const UserProfile = () => {
                     </Table.Head>
                     <Table.Body className="divide-y border-none">
                       <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
+                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
                           {'Apple MacBook Pro 17"'}
                         </Table.Cell>
                         <Table.Cell>Sliver</Table.Cell>
@@ -241,7 +241,7 @@ const UserProfile = () => {
                         <Table.Cell>WINNER</Table.Cell>
                       </Table.Row>
                       <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
+                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
                           Microsoft Surface Pro
                         </Table.Cell>
                         <Table.Cell>White</Table.Cell>
@@ -253,7 +253,7 @@ const UserProfile = () => {
                         <Table.Cell>WINNER</Table.Cell>
                       </Table.Row>
                       <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-white">
+                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
                           Magic Mouse 2
                         </Table.Cell>
                         <Table.Cell>Black</Table.Cell>

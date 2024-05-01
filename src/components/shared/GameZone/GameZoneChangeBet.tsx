@@ -5,8 +5,12 @@ import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
 import useGame from "@components/utils/gamezone";
+import { useUser } from "@blockchain/context/UserContext";
+import toast from "react-hot-toast";
 
 const GameZoneChangeBet = () => {
+  const { socket } = useUser();
+  const currentGameId = useGame((state) => state.gameId);
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setChangingBet = useGame((state) => state.setChangingBet);
 
@@ -28,6 +32,12 @@ const GameZoneChangeBet = () => {
   const [totalPayout, setTotalPayout] = useState<number>(0);
 
   let sample_balances_json = [
+    {
+      id: 11,
+      type: "PTS",
+      balance: "1000",
+      usd: "0",
+    },
     {
       id: 1,
       type: "ETH",
@@ -67,6 +77,7 @@ const GameZoneChangeBet = () => {
   ];
 
   let currency_name = [
+    { type: "PTS", name: "Points" },
     { type: "ETH", name: "Ethereum" },
     { type: "BTC", name: "Bitcoin" },
     { type: "BYTES", name: "Neo Tokyo" },
@@ -90,6 +101,16 @@ const GameZoneChangeBet = () => {
   useEffect(() => {
     setTotalPayout(balanceAmount * betMultiplierChoice);
   }, [balanceAmount, betMultiplierChoice]);
+
+  const changeBet = (gameId: string, betAmount: string, odds: string) => {
+    socket?.emit("requestBetUpdate", {
+      gameId: gameId,
+      betAmount: betAmount,
+      odds: odds,
+    });
+    toast.success("Change bet request sent to opposing player");
+    setChangingBet(false);
+  };
 
   const currencyIconReturner = (type: string) => {
     if (type == "ETH") {
@@ -129,9 +150,9 @@ const GameZoneChangeBet = () => {
       <div className="flex flex-row items-center gap-[24px]">
         <div className="flex items-center w-[311px] relative">
           <button
-            onClick={() =>
-              setBalanceTypeDropdown(balanceTypeDropdown ? false : true)
-            }
+            // onClick={() =>
+            //   setBalanceTypeDropdown(balanceTypeDropdown ? false : true)
+            // }
             className="flex items-center gap-[10px] justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B]"
           >
             {currencyIconReturner(balanceType?.type)}
@@ -229,13 +250,15 @@ const GameZoneChangeBet = () => {
           <p className=" text-[#989898] text-[14px]">
             Buy-in:{" "}
             <a href="" className="text-[#fff] font-face-roboto italic">
-              0.0001 ETH
+              {balanceAmount.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
+              {balanceType.type}
             </a>
           </p>
           <p className=" text-[#989898] text-[14px]">
             Payout:{" "}
             <a href="" className="text-[#fff] font-face-roboto italic">
-              {totalPayout.toFixed(4)} ETH
+              {totalPayout.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
+              {balanceType.type}
             </a>
           </p>
         </div>
@@ -251,7 +274,14 @@ const GameZoneChangeBet = () => {
           <p className="text-[#fff] text-[18px] font-bold">BACK</p>
         </button>
         <button
-          // onClick={() => setCurrentScreen("ingame")}
+          onClick={() =>
+            currentGameId &&
+            changeBet(
+              currentGameId,
+              balanceAmount?.toString(),
+              betMultiplierChoice?.toString()
+            )
+          }
           className="flex items-center justify-center px-[30px] h-[54px] rounded-[8px] bg-nafl-sponge-500"
         >
           <p className="text-[#000] text-[18px] font-bold">CHANGE BET</p>

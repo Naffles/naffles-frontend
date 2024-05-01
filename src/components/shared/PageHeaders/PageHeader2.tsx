@@ -186,7 +186,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                   onClick={handleUpload}
                 >
                   {!imageFile && (
-                    <div className="flex items-center justify-center h-full text-white bg-black bg-opacity-30 rounded-full">
+                    <div className="flex items-center justify-center h-full text-nafl-white bg-black bg-opacity-30 rounded-full">
                       Click to upload
                     </div>
                   )}
