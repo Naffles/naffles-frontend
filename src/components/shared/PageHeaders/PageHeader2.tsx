@@ -111,6 +111,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
     setShowModal(false);
     setShowOtherModal(false);
     setOpenModal(false);
+    
     logout();
   };
 
@@ -331,7 +332,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                       {basicUser ? (
                         <>
                           <Link
-                            href={"/profile/aaa"}
+                            href={"/profile/user-profile"}
                             className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                           >
                             View Profile
@@ -503,7 +504,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
             >
               {basicUser ? (
                 <Link
-                  href={"/profile/aaa"}
+                  href={"/profile/user-profile"}
                   className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                 >
                   View Profile

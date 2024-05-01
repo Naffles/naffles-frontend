@@ -32,6 +32,8 @@ const btnStyles = cva(
           "text-nafl-sponge-500 bg-nafl-charcoal-600 border-nafl-sponge-500 border-1",
         "secondary-outline":
           "bg-nafl-yellow-500 text-nafl-grey-900 border-nafl-grey-900 border-1",
+        "tertiary-outline":
+          "bg-nafl-charcoal-800 text-nafl-charcoal-100 border-nafl-charcoal-100 border-1",
       },
       size: {
         sx: "!font-mono text-body-xs",

@@ -9,6 +9,7 @@ type GameVideo = {
 };
 
 const DEFAULT_TIMER = 25;
+const REST_TIMER = 3;
 
 const randomFromArray = (arr: any[]): any =>
   arr[Math.floor(Math.random() * arr.length)];
@@ -26,8 +27,12 @@ export const BaseGame = (props: BaseGameProps) => {
     onCountdownFinish = () => {},
     onVideoFinish = () => {},
     onChoiceClicked = () => {},
+    onGameReset = () => {},
+    isPaused,
   } = props;
   const [timeleft, setTimeleft] = useState(DEFAULT_TIMER);
+  const [restTimeleft, setRestTimeleft] = useState(REST_TIMER);
+  const [isRestingDown, setIsRestingDown] = useState(false);
   const [isCountingDown, setIsCountingDown] = useState(true);
   const [result, setResult] = useState("");
   const [isLocked, setIsLocked] = useState(false);
@@ -78,6 +83,25 @@ export const BaseGame = (props: BaseGameProps) => {
   }, [isCountingDown, timeleft, triggerGame]);
 
   useEffect(() => {
+    let restInterval: NodeJS.Timeout;
+    if (isRestingDown && restTimeleft > 0) {
+      restInterval = setInterval(() => {
+        if (restTimeleft <= 1) {
+          setIsRestingDown(false);
+          setIsLocked(false);
+          setIsCountingDown(true);
+          setTimeleft(DEFAULT_TIMER);
+          clearInterval(restInterval);
+          onGameReset();
+        }
+        setRestTimeleft((t) => t - 1);
+      }, 1000);
+    }
+
+    return () => clearInterval(restInterval);
+  }, [isRestingDown, onGameReset, restTimeleft]);
+
+  useEffect(() => {
     if (result && isLocked && timeleft === 0) {
       const variant = randomFromArray(variants);
       const randomChoice = randomFromArray(choices);
@@ -112,6 +136,19 @@ export const BaseGame = (props: BaseGameProps) => {
     videoArray,
   ]);
 
+  useEffect(() => {
+    if (!isPaused) {
+      setTimeleft(DEFAULT_TIMER);
+      setIsCountingDown(true);
+    }
+  }, [isPaused]);
+
+  useEffect(() => {
+    if (isPaused && !selectedChoice) {
+      setIsCountingDown(false);
+    }
+  }, [isPaused, selectedChoice]);
+
   const isVideoHidden = (
     variantVid: string | number,
     choiceVid: string,
@@ -129,13 +166,11 @@ export const BaseGame = (props: BaseGameProps) => {
   };
 
   const handleChoiceClick = (choiceClicked: string) => {
-    if (!isLocked) {
+    if (!isLocked && !isPaused) {
       setSelectedChoice(choiceClicked);
       setDisplayChoice(choiceClicked);
       onChoiceClicked();
-      setIsCountingDown(false);
-      setTimeleft(0);
-      triggerGame();
+      setTimeleft(3);
     }
   };
 
@@ -150,12 +185,21 @@ export const BaseGame = (props: BaseGameProps) => {
       }, 1700);
       setSelectedChoice("");
       setDisplayChoice("");
-      setIsLocked(false);
-      setIsCountingDown(true);
-      setTimeleft(DEFAULT_TIMER);
+      setIsRestingDown(true);
+      setRestTimeleft(REST_TIMER);
       onVideoFinish(!!selectedChoice);
     }
   };
+
+  const buttonColor = useCallback(
+    (choice: string) => {
+      if (displayChoice === choice) return "secondary-outline";
+      if (displayChoice) return "primary-outline";
+      if (isPaused) return "tertiary-outline";
+      return "primary-outline";
+    },
+    [isPaused, displayChoice]
+  );
 
   return (
     <>
@@ -164,11 +208,7 @@ export const BaseGame = (props: BaseGameProps) => {
           {choices.map((choice) => (
             <Button
               size="lg"
-              variant={
-                displayChoice === choice
-                  ? "secondary-outline"
-                  : "primary-outline"
-              }
+              variant={buttonColor(choice)}
               label={choice}
               onClick={() => handleChoiceClick(choice)}
               width="span"
@@ -216,10 +256,10 @@ export const BaseGame = (props: BaseGameProps) => {
           >
             <div className="flex flex-col items-start justify-center mt-[5px]">
               <p className="text-[12px] leading-[100%] font-face-bebas">
-                Starting in
+                {isRestingDown ? "Game restarts in" : "Starting in"}
               </p>
               <div className="text-[25px] leading-[100%]">
-                {timeleft} {""}
+                {isRestingDown ? restTimeleft : timeleft} {""}
                 <span className="text-[16px] cursor-text font-face-bebas">
                   seconds
                 </span>
@@ -235,9 +275,7 @@ export const BaseGame = (props: BaseGameProps) => {
         {choices.map((choice) => (
           <Button
             size="sm"
-            variant={
-              displayChoice === choice ? "secondary-outline" : "primary-outline"
-            }
+            variant={buttonColor(choice)}
             label={choice}
             onClick={() => handleChoiceClick(choice)}
             width="span"

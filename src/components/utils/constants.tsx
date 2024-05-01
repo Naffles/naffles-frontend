@@ -11,6 +11,7 @@ const colorVariants: ColorVariants = {
   "accent-green": "rgba(2, 177, 177, 1)",
   "dark-text": "#464646",
   "dark-green": "#22AF7C",
+  "purple": "#DC2ABF",
 };
 
 export default colorVariants;
