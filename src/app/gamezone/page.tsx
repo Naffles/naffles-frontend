@@ -46,10 +46,7 @@ const GameZone = () => {
                 CREATE GAME
               </p>
             </button>
-            <button
-              onClick={() => setCurrentScreen("joining")}
-              className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
-            >
+            <button className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]">
               <p className="text-nafl-white text-[18px] font-bold">
                 PLAY FOR POINTS
               </p>

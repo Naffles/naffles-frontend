@@ -144,7 +144,7 @@ const GameZoneCreateGame = () => {
 
       console.log("RESULT :", result);
 
-      if (result.statusCode == 200 && response.ok) {
+      if (result.statusCode == 201 && response.ok) {
         // console.log("GAME CREATED", result?.data?.game?._id);
 
         socket?.emit("createNewGame", { gameId: result?.data?.game?._id });
@@ -353,17 +353,17 @@ const GameZoneCreateGame = () => {
           <div className="flex flex-col">
             <p className=" text-[#989898] text-[14px]">
               Buy-in:{" "}
-              <a href="" className="text-[#fff] font-face-roboto italic">
+              <span className="text-[#fff] font-face-roboto italic">
                 {balanceAmount.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
                 {balanceType.type}
-              </a>
+              </span>
             </p>
             <p className=" text-[#989898] text-[14px]">
               Payout:{" "}
-              <a href="" className="text-[#fff] font-face-roboto italic">
+              <span className="text-[#fff] font-face-roboto italic">
                 {totalPayout.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
                 {balanceType.type}
-              </a>
+              </span>
             </p>
           </div>
         </div>

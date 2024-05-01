@@ -245,7 +245,6 @@ export const RPSGamezone = () => {
                 // }}
                 autoPlay
                 onEnded={handleVideoEnd}
-                muted={true}
               >
                 <source
                   // src={`${basePath}${selectedChoice}/${result}1.${extension}`}
@@ -260,7 +259,7 @@ export const RPSGamezone = () => {
               preload="auto"
               autoPlay
               loop
-              muted
+              muted={showVideo}
             >
               <source src={`/static/rps/waiting.mp4`} type={`video/mp4`} />
             </video>
@@ -283,15 +282,15 @@ export const RPSGamezone = () => {
           <div className="flex flex-row items-center justify-center gap-[20px] mb-[20px]">
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
-              <a href="" className="font-bold text-[#fff] font-face-roboto">
+              <span className="font-bold text-[#fff] font-face-roboto">
                 {currentBetAmount} {currentCoinType}
-              </a>
+              </span>
             </p>
             <p className="text-[#989898] text-[12px]">
               Buy-in:{" "}
-              <a href="" className="font-bold text-[#fff] font-face-roboto">
+              <span className="font-bold text-[#fff] font-face-roboto">
                 {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
-              </a>
+              </span>
             </p>
           </div>
           <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
@@ -331,15 +330,15 @@ export const RPSGamezone = () => {
           <div className="flex flex-row items-center justify-center gap-[20px] mt-[20px]">
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
-              <a href="" className="font-bold text-[#fff] font-face-roboto">
+              <span className="font-bold text-[#fff] font-face-roboto">
                 {currentBetAmount} {currentCoinType}
-              </a>
+              </span>
             </p>
             <p className="text-[#989898] text-[12px]">
               Buy-in:{" "}
-              <a href="" className="font-bold text-[#fff] font-face-roboto">
+              <span className="font-bold text-[#fff] font-face-roboto">
                 {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
-              </a>
+              </span>
             </p>
           </div>
           <div className="flex flex-col w-full ">
@@ -378,15 +377,15 @@ export const RPSGamezone = () => {
         <div className="flex flex-row items-center justify-center gap-[20px] mt-[20px]">
           <p className="text-[#989898] text-[12px]">
             Payout:{" "}
-            <a href="" className="font-bold text-[#fff] font-face-roboto">
+            <span className="font-bold text-[#fff] font-face-roboto">
               {currentBetAmount} {currentCoinType}
-            </a>
+            </span>
           </p>
           <p className="text-[#989898] text-[12px]">
             Buy-in:{" "}
-            <a href="" className="font-bold text-[#fff] font-face-roboto">
+            <span className="font-bold text-[#fff] font-face-roboto">
               {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
-            </a>
+            </span>
           </p>
         </div>
       )}
@@ -475,15 +474,15 @@ export const RPSGamezone = () => {
             <div className="flex flex-row items-center justify-center gap-[20px]">
               <p className="text-[#989898] text-[12px]">
                 Payout:{" "}
-                <a href="" className="font-bold text-[#fff] font-face-roboto">
+                <span className="font-bold text-[#fff] font-face-roboto">
                   {currentBetAmount} {currentCoinType}
-                </a>
+                </span>
               </p>
               <p className="text-[#989898] text-[12px]">
                 Buy-in:{" "}
-                <a href="" className="font-bold text-[#fff] font-face-roboto">
+                <span className="font-bold text-[#fff] font-face-roboto">
                   {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
-                </a>
+                </span>
               </p>
             </div>
             <div className="w-full h-[1px] bg-nafl-sponge-500"></div>

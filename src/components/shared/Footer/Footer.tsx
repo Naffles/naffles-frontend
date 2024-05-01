@@ -18,9 +18,9 @@ const Footer = () => {
             <p className="text-[#BDBDBD] text-[19px]">
               Give us your email and we’ll give you free stuff and notifications
               when we drop{" "}
-              <a href="" className="text-nafl-sponge-500 font-face-roboto">
+              <span className="text-nafl-sponge-500 font-face-roboto">
                 real degen raffles
-              </a>
+              </span>
             </p>
             <div className="flex items-center w-full relative mt-[31px]">
               <input
@@ -92,9 +92,9 @@ const Footer = () => {
             <p className="text-[#BDBDBD] text-[19px]">
               Give us your email and we’ll give you free stuff and notifications
               when we drop{" "}
-              <a href="" className="text-nafl-sponge-500 font-face-roboto">
+              <span className="text-nafl-sponge-500 font-face-roboto">
                 real degen raffles
-              </a>
+              </span>
             </p>
             <div className="flex items-center w-full relative mt-[31px]">
               <input

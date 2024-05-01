@@ -10,7 +10,6 @@ const GameZoneJoining = () => {
   const { socket } = useUser();
   const [countdownTimer, setCountdownTimer] = useState<number>(200);
 
-  const currentScreen = useGame((state) => state.screen);
   const currentGameType = useGame((state) => state.type);
   const currentCoinType = useGame((state) => state.coinType);
   const currentBetAmount = useGame((state) => state.betAmount);
@@ -26,17 +25,22 @@ const GameZoneJoining = () => {
   const setCurrentGameId = useGame((state) => state.setGameId);
   const setCurrentGameMode = useGame((state) => state.setMode);
 
-  const [gameId, setGameId] = useState<string>("");
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCountdownTimer((prevCountdown) => prevCountdown - 0.5);
     }, 1000);
 
+    window.scrollTo(0, 0);
+
     return () => {
       clearInterval(intervalId);
     };
   }, []);
+
+  useEffect(() => {
+    countdownTimer <= 0 &&
+      (currentGameId ? cancelGame(currentGameId) : exitGame());
+  }, [countdownTimer]);
 
   useEffect(() => {
     const gameStart = (data: any) => {
@@ -111,15 +115,15 @@ const GameZoneJoining = () => {
         <div className="flex flex-col items-center">
           <p className=" text-[#989898] text-[14px]">
             Buy-in:{" "}
-            <a href="" className="text-[#fff] font-face-roboto italic">
+            <span className="text-[#fff] font-face-roboto italic">
               {currentBetAmount} {currentCoinType}
-            </a>
+            </span>
           </p>
           <p className=" text-[#989898] text-[14px]">
             Payout:{" "}
-            <a href="" className="text-[#fff] font-face-roboto italic">
+            <span className="text-[#fff] font-face-roboto italic">
               {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
-            </a>
+            </span>
           </p>
         </div>
         <div className="flex flex-col items-center relative w-full gap-[10px]">
