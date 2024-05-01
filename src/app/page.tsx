@@ -152,7 +152,13 @@ export default function Home() {
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
               <SwiperSlide key={item} style={{ width: "290px" }}>
                 <div className="flex-row flex justify-between pt-3 w-full mt-3 px-6">
-                  <TrophyIcon size="lg" colour="dark-green" />
+                  {
+                    item % 2 === 0 ? (
+                      <TrophyIcon size="lg" colour="dark-green" />
+                    ) : (
+                      <TrophyIcon size="lg" colour="purple" />
+                    )
+                  }
                   <Typography size="text-lg" color="yellow">
                     Winner! Eddie just won 0.3ETH ($969.19) from Jay
                   </Typography>

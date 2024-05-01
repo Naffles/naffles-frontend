@@ -34,6 +34,7 @@ export const CoinTossGame = (props: GameContainerProps) => {
       extension="webm"
       barColor="bg-nafl-purple"
       gameCall={triggerCoinTossGame}
+      onChoiceClicked={onGameStart}
       onWinNotify={() => alert("You won Coin toss")}
       onVideoFinish={handleVideoEnd}
       onGameReset={onGameReset}

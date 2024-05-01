@@ -55,24 +55,21 @@ export const BaseGame = (props: BaseGameProps) => {
     [choices, results, variants]
   );
 
-  const triggerGame = useCallback(
-    async (choiceClicked?: string) => {
-      setIsLocked(true);
-      let result;
-      if (selectedChoice || choiceClicked) {
-        const data = (await gameCall()) || {};
-        result = data?.result;
-      }
-      const randomResult = randomFromArray(results);
-      setResult(result ?? randomResult);
-      onCountdownFinish();
-    },
-    [gameCall, onCountdownFinish, results, selectedChoice]
-  );
+  const triggerGame = useCallback(async () => {
+    setIsLocked(true);
+    let result;
+    if (selectedChoice) {
+      const data = (await gameCall()) || {};
+      result = data?.result;
+    }
+    const randomResult = randomFromArray(results);
+    setResult(result ?? randomResult);
+    onCountdownFinish();
+  }, [gameCall, onCountdownFinish, results, selectedChoice]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (!isPaused && isCountingDown && timeleft > 0) {
+    if (isCountingDown && timeleft > 0) {
       interval = setInterval(() => {
         if (timeleft <= 1) {
           triggerGame();
@@ -83,7 +80,7 @@ export const BaseGame = (props: BaseGameProps) => {
     }
 
     return () => clearInterval(interval);
-  }, [isPaused, isCountingDown, timeleft, triggerGame]);
+  }, [isCountingDown, timeleft, triggerGame]);
 
   useEffect(() => {
     let restInterval: NodeJS.Timeout;
@@ -139,8 +136,17 @@ export const BaseGame = (props: BaseGameProps) => {
   ]);
 
   useEffect(() => {
-    if (!isPaused) setTimeleft(DEFAULT_TIMER);
+    if (!isPaused) {
+      setTimeleft(DEFAULT_TIMER);
+      setIsCountingDown(true);
+    }
   }, [isPaused]);
+
+  useEffect(() => {
+    if (isPaused && !selectedChoice) {
+      setIsCountingDown(false);
+    }
+  }, [isPaused, selectedChoice]);
 
   const isVideoHidden = (
     variantVid: string | number,
@@ -163,9 +169,7 @@ export const BaseGame = (props: BaseGameProps) => {
       setSelectedChoice(choiceClicked);
       setDisplayChoice(choiceClicked);
       onChoiceClicked();
-      setIsCountingDown(false);
-      setTimeleft(0);
-      triggerGame(choiceClicked);
+      setTimeleft(3);
     }
   };
 

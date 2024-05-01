@@ -34,6 +34,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       extension="mp4"
       barColor="bg-nafl-aqua-500"
       gameCall={triggerRPSGame}
+      onChoiceClicked={onGameStart}
       onWinNotify={() => alert("You won RPS")}
       onVideoFinish={handleVideoEnd}
       onGameReset={onGameReset}
