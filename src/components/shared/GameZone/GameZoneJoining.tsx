@@ -4,6 +4,7 @@ import { useUser } from "@blockchain/context/UserContext";
 import useGame from "@components/utils/gamezone";
 import { CircularProgress } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const GameZoneJoining = () => {
   const { socket } = useUser();
@@ -14,6 +15,7 @@ const GameZoneJoining = () => {
   const currentCoinType = useGame((state) => state.coinType);
   const currentBetAmount = useGame((state) => state.betAmount);
   const currentOdds = useGame((state) => state.betOdds);
+  const currentGameId = useGame((state) => state.gameId);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setGameType = useGame((state) => state.setType);
@@ -23,6 +25,8 @@ const GameZoneJoining = () => {
   const setDefaultChosen = useGame((state) => state.setDefaultChosen);
   const setCurrentGameId = useGame((state) => state.setGameId);
   const setCurrentGameMode = useGame((state) => state.setMode);
+
+  const [gameId, setGameId] = useState<string>("");
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -46,8 +50,22 @@ const GameZoneJoining = () => {
 
     socket?.on("gameStarted", gameStart);
 
+    const consoleError = (data: any) => {
+      console.log(data);
+    };
+    socket?.on("error", consoleError);
+
+    const rejectMessage = (data: any) => {
+      console.log(data);
+      toast.error("Host rejected request");
+      exitGame();
+    };
+
+    socket?.on("joinRequestRejected", rejectMessage);
+
     return () => {
       socket?.off("gameStarted", gameStart);
+      socket?.off("joinRequestRejected", rejectMessage);
     };
   }, [socket]);
   const setPayOut = (betAmount: string | null, betOdds: string | null) => {
@@ -60,7 +78,15 @@ const GameZoneJoining = () => {
     return betAmountValue * betOddsValue;
   };
 
-  const cancelGame = () => {
+  const cancelGame = (gameId: string) => {
+    console.log("gameId:", gameId);
+    socket?.emit("cancelJoinRequest", {
+      gameId: gameId,
+    });
+    exitGame();
+  };
+
+  const exitGame = () => {
     setCurrentScreen("main");
     setGameType(null);
     setCoinType(null);
@@ -104,7 +130,7 @@ const GameZoneJoining = () => {
                 svg: "w-[160px] h-[160px] drop-shadow-md",
                 indicator: "stroke-[#00e0df]",
                 track: "stroke-[#ee26ff]",
-                value: "text-3xl font-semibold text-white",
+                value: "text-3xl font-semibold text-nafl-white",
               }}
               value={countdownTimer / 2}
               maxValue={100}
@@ -125,7 +151,7 @@ const GameZoneJoining = () => {
           </p>
         </div>
         <button
-          onClick={() => cancelGame()}
+          onClick={() => currentGameId && cancelGame(currentGameId)}
           className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500 mb-[17px]"
         >
           <p className="text-nafl-sponge-500 text-[18px] font-bold">

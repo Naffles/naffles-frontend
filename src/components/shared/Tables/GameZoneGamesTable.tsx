@@ -53,6 +53,9 @@ const GameZoneGamesTable = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
 
+  const [attemptGameId, setAttemptGameId] = useState<string>("");
+  const [allowAttempt, setAllowAttempt] = useState<boolean>(true);
+
   let sample_games_json = [
     {
       id: 1,
@@ -148,6 +151,19 @@ const GameZoneGamesTable = () => {
 
   useEffect(() => {
     socket && fetchTableData(user?.id, user?.name);
+
+    const gameCreated = (data: any) => {
+      console.log("gameCreated data", data);
+      if (data?.message) {
+        fetchTableData(user?.id, user?.name);
+      }
+    };
+
+    socket?.on("newGameCreated", gameCreated);
+
+    return () => {
+      socket?.off("newGameCreated", gameCreated);
+    };
   }, [socket, user]);
 
   useEffect(() => {
@@ -168,8 +184,24 @@ const GameZoneGamesTable = () => {
 
     socket?.on("gameJoinRequest", gameJoinRequest);
 
+    const checkRoomOpen = (data: any) => {
+      console.log("roomstatus data:", data);
+      if (!data) {
+        toast.dismiss();
+        toast.error(
+          "Sorry room is currently occupied, try requesting again later"
+        );
+        // setCurrentScreen("main");
+      } else {
+        setCurrentScreen("joining");
+      }
+    };
+
+    socket?.on("roomStatus", checkRoomOpen);
+
     return () => {
       socket?.off("gameJoinRequest", gameJoinRequest);
+      // socket?.off("roomStatus", checkRoomOpen);
     };
   }, [socket]);
 
@@ -237,20 +269,16 @@ const GameZoneGamesTable = () => {
     setTableData(tableData);
   };
 
-  const joinGame = (
-    gameId: string,
-    userId: string | null,
-    gameData: tableRow
-  ) => {
+  const joinGame = (gameId: string, gameData: tableRow) => {
     // console.log("joined a game start");
     var currentDate = new Date();
     currentDate.setSeconds(currentDate.getSeconds() + 10);
 
-    console.log("currentDate", currentDate);
-    socket?.emit("joinGame", {
-      userId: userId,
+    setAttemptGameId(gameId);
+    setAllowAttempt(true);
+
+    socket?.emit("joinRequest", {
       gameId: gameId,
-      timeout: currentDate,
     });
 
     setGameType(
@@ -261,7 +289,38 @@ const GameZoneGamesTable = () => {
     setCoinType(gameData.currency);
     setBetAmount(gameData.buyin.toString());
     setBetOdds(gameData.odds.toString());
-    setCurrentScreen("joining");
+    setGameId(gameId);
+  };
+
+  const deleteGame = async (gameId: string, gameData: tableRow) => {
+    console.log("delete game with id:", gameId);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameId}`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + user?.jwt,
+            "x-api-key": `${process.env.NEXT_PUBLIC_API_KEY}`,
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log(result);
+        fetchTableData(user?.id, user?.name);
+      } else {
+        console.error("Failed to create game: ", result.message);
+      }
+    } catch (error) {
+      console.error("Error creating game: ", error);
+    }
   };
 
   return (
@@ -295,7 +354,9 @@ const GameZoneGamesTable = () => {
                     alt="Game Icon"
                     className="w-[33px] h-[33px] bg-[#D9D9D9] border-[1px] border-[#DC2ABF] rounded-full"
                   />{" "}
-                  <p className="text-[16px] font-bold text-[#fff]">
+                  <p
+                    className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                  >
                     {item.game}
                   </p>
                 </div>
@@ -307,7 +368,9 @@ const GameZoneGamesTable = () => {
                     alt="Game Icon"
                     className="w-[33px] h-[33px] bg-[#D9D9D9] rounded-full"
                   />{" "}
-                  <p className="text-[16px] font-bold text-[#fff]">
+                  <p
+                    className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                  >
                     {item.myUsername == item.player
                       ? "You"
                       : shortenWalletAddress(item.player)}
@@ -316,10 +379,14 @@ const GameZoneGamesTable = () => {
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-center gap-[6px]">
-                  <p className="text-[16px] font-bold text-[#fff]">
+                  <p
+                    className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                  >
                     {item.buyin}
                   </p>
-                  <p className="text-[16px] font-bold text-[#fff]">
+                  <p
+                    className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                  >
                     {item.currency}
                   </p>
                 </div>
@@ -328,25 +395,37 @@ const GameZoneGamesTable = () => {
               <TableCell>
                 <div className="flex flex-row items-center justify-between gap-[7px]">
                   <div className="flex flex-row items-center justify-center gap-[6px]">
-                    <p className="text-[16px] font-bold text-[#fff]">
+                    <p
+                      className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                    >
                       {item.payout}
                     </p>
-                    <p className="text-[16px] font-bold text-[#fff]">
+                    <p
+                      className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                    >
                       {item.currency}
                     </p>
                   </div>
-                  {item.allowJoin && item.myUsername != item.player && (
-                    <button
-                      onClick={() =>
-                        item.myId
-                          ? joinGame(item.id, item.myId, item)
-                          : toast.error("You must login first!")
-                      }
-                      className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] border-[#DC2ABF] border-[1px] bg-trasparent"
-                    >
-                      <p className="text-[18px] font-bold">JOIN</p>
-                    </button>
-                  )}
+                  {item.allowJoin &&
+                    (item.myUsername != item.player ? (
+                      item.myId && (
+                        <button
+                          onClick={() => joinGame(item.id, item)}
+                          className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] border-[#DC2ABF] border-[1px] bg-trasparent"
+                        >
+                          <p className="text-[18px] font-bold">JOIN</p>
+                        </button>
+                      )
+                    ) : (
+                      <button
+                        onClick={() => deleteGame(item.id, item)}
+                        className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] bg-[#ff3636] bg-trasparent"
+                      >
+                        <p className="text-[18px] font-bold text-nafl-white">
+                          DELETE
+                        </p>
+                      </button>
+                    ))}
                 </div>
               </TableCell>
             </TableRow>

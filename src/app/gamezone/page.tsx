@@ -34,19 +34,23 @@ const GameZone = () => {
             currentScreen == "main" ? "opacity-100 z-20" : "opacity-0 z-[-50]"
           }`}
         >
-          <p className="text-[48px] text-white font-face-bebas">GAME ZONE</p>
+          <p className="text-[48px] text-nafl-white font-face-bebas">
+            GAME ZONE
+          </p>
           <div className="flex flex-wrap items-center justify-center gap-[32px] ">
             <button
               onClick={() => setCurrentScreen("create")}
               className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
             >
-              <p className="text-white text-[18px] font-bold">CREATE GAME</p>
+              <p className="text-nafl-white text-[18px] font-bold">
+                CREATE GAME
+              </p>
             </button>
             <button
               onClick={() => setCurrentScreen("joining")}
               className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
             >
-              <p className="text-white text-[18px] font-bold">
+              <p className="text-nafl-white text-[18px] font-bold">
                 PLAY FOR POINTS
               </p>
             </button>

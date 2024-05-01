@@ -13,7 +13,7 @@ const ConnectButton = () => {
   const [walletLoggedIn, setWalletLoggedIn] = useState(false);
 
   useEffect(() => {
-    user?.jwt ? setWalletLoggedIn(true) : setWalletLoggedIn(false);
+    user?.address ? setWalletLoggedIn(true) : setWalletLoggedIn(false);
   }, [user]);
 
   const handleConnect = async () => {

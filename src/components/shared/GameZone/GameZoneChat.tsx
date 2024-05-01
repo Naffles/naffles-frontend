@@ -7,6 +7,7 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { TfiMenu } from "react-icons/tfi";
 import moment from "moment";
 import useGame from "@components/utils/gamezone";
+import toast from "react-hot-toast";
 
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
@@ -14,7 +15,7 @@ interface Message {
   message: string | null;
 }
 const GameZoneChat = () => {
-  const { socket, socketId } = useUser();
+  const { socket, socketId, user } = useUser();
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
 
@@ -118,12 +119,16 @@ const GameZoneChat = () => {
 
   const sendChatMessage = (message: string) => {
     console.log("message:", message);
-    currentGameId &&
-      socket?.emit("sendChatMessage", {
-        message: message,
-        gameId: currentGameId,
-      });
-    setMessage("");
+    if (user?.id) {
+      currentGameId &&
+        socket?.emit("sendChatMessage", {
+          message: message,
+          gameId: currentGameId,
+        });
+      setMessage("");
+    } else {
+      toast.error("You must login first to chat");
+    }
   };
 
   const scrollToBottom = () => {
@@ -144,9 +149,9 @@ const GameZoneChat = () => {
     return (
       <>
         <div className="flex flex-row items-center justify-start gap-[19px]">
-          <TfiMenu className="text-white text-[12px]" />
+          <TfiMenu className="text-nafl-white text-[12px]" />
           <div className="flex flex-row items-center justify-center gap-[6px]">
-            <p className="text-[16px] text-white">{`${balance} ${type}`}</p>
+            <p className="text-[16px] text-nafl-white">{`${balance} ${type}`}</p>
             <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
           </div>
         </div>
@@ -225,28 +230,32 @@ const GameZoneChat = () => {
               className="h-[41px] w-[41px] object-contain"
             />
             <div className="flex flex-col items-center justify-center">
-              <p className="text-[14px] text-white font-face-bebas">JACKPOT</p>
+              <p className="text-[14px] text-nafl-white font-face-bebas">
+                JACKPOT
+              </p>
               <div className="flex flex-row items-end justify-center gap-[2px]">
-                <p className="text-[30px] text-white font-face-bebas leading-[100%]">
+                <p className="text-[30px] text-nafl-white font-face-bebas leading-[100%]">
                   1259.69
                 </p>
-                <p className="text-[14px] text-white font-face-bebas">POINTS</p>
+                <p className="text-[14px] text-nafl-white font-face-bebas">
+                  POINTS
+                </p>
               </div>
             </div>
           </div>
-          <p className="text-[14px] text-white font-face-bebas">
+          <p className="text-[14px] text-nafl-white font-face-bebas">
             HOW TO WIN THE JACKPOT?
           </p>
         </div>
 
         <div className="flex flex-row items-center justify-between w-full mt-[26px]">
           <p className="text-[#C4C4C4] text-[20px]">SEASON TOAL:</p>
-          <p className="text-white text-[20px]">152,256 POINTS</p>
+          <p className="text-nafl-white text-[20px]">152,256 POINTS</p>
         </div>
 
         <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
           <div className="flex flex-row items-center justify-center p-[5px] bg-[#292929] rounded-t-[10px] h-[37px] gap-[8px]">
-            <p className="text-white font-bold w-[156px] text-center">
+            <p className="text-nafl-white font-bold w-[156px] text-center">
               BALANCES
             </p>
             <button className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]">
@@ -326,7 +335,7 @@ const GameZoneChat = () => {
               alt="Naffle"
               className="w-[95px] object-contain"
             />
-            <p className="text-[16px] text-white mr-[20px]">
+            <p className="text-[16px] text-nafl-white mr-[20px]">
               <b>JOIN</b> OUR DISCORD!
             </p>
           </div>

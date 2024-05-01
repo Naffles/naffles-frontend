@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useMagic } from "./MagicProvider";
 import { io, Socket } from "socket.io-client";
+import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 
 // Define the type for the user
 type User = {
@@ -53,6 +54,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [socketId, setSocketId] = useState<string>("");
 
+  const { jwt, user } = useBasicUser();
+
   // Function to retrieve and set user's account.
   const fetchUserAccount = async () => {
     // Use Web3 to get user's accounts.
@@ -86,11 +89,23 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    userId && socket
-      ? socket?.emit("register", { userId: userId })
-      : socket?.emit("register", { userId: "Anonymous" });
+    console.log("basic user context data:", jwt, user);
 
-    socket?.on("registered", (data) => setSocketId(data.userId));
+    !userJWT && jwt && setUserJWT(jwt);
+    !userId && user?.id && setUserId(user?.id);
+    !profileName && user?.username && setProfileName(user?.username);
+  }, [jwt, user]);
+
+  useEffect(() => {
+    userId && socket?.emit("register", { userId: userId });
+    const setIntoSocketId = (data: any) => {
+      setSocketId(data.userId);
+    };
+    socket?.on("registered", setIntoSocketId);
+
+    return () => {
+      socket?.off("registered", setIntoSocketId);
+    };
   }, [userId, socket]);
 
   const getUserData = async () => {
@@ -149,7 +164,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     <UserContext.Provider
       value={{
         user:
-          address && userJWT && userId
+          userJWT && userId
             ? {
                 address: address,
                 jwt: userJWT,

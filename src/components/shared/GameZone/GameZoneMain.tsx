@@ -29,7 +29,7 @@ const GameZoneMain = () => {
               className="w-full object-cover object-center absolute top-0 left-0"
             />
             <div className="flex flex-col w-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[33px] py-[10px] z-20">
-              <p className="text-[26px] font-face-bebas text-white underline">
+              <p className="text-[26px] font-face-bebas text-nafl-white underline">
                 PLAY OR WAGER AND EARN POINTS
               </p>
               <div className="flex lg:flex-row flex-col items-start justify-between">
