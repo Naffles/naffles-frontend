@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useCallback, useContext, useMemo } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 import { useLocalStorage } from "@hook/useLocalStorage";
 import axios from "@components/utils/axios";
 import unixToString from "@components/utils/unixToString";
@@ -23,6 +29,8 @@ type BasicUserContextType = {
   addPoints: (points: number) => void;
   login: (data: LoginParams) => Record<string, any> | void;
   logout: () => void;
+  reloadProfile: () => Record<string, any> | void;
+  updateProfile: (form: FormData) => void;
 };
 
 // // Create a context for user data.
@@ -33,6 +41,8 @@ const BasicUserContext = createContext<BasicUserContextType>({
   addPoints: (points) => {},
   login: (data) => {},
   logout: () => {},
+  reloadProfile: () => {},
+  updateProfile: (form) => {},
 });
 
 // Custom hook for accessing user context data.
@@ -86,14 +96,39 @@ export const BasicUserProvider = ({
         identifier,
         password,
       });
-      setUser(data?.user ?? null);
       setJWT(data?.token ?? null);
-      setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
       console.log("data:", data);
       return data;
     },
-    [setJWT, setUser, setPoints]
+    [setJWT]
   );
+
+  const reloadProfile = useCallback(async () => {
+    const {
+      data: { data },
+    } = await axios.get("user/profile");
+    setUser(data ?? null);
+    setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
+    return data;
+  }, [setUser, setPoints]);
+
+  const updateProfile = useCallback(
+    async (form: FormData) => {
+      const {
+        data: { data },
+      } = await axios.patch("user/profile", form);
+      setUser(data ?? null);
+      setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
+      return data;
+    },
+    [setUser, setPoints]
+  );
+
+  useEffect(() => {
+    if (jwt) {
+      reloadProfile();
+    }
+  }, [jwt, reloadProfile]);
 
   const logout = useCallback(() => {
     removeJWT();
@@ -103,8 +138,26 @@ export const BasicUserProvider = ({
 
   const contextValue = useMemo(() => {
     const points = pointsObject?.points ?? 0;
-    return { jwt, user, points, addPoints, login, logout };
-  }, [jwt, user, login, logout, pointsObject, addPoints]);
+    return {
+      jwt,
+      user,
+      points,
+      addPoints,
+      login,
+      logout,
+      reloadProfile,
+      updateProfile,
+    };
+  }, [
+    jwt,
+    user,
+    login,
+    logout,
+    reloadProfile,
+    updateProfile,
+    pointsObject,
+    addPoints,
+  ]);
 
   return (
     <BasicUserContext.Provider value={contextValue}>
