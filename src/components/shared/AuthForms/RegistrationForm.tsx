@@ -10,11 +10,13 @@ type RegistrationFormData = {
   password: string;
   verificationCode: string;
 };
+const strongPasswordRegex = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
 
 export const RegistrationForm = () => {
   const { login } = useBasicUser();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isVerificationSuccess, setIsVerificationSuccess] = useState(false);
   const [previousData, setPreviousData] = useState<RegistrationFormData | null>(
     null
   );
@@ -23,14 +25,26 @@ export const RegistrationForm = () => {
     setIsLoading(prev => !prev);
     if (!showNext) {
       setPreviousData(data);
-      const response = await axios.post("user/send-email-verification", {
-        email: data.emailAddress,
-      });
-      setShowNext(true);
+      if (!strongPasswordRegex.test(data.password)) {
+        setIsError(true);
+        setIsLoading(prev => !prev);
+        return;
+      }
+      try {
+        await axios.post("user/send-email-verification", {
+          email: data.emailAddress,
+          password: data.password,
+        });
+        setIsError(false);
+        setShowNext(true);
+      } catch (err) {
+        console.log(err);
+        setIsError(true);
+      }
     } else {
       try {
         if (previousData?.emailAddress && previousData.password) {
-          const response = await axios.post("user/signup", {
+          await axios.post("user/signup", {
             email: previousData.emailAddress,
             password: previousData.password,
             verificationCode: data.verificationCode,
@@ -40,9 +54,10 @@ export const RegistrationForm = () => {
             password: previousData.password,
           });
         }
+        setIsVerificationSuccess(false);
       } catch (err) {
         console.log(err);
-        setIsError(true);
+        setIsVerificationSuccess(true);
       }
     }
     setIsLoading(prev => !prev);
@@ -61,10 +76,17 @@ export const RegistrationForm = () => {
             label="Password"
             placeholder="Password*"
             type="password"
-            notes="*Strong password must contain at least one Uppercase, Lowercase, number
-        and special character"
+            notes=""
             minLength={8}
           />
+          {
+            isError && (
+              <label className="text-xs text-[#ecc8c8]">
+                *Strong password must contain at least one Uppercase, Lowercase, number
+                  and special character
+              </label>
+            )
+          }
         </>
       ) : (
         <TextInput
@@ -74,7 +96,7 @@ export const RegistrationForm = () => {
         />
       )}
       {
-        isError && (
+        isVerificationSuccess && (
           <label className="text-xs text-[#ecc8c8]">
             Something went wrong in verification.
           </label>

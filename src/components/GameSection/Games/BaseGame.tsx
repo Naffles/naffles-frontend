@@ -179,8 +179,8 @@ export const BaseGame = (props: BaseGameProps) => {
       onWinNotify();
     }
     if (isLocked) {
+      setResult("");
       setTimeout(() => {
-        setResult("");
         setDisplayVideo(null);
       }, 1700);
       setSelectedChoice("");
