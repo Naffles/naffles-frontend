@@ -4,11 +4,13 @@ import DeleteIcon from "@components/icons/deleteIcon";
 import axios from "@components/utils/axios";
 import { Button } from "../Button";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+
 export type ProfileSubmitData = { username: string };
 
 export const ProfileForm = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const { user } = useBasicUser();
   useEffect(() => {
     const getProfile = async () => {
       const { data } = await axios.get("user/profile");
@@ -77,7 +79,7 @@ export const ProfileForm = () => {
         <TextInput
           name="username"
           label="Username"
-          placeholder="New Username"
+          placeholder={user?.username ? user.username : "New Username"}
         />
       </div>
       <div className="flex flex-col w-full mt-3 items-center">
