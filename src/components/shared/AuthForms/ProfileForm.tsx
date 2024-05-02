@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect, useCallback } from "react";
 import { FormContext, TextInput } from "../Inputs";
 import DeleteIcon from "@components/icons/deleteIcon";
 import axios from "@components/utils/axios";
@@ -8,21 +8,23 @@ import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 export type ProfileSubmitData = { username: string };
 
 export const ProfileForm = () => {
+  const { user, reloadProfile, updateProfile } = useBasicUser();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const { user } = useBasicUser();
-  useEffect(() => {
-    const getProfile = async () => {
-      const { data } = await axios.get("user/profile");
-      const { data: profileImageData } = await axios.get(
-        "image/view?path=" + data.data.profileImage,
-        { responseType: "arraybuffer" }
-      );
-      setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
 
-    };
-    getProfile();
-  }, []);
+  const handleFirstLoad = useCallback(async () => {
+    const userProfile = (await reloadProfile()) ?? {};
+    console.log(userProfile);
+    const { data: profileImageData } = await axios.get(
+      "image/view?path=" + userProfile.profileImage,
+      { responseType: "arraybuffer" }
+    );
+    setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
+  }, [reloadProfile]);
+
+  useEffect(() => {
+    handleFirstLoad();
+  }, [handleFirstLoad]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event?.target?.files?.[0];
@@ -40,8 +42,9 @@ export const ProfileForm = () => {
     const form = new FormData();
     if (data?.username) form.append("username", data.username);
     if (imageFile) form.append("file", imageFile);
-    axios.patch("user/profile", form);
+    updateProfile(form);
   };
+
   return (
     <FormContext
       onSubmit={handleProfileEditSubmit}
