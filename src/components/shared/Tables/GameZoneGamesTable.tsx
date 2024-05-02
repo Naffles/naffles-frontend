@@ -201,7 +201,7 @@ const GameZoneGamesTable = () => {
 
     return () => {
       socket?.off("gameJoinRequest", gameJoinRequest);
-      // socket?.off("roomStatus", checkRoomOpen);
+      socket?.off("roomStatus", checkRoomOpen);
     };
   }, [socket]);
 
@@ -270,7 +270,7 @@ const GameZoneGamesTable = () => {
   };
 
   const joinGame = (gameId: string, gameData: tableRow) => {
-    // console.log("joined a game start");
+    console.log("joined a game start");
     var currentDate = new Date();
     currentDate.setSeconds(currentDate.getSeconds() + 10);
 
@@ -286,6 +286,7 @@ const GameZoneGamesTable = () => {
         ? "Rock, Paper, Scissors"
         : "Coin Toss"
     );
+
     setCoinType(gameData.currency);
     setBetAmount(gameData.buyin.toString());
     setBetOdds(gameData.odds.toString());

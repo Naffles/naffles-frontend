@@ -84,7 +84,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("socket", socket);
 
     return () => {
-      newSocket.off("hello");
       newSocket.close();
     };
   }, []);
