@@ -44,15 +44,28 @@ const GameZoneAccepting = () => {
 
   useEffect(() => {
     const gameStart = (data: any) => {
+      console.log("gameStart", data);
       if (data.gameId) {
         setCurrentScreen("ingame");
-        setDefaultChosen(data.initialChoices.creator);
+        data.initialChoices && setDefaultChosen(data.initialChoices.creator);
         setCurrentGameId(data.gameId);
         setCurrentGameMode("host");
       }
     };
 
     socket?.on("gameStarted", gameStart);
+
+    const CTgameStart = (data: any) => {
+      console.log("coinTossGameStarted", data);
+      if (data.gameId) {
+        setCurrentScreen("ingame");
+        data.initialChoices && setDefaultChosen(data.initialChoices.challenger);
+        setCurrentGameId(data.gameId);
+        setCurrentGameMode("challenger");
+      }
+    };
+
+    socket?.on("coinTossGameStarted", CTgameStart);
 
     const cancelMessage = (data: any) => {
       console.log("cancelMessage", data);
@@ -63,6 +76,7 @@ const GameZoneAccepting = () => {
     socket?.on("joinRequestCancelled", cancelMessage);
 
     return () => {
+      // socket?.off("coinTossGameStarted", CTgameStart);
       socket?.off("gameStarted", gameStart);
       socket?.off("joinRequestCancelled", cancelMessage);
     };
@@ -88,10 +102,17 @@ const GameZoneAccepting = () => {
 
   const acceptGame = () => {
     console.log("accept game data: ", currentGameId, currentChallengerId);
+    // if (currentGameType == "Rock, Paper, Scissors") {
     socket?.emit("acceptJoinRequest", {
       gameId: currentGameId,
       challengerId: currentChallengerId,
     });
+    // } else {
+    //   socket?.emit("acceptJoinRequestCoinToss", {
+    //     gameId: currentGameId,
+    //     challengerId: currentChallengerId,
+    //   });
+    // }
   };
 
   const rejectGame = () => {

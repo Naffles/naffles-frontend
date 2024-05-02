@@ -44,9 +44,10 @@ const GameZoneJoining = () => {
 
   useEffect(() => {
     const gameStart = (data: any) => {
+      console.log("gameStart", data);
       if (data.gameId) {
         setCurrentScreen("ingame");
-        setDefaultChosen(data.initialChoices.challenger);
+        data.initialChoices && setDefaultChosen(data.initialChoices.challenger);
         setCurrentGameId(data.gameId);
         setCurrentGameMode("challenger");
       }

@@ -2,6 +2,7 @@
 
 import useGame from "@components/utils/gamezone";
 import { RPSGamezone } from "./RPSGamezone";
+import { CTGamezone } from "./CTGamezone";
 
 const GameZoneGame = () => {
   const currentGameType = useGame((state) => state.type);
@@ -15,6 +16,7 @@ const GameZoneGame = () => {
       </div>
       <div className="flex flex-col w-[540px] items-center justify-start py-[70px] gap-[20px]">
         {currentGameType == "Rock, Paper, Scissors" && <RPSGamezone />}
+        {currentGameType == "Coin Toss" && <CTGamezone />}
       </div>
     </div>
   );

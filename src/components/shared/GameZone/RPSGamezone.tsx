@@ -49,6 +49,7 @@ export const RPSGamezone = () => {
   const [requestedBetAmount, setRequestedBetAmount] = useState<string | null>();
   const [requestedBetOdds, setRequestedBetOdds] = useState<string | null>();
   const [showAcceptChangeBet, setShowAcceptChangeBet] = useState(false);
+  const [muteVideo, setMuteVideo] = useState(false);
 
   const GameResultMessage = ({
     result,
@@ -230,25 +231,38 @@ export const RPSGamezone = () => {
     });
   };
 
+  useEffect(() => {
+    muteVideo
+      ? toast("Video Muted", {
+          duration: 3000,
+          icon: "🔇",
+        })
+      : toast("Video Unmuted", {
+          duration: 3000,
+          icon: "🔊",
+        });
+  }, [muteVideo]);
+
+  const randomIntFromInterval = (min: number, max: number) => {
+    // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  };
+
   return (
     <>
       <div className="flex-row flex items-center justify-center">
-        <div className="flex-col flex items-center justify-start bg-nafl-grey-700 lg:w-[530px] w-full rounded-3xl overflow-hidden h-full relative">
-          <div className="lg:w-[600px] w-[180%] h-full">
+        <div className="flex-col flex items-center justify-start bg-nafl-grey-700 lg:w-[530px] w-full rounded-3xl overflow-hidden aspect-[2.5/1] relative">
+          <div className="w-[120%] aspect-[2.5/1]">
             {result && showVideo && (
               <video
                 playsInline={true}
-                // preload={selectedChoice === choice ? "auto" : "metadata"}
-                // key={choice + vidResult + variant}
-                // ref={(ref) => {
-                //   videosRef.current[idx] = ref;
-                // }}
                 autoPlay
                 onEnded={handleVideoEnd}
+                onClick={() => setMuteVideo(!muteVideo)}
+                muted={muteVideo}
               >
                 <source
-                  // src={`${basePath}${selectedChoice}/${result}1.${extension}`}
-                  src={`/static/rps/${selectedChoice}/${result}1.mp4`}
+                  src={`/static/rps/${selectedChoice}/${result}${randomIntFromInterval(1, 4)}.mp4`}
                   type={`video/mp4`}
                 />
               </video>
@@ -259,7 +273,7 @@ export const RPSGamezone = () => {
               preload="auto"
               autoPlay
               loop
-              muted={showVideo}
+              muted={showVideo || muteVideo}
             >
               <source src={`/static/rps/waiting.mp4`} type={`video/mp4`} />
             </video>

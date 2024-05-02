@@ -219,17 +219,13 @@ const GameZoneCreateGame = () => {
               {games_choice_options.map((item) => (
                 <button
                   onClick={() => {
-                    if (item == "ROCK, PAPERS, SCISSORS") {
-                      setGameChoice(item);
-                      setGameChoiceDropdown(false);
-                    } else {
-                      toast.error("Coin Toss Game mode coming soon");
-                    }
+                    setGameChoice(item);
+                    setGameChoiceDropdown(false);
                   }}
                   key={item}
                   className={`flex items-center w-full h-[54px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[20px] ${
                     gameChoice == item && "bg-[#fff]/30"
-                  } ${item != "ROCK, PAPERS, SCISSORS" && "opacity-20"}`}
+                  }`}
                 >
                   <p className="text-[#fff] text-[16px] font-face-bebas">
                     {item}
