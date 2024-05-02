@@ -1,0 +1,17 @@
+stages:
+  - deploy
+
+deploy_dev:
+  stage: deploy
+  image: google/cloud-sdk:alpine
+  environment: DEV
+  only:
+  - dev/ci-cd-test
+  script:
+  - echo $GCP_CLOUD_BUILD_SERVICE_KEY > /tmp/gcloud-service-key.json
+  - gcloud auth activate-service-account --key-file /tmp/gcloud-service-key.json
+  - gcloud config set project $GCP_PROJECT_ID
+  - gcloud builds submit . --config=cloudbuild.yml
+
+after_script:
+- rm /tmp/gcloud-service-key.json
