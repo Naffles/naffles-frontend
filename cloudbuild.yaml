@@ -1,15 +1,14 @@
 steps:
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
-    args:
-      ["build", "-t", "gcr.io/naffles-418512/naffles-website:$SHORT_SHA", "."]
+    args: ["build", "-t", "gcr.io/naffles-418512/naffles-website:latest", "."]
 
   # Tag the image with 'dev'
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
         "tag",
-        "gcr.io/naffles-418512/naffles-website:$SHORT_SHA",
+        "gcr.io/naffles-418512/naffles-website:latest",
         "gcr.io/naffles-418512/naffles-website:dev",
       ]
 
