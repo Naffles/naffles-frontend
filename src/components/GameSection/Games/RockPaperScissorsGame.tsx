@@ -6,23 +6,21 @@ import { GameContainerProps } from "@type/GameSection";
 
 export const RockPaperScissorsGame = (props: GameContainerProps) => {
   const { handlePlayCount, onGameStart, onGameReset, isPaused } = props;
-  const { addPoints } = useBasicUser();
-  const [points, setPoints] = useState(0);
+  const { setPoints } = useBasicUser();
+  const [displayPoints, setDisplayPoints] = useState(0);
 
   const triggerRPSGame = useCallback(async () => {
     onGameStart?.();
     const {
       data: { data },
     } = await axios.post("game/demo/rock-paper-scissors");
-    console.log("rps return: ", data);
-    setPoints(data?.score || 0);
+    setDisplayPoints(data?.score || 0);
     return data;
   }, [onGameStart]);
 
   const handleVideoEnd = (hasSelected: boolean) => {
     if (hasSelected) {
-      console.log("point count:", points);
-      addPoints(points);
+      setPoints(displayPoints);
       handlePlayCount?.(hasSelected);
     }
   };
