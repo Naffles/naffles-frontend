@@ -89,7 +89,7 @@ export const BaseGame = (props: BaseGameProps) => {
         if (restTimeleft <= 1) {
           setIsRestingDown(false);
           setIsLocked(false);
-          setIsCountingDown(true);
+          if (!isPaused) setIsCountingDown(true);
           setTimeleft(DEFAULT_TIMER);
           clearInterval(restInterval);
           onGameReset();
@@ -99,7 +99,7 @@ export const BaseGame = (props: BaseGameProps) => {
     }
 
     return () => clearInterval(restInterval);
-  }, [isRestingDown, onGameReset, restTimeleft]);
+  }, [isRestingDown, onGameReset, restTimeleft, isPaused]);
 
   useEffect(() => {
     if (result && isLocked && timeleft === 0) {
@@ -195,10 +195,10 @@ export const BaseGame = (props: BaseGameProps) => {
     (choice: string) => {
       if (displayChoice === choice) return "secondary-outline";
       if (displayChoice) return "primary-outline";
-      if (isPaused) return "tertiary-outline";
+      if (isPaused || isLocked) return "tertiary-outline";
       return "primary-outline";
     },
-    [isPaused, displayChoice]
+    [isPaused, displayChoice, isLocked]
   );
 
   return (
