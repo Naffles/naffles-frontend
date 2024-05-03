@@ -25,7 +25,8 @@ export const GameSection = () => {
     }
   );
   const [openModal, setOpenModal] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isCoinTossPaused, setIsCoinTossPaused] = useState(false);
+  const [isRPSPaused, setIsRPSPaused] = useState(false);
 
   useEffect(() => {
     let isPlaysCountToday = false;
@@ -77,15 +78,15 @@ export const GameSection = () => {
         <div className="flex-col flex games-container gap-8">
           <RockPaperScissorsGame
             handlePlayCount={onPlayEnd}
-            onGameStart={() => setIsPaused(true)}
-            onGameReset={() => setIsPaused(false)}
-            isPaused={isPaused}
+            onGameStart={() => setIsCoinTossPaused(true)}
+            onGameReset={() => setIsCoinTossPaused(false)}
+            isPaused={isRPSPaused}
           />
           <CoinTossGame
             handlePlayCount={onPlayEnd}
-            onGameStart={() => setIsPaused(true)}
-            onGameReset={() => setIsPaused(false)}
-            isPaused={isPaused}
+            onGameStart={() => setIsRPSPaused(true)}
+            onGameReset={() => setIsRPSPaused(false)}
+            isPaused={isCoinTossPaused}
           />
         </div>
         <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl xl:mt-0 lg:mt-[100px]">
