@@ -39,6 +39,7 @@ export const CoinTossGame = (props: GameContainerProps) => {
       onVideoFinish={handleVideoEnd}
       onGameReset={onGameReset}
       isPaused={isPaused}
+      initialTime={90}
     />
   );
 };

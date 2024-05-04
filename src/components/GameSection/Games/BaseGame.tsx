@@ -8,7 +8,7 @@ type GameVideo = {
   choice: string;
 };
 
-const DEFAULT_TIMER = 25;
+const DEFAULT_TIMER = 60;
 const REST_TIMER = 3;
 
 const randomFromArray = (arr: any[]): any =>
@@ -29,8 +29,9 @@ export const BaseGame = (props: BaseGameProps) => {
     onChoiceClicked = () => {},
     onGameReset = () => {},
     isPaused,
+    initialTime,
   } = props;
-  const [timeleft, setTimeleft] = useState(DEFAULT_TIMER);
+  const [timeleft, setTimeleft] = useState(initialTime);
   const [restTimeleft, setRestTimeleft] = useState(REST_TIMER);
   const [isRestingDown, setIsRestingDown] = useState(false);
   const [isCountingDown, setIsCountingDown] = useState(true);
@@ -138,7 +139,6 @@ export const BaseGame = (props: BaseGameProps) => {
 
   useEffect(() => {
     if (!isPaused) {
-      setTimeleft(DEFAULT_TIMER);
       setIsCountingDown(true);
     }
   }, [isPaused]);

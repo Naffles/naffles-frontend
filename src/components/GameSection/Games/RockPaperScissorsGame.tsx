@@ -39,6 +39,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       onVideoFinish={handleVideoEnd}
       onGameReset={onGameReset}
       isPaused={isPaused}
+      initialTime={30}
     />
   );
 };
