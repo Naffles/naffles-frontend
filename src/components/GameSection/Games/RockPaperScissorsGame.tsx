@@ -26,19 +26,23 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
   };
 
   return (
-    <BaseGame
-      results={["win", "lose", "draw"]}
-      choices={["rock", "paper", "scissors"]}
-      variants={[1, 2, 3]}
-      basePath="/static/rps/"
-      extension="mp4"
-      barColor="bg-nafl-aqua-500"
-      gameCall={triggerRPSGame}
-      onChoiceClicked={onGameStart}
-      onWinNotify={() => alert("You won RPS")}
-      onVideoFinish={handleVideoEnd}
-      onGameReset={onGameReset}
-      isPaused={isPaused}
-    />
+    <>
+
+      <BaseGame
+        results={["win", "lose", "draw"]}
+        choices={["rock", "paper", "scissors"]}
+        variants={[1, 2, 3]}
+        basePath="/static/rps/"
+        extension="mp4"
+        barColor="bg-nafl-aqua-500"
+        gameCall={triggerRPSGame}
+        onChoiceClicked={onGameStart}
+        onWinNotify={() => alert("You won RPS")}
+        onVideoFinish={handleVideoEnd}
+        onGameReset={onGameReset}
+        isPaused={isPaused}
+        initialTime={60}
+      />
+    </>
   );
 };
