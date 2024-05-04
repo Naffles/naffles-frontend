@@ -139,7 +139,6 @@ export const BaseGame = (props: BaseGameProps) => {
 
   useEffect(() => {
     if (!isPaused) {
-      // setTimeleft(initialTime);
       setIsCountingDown(true);
     }
   }, [isPaused]);
