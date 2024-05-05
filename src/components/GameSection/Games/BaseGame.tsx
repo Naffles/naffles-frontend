@@ -8,7 +8,7 @@ type GameVideo = {
   choice: string;
 };
 
-const DEFAULT_TIMER = 25;
+const DEFAULT_TIMER = 60;
 const REST_TIMER = 3;
 
 const randomFromArray = (arr: any[]): any =>
@@ -29,8 +29,9 @@ export const BaseGame = (props: BaseGameProps) => {
     onChoiceClicked = () => {},
     onGameReset = () => {},
     isPaused,
+    initialTime,
   } = props;
-  const [timeleft, setTimeleft] = useState(DEFAULT_TIMER);
+  const [timeleft, setTimeleft] = useState(initialTime);
   const [restTimeleft, setRestTimeleft] = useState(REST_TIMER);
   const [isRestingDown, setIsRestingDown] = useState(false);
   const [isCountingDown, setIsCountingDown] = useState(true);
@@ -89,7 +90,7 @@ export const BaseGame = (props: BaseGameProps) => {
         if (restTimeleft <= 1) {
           setIsRestingDown(false);
           setIsLocked(false);
-          setIsCountingDown(true);
+          if (!isPaused) setIsCountingDown(true);
           setTimeleft(DEFAULT_TIMER);
           clearInterval(restInterval);
           onGameReset();
@@ -99,7 +100,7 @@ export const BaseGame = (props: BaseGameProps) => {
     }
 
     return () => clearInterval(restInterval);
-  }, [isRestingDown, onGameReset, restTimeleft]);
+  }, [isRestingDown, onGameReset, restTimeleft, isPaused]);
 
   useEffect(() => {
     if (result && isLocked && timeleft === 0) {
@@ -138,7 +139,6 @@ export const BaseGame = (props: BaseGameProps) => {
 
   useEffect(() => {
     if (!isPaused) {
-      setTimeleft(DEFAULT_TIMER);
       setIsCountingDown(true);
     }
   }, [isPaused]);
@@ -195,10 +195,10 @@ export const BaseGame = (props: BaseGameProps) => {
     (choice: string) => {
       if (displayChoice === choice) return "secondary-outline";
       if (displayChoice) return "primary-outline";
-      if (isPaused) return "tertiary-outline";
+      if (isPaused || isLocked) return "tertiary-outline";
       return "primary-outline";
     },
-    [isPaused, displayChoice]
+    [isPaused, displayChoice, isLocked]
   );
 
   return (
