@@ -181,6 +181,10 @@ export const CTGamezone = () => {
     currentDefaultChosen && setSelectedChoice(currentDefaultChosen);
   }, [currentDefaultChosen]);
 
+  useEffect(() => {
+    timeleft <= 0 && leaveGame();
+  }, [timeleft]);
+
   const handleChoiceClick = (choiceClicked: string) => {
     setSelectedChoice(choiceClicked);
     console.log("Change Choice currentGameId: ", currentGameId);
