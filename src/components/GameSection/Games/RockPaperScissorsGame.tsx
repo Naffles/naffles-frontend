@@ -14,12 +14,14 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
     const {
       data: { data },
     } = await axios.post("game/demo/rock-paper-scissors");
+    console.log("rps return: ", data);
     setPoints(data?.score || 0);
     return data;
   }, [onGameStart]);
 
   const handleVideoEnd = (hasSelected: boolean) => {
     if (hasSelected) {
+      console.log("point count:", points);
       addPoints(points);
       handlePlayCount?.(hasSelected);
     }

@@ -38,11 +38,11 @@ const BasicUserContext = createContext<BasicUserContextType>({
   user: null,
   jwt: null,
   points: 0,
-  addPoints: (points) => {},
-  login: (data) => {},
-  logout: () => {},
-  reloadProfile: () => {},
-  updateProfile: (form) => {},
+  addPoints: (points) => { },
+  login: (data) => { },
+  logout: () => { },
+  reloadProfile: () => { },
+  updateProfile: (form) => { },
 });
 
 // Custom hook for accessing user context data.
@@ -70,6 +70,7 @@ export const BasicUserProvider = ({
   const addPoints = useCallback(
     (addedPoints: number) => {
       setPoints((points) => {
+        console.log("setting points: ", points);
         localStorage.removeItem('naffles-points');
         // if (points?.date) {
         //   const currentDateNumber = Date.now();
