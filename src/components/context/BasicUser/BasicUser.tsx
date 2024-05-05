@@ -70,18 +70,19 @@ export const BasicUserProvider = ({
   const addPoints = useCallback(
     (addedPoints: number) => {
       setPoints((points) => {
-        if (points?.date) {
-          const currentDateNumber = Date.now();
-          const currentDate = unixToString(currentDateNumber);
-          const previousDate = unixToString(points.date);
-          if (previousDate === currentDate) {
-            const currentPoints = points?.points || 0;
-            return {
-              points: currentPoints + addedPoints,
-              date: currentDateNumber,
-            };
-          }
-        }
+        localStorage.removeItem('naffles-points');
+        // if (points?.date) {
+        //   const currentDateNumber = Date.now();
+        //   const currentDate = unixToString(currentDateNumber);
+        //   const previousDate = unixToString(points.date);
+        //   if (previousDate === currentDate) {
+        //     const currentPoints = points?.points || 0;
+        //     return {
+        //       points: currentPoints + addedPoints,
+        //       date: currentDateNumber,
+        //     };
+        //   }
+        // }
         return { points: addedPoints, date: Date.now() };
       });
     },
