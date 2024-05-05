@@ -5,6 +5,7 @@ const instance = axios.create({
   headers: {
     "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
   },
+  withCredentials: true // Ensure cookies are sent with requests
 });
 
 instance.interceptors.request.use((config) => {
