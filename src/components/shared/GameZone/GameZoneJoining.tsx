@@ -142,10 +142,7 @@ const GameZoneJoining = () => {
               strokeWidth={4}
               showValueLabel={false}
             />
-            <div
-              onClick={() => setCountdownTimer(200)}
-              className="flex flex-col items-center justify-center absolute top-[30px] h-[100px] w-[100px] rounded-full bg-[#383838] scale-x-[-1]"
-            >
+            <div className="flex flex-col items-center justify-center absolute top-[30px] h-[100px] w-[100px] rounded-full bg-[#383838] scale-x-[-1]">
               <p className="text-[#fff] font-face-bebas text-[60px] leading-[100%]">
                 {Math.ceil(countdownTimer)}
               </p>

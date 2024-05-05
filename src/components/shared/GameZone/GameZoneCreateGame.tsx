@@ -292,12 +292,9 @@ const GameZoneCreateGame = () => {
             )}
           </div>
           <input
-            type="text"
+            type="number"
             value={balanceAmount}
-            onChange={(e) =>
-              parseFloat(e.target.value) &&
-              setBalanceAmount(parseFloat(e.target.value))
-            }
+            onChange={(e) => setBalanceAmount(parseFloat(e.target.value))}
             className="flex items-center justify-start w-[126px] h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] font-face-bebas text-[16px] text-[#fff]"
           />
         </div>
@@ -369,7 +366,9 @@ const GameZoneCreateGame = () => {
         <button
           onClick={() =>
             user?.jwt
-              ? createGame()
+              ? balanceAmount <= 0
+                ? toast.error("Bet amount should cannot be set to 0.")
+                : createGame()
               : toast.error("Login first before making a game.")
           }
           className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] bg-nafl-sponge-500 mb-[17px]"

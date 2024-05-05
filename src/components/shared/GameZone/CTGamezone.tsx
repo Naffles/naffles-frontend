@@ -15,7 +15,7 @@ type GameVideo = {
   choice: string;
 };
 
-const DEFAULT_TIMER = 10;
+const DEFAULT_TIMER = 30;
 
 export const CTGamezone = () => {
   const [timeleft, setTimeleft] = useState(DEFAULT_TIMER);
