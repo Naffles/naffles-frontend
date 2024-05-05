@@ -55,7 +55,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
     },
     {
       title: "Stake/Claim",
-      href: "/stake-claim",
+      href: "/staking",
     },
   ];
 
