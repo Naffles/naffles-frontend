@@ -33,7 +33,6 @@ type BasicUserContextType = {
   logout: () => void;
   reloadProfile: () => Record<string, any> | void;
   updateProfile: (form: FormData) => void;
-  isProfileUpdateSuccess: boolean;
 };
 
 // // Create a context for user data.
@@ -67,7 +66,6 @@ export const BasicUserProvider = ({
     null,
     { initializeWithValue: false }
   );
-  const [isProfileUpdateSuccess, setIsProfileUpdateSuccess] = useState(false);
 
   const [pointsObject, setPointsObject, removePoints] =
     useLocalStorage<PointsObject | null>("naffles-points", null, {
@@ -143,12 +141,17 @@ export const BasicUserProvider = ({
     async (form: FormData) => {
       const {
         data: { data },
-      } = await axios.patch("user/profile", form);
+      } = await axios.patch("user/profile", form)
+      .then((res) => {
+        alert("Profile updated successfully");
+        return res;
+      })
+      .catch((error) => {
+        alert("Profile update failed");
+        return error;
+      });
       setUser(data ?? null);
       setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
-      if (data) {
-        setIsProfileUpdateSuccess(true);
-      }
       return data;
     },
     [setUser, setPointsObject]
@@ -178,8 +181,6 @@ export const BasicUserProvider = ({
       logout,
       reloadProfile,
       updateProfile,
-      isProfileUpdateSuccess,
-      setIsProfileUpdateSuccess,
     };
   }, [
     jwt,
@@ -191,8 +192,6 @@ export const BasicUserProvider = ({
     pointsObject,
     addPoints,
     setPoints,
-    isProfileUpdateSuccess,
-    setIsProfileUpdateSuccess,
   ]);
 
   return (

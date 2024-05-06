@@ -9,7 +9,7 @@ import { Spinner } from "@nextui-org/react";
 export type ProfileSubmitData = { username: string };
 
 export const ProfileForm = () => {
-  const { user, reloadProfile, updateProfile, isProfileUpdateSuccess, setIsProfileUpdateSuccess } = useBasicUser();
+  const { user, reloadProfile, updateProfile } = useBasicUser();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -41,7 +41,6 @@ export const ProfileForm = () => {
   };
 
   const handleProfileEditSubmit = (data: ProfileSubmitData) => {
-    setIsProfileUpdateSuccess(false);
     setIsLoading(prev => !prev);
     const form = new FormData();
     if (data?.username) form.append("username", data.username);
@@ -51,13 +50,6 @@ export const ProfileForm = () => {
       setIsLoading(prev => !prev);
     }, 2000);
   };
-
-  useEffect(() => {
-    if (isProfileUpdateSuccess) {
-      handleFirstLoad();
-      alert("Profile updated successfully");
-    }
-  }, [isProfileUpdateSuccess]);
 
   return (
     <FormContext
