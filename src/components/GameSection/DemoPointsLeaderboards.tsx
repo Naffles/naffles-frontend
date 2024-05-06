@@ -174,12 +174,12 @@ const DemoPointsLeaderboards = () => {
                 1259.69
               </p>
               <p className="font-face-bebas text-[20px] text-nafl-sponge-500 leading-[110%]">
-                POINTS
+                NAFFLINGS
               </p>
             </div>
           </div>
         </div>
-        <div className="w-[180px] object-contain absolute top-[-75px] shake">
+        <div className="w-[180px] object-contain absolute top-[-75px] right-[110px] shake">
           <div className="relative flex justify-center">
             <img
               src="/static/jackpot-img.png"
@@ -213,7 +213,7 @@ const DemoPointsLeaderboards = () => {
           <TableHeader>
             <TableColumn>#</TableColumn>
             <TableColumn>PROFILE</TableColumn>
-            <TableColumn>POINTS</TableColumn>
+            <TableColumn>NAFFLINGS</TableColumn>
           </TableHeader>
           <TableBody
             items={tableData}

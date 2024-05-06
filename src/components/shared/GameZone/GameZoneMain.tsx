@@ -33,7 +33,7 @@ const GameZoneMain = () => {
             />
             <div className="flex flex-col w-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[33px] py-[10px] z-20">
               <p className="text-[26px] font-face-bebas text-nafl-white underline">
-                PLAY OR WAGER AND EARN POINTS
+                PLAY OR WAGER AND EARN NAFFLINGS
               </p>
               <div className="flex lg:flex-row flex-col items-start justify-between">
                 <p className="w-full text-left text-[16px]">

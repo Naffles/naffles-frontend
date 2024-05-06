@@ -249,7 +249,7 @@ const GameZoneGlobalChat = () => {
                   1259.69
                 </p>
                 <p className="text-[14px] text-nafl-white font-face-bebas">
-                  POINTS
+                  NAFFLINGS
                 </p>
               </div>
             </div>
@@ -261,7 +261,7 @@ const GameZoneGlobalChat = () => {
 
         <div className="flex flex-row items-center justify-between w-full mt-[26px]">
           <p className="text-[#C4C4C4] text-[20px]">SEASON TOAL:</p>
-          <p className="text-nafl-white text-[20px]">152,256 POINTS</p>
+          <p className="text-nafl-white text-[20px]">152,256 NAFFLINGS</p>
         </div>
 
         <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">

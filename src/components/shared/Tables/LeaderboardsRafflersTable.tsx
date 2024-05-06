@@ -200,7 +200,7 @@ const LeaderboardRafflersTable = () => {
           <TableColumn>
             RAFFLES <br /> ENTERED
           </TableColumn>
-          <TableColumn>POINTS</TableColumn>
+          <TableColumn>NAFFLINGS</TableColumn>
         </TableHeader>
         <TableBody
           items={tableData}
