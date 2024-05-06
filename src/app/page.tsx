@@ -159,8 +159,8 @@ export default function Home() {
                       <TrophyIcon size="lg" colour="purple" />
                     )
                   }
-                  <Typography size="text-lg" color="yellow">
-                    Winner! Eddie just won 0.3ETH ($969.19) from Jay
+                  <Typography size="text-lg" color={item % 2 === 0 ? "purple": "dark-green"}>
+                    Winner! <span style={{fontFamily: 'Bebas Neue', color: '#FEFF3D'}}>Eddie just won</span> 0.3ETH ($969.19) from Jay
                   </Typography>
                 </div>
               </SwiperSlide>
