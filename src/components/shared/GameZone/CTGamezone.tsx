@@ -84,8 +84,8 @@ export const CTGamezone = () => {
         </p>
         <p className="font-face-bebas text-nafl-sponge-500 text-[24px] leading-[100%] text-center">
           It’s your turn to Win. <br />
-          Choose <span className="text-nafl-white">Heads </span>or{" "}
-          <span className="text-nafl-white">tails </span>
+          Choose <span className="text-nafl-white font-face-bebas">Heads </span>
+          or <span className="text-nafl-white font-face-bebas">tails </span>
         </p>
       </div>
     ) : (
@@ -257,7 +257,7 @@ export const CTGamezone = () => {
     <>
       <div className="flex-row flex items-center justify-center">
         <div className="flex-col flex items-center justify-start bg-nafl-grey-700 lg:w-[530px] w-full rounded-3xl overflow-hidden aspect-[2.5/1] relative">
-          <div className="w-[120%] aspect-[2.5/1]">
+          <div className="w-[108%] aspect-[2.5/1]">
             {lastResult && showVideo && (
               <video
                 playsInline={true}

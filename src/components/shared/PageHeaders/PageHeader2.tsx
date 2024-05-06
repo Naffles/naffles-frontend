@@ -95,7 +95,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   };
 
   return (
-    <div className="fixed top-0 flex items-center justify-center w-full bg-transparent px-[25px] pt-[25px] z-50">
+    <div className="fixed top-0 flex items-center justify-center w-full bg-transparent px-[25px] pt-[25px] z-40">
       {!basicUser ? (
         <>
           <Modal

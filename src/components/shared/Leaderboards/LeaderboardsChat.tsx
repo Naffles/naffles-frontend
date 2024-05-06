@@ -1,10 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { BiSend } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { TfiMenu } from "react-icons/tfi";
+import DepositModal from "../Modal/DepositModal";
+import WithdrawModal from "../Modal/WithdrawModal";
 
 const LeaderboardsChat = () => {
+  const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
+
   let sample_balances_json = [
     {
       id: 1,
@@ -170,10 +176,16 @@ const LeaderboardsChat = () => {
             <p className="text-nafl-white font-bold w-[156px] text-center">
               BALANCES
             </p>
-            <button className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]">
+            <button
+              onClick={() => setShowDepositModal(true)}
+              className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]"
+            >
               <p className="text-[#000] text-[12px] font-bold">DEPOSIT</p>
             </button>
-            <button className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]">
+            <button
+              onClick={() => setShowWithdrawModal(true)}
+              className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]"
+            >
               <p className="text-[#000] text-[12px] font-bold">WITHDRAW</p>
             </button>
           </div>
@@ -236,6 +248,16 @@ const LeaderboardsChat = () => {
           </div>
         </div>
       </div>
+      <DepositModal
+        show={showDepositModal}
+        setShow={setShowDepositModal}
+        walletBalances={sample_balances_json}
+      />
+      <WithdrawModal
+        show={showWithdrawModal}
+        setShow={setShowWithdrawModal}
+        walletBalances={sample_balances_json}
+      />
     </div>
   );
 };
