@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import { useLocalStorage } from "@hook/useLocalStorage";
 import axios from "@components/utils/axios";
@@ -27,6 +28,7 @@ type BasicUserContextType = {
   jwt: string | null;
   points: number;
   addPoints: (points: number) => void;
+  setPoints: (points: number) => void;
   login: (data: LoginParams) => Record<string, any> | void;
   logout: () => void;
   reloadProfile: () => Record<string, any> | void;
@@ -39,6 +41,7 @@ const BasicUserContext = createContext<BasicUserContextType>({
   jwt: null,
   points: 0,
   addPoints: (points) => {},
+  setPoints: (points) => {},
   login: (data) => {},
   logout: () => {},
   reloadProfile: () => {},
@@ -62,14 +65,15 @@ export const BasicUserProvider = ({
     null,
     { initializeWithValue: false }
   );
-  const [pointsObject, setPoints, removePoints] =
+
+  const [pointsObject, setPointsObject, removePoints] =
     useLocalStorage<PointsObject | null>("naffles-points", null, {
       initializeWithValue: false,
     });
 
   const addPoints = useCallback(
     (addedPoints: number) => {
-      setPoints((points) => {
+      setPointsObject((points) => {
         if (points?.date) {
           const currentDateNumber = Date.now();
           const currentDate = unixToString(currentDateNumber);
@@ -85,7 +89,27 @@ export const BasicUserProvider = ({
         return { points: addedPoints, date: Date.now() };
       });
     },
-    [setPoints]
+    [setPointsObject]
+  );
+
+  const setPoints = useCallback(
+    (points: number) => {
+      setPointsObject((pointsObject) => {
+        if (pointsObject?.date) {
+          const currentDateNumber = Date.now();
+          const currentDate = unixToString(currentDateNumber);
+          const previousDate = unixToString(pointsObject.date);
+          if (previousDate === currentDate) {
+            return {
+              points,
+              date: currentDateNumber,
+            };
+          }
+        }
+        return { points, date: Date.now() };
+      });
+    },
+    [setPointsObject]
   );
 
   const login = useCallback(
@@ -108,20 +132,26 @@ export const BasicUserProvider = ({
       data: { data },
     } = await axios.get("user/profile");
     setUser(data ?? null);
-    setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
+    setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
     return data;
-  }, [setUser, setPoints]);
+  }, [setUser, setPointsObject]);
 
   const updateProfile = useCallback(
     async (form: FormData) => {
-      const {
-        data: { data },
-      } = await axios.patch("user/profile", form);
-      setUser(data ?? null);
-      setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
-      return data;
+      try {
+        const {
+          data: { data },
+        } = await axios.patch("user/profile", form);
+        setUser(data ?? null);
+        setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
+        alert("Profile updated successfully!");
+        return data;
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("Error updating profile. Please try again later.");
+      }
     },
-    [setUser, setPoints]
+    [setUser, setPointsObject]
   );
 
   useEffect(() => {
@@ -143,6 +173,7 @@ export const BasicUserProvider = ({
       user,
       points,
       addPoints,
+      setPoints,
       login,
       logout,
       reloadProfile,
@@ -157,6 +188,7 @@ export const BasicUserProvider = ({
     updateProfile,
     pointsObject,
     addPoints,
+    setPoints,
   ]);
 
   return (
