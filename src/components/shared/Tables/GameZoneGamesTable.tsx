@@ -358,16 +358,20 @@ const GameZoneGamesTable = () => {
                   <p
                     className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
                   >
-                    {item.game}
+                    {item.game == "rockPaperScissors"
+                      ? "ROCK, PAPER, SCISSORS"
+                      : "COIN TOSS"}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-center gap-[7px]">
                   <img
-                    src={item.image}
+                    src={
+                      item.image ? item.image : "/static/no-image-account.png"
+                    }
                     alt="Game Icon"
-                    className="w-[33px] h-[33px] bg-[#D9D9D9] rounded-full"
+                    className="w-[33px] h-[33px] rounded-full"
                   />{" "}
                   <p
                     className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}

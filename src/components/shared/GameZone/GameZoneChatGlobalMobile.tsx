@@ -13,6 +13,8 @@ import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { useUser } from "@blockchain/context/UserContext";
 import moment from "moment";
 import toast from "react-hot-toast";
+import DepositModal from "../Modal/DepositModal";
+import WithdrawModal from "../Modal/WithdrawModal";
 
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
@@ -26,6 +28,8 @@ const GameZoneChatGlobalMobile = () => {
   const { socket, socketId, user } = useUser();
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
+  const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
 
   const chatContainer = useRef<HTMLDivElement>(null);
   const bottomChat = useRef<HTMLDivElement>(null);
@@ -292,12 +296,18 @@ const GameZoneChatGlobalMobile = () => {
                       <p className="text-nafl-white font-bold w-[156px] text-center">
                         BALANCES
                       </p>
-                      <button className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]">
+                      <button
+                        onClick={() => setShowDepositModal(true)}
+                        className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]"
+                      >
                         <p className="text-[#000] text-[12px] font-bold">
                           DEPOSIT
                         </p>
                       </button>
-                      <button className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]">
+                      <button
+                        onClick={() => setShowWithdrawModal(true)}
+                        className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]"
+                      >
                         <p className="text-[#000] text-[12px] font-bold">
                           WITHDRAW
                         </p>
@@ -410,6 +420,17 @@ const GameZoneChatGlobalMobile = () => {
           </button>
         )}
       </div>
+
+      <DepositModal
+        show={showDepositModal}
+        setShow={setShowDepositModal}
+        walletBalances={sample_balances_json}
+      />
+      <WithdrawModal
+        show={showWithdrawModal}
+        setShow={setShowWithdrawModal}
+        walletBalances={sample_balances_json}
+      />
     </>
   );
 };
