@@ -189,10 +189,15 @@ export default function Home() {
         </div>
         <GameSection />
       </div>
-      <div className="items-center justify-center w-full lg:px-24 bg-nafl-grey-600 h-auto p-5 flex flex-col pb-[150px] gap-[50px]">
-        <h1 className="text-[2.2rem] md:text-[5rem] lg:text-[6rem] uppercase leading-[2rem] md:leading-[5rem] text-nafl-white tracking-tight text-center mt-10">
-          Hottest collections
-        </h1>
+      <div className="items-center justify-center w-full lg:px-24 bg-nafl-grey-600 h-auto p-5 flex flex-col pb-[150px] pt-[80px] gap-[50px]">
+        <div className="relative">
+          <div className="absolute w-[60px] md:w-[103px] top-[-14px] md:top-[-50px] left-[30px] md:left-[120px]">
+            <img src="/nafflings/hottest.png" alt="" />
+          </div>
+          <h1 className="text-[2.2rem] md:text-[5rem] lg:text-[6rem] uppercase leading-[2rem] md:leading-[5rem] text-nafl-white tracking-tight text-center mt-10">
+            Hottest collections
+          </h1>
+        </div>
         <div className="flex flex-row flex-wrap gap-[16px] items-center justify-center xl:w-[1300px] lg:w-[1000px] w-[90%]">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
             <div key={index} className="flex flex-col items-center">

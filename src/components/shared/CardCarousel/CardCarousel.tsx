@@ -4,13 +4,13 @@ import { Navigation } from "swiper/modules";
 
 const CardCarousel = ({ children }: any) => {
   return (
-    <div className="w-full">
+    <div className="w-full -translate-y-24 z-10">
       <Swiper
         spaceBetween={25}
         slidesPerView={"auto"}
         navigation={true}
         modules={[Navigation]}
-        style={{ overflow: "visible" }}
+        className="pt-24"
       >
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item, index) => (
           <SwiperSlide
