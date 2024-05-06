@@ -27,6 +27,7 @@ export const TextInput = ({
         className="w-full bg-nafl-charcoal-600 text-body-base text-nafl-charcoal-100 border-[1px] rounded-lg p-2  border-nafl-sponge-500 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-nafl-sys-complete placeholder:text-nafl-charcoal-400 placeholder:text-body-base font-face-roboto font-bold"
         type="text"
         placeholder={placeholder}
+        key={name}
         {...props}
         {...register?.(name, {
           ...(minLength && {

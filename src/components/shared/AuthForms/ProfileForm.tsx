@@ -24,16 +24,9 @@ export const ProfileForm = () => {
   const [isChangePasswordShowed, setIsChangePasswordShowed] = useState<boolean>(false);
   const [passwordCheckErrors, setPasswordCheckErrors] = useState<string[]>([]);
   const { resetField } = useForm();
-  const resetFields = () => {
-    resetField("username");
-    resetField("oldPassword");
-    resetField("newPassword");
-    resetField("confirmPassword");
-  }
 
   const handleFirstLoad = useCallback(async () => {
     const userProfile = (await reloadProfile()) ?? {};
-    console.log(userProfile);
     const { data: profileImageData } = await axios.get(
       "image/view?path=" + userProfile.profileImage,
       { responseType: "arraybuffer" }
