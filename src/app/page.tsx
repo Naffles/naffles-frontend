@@ -160,25 +160,6 @@ export default function Home() {
           >
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
               <SwiperSlide key={item} style={{ width: "290px" }}>
-<<<<<<< HEAD
-                <div className="flex-row flex justify-between pt-3 w-full mt-3 px-6">
-                  {item % 2 === 0 ? (
-                    <TrophyIcon size="lg" colour="dark-green" />
-                  ) : (
-                    <TrophyIcon size="lg" colour="purple" />
-                  )}
-                  <Typography
-                    size="text-lg"
-                    color={item % 2 === 0 ? "purple" : "dark-green"}
-                  >
-                    Winner!{" "}
-                    <span
-                      style={{ fontFamily: "Bebas Neue", color: "#FEFF3D" }}
-                    >
-                      Eddie just won
-                    </span>{" "}
-                    0.3ETH ($969.19) from Jay
-=======
                 <div className="flex-row flex justify-between py-2 w-full mt-2">
                   {
                     item % 2 === 0 ? (
@@ -189,7 +170,6 @@ export default function Home() {
                   }
                   <Typography size="text-lg" color={item % 2 === 0 ? "purple": "dark-green"}>
                     Winner! <span style={{fontFamily: 'Bebas Neue', color: '#FEFF3D'}}>Eddie just won</span> 0.3ETH ($969.19) from Jay
->>>>>>> 18f8136 (feat: added color corrections on homepage and props in demo game)
                   </Typography>
                 </div>
               </SwiperSlide>
