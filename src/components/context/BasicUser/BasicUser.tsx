@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import { useLocalStorage } from "@hook/useLocalStorage";
 import axios from "@components/utils/axios";
@@ -64,6 +65,7 @@ export const BasicUserProvider = ({
     null,
     { initializeWithValue: false }
   );
+
   const [pointsObject, setPointsObject, removePoints] =
     useLocalStorage<PointsObject | null>("naffles-points", null, {
       initializeWithValue: false,
@@ -136,12 +138,18 @@ export const BasicUserProvider = ({
 
   const updateProfile = useCallback(
     async (form: FormData) => {
-      const {
-        data: { data },
-      } = await axios.patch("user/profile", form);
-      setUser(data ?? null);
-      setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
-      return data;
+      try {
+        const {
+          data: { data },
+        } = await axios.patch("user/profile", form);
+        setUser(data ?? null);
+        setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
+        alert("Profile updated successfully!");
+        return data;
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("Error updating profile. Please try again later.");
+      }
     },
     [setUser, setPointsObject]
   );
