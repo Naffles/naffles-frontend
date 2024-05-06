@@ -4,13 +4,15 @@ import DeleteIcon from "@components/icons/deleteIcon";
 import axios from "@components/utils/axios";
 import { Button } from "../Button";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import { Spinner } from "@nextui-org/react";
 
 export type ProfileSubmitData = { username: string };
 
 export const ProfileForm = () => {
-  const { user, reloadProfile, updateProfile } = useBasicUser();
+  const { user, reloadProfile, updateProfile, isProfileUpdateSuccess, setIsProfileUpdateSuccess } = useBasicUser();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleFirstLoad = useCallback(async () => {
     const userProfile = (await reloadProfile()) ?? {};
@@ -39,11 +41,23 @@ export const ProfileForm = () => {
   };
 
   const handleProfileEditSubmit = (data: ProfileSubmitData) => {
+    setIsProfileUpdateSuccess(false);
+    setIsLoading(prev => !prev);
     const form = new FormData();
     if (data?.username) form.append("username", data.username);
     if (imageFile) form.append("file", imageFile);
     updateProfile(form);
+    setTimeout(() => {
+      setIsLoading(prev => !prev);
+    }, 2000);
   };
+
+  useEffect(() => {
+    if (isProfileUpdateSuccess) {
+      handleFirstLoad();
+      alert("Profile updated successfully");
+    }
+  }, [isProfileUpdateSuccess]);
 
   return (
     <FormContext
@@ -143,7 +157,10 @@ export const ProfileForm = () => {
           type="submit"
           width="inhert"
         >
-          Save Changes
+          { isLoading ? <>
+            <Spinner size="sm" />
+            Loading . . .
+          </> : "Save Changes"}
         </Button>
       </div>
     </FormContext>

@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import { useLocalStorage } from "@hook/useLocalStorage";
 import axios from "@components/utils/axios";
@@ -32,6 +33,7 @@ type BasicUserContextType = {
   logout: () => void;
   reloadProfile: () => Record<string, any> | void;
   updateProfile: (form: FormData) => void;
+  isProfileUpdateSuccess: boolean;
 };
 
 // // Create a context for user data.
@@ -45,6 +47,7 @@ const BasicUserContext = createContext<BasicUserContextType>({
   logout: () => {},
   reloadProfile: () => {},
   updateProfile: (form) => {},
+  isProfileUpdateSuccess: false,
 });
 
 // Custom hook for accessing user context data.
@@ -64,6 +67,8 @@ export const BasicUserProvider = ({
     null,
     { initializeWithValue: false }
   );
+  const [isProfileUpdateSuccess, setIsProfileUpdateSuccess] = useState(false);
+
   const [pointsObject, setPointsObject, removePoints] =
     useLocalStorage<PointsObject | null>("naffles-points", null, {
       initializeWithValue: false,
@@ -141,6 +146,9 @@ export const BasicUserProvider = ({
       } = await axios.patch("user/profile", form);
       setUser(data ?? null);
       setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
+      if (data) {
+        setIsProfileUpdateSuccess(true);
+      }
       return data;
     },
     [setUser, setPointsObject]
@@ -170,6 +178,8 @@ export const BasicUserProvider = ({
       logout,
       reloadProfile,
       updateProfile,
+      isProfileUpdateSuccess,
+      setIsProfileUpdateSuccess,
     };
   }, [
     jwt,
@@ -181,6 +191,8 @@ export const BasicUserProvider = ({
     pointsObject,
     addPoints,
     setPoints,
+    isProfileUpdateSuccess,
+    setIsProfileUpdateSuccess,
   ]);
 
   return (
