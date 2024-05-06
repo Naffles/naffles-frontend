@@ -46,7 +46,6 @@ const BasicUserContext = createContext<BasicUserContextType>({
   logout: () => {},
   reloadProfile: () => {},
   updateProfile: (form) => {},
-  isProfileUpdateSuccess: false,
 });
 
 // Custom hook for accessing user context data.
@@ -139,20 +138,18 @@ export const BasicUserProvider = ({
 
   const updateProfile = useCallback(
     async (form: FormData) => {
-      const {
-        data: { data },
-      } = await axios.patch("user/profile", form)
-      .then((res) => {
-        alert("Profile updated successfully");
-        return res;
-      })
-      .catch((error) => {
-        alert("Profile update failed");
-        return error;
-      });
-      setUser(data ?? null);
-      setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
-      return data;
+      try {
+        const {
+          data: { data },
+        } = await axios.patch("user/profile", form);
+        setUser(data ?? null);
+        setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
+        alert("Profile updated successfully!");
+        return data;
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("Error updating profile. Please try again later.");
+      }
     },
     [setUser, setPointsObject]
   );
