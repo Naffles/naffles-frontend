@@ -56,13 +56,16 @@ export default function Home() {
                       trusted degens, where profits can be verifiably-fair and
                       fun for everyone. Please degen responsibly!
                     </p>
-                    <div className="flex lg:flex-row flex-col items-center justify-start gap-[16px] w-full">
+                    <div className="relative w-fit flex lg:flex-row flex-col items-center justify-start gap-[16px]">
                       <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px]">
                         <p className="text-[#FEFF3D]"> PLAY OUR GAMES</p>
                       </button>
-                      <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px]">
+                      <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
                         <p className="text-[#FEFF3D]">EXPLORE LIVE NAFFLES</p>
                       </button>
+                      <div className="absolute w-[150px] right-[35px] top-[50px] lg:top-[-20px] z-0">
+                        <img src="/nafflings/surprise3.png" alt="" />
+                      </div>
                     </div>
                   </div>
                 </div>
