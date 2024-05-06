@@ -18,7 +18,8 @@ export const CoinTossGame = (props: GameContainerProps) => {
       setDisplayPoints(data?.score || 0);
       return data;
     } catch (error: any) {
-      if (error.statusCode === 429) {
+      if (error.response.data.statusCode === 429) {
+        alert(error.response.data.message);
         onLimitReached();
         onGameReset?.();
       } else {

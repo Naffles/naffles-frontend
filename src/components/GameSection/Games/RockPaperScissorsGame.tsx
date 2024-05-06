@@ -18,8 +18,9 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       setDisplayPoints(data?.score || 0);
       return data;
     } catch (error: any) {
-      if (error.statusCode === 429) {
+      if (error.response.data.statusCode === 429) {
         onLimitReached();
+        alert(error.response.data.message);
         onGameReset?.();
       } else {
         alert("An error occurred while playing RPS");
