@@ -42,7 +42,13 @@ export default function Home() {
                     <span className="text-[#00b3b2] font-face-bebas">
                       Life-changing
                     </span>{" "}
-                    nfts & Crypto
+                    nfts &{" "}
+                    <span className="relative font-face-bebas">
+                      Crypto
+                      <div className="absolute w-[130px] top-[-112px] lg:top-[-108px] right-[-10px]">
+                        <img src="/nafflings/surprise2.png" alt="" />
+                      </div>
+                    </span>
                   </p>
                   <div className="flex flex-col gap-[15px]">
                     <p className="text-[25px] text-nafl-charcoal-800">
@@ -152,13 +158,11 @@ export default function Home() {
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
               <SwiperSlide key={item} style={{ width: "290px" }}>
                 <div className="flex-row flex justify-between pt-3 w-full mt-3 px-6">
-                  {
-                    item % 2 === 0 ? (
-                      <TrophyIcon size="lg" colour="dark-green" />
-                    ) : (
-                      <TrophyIcon size="lg" colour="purple" />
-                    )
-                  }
+                  {item % 2 === 0 ? (
+                    <TrophyIcon size="lg" colour="dark-green" />
+                  ) : (
+                    <TrophyIcon size="lg" colour="purple" />
+                  )}
                   <Typography size="text-lg" color="yellow">
                     Winner! Eddie just won 0.3ETH ($969.19) from Jay
                   </Typography>
