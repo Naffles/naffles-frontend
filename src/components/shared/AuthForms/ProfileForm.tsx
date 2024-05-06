@@ -4,17 +4,29 @@ import DeleteIcon from "@components/icons/deleteIcon";
 import axios from "@components/utils/axios";
 import { Button } from "../Button";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import { Spinner } from "@nextui-org/react";
+import { strongPasswordRegex } from "./RegistrationForm";
+import { useForm } from "react-hook-form";
 
 export type ProfileSubmitData = { username: string };
+
+type ChangePasswordData = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
 
 export const ProfileForm = () => {
   const { user, reloadProfile, updateProfile } = useBasicUser();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isChangePasswordShowed, setIsChangePasswordShowed] = useState<boolean>(false);
+  const [passwordCheckErrors, setPasswordCheckErrors] = useState<string[]>([]);
+  const { resetField } = useForm();
 
   const handleFirstLoad = useCallback(async () => {
     const userProfile = (await reloadProfile()) ?? {};
-    console.log(userProfile);
     const { data: profileImageData } = await axios.get(
       "image/view?path=" + userProfile.profileImage,
       { responseType: "arraybuffer" }
@@ -34,16 +46,118 @@ export const ProfileForm = () => {
     }
   };
 
+  const handleChangePassword = async (data: ChangePasswordData) => {
+    setIsLoading(prev => !prev);
+    if (data.newPassword !== data.confirmPassword ) {
+      !passwordCheckErrors.includes("New password and confirm password do not match") &&
+      setPasswordCheckErrors(prev => [...prev, "New password and confirm password do not match"]);
+      return;
+    }
+    if (data.newPassword.length < 8 ) {
+      !passwordCheckErrors.includes("Password must be at least 8 characters") &&
+      setPasswordCheckErrors(prev => [...prev, "Password must be at least 8 characters"]);
+      return;
+    }
+    if (!strongPasswordRegex.test(data.newPassword)) {
+      !passwordCheckErrors.includes("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character") &&
+      setPasswordCheckErrors(prev => [...prev, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"]);
+      return;
+    }
+    const changePasswordRequest = {
+      currentPassword: data.oldPassword,
+      newPassword : data.newPassword,
+    };
+    setPasswordCheckErrors([]);
+    try {
+      await axios.post("user/update-password", changePasswordRequest);
+      setIsChangePasswordShowed(false);
+    } catch (error: any) {
+      console.log(error);
+    }
+    setTimeout(() => {
+      setIsLoading(prev => !prev);
+    }, 1000);
+  };
+
   const handleUpload = () => {
     console.log("Image uploaded:", imageFile);
   };
 
   const handleProfileEditSubmit = (data: ProfileSubmitData) => {
+    setIsLoading(prev => !prev);
     const form = new FormData();
     if (data?.username) form.append("username", data.username);
     if (imageFile) form.append("file", imageFile);
     updateProfile(form);
+    setTimeout(() => {
+      setIsLoading(prev => !prev);
+    }, 2000);
   };
+
+  if (isChangePasswordShowed) {
+    return (
+      <FormContext
+        onSubmit={handleChangePassword}
+        className="flex flex-col items-start h-auto"
+      >
+        <div className="flex flex-col w-[330px] items-center">
+          <div className="my-3 w-full">
+            <TextInput
+              name="oldPassword"
+              label="Old Password"
+              type="password"
+              placeholder="Old Password"
+            />
+          </div>
+          <div className="my-3 w-full">
+            <TextInput
+              name="newPassword"
+              label="New Password"
+              type="password"
+              placeholder="New Password"
+            />
+          </div>
+          <div className="my-3 w-full">
+            <TextInput
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              placeholder="Confirm Password"
+            />
+          </div>
+          <div className="flex flex-col">
+            {
+              passwordCheckErrors.map((error, index) => (
+                <label key={index} className="text-nafl-sys-error text-sm">
+                  {error}
+                </label>
+              ))
+            }
+          </div>
+          <div className="flex flex-row w-[330px] justify-between mt-3">
+            <Button
+              label="submit"
+              variant="secondary"
+              size="sm"
+              width="inhert"
+              onClick={() => setIsChangePasswordShowed(false)}
+            >
+              Back
+            </Button>
+            <Button
+              label="submit"
+              variant="secondary"
+              size="sm"
+              type="submit"
+              width="inhert"
+            >
+              { isLoading ? <Spinner size="sm" /> : "Save Changes"}
+            </Button>
+          </div>
+        </div>
+      </FormContext>
+    );
+  }
 
   return (
     <FormContext
@@ -78,12 +192,21 @@ export const ProfileForm = () => {
             )}
           </div>
         </div>
-        <div className="flex flex-col m-5 gap-4"></div>
+        <div className="flex flex-col m-5 gap-4">
         <TextInput
           name="username"
           label="Username"
           placeholder={user?.username ? user.username : "New Username"}
         />
+        <Button
+          label="Change Password"
+          variant="secondary"
+          size="sm"
+          onClick={() => setIsChangePasswordShowed(true)}
+        >
+          Change Password
+        </Button>
+        </div>
       </div>
       <div className="flex flex-col w-full mt-3 items-center">
         <label htmlFor="wallet" className="text-nafl-white tex-sm mt-5">
@@ -143,7 +266,10 @@ export const ProfileForm = () => {
           type="submit"
           width="inhert"
         >
-          Save Changes
+          { isLoading ? <>
+            <Spinner size="sm" />
+            Loading . . .
+          </> : "Save Changes"}
         </Button>
       </div>
     </FormContext>

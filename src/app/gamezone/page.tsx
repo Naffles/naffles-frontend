@@ -51,64 +51,6 @@ const GameZone = () => {
                 PLAY FOR NAFFLINGS
               </p>
             </button>
-            {/* <div className="flex flex-row flex-wrap items-center justify-center gap-[10px]">
-              <button className="flex flex-col items-center justify-center px-[10px] h-[40px] border-[2px] border-[#fff] rounded-[10px] hover:bg-nafl-white duration-500 hover:text-[#000]">
-                <p
-                  onClick={() => {
-                    setCurrentScreen("ingame");
-                    setGameMode("host");
-                    setGameType("Rock, Paper, Scissors");
-                  }}
-                  className="text-[12px] text-center font-face-bebas"
-                >
-                  rock, paper, scissor demo (Host)
-                </p>
-                <p className="text-[8px] mt-[-6px]">DEV MODE</p>
-              </button>
-
-              <button className="flex flex-col items-center justify-center px-[10px] h-[40px] border-[2px] border-[#fff] rounded-[10px] hover:bg-nafl-white duration-500 hover:text-[#000]">
-                {" "}
-                <p
-                  onClick={() => {
-                    setCurrentScreen("ingame");
-                    setGameMode("challenger");
-                    setGameType("Rock, Paper, Scissors");
-                  }}
-                  className="text-[12px] text-center font-face-bebas"
-                >
-                  rock, paper, scissor demo (Challenger)
-                </p>
-                <p className="text-[8px] mt-[-6px]">DEV MODE</p>
-              </button>
-
-              <button className="flex flex-col items-center justify-center px-[10px] h-[40px] border-[2px] border-[#fff] rounded-[10px] hover:bg-nafl-white duration-500 hover:text-[#000]">
-                <p
-                  onClick={() => {
-                    setCurrentScreen("ingame");
-                    setGameMode("host");
-                    setGameType("Coin Toss");
-                  }}
-                  className="text-[12px] text-center font-face-bebas"
-                >
-                  coin toss demo (Host)
-                </p>
-                <p className="text-[8px] mt-[-6px]">DEV MODE</p>
-              </button>
-
-              <button className="flex flex-col items-center justify-center px-[10px] h-[40px] border-[2px] border-[#fff] rounded-[10px] hover:bg-nafl-white duration-500 hover:text-[#000]">
-                <p
-                  onClick={() => {
-                    setCurrentScreen("ingame");
-                    setGameMode("challenger");
-                    setGameType("Coin Toss");
-                  }}
-                  className="text-[12px] text-center font-face-bebas"
-                >
-                  coin toss demo (Challenger)
-                </p>
-                <p className="text-[8px] mt-[-6px]">DEV MODE</p>
-              </button>
-            </div> */}
           </div>
         </div>
 

@@ -21,4 +21,5 @@ export interface GameContainerProps {
   isPaused?: boolean;
   onGameStart?: () => any;
   onGameReset?: () => any;
+  onLimitReached: () => any;
 }
