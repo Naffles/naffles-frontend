@@ -20,6 +20,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
     } catch (error: any) {
       if (error.response.data.statusCode === 429) {
         onLimitReached();
+        alert(error.response.data.message);
         onGameReset?.();
       } else {
         alert("An error occurred while playing RPS");

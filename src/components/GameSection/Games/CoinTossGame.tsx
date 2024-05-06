@@ -19,6 +19,7 @@ export const CoinTossGame = (props: GameContainerProps) => {
       return data;
     } catch (error: any) {
       if (error.response.data.statusCode === 429) {
+        alert(error.response.data.message);
         onLimitReached();
         onGameReset?.();
       } else {
