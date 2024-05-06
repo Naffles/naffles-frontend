@@ -28,22 +28,22 @@ export const GameSection = () => {
   const [isCoinTossPaused, setIsCoinTossPaused] = useState(false);
   const [isRPSPaused, setIsRPSPaused] = useState(false);
 
-  useEffect(() => {
-    let isPlaysCountToday = false;
-    if (playsToday?.date) {
-      const currentDateNumber = Date.now();
-      const currentDate = unixToString(currentDateNumber);
-      const previousDate = unixToString(playsToday.date);
-      isPlaysCountToday = previousDate === currentDate;
-    }
-    if (
-      isPlaysCountToday &&
-      playsToday?.plays &&
-      playsToday.plays >= DAILY_PLAYS_THRESHOLD
-    ) {
-      setOpenModal(true);
-    }
-  }, [playsToday]);
+  // useEffect(() => {
+  //   let isPlaysCountToday = false;
+  //   if (playsToday?.date) {
+  //     const currentDateNumber = Date.now();
+  //     const currentDate = unixToString(currentDateNumber);
+  //     const previousDate = unixToString(playsToday.date);
+  //     isPlaysCountToday = previousDate === currentDate;
+  //   }
+  //   if (
+  //     isPlaysCountToday &&
+  //     playsToday?.plays &&
+  //     playsToday.plays >= DAILY_PLAYS_THRESHOLD
+  //   ) {
+  //     setOpenModal(true);
+  //   }
+  // }, [playsToday]);
 
   const onPlayEnd = () => {
     if (!user) {
@@ -81,12 +81,15 @@ export const GameSection = () => {
             onGameStart={() => setIsCoinTossPaused(true)}
             onGameReset={() => setIsCoinTossPaused(false)}
             isPaused={isRPSPaused}
+            onLimitReached={() => setOpenModal(true)}
+
           />
           <CoinTossGame
             handlePlayCount={onPlayEnd}
             onGameStart={() => setIsRPSPaused(true)}
             onGameReset={() => setIsRPSPaused(false)}
             isPaused={isCoinTossPaused}
+            onLimitReached={() => setOpenModal(true)}
           />
         </div>
         <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl xl:mt-0 lg:mt-[100px]">
@@ -95,8 +98,14 @@ export const GameSection = () => {
       </div>
       {isMobile && (
         <div className="flex lg:hidden xl:hidden flex-col h-auto">
-          <RockPaperScissorsGame handlePlayCount={onPlayEnd} />
-          <CoinTossGame handlePlayCount={onPlayEnd} />
+          <RockPaperScissorsGame 
+            handlePlayCount={onPlayEnd}
+            onLimitReached={() => setOpenModal(true)}
+          />
+          <CoinTossGame 
+            handlePlayCount={onPlayEnd} 
+            onLimitReached={() => setOpenModal(true)}
+            />
         </div>
       )}
     </>
