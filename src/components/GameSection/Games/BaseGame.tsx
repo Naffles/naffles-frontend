@@ -91,7 +91,7 @@ export const BaseGame = (props: BaseGameProps) => {
           setIsRestingDown(false);
           setIsLocked(false);
           if (!isPaused) setIsCountingDown(true);
-          setTimeleft(DEFAULT_TIMER);
+          setTimeleft(choices.length ? DEFAULT_TIMER : initialTime);
           clearInterval(restInterval);
           onGameReset();
         }
