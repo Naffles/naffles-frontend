@@ -21,7 +21,10 @@ const GameZoneMain = () => {
   return (
     <>
       <div className="flex flex-col items-center lg:w-[966px] w-[90%] z-20 pb-[27px]">
-        <div className="flex flex-col items-center justify-start bg-[#383838] rounded-[16px] w-full p-[13px]">
+        <div className="flex flex-col items-center justify-start bg-[#383838] rounded-[16px] w-full p-[13px] relative">
+          <div className="absolute top-[-75px] z-40 w-[154px] right-[25px] md:right-[55px]">
+            <img src="/nafflings/gamer.png" alt="" />
+          </div>
           <div className="flex flex-col w-full rounded-lg overflow-hidden relative">
             <img
               src={"/static/gamezone-header-bg.png"}

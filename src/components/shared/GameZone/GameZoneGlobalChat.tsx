@@ -220,13 +220,27 @@ const GameZoneGlobalChat = () => {
     <div className="xl:flex hidden flex-col items-center justify-start bg-[#383838] rounded-[16px] lg:w-[457px] max-w-[457px] w-[90%]">
       <div className="flex flex-col items-center justify-start py-[13px] px-[20px] rounded-t-[16px] border-b-[1px] border-nafl-sponge-500/50 w-full">
         <div className="flex flex-row items-center justify-between py-[7px] px-[20px] rounded-[13px] border-[1px] border-[#DC2ABF] h-[54px] lg:w-[394px] w-full">
-          <div className="flex flex-row items-center justify-center gap-[19px]">
-            <img
+          <div className="relative flex flex-row items-center justify-center gap-[19px]">
+            {/* <img
               src="/static/naffles-jackpot-token.png"
               alt="Naffles"
               className="h-[41px] w-[41px] object-contain"
-            />
-            <div className="flex flex-col items-center justify-center">
+            /> */}
+            <div className="absolute opacity-1 w-[120px] top-[-45px] left-[-20px]">
+              <div className="relative flex justify-center">
+                <img
+                  src="/static/jackpot-img.png"
+                  alt="Jackpot Image"
+                  className="z-10"
+                />
+                <img
+                  src="/nafflings/chest-group.png"
+                  alt=""
+                  className="absolute top-[45px] z-20 w-[50px] drop-shadow-nafl-sponge-2xl "
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center justify-center ml-[96px]">
               <p className="text-[14px] text-nafl-white font-face-bebas">
                 JACKPOT
               </p>
