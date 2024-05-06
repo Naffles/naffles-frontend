@@ -26,7 +26,7 @@ const Leaderboards = () => {
   // }, []);
 
   return (
-    <div className="flex flex-col items-center w-full relative">
+    <div className="flex flex-col items-center w-full relative mt-10">
       <div className="flex flex-col w-full absolute top-[-100px]">
         <img
           src={"/static/gamezone-bg.jpeg"}
@@ -38,10 +38,15 @@ const Leaderboards = () => {
 
       <div className="flex flex-col w-full absolute top-[120px] items-center justify-start">
         {/* <div className="flex flex-row items-center justify-start gap-[80px] pl-[25px] w-[1400px] mb-[30px] z-20"> */}
-        <div className="flex flex-row flex-wrap items-center xl:justify-start justify-center xl:gap-[80px] gap-[20px] md:pl-[25px] 2xl:w-[1400px] w-[90%] mb-[30px] z-20">
-          <p className="text-[32px] text-nafl-white font-face-bebas">
-            LEADERBOARDS
-          </p>
+        <div className="flex flex-row flex-wrap items-center xl:justify-start justify-center xl:gap-[80px] gap-[20px] md:pl-[25px] 2xl:w-[1400px] lg:w-[1466px] w-[90%] mb-[30px] z-20">
+          <div className="relative">
+            <p className="text-[32px] text-nafl-white font-face-bebas">
+              LEADERBOARDS
+            </p>
+            <div className="absolute w-[97px] top-[-12px] left-[5px]">
+              <img src="/nafflings/winner.png" alt="" />
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-row items-start justify-center gap-[36px] duration-500 z-20 mb-[100px] w-full">

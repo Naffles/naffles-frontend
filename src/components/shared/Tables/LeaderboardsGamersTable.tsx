@@ -179,7 +179,7 @@ const LeaderboardGamersTable = () => {
           <TableColumn>PLAYED</TableColumn>
           <TableColumn>WON</TableColumn>
           <TableColumn>WINNINGS (USD)</TableColumn>
-          <TableColumn>POINTS</TableColumn>
+          <TableColumn>NAFFLINGS</TableColumn>
         </TableHeader>
         <TableBody
           items={tableData}

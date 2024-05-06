@@ -21,7 +21,10 @@ const GameZoneMain = () => {
   return (
     <>
       <div className="flex flex-col items-center lg:w-[966px] w-[90%] z-20 pb-[27px]">
-        <div className="flex flex-col items-center justify-start bg-[#383838] rounded-[16px] w-full p-[13px]">
+        <div className="flex flex-col items-center justify-start bg-[#383838] rounded-[16px] w-full p-[13px] relative">
+          <div className="absolute top-[-75px] z-40 w-[154px] right-[25px] md:right-[55px]">
+            <img src="/nafflings/gamer.png" alt="" />
+          </div>
           <div className="flex flex-col w-full rounded-lg overflow-hidden relative">
             <img
               src={"/static/gamezone-header-bg.png"}
@@ -30,7 +33,7 @@ const GameZoneMain = () => {
             />
             <div className="flex flex-col w-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[33px] py-[10px] z-20">
               <p className="text-[26px] font-face-bebas text-nafl-white underline">
-                PLAY OR WAGER AND EARN POINTS
+                PLAY OR WAGER AND EARN NAFFLINGS
               </p>
               <div className="flex lg:flex-row flex-col items-start justify-between">
                 <p className="w-full text-left text-[16px]">

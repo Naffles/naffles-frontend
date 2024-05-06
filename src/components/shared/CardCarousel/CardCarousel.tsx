@@ -4,15 +4,28 @@ import { Navigation } from "swiper/modules";
 
 const CardCarousel = ({ children }: any) => {
   return (
-    <div className="w-full">
+    <div className="w-full -translate-y-24 z-10">
       <Swiper
         spaceBetween={25}
         slidesPerView={"auto"}
         navigation={true}
         modules={[Navigation]}
+        className="pt-24"
       >
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
-          <SwiperSlide key={item} style={{ width: "210px" }}>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item, index) => (
+          <SwiperSlide
+            key={item}
+            style={{
+              width: "210px",
+              position: "relative",
+              overflow: "visible",
+            }}
+          >
+            {index === 3 && (
+              <div className="absolute z-40 w-[100px] top-[-96px] right-[-10px]">
+                <img src="/nafflings/cigar.png" alt="" />
+              </div>
+            )}
             <Card
               title="Boared Ape"
               description="Yacht Club"

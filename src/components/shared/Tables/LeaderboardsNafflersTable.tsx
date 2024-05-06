@@ -164,7 +164,14 @@ const LeaderboardNafflersTable = () => {
           <TableColumn>PROFILE</TableColumn>
           <TableColumn>RAFFLES</TableColumn>
           <TableColumn>GAMES</TableColumn>
-          <TableColumn>POINTS</TableColumn>
+          <TableColumn>
+            <div className="relative flex">
+              <p>NAFFLINGS</p>
+              <div className="absolute w-[60px] right-[-5px] lg:right-[35px] top-[-5px] hidden md:block">
+                <img src="/nafflings/three-group.png" alt="" />
+              </div>
+            </div>
+          </TableColumn>
         </TableHeader>
         <TableBody
           items={tableData}

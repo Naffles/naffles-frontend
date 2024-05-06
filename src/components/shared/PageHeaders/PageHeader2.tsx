@@ -159,7 +159,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
         </div>
 
         <div className="flex flex-row items-center px-4 justify-between w-full z-20">
-          <div className="flex flex-row items-center justify-center gap-[80px]">
+          <div className="flex flex-row items-center justify-center gap-[80px] relative">
             <Link href="/">
               <img
                 src="/static/naffles-icon-dark.png"
@@ -174,6 +174,9 @@ const PageHeader: React.FC<PageHeaderProps> = (
               <a href="https://discord.gg/naffles" target="_blank">
                 <FaDiscord className="hover:text-nafl-sponge-700 text-[40px] transition-colors ease-out duration-150 cursor-pointer" />
               </a>
+            </div>
+            <div className="w-[200px] absolute top-[-20px] right-[-180px]">
+              <img src="/nafflings/surprise.png" alt="" />
             </div>
           </div>
 

@@ -13,7 +13,7 @@ import {
   Checkbox,
 } from "@nextui-org/react";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
-
+import { motion } from "framer-motion";
 interface tableRow {
   id: number;
   rank: number;
@@ -102,6 +102,8 @@ const sample_demo_leaderboards_json = [
 ];
 
 const DemoPointsLeaderboards = () => {
+  const [previousPoints, setPreviousPoints] = useState(0);
+  const [showAddedPoints, setShowAddedPoints] = useState(false);
   const { points } = useBasicUser();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
@@ -124,17 +126,43 @@ const DemoPointsLeaderboards = () => {
     } else return address;
   };
 
+  useEffect(() => {
+    setShowAddedPoints(true);
+    setTimeout(() => {
+      setPreviousPoints(points);
+      setShowAddedPoints(false);
+    }, 2000);
+  }, [points]);
+
   return (
     <div className="flex flex-col items-center justify-start w-full lg:h-[560px] h-[580px] rounded-[16px] relative bg-[#383838] pt-[65px] px-[5px] gap-[36px] pb-[8px] lg:mt-[32px] mt-[132px]">
       <div className="flex items-center justify-center w-full absolute top-[-40px]">
         <div className="flex flex-row items-center justify-between w-full bg-[#444444] rounded-[16px] border-[1px] border-[#464646] drop-shadow-nafl-sponge-2xl h-[54px] px-[14px]">
           <div className="flex flex-col gap-[3px]">
             <p className="font-face-bebas text-[14px] text-[#DC2ABF] leading-[100%]">
-              YOUR POINTS
+              YOUR NAFFLES
             </p>
-            <p className="font-face-bebas text-[20px] text-nafl-white leading-[100%]">
-              {points}
-            </p>
+            <div className="relative">
+              <p className="font-face-bebas text-[20px] text-nafl-white leading-[100%]">
+                {points}
+              </p>
+
+              {showAddedPoints && (
+                <motion.div
+                  initial={{ y: 0 }}
+                  animate={{ y: -40 }}
+                  transition={{ type: "spring", duration: 3 }}
+                  className="absolute w-[52px] top-[-10px] right-[-10px]"
+                >
+                  <div className="relative flex items-center justify-center text-center">
+                    <img src="/nafflings/surprise3.png" alt="" />
+                    <p className="font-face-bebas absolute">
+                      +{points - previousPoints}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-col gap-[3px] items-end">
@@ -146,16 +174,30 @@ const DemoPointsLeaderboards = () => {
                 1259.69
               </p>
               <p className="font-face-bebas text-[20px] text-nafl-sponge-500 leading-[110%]">
-                POINTS
+                NAFFLINGS
               </p>
             </div>
           </div>
         </div>
-        <img
-          src="/static/jackpot-img.png"
-          alt="Jackpot Image"
-          className="w-[180px] object-contain absolute top-[-75px] shake"
-        />
+        <div className="w-[180px] object-contain absolute top-[-75px] right-[110px] shake">
+          <div className="relative flex justify-center">
+            <img
+              src="/static/jackpot-img.png"
+              alt="Jackpot Image"
+              className="z-10"
+            />
+            <img
+              src="/nafflings/wonder.png"
+              alt=""
+              className="absolute top-[-35px] z-[-1] w-[120px] drop-shadow-nafl-sponge-2xl "
+            />
+            <img
+              src="/nafflings/chest-group.png"
+              alt=""
+              className="absolute top-[75px] z-20 w-[70px] drop-shadow-nafl-sponge-2xl "
+            />
+          </div>
+        </div>
       </div>
       <div className="w-full px-[18px]">
         <Table
@@ -171,7 +213,7 @@ const DemoPointsLeaderboards = () => {
           <TableHeader>
             <TableColumn>#</TableColumn>
             <TableColumn>PROFILE</TableColumn>
-            <TableColumn>POINTS</TableColumn>
+            <TableColumn>NAFFLINGS</TableColumn>
           </TableHeader>
           <TableBody
             items={tableData}

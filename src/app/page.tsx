@@ -42,7 +42,13 @@ export default function Home() {
                     <span className="text-[#00b3b2] font-face-bebas">
                       Life-changing
                     </span>{" "}
-                    nfts & Crypto
+                    nfts &{" "}
+                    <span className="relative font-face-bebas">
+                      Crypto
+                      <div className="absolute w-[130px] top-[-112px] lg:top-[-108px] right-[-10px]">
+                        <img src="/nafflings/surprise2.png" alt="" />
+                      </div>
+                    </span>
                   </p>
                   <div className="flex flex-col gap-[15px]">
                     <p className="text-[25px] text-nafl-charcoal-800">
@@ -50,13 +56,16 @@ export default function Home() {
                       trusted degens, where profits can be verifiably-fair and
                       fun for everyone. Please degen responsibly!
                     </p>
-                    <div className="flex lg:flex-row flex-col items-center justify-start gap-[16px] w-full">
+                    <div className="relative w-fit flex lg:flex-row flex-col items-center justify-start gap-[16px]">
                       <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px]">
                         <p className="text-[#FEFF3D]"> PLAY OUR GAMES</p>
                       </button>
-                      <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px]">
+                      <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
                         <p className="text-[#FEFF3D]">EXPLORE LIVE NAFFLES</p>
                       </button>
+                      <div className="absolute w-[150px] right-[35px] top-[50px] lg:top-[-20px] z-0">
+                        <img src="/nafflings/surprise3.png" alt="" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -152,15 +161,22 @@ export default function Home() {
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
               <SwiperSlide key={item} style={{ width: "290px" }}>
                 <div className="flex-row flex justify-between pt-3 w-full mt-3 px-6">
-                  {
-                    item % 2 === 0 ? (
-                      <TrophyIcon size="lg" colour="dark-green" />
-                    ) : (
-                      <TrophyIcon size="lg" colour="purple" />
-                    )
-                  }
-                  <Typography size="text-lg" color={item % 2 === 0 ? "purple": "dark-green"}>
-                    Winner! <span style={{fontFamily: 'Bebas Neue', color: '#FEFF3D'}}>Eddie just won</span> 0.3ETH ($969.19) from Jay
+                  {item % 2 === 0 ? (
+                    <TrophyIcon size="lg" colour="dark-green" />
+                  ) : (
+                    <TrophyIcon size="lg" colour="purple" />
+                  )}
+                  <Typography
+                    size="text-lg"
+                    color={item % 2 === 0 ? "purple" : "dark-green"}
+                  >
+                    Winner!{" "}
+                    <span
+                      style={{ fontFamily: "Bebas Neue", color: "#FEFF3D" }}
+                    >
+                      Eddie just won
+                    </span>{" "}
+                    0.3ETH ($969.19) from Jay
                   </Typography>
                 </div>
               </SwiperSlide>
@@ -182,10 +198,15 @@ export default function Home() {
         </div>
         <GameSection />
       </div>
-      <div className="items-center justify-center w-full lg:px-24 bg-nafl-grey-600 h-auto p-5 flex flex-col pb-[150px] gap-[50px]">
-        <h1 className="text-[2.2rem] md:text-[5rem] lg:text-[6rem] uppercase leading-[2rem] md:leading-[5rem] text-nafl-white tracking-tight text-center mt-10">
-          Hottest collections
-        </h1>
+      <div className="items-center justify-center w-full lg:px-24 bg-nafl-grey-600 h-auto p-5 flex flex-col pb-[150px] pt-[80px] gap-[50px]">
+        <div className="relative">
+          <div className="absolute w-[60px] md:w-[103px] top-[-14px] md:top-[-50px] left-[30px] md:left-[120px]">
+            <img src="/nafflings/hottest.png" alt="" />
+          </div>
+          <h1 className="text-[2.2rem] md:text-[5rem] lg:text-[6rem] uppercase leading-[2rem] md:leading-[5rem] text-nafl-white tracking-tight text-center mt-10">
+            Hottest collections
+          </h1>
+        </div>
         <div className="flex flex-row flex-wrap gap-[16px] items-center justify-center xl:w-[1300px] lg:w-[1000px] w-[90%]">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
             <div key={index} className="flex flex-col items-center">
