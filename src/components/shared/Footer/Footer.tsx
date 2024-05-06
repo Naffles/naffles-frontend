@@ -72,13 +72,23 @@ const Footer = () => {
           </div>
           <div className="flex xl:flex-row flex-col items-center xl:justify-between justify-center w-full h-[120px] xl:px-[270px] text-[23px]">
             <p className="text-[#626262] font-face-bebas">
-              © Copyright 2022 naffles All Rights Reserved.
+              © Copyright 2024 naffles All Rights Reserved.
             </p>
 
             <div className="flex flex-row items-center justify-center gap-[6px]">
-              <p className="text-[#626262] font-face-bebas">PRIVACY POLICY</p>
+              {/* if privacy policy is clicked, redirect it to a link like dropbox */}
+              <p className="text-[#626262] font-face-bebas">
+                <a href="https://www.dropbox.com/scl/fo/u6y3v0p1kofxnmhvv7ch8/ABPQNjicw5_4X0ODKxOiyQs?dl=0&e=1&preview=KYC+Policy+-+Naffles.pdf&rlkey=l65w2x8kelxew1lonehmey1ud" target="_blank">
+                  PRIVACY POLICY
+                </a>
+              </p>
               <p className="text-[#626262] font-face-bebas">|</p>
-              <p className="text-[#626262] font-face-bebas">TERMS OF USE</p>
+              <p className="text-[#626262] font-face-bebas">
+                <a href="https://www.dropbox.com/scl/fi/9ek0y9v7qzqszngel43rd/Terms-and-Conditions.docx?rlkey=8lf7pe02nilm12qhee5fw5su1&e=1&dl=0"
+                  target="_blank">
+                  TERMS OF USE
+                </a>
+              </p>
             </div>
           </div>
         </div>
