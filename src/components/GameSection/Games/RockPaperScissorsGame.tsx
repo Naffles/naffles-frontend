@@ -50,6 +50,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       onGameReset={onGameReset}
       isPaused={isPaused}
       initialTime={30}
+      onCountdownFinish={onGameStart}
     />
   );
 };

@@ -50,6 +50,7 @@ export const CoinTossGame = (props: GameContainerProps) => {
       onGameReset={onGameReset}
       isPaused={isPaused}
       initialTime={90}
+      onCountdownFinish={onGameStart}
     />
   );
 };
