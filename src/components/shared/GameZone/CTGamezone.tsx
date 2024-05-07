@@ -278,6 +278,7 @@ export const CTGamezone = () => {
               preload="auto"
               autoPlay
               loop
+              onClick={() => setMuteVideo(!muteVideo)}
               muted={showVideo || muteVideo}
             >
               <source
