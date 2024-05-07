@@ -2,15 +2,16 @@ import { FormContext, TextInput } from "../Inputs";
 import { Button } from "../Button";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { useState } from "react";
-import { AiOutlineLoading, AiOutlineLoading3Quarters } from "react-icons/ai";
+import { AiOutlineLoading } from "react-icons/ai";
 export type LoginSubmitData = { emailAddress: string; password: string };
 type LoginProps = {
   handleLogin: (data: any) => any;
+  handleForgotClick: () => any;
 };
 
 export const LoginForm = (props: LoginProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { handleLogin } = props;
+  const { handleLogin, handleForgotClick } = props;
   const { login } = useBasicUser();
   const onSubmit = async (data: LoginSubmitData) => {
     setIsLoading(true);
@@ -33,7 +34,11 @@ export const LoginForm = (props: LoginProps) => {
         label="Password"
         placeholder="Password*"
         type="password"
-        notes={<u>Forgot Password?</u>}
+        notes={
+          <u className="cursor-pointer" onClick={handleForgotClick}>
+            Forgot Password?
+          </u>
+        }
       />
 
       <button

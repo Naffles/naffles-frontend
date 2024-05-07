@@ -4,14 +4,13 @@ import { useState } from "react";
 import axios from "@components/utils/axios";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { AiOutlineLoading } from "react-icons/ai";
+import { strongPasswordRegex } from "@components/utils/strongPasswordRegex";
 
 type RegistrationFormData = {
   emailAddress: string;
   password: string;
   verificationCode: string;
 };
-export const strongPasswordRegex = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
-
 export const RegistrationForm = () => {
   const { login } = useBasicUser();
   const [isLoading, setIsLoading] = useState(false);
@@ -22,12 +21,12 @@ export const RegistrationForm = () => {
   );
   const [showNext, setShowNext] = useState(false);
   const onSubmit = async (data: RegistrationFormData) => {
-    setIsLoading(prev => !prev);
+    setIsLoading((prev) => !prev);
     if (!showNext) {
       setPreviousData(data);
       if (!strongPasswordRegex.test(data.password)) {
         setIsError(true);
-        setIsLoading(prev => !prev);
+        setIsLoading((prev) => !prev);
         return;
       }
       try {
@@ -60,7 +59,7 @@ export const RegistrationForm = () => {
         setIsVerificationSuccess(true);
       }
     }
-    setIsLoading(prev => !prev);
+    setIsLoading((prev) => !prev);
   };
   return (
     <FormContext onSubmit={onSubmit} className="flex flex-col gap-4 w-64">
@@ -79,14 +78,12 @@ export const RegistrationForm = () => {
             notes=""
             minLength={8}
           />
-          {
-            isError && (
-              <label className="text-xs text-[#ecc8c8]">
-                *Strong password must contain at least one Uppercase, Lowercase, number
-                  and special character
-              </label>
-            )
-          }
+          {isError && (
+            <label className="text-xs text-nafl-light-red">
+              *Strong password must contain at least one Uppercase, Lowercase,
+              number and special character
+            </label>
+          )}
         </>
       ) : (
         <TextInput
@@ -95,24 +92,19 @@ export const RegistrationForm = () => {
           placeholder="Verification Code"
         />
       )}
-      {
-        isVerificationSuccess && (
-          <label className="text-xs text-[#ecc8c8]">
-            Something went wrong in verification.
-          </label>
-        )
-      }
+      {isVerificationSuccess && (
+        <label className="text-xs text-nafl-light-red">
+          Something went wrong in verification.
+        </label>
+      )}
       <Button
         label="submit"
         variant="secondary"
         size="lg"
         type="submit"
-        width="inhert"
-        className="mx-2 my-2"
+        width="span"
       >
-        {
-          isLoading ? <AiOutlineLoading className="animate-spin" /> : "Submit"
-        }
+        {isLoading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
       </Button>
     </FormContext>
   );

@@ -11,7 +11,11 @@ import WalletIcon from "@components/icons/walletIcon";
 import UserIcon from "@components/icons/userIcon";
 import { ConnectButton } from "@components/magic";
 import { Modal } from "@components/shared/Modal";
-import { RegistrationForm, LoginForm } from "@components/shared/AuthForms";
+import {
+  RegistrationForm,
+  LoginForm,
+  ResetPassForm,
+} from "@components/shared/AuthForms";
 import { ProfileForm } from "../AuthForms/ProfileForm";
 import { HiMenu } from "react-icons/hi";
 
@@ -19,6 +23,11 @@ type PageHeaderProps = {
   // onLogin?: () => void;
   // onLogout: () => void;
 };
+enum ModalNames {
+  REGISTER = "Register",
+  LOGIN = "Login",
+  RESET = "Reset Password",
+}
 
 const PageHeader: React.FC<PageHeaderProps> = (
   {
@@ -31,6 +40,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Use useRef for dropdown element reference
 
+  const [shownModal, setShownModal] = useState<ModalNames | "">("");
   const [showModal, setShowModal] = useState(false);
   const [showOtherModal, setShowOtherModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -84,14 +94,15 @@ const PageHeader: React.FC<PageHeaderProps> = (
     console.log(response);
   };
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
   const handleLogout = () => {
-    setShowModal(false);
-    setShowOtherModal(false);
-    setOpenModal(false);
-
+    setShownModal("");
+    setOpenEditModal(false);
     logout();
+  };
+  const handleForgotClick = () => {
+    setShownModal(ModalNames.RESET);
   };
 
   return (
@@ -99,38 +110,51 @@ const PageHeader: React.FC<PageHeaderProps> = (
       {!basicUser ? (
         <>
           <Modal
-            title="REGISTER"
-            show={showModal}
-            hideModal={() => setShowModal(false)}
+            title={ModalNames.REGISTER}
+            show={shownModal === ModalNames.REGISTER}
+            hideModal={() => setShownModal("")}
           >
             <RegistrationForm />
             <div className="text-body-sm text-nafl-charcoal-100 px-1">
               Have an Account?{" "}
               <u
                 className="cursor-pointer"
-                onClick={() => {
-                  setShowModal(false);
-                  setShowOtherModal(true);
-                }}
+                onClick={() => setShownModal(ModalNames.LOGIN)}
               >
                 Login Now
               </u>
             </div>
           </Modal>
           <Modal
-            title="Login"
-            show={showOtherModal}
-            hideModal={() => setShowOtherModal(false)}
+            title={ModalNames.LOGIN}
+            show={shownModal === ModalNames.LOGIN}
+            hideModal={() => setShownModal("")}
           >
-            <LoginForm handleLogin={handleLogin} />
+            <LoginForm
+              handleLogin={handleLogin}
+              handleForgotClick={handleForgotClick}
+            />
             <div className="text-body-sm text-nafl-charcoal-100 px-1">
               No Account?{" "}
               <u
                 className="cursor-pointer"
-                onClick={() => {
-                  setShowModal(true);
-                  setShowOtherModal(false);
-                }}
+                onClick={() => setShownModal(ModalNames.REGISTER)}
+              >
+                Register Now
+              </u>
+            </div>
+          </Modal>
+          <Modal
+            title={ModalNames.RESET}
+            show={shownModal === ModalNames.RESET}
+            hideModal={() => setShownModal("")}
+          >
+            <ResetPassForm />
+            <div className="text-body-sm text-nafl-charcoal-100 px-1">
+              No Account?{" "}
+              <u
+                className="cursor-pointer"
+                onClick={() => setShownModal(ModalNames.REGISTER)}
               >
                 Register Now
               </u>
@@ -139,8 +163,8 @@ const PageHeader: React.FC<PageHeaderProps> = (
         </>
       ) : (
         <Modal
-          show={openModal}
-          hideModal={() => setOpenModal(false)}
+          show={openEditModal}
+          hideModal={() => setOpenEditModal(false)}
           title="Edit Profile"
         >
           <ProfileForm />
@@ -232,7 +256,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                           </Link>
                           <li
                             className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                            onClick={() => setOpenModal(true)}
+                            onClick={() => setOpenEditModal(true)}
                           >
                             Edit Profile
                           </li>
@@ -240,7 +264,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                       ) : (
                         <li
                           className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                          onClick={() => setShowOtherModal(true)}
+                          onClick={() => setShownModal(ModalNames.LOGIN)}
                         >
                           Login
                         </li>

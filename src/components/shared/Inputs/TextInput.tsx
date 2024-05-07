@@ -7,7 +7,9 @@ type TextInputProps = {
   placeholder?: string;
   type?: string;
   notes?: string | ReactNode;
+  errorMessage?: string;
   minLength?: number;
+  required?: boolean;
 };
 
 export const TextInput = ({
@@ -15,7 +17,9 @@ export const TextInput = ({
   name,
   placeholder,
   notes,
+  errorMessage,
   minLength,
+  required = false,
   ...props
 }: TextInputProps) => {
   const { register, formState } = useFormContext() || {};
@@ -36,11 +40,22 @@ export const TextInput = ({
               message: "Minimum length is " + minLength,
             },
           }),
+          ...(required && {
+            required: {
+              value: required,
+              message: label + " is required",
+            },
+          }),
         })}
       />
       {inputErrors && (
         <label className="text-body-xs text-nafl-sys-error px-1">
           {inputErrors as string}
+        </label>
+      )}
+      {errorMessage && (
+        <label className="text-body-xs text-nafl-sys-error px-1">
+          {errorMessage}
         </label>
       )}
       {notes && (

@@ -71,6 +71,7 @@ module.exports = {
         800: "#212121",
         900: "#181818",
       },
+      "nafl-light-red": "#ecc8c8",
       "nafl-white": "#FFFFFF",
       "nafl-purple": "#DC2ABF",
     },
