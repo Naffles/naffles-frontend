@@ -4,7 +4,7 @@ import BrandIcon from "@components/icons/brandIcon";
 import { FaDiscord } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { useEffect, useState } from "react";
-
+import { motion } from "framer-motion";
 export default function Home() {
   //  20 April 2024, 09:44 UTC
   const [countdownDays, setCountdownDays] = useState<string>("00");
@@ -49,10 +49,13 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-start w-full">
       <div className="w-full lg:py-[23px] py-[13px] lg:px-[31px] px-[18px] bg-nafl-charcoal-600">
-        <div className="flex flex-col w-full bg-nafl-sponge-500 rounded-[16px] relative items-center justify-center py-[100px]">
-          <div className="absolute top-0 left-[100px] w-[114.45px]">
+        <div className="flex flex-col w-full bg-nafl-sponge-500 rounded-[16px] relative items-center justify-center py-[100px] overflow-hidden">
+          <motion.div
+            whileHover={{ y: 30 }}
+            className="absolute top-[-73px] left-[100px] w-[114.45px]"
+          >
             <img src="/nafflings/hidden.png" alt="" />
-          </div>
+          </motion.div>
           <div className="absolute bg-nafl-charcoal-600 rounded-full h-8 w-8 top-[-1rem]" />
 
           <div className="absolute left-[18px] top-[20px]">
