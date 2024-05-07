@@ -169,7 +169,7 @@ const LeaderboardsCommunityPartnersTable = () => {
         <TableColumn>PLAYERS</TableColumn>
         <TableColumn>TICKETS</TableColumn>
         <TableColumn>WINNINGS (USD)</TableColumn>
-        <TableColumn>POINTS</TableColumn>
+        <TableColumn>NAFFLINGS</TableColumn>
       </TableHeader>
       <TableBody
         items={tableData}

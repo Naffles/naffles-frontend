@@ -5,17 +5,28 @@ import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { GameContainerProps } from "@type/GameSection";
 
 export const CoinTossGame = (props: GameContainerProps) => {
-  const { handlePlayCount, onGameStart, onGameReset, isPaused } = props;
+  const { handlePlayCount, onGameStart, onGameReset, isPaused, onLimitReached } = props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
 
   const triggerCoinTossGame = useCallback(async () => {
     onGameStart?.();
-    const {
-      data: { data },
-    } = await axios.post("game/demo/cointoss");
-    setDisplayPoints(data?.score || 0);
-    return data;
+    try {
+      const {
+        data: { data },
+      } = await axios.post("game/demo/cointoss");
+      setDisplayPoints(data?.score || 0);
+      return data;
+    } catch (error: any) {
+      if (error.response.data.statusCode === 429) {
+        alert(error.response.data.message);
+        onLimitReached();
+        onGameReset?.();
+      } else {
+        alert("An error occurred while playing Coin toss");
+        onGameReset?.();
+      }
+    }
   }, [onGameStart]);
 
   const handleVideoEnd = (hasSelected?: boolean) => {
@@ -40,6 +51,7 @@ export const CoinTossGame = (props: GameContainerProps) => {
       onGameReset={onGameReset}
       isPaused={isPaused}
       initialTime={90}
+      onCountdownFinish={onGameStart}
     />
   );
 };

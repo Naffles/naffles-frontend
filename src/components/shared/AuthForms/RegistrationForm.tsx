@@ -10,7 +10,7 @@ type RegistrationFormData = {
   password: string;
   verificationCode: string;
 };
-const strongPasswordRegex = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+export const strongPasswordRegex = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
 
 export const RegistrationForm = () => {
   const { login } = useBasicUser();

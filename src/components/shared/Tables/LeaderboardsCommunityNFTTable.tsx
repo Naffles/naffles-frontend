@@ -169,7 +169,7 @@ const LeaderboardsCommunityNFTTable = () => {
         <TableColumn>RAFFLES</TableColumn>
         <TableColumn>TICKETS SOLD</TableColumn>
         <TableColumn>VOLUME (USD)</TableColumn>
-        <TableColumn>POINTS</TableColumn>
+        <TableColumn>NAFFLINGS</TableColumn>
       </TableHeader>
       <TableBody
         items={tableData}

@@ -5,17 +5,28 @@ import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { GameContainerProps } from "@type/GameSection";
 
 export const RockPaperScissorsGame = (props: GameContainerProps) => {
-  const { handlePlayCount, onGameStart, onGameReset, isPaused } = props;
+  const { handlePlayCount, onGameStart, onGameReset, isPaused, onLimitReached } = props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
 
   const triggerRPSGame = useCallback(async () => {
     onGameStart?.();
-    const {
-      data: { data },
-    } = await axios.post("game/demo/rock-paper-scissors");
-    setDisplayPoints(data?.score || 0);
-    return data;
+    try {
+      const {
+        data: { data },
+      } = await axios.post("game/demo/rock-paper-scissors");
+      setDisplayPoints(data?.score || 0);
+      return data;
+    } catch (error: any) {
+      if (error.response.data.statusCode === 429) {
+        onLimitReached();
+        alert(error.response.data.message);
+        onGameReset?.();
+      } else {
+        alert("An error occurred while playing RPS");
+        onGameReset?.();
+      }
+    }
   }, [onGameStart]);
 
   const handleVideoEnd = (hasSelected: boolean) => {
@@ -40,6 +51,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       onGameReset={onGameReset}
       isPaused={isPaused}
       initialTime={30}
+      onCountdownFinish={onGameStart}
     />
   );
 };

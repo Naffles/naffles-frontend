@@ -5,11 +5,16 @@ const Footer = () => {
     <>
       <div className="flex flex-col w-full bg-[#292929] z-20">
         <div className="flex xl:flex-row flex-col w-full items-center justify-center py-[67px] xl:gap-[300px]">
-          <img
-            src="/static/naffles-text-logo.png"
-            alt="Naffles Text Logo"
-            className="md:w-[350px] max-w-[350px] w-[90%] object-contain xl:mt-[54px] my-[34px]"
-          />
+          <div className="relative">
+            <img
+              src="/static/naffles-text-logo.png"
+              alt="Naffles Text Logo"
+              className="md:w-[350px] max-w-[350px] w-[90%] object-contain xl:mt-[54px] my-[34px]"
+            />
+            <div className="w-[58px] absolute top-[20px] lg:top-[20px] xl:top-[40px] right-2">
+              <img src="/nafflings/surprise4.png" alt="" />
+            </div>
+          </div>
 
           <div className="flex flex-col items-start justify-center md:w-[569px] max-w-[569px] w-[90%]">
             <p className="text-[42px] text-[#fff] font-face-bebas">
@@ -67,23 +72,38 @@ const Footer = () => {
           </div>
           <div className="flex xl:flex-row flex-col items-center xl:justify-between justify-center w-full h-[120px] xl:px-[270px] text-[23px]">
             <p className="text-[#626262] font-face-bebas">
-              © Copyright 2022 naffles All Rights Reserved.
+              © Copyright 2024 naffles All Rights Reserved.
             </p>
 
             <div className="flex flex-row items-center justify-center gap-[6px]">
-              <p className="text-[#626262] font-face-bebas">PRIVACY POLICY</p>
+              {/* if privacy policy is clicked, redirect it to a link like dropbox */}
+              <p className="text-[#626262] font-face-bebas">
+                <a href="https://www.dropbox.com/scl/fo/u6y3v0p1kofxnmhvv7ch8/ABPQNjicw5_4X0ODKxOiyQs?dl=0&e=1&preview=KYC+Policy+-+Naffles.pdf&rlkey=l65w2x8kelxew1lonehmey1ud" target="_blank">
+                  PRIVACY POLICY
+                </a>
+              </p>
               <p className="text-[#626262] font-face-bebas">|</p>
-              <p className="text-[#626262] font-face-bebas">TERMS OF USE</p>
+              <p className="text-[#626262] font-face-bebas">
+                <a href="https://www.dropbox.com/scl/fi/9ek0y9v7qzqszngel43rd/Terms-and-Conditions.docx?rlkey=8lf7pe02nilm12qhee5fw5su1&e=1&dl=0"
+                  target="_blank">
+                  TERMS OF USE
+                </a>
+              </p>
             </div>
           </div>
         </div>
       </div>
       <div className="xs:flex md:flex sm:flex lg:hidden xl:hidden flex-col w-full h-[557px] bg-[#292929] relative pt-[67px] z-30 bottom-0">
-        <img
-          src="/static/naffles-text-logo.png"
-          alt="Naffles Text Logo"
-          className="w-[260px] object-contain mt-[54px] align-middle mx-auto"
-        />
+        <div className="relative w-fit mx-auto">
+          <img
+            src="/static/naffles-text-logo.png"
+            alt="Naffles Text Logo"
+            className="w-[260px] object-contain mt-[54px] align-middle mx-auto"
+          />
+          <div className="w-[58px] absolute top-[30px] right-[0px]">
+            <img src="/nafflings/surprise4.png" alt="" />
+          </div>
+        </div>
         <div className="w-full p-10">
           <div className="flex flex-col items-start justify-center">
             <p className="text-4xl text-[#fff] font-face-bebas">

@@ -13,7 +13,7 @@ export interface BaseGameProps {
   onWinNotify?: () => any;
   onGameReset?: () => any;
   isPaused?: boolean;
-  initialTime?: number;
+  initialTime: number;
 }
 
 export interface GameContainerProps {
@@ -21,4 +21,5 @@ export interface GameContainerProps {
   isPaused?: boolean;
   onGameStart?: () => any;
   onGameReset?: () => any;
+  onLimitReached: () => any;
 }
