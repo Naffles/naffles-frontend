@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, ChangeEvent } from "react";
+import { useEffect, useRef, useState, ChangeEvent, useCallback } from "react";
 import Link from "next/link";
 import { FaDiscord, FaTwitter, FaUserCircle } from "react-icons/fa";
 import colorVariants from "@components/utils/constants";
 import { useUser } from "@blockchain/context/UserContext";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import axios from "@components/utils/axios";
 
 import WalletIcon from "@components/icons/walletIcon";
 import UserIcon from "@components/icons/userIcon";
@@ -35,7 +36,9 @@ const PageHeader: React.FC<PageHeaderProps> = (
     // onLogout,
   }
 ) => {
-  const { user } = useUser();
+  // const { user } = useUser();
+  const { user, reloadProfile } = useBasicUser();
+
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Use useRef for dropdown element reference
@@ -44,6 +47,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const [showModal, setShowModal] = useState(false);
   const [showOtherModal, setShowOtherModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { jwt, user: basicUser, login, logout } = useBasicUser();
 
   const navigationOptions = [
@@ -85,6 +89,19 @@ const PageHeader: React.FC<PageHeaderProps> = (
   //   // Cleanup function to remove event listener on unmount
   //   return () => document.removeEventListener("click", handleClickOutside);
   // }, []);
+
+  const handleFirstLoad = useCallback(async () => {
+    const userProfile = (await reloadProfile()) ?? {};
+    const { data: profileImageData } = await axios.get(
+      "image/view?path=" + userProfile.profileImage,
+      { responseType: "arraybuffer" }
+    );
+    setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
+  }, [reloadProfile]);
+
+  useEffect(() => {
+    handleFirstLoad();
+  }, [handleFirstLoad]);
 
   useEffect(() => {
     console.log("opening", open);
@@ -239,7 +256,15 @@ const PageHeader: React.FC<PageHeaderProps> = (
                     className="focus:outline-none rounded-full p-2 hover:bg-gray-300"
                     // onBlur={() => setOpen(!open)}
                   >
-                    <FaUserCircle className="text-[#212121] text-[30px]" />
+                    {basicUser ? (
+                      <img
+                        src={imageUrl}
+                        alt="Profile"
+                        className="w-[30px] h-[30px] rounded-full"
+                      />
+                    ) : (
+                      <FaUserCircle className="text-[#212121] text-[30px]" />
+                    )}
                   </button>
                   {open && (
                     <ul
@@ -408,12 +433,17 @@ const PageHeader: React.FC<PageHeaderProps> = (
               className="flex items-center justify-center focus:outline-none rounded-[10px] p-2 w-full"
               // onBlur={() => setOpen(!open)}
             >
-              <UserIcon
-                colour="black"
-                // onClick={() => setShowModal(true)}
-                size="lg"
-                className="cursor-pointer"
-              />
+              {
+                basicUser ? (
+                  <img
+                    src={imageUrl}
+                    alt="Profile"
+                    className="w-[30px] h-[30px] rounded-full"
+                  />
+                ) : (
+                  <FaUserCircle className="text-[#212121] text-[30px]" />
+                )
+              }
             </button>
             <ul
               onBlur={() => setOpen(false)}
