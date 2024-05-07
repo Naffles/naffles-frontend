@@ -1,6 +1,5 @@
 "use client";
 
-import PageHeader from "@components/shared/PageHeaders/PageHeader";
 import CardCarousel from "@components/shared/CardCarousel/CardCarousel";
 import TrophyIcon from "@components/icons/trophyIcon";
 import Typography from "@components/shared/Typography/typography";
