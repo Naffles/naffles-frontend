@@ -18,7 +18,7 @@ interface ButtonProps {
 }
 
 const btnStyles = cva(
-  "px-4 py-2 rounded-md font-roboto-body uppercase font-bold selection:transition-opacity ease-out duration-300 cursor-pointer hover:opacity-70 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-nafl-sys-complete",
+  "px-4 py-2 rounded-lg h-[45px] font-roboto-body uppercase font-bold selection:transition-opacity ease-out duration-300 cursor-pointer hover:opacity-70 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-nafl-sys-complete",
   {
     variants: {
       variant: {

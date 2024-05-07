@@ -29,7 +29,7 @@ type BasicUserContextType = {
   points: number;
   addPoints: (points: number) => void;
   setPoints: (points: number) => void;
-  login: (data: LoginParams) => Record<string, any> | void;
+  login: (data: LoginParams) => Promise<Record<string, any>> | void;
   logout: () => void;
   reloadProfile: () => Record<string, any> | void;
   updateProfile: (form: FormData) => void;

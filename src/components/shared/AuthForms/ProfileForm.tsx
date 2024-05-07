@@ -5,7 +5,7 @@ import axios from "@components/utils/axios";
 import { Button } from "../Button";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { Spinner } from "@nextui-org/react";
-import { strongPasswordRegex } from "./RegistrationForm";
+import { strongPasswordRegex } from "../../utils/strongPasswordRegex";
 import { useForm } from "react-hook-form";
 
 export type ProfileSubmitData = { username: string };

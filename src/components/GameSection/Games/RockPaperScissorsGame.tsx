@@ -27,7 +27,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
         onGameReset?.();
       }
     }
-  }, [onGameStart]);
+  }, [onGameReset, onGameStart, onLimitReached]);
 
   const handleVideoEnd = (hasSelected: boolean) => {
     if (hasSelected) {
