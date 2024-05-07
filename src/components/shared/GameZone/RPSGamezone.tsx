@@ -252,7 +252,7 @@ export const RPSGamezone = () => {
     <>
       <div className="flex-row flex items-center justify-center">
         <div className="flex-col flex items-center justify-start bg-nafl-grey-700 lg:w-[530px] w-full rounded-3xl overflow-hidden aspect-[2.5/1] relative">
-          <div className="w-[120%] aspect-[2.5/1]">
+          <div className="w-[108%] aspect-[2.5/1]">
             {result && showVideo && (
               <video
                 playsInline={true}
@@ -273,6 +273,7 @@ export const RPSGamezone = () => {
               preload="auto"
               autoPlay
               loop
+              onClick={() => setMuteVideo(!muteVideo)}
               muted={showVideo || muteVideo}
             >
               <source src={`/static/rps/waiting.mp4`} type={`video/mp4`} />

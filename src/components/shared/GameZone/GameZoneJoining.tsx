@@ -27,7 +27,7 @@ const GameZoneJoining = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCountdownTimer((prevCountdown) => prevCountdown - 0.5);
+      setCountdownTimer((prevCountdown) => prevCountdown - 1);
     }, 1000);
 
     window.scrollTo(0, 0);
