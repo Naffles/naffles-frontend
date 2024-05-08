@@ -36,9 +36,6 @@ const PageHeader: React.FC<PageHeaderProps> = (
     // onLogout,
   }
 ) => {
-  // const { user } = useUser();
-  const { user, reloadProfile } = useBasicUser();
-
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Use useRef for dropdown element reference
@@ -90,18 +87,21 @@ const PageHeader: React.FC<PageHeaderProps> = (
   //   return () => document.removeEventListener("click", handleClickOutside);
   // }, []);
 
-  const handleFirstLoad = useCallback(async () => {
-    const userProfile = (await reloadProfile()) ?? {};
-    const { data: profileImageData } = await axios.get(
-      "image/view?path=" + userProfile.profileImage,
-      { responseType: "arraybuffer" }
-    );
-    setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
-  }, [reloadProfile]);
+  const handleUserChange = useCallback(async () => {
+    if (basicUser?.profileImage) {
+      const { data: profileImageData } = await axios.get(
+        "image/view?path=" + basicUser.profileImage,
+        { responseType: "arraybuffer" }
+      );
+      setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
+    } else {
+      setImageUrl(null);
+    }
+  }, [basicUser]);
 
   useEffect(() => {
-    handleFirstLoad();
-  }, [handleFirstLoad]);
+    handleUserChange();
+  }, [handleUserChange]);
 
   useEffect(() => {
     console.log("opening", open);
@@ -256,7 +256,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                     className="focus:outline-none rounded-full p-2 hover:bg-gray-300"
                     // onBlur={() => setOpen(!open)}
                   >
-                    {basicUser ? (
+                    {basicUser && imageUrl ? (
                       <img
                         src={imageUrl}
                         alt="Profile"
@@ -433,17 +433,15 @@ const PageHeader: React.FC<PageHeaderProps> = (
               className="flex items-center justify-center focus:outline-none rounded-[10px] p-2 w-full"
               // onBlur={() => setOpen(!open)}
             >
-              {
-                basicUser ? (
-                  <img
-                    src={imageUrl}
-                    alt="Profile"
-                    className="w-[30px] h-[30px] rounded-full"
-                  />
-                ) : (
-                  <FaUserCircle className="text-[#212121] text-[30px]" />
-                )
-              }
+              {basicUser && imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt="Profile"
+                  className="w-[30px] h-[30px] rounded-full"
+                />
+              ) : (
+                <FaUserCircle className="text-[#212121] text-[30px]" />
+              )}
             </button>
             <ul
               onBlur={() => setOpen(false)}

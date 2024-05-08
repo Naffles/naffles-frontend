@@ -127,44 +127,55 @@ export const BasicUserProvider = ({
     [setJWT]
   );
 
-  const reloadProfile = useCallback(async () => {
-    const {
-      data: { data },
-    } = await axios.get("user/profile");
-    setUser(data ?? null);
-    setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
-    return data;
-  }, [setUser, setPointsObject]);
+ const logout = useCallback(() => {
+   removeJWT();
+   removeUser();
+   removePoints();
+ }, [removeJWT, removeUser, removePoints]);
 
-  const updateProfile = useCallback(
-    async (form: FormData) => {
-      try {
-        const {
-          data: { data },
-        } = await axios.patch("user/profile", form);
-        setUser(data ?? null);
-        setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
-        alert("Profile updated successfully!");
-        return data;
-      } catch (error) {
-        console.error("Error updating profile:", error);
-        alert("Error updating profile. Please try again later.");
-      }
-    },
-    [setUser, setPointsObject]
-  );
+ const reloadProfile = useCallback(async () => {
+   try {
+     const {
+       data: { data },
+     } = await axios.get("user/profile");
+     setUser(data ?? null);
+     setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
+     return data;
+   } catch (err: any) {
+     if (err?.response?.status === 403) {
+       alert(err.response.data.message);
+       logout();
+     }
+     throw err;
+   }
+ }, [setUser, setPointsObject, logout]);
 
-  useEffect(() => {
-    if (jwt) {
-      reloadProfile();
-    }
-  }, [jwt, reloadProfile]);
+ const updateProfile = useCallback(
+   async (form: FormData) => {
+     try {
+       const {
+         data: { data },
+       } = await axios.patch("user/profile", form);
+       setUser(data ?? null);
+       setPointsObject({
+         points: data?.temporaryPoints || 0,
+         date: Date.now(),
+       });
+       alert("Profile updated successfully!");
+       return data;
+     } catch (error) {
+       console.error("Error updating profile:", error);
+       alert("Error updating profile. Please try again later.");
+     }
+   },
+   [setUser, setPointsObject]
+ );
 
-  const logout = useCallback(() => {
-    removeJWT();
-    removeUser();
-    removePoints();
-  }, [removeJWT, removeUser, removePoints]);
+ useEffect(() => {
+   if (jwt) {
+     reloadProfile();
+   }
+ }, [jwt, reloadProfile]);
 
   const contextValue = useMemo(() => {
     const points = pointsObject?.points ?? 0;
