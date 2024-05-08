@@ -5,8 +5,8 @@ import { useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 export type LoginSubmitData = { emailAddress: string; password: string };
 type LoginProps = {
-  handleLogin: (data: any) => any;
-  handleForgotClick: () => any;
+  handleLogin?: (data: any) => any;
+  handleForgotClick?: () => any;
 };
 
 export const LoginForm = (props: LoginProps) => {
@@ -19,7 +19,7 @@ export const LoginForm = (props: LoginProps) => {
       identifier: data.emailAddress,
       password: data.password,
     });
-    handleLogin(response);
+    handleLogin?.(response);
     setIsLoading(false);
   };
   return (
