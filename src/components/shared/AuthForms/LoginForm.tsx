@@ -12,16 +12,26 @@ type LoginProps = {
 export const LoginForm = (props: LoginProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { handleLogin, handleForgotClick } = props;
+  const [ authErrors, setAuthErrors ] = useState<string[]>([]);
+
   const { login } = useBasicUser();
   const onSubmit = async (data: LoginSubmitData) => {
     setIsLoading(true);
-    const response = await login({
-      identifier: data.emailAddress,
-      password: data.password,
-    });
-    handleLogin?.(response);
-    setIsLoading(false);
+    try {
+      const response = await login({
+        identifier: data.emailAddress,
+        password: data.password,
+      });
+      setAuthErrors([]);
+      handleLogin?.(response);
+    } catch (error: any) {
+      console.error(error);
+      setAuthErrors(prev => [...prev, error.response.data.message]);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <FormContext onSubmit={onSubmit} className="flex flex-col gap-4 min-w-64">
       <TextInput
@@ -40,7 +50,9 @@ export const LoginForm = (props: LoginProps) => {
           </u>
         }
       />
-
+      {authErrors && authErrors.map((error, index) => (
+        <p key={index} className="text-red-500 text-sm">{error}</p>
+      ))}
       <button
         type="submit"
         className="flex items-center justify-center text-[#000] h-[45px] w-full rounded-[10px] bg-nafl-sponge-500"
