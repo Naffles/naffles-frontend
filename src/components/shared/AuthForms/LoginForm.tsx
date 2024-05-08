@@ -26,6 +26,7 @@ export const LoginForm = (props: LoginProps) => {
       handleLogin?.(response);
     } catch (error: any) {
       console.error(error);
+      authErrors.includes(error.response.data.message) ||
       setAuthErrors(prev => [...prev, error.response.data.message]);
     } finally {
       setIsLoading(false);
