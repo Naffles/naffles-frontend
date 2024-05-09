@@ -50,12 +50,13 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-start w-full">
       <div className="w-full lg:py-[23px] py-[13px] lg:px-[31px] px-[18px] bg-nafl-charcoal-600">
         <div className="flex flex-col w-full bg-nafl-sponge-500 rounded-[16px] relative items-center justify-center py-[100px] overflow-hidden">
-          <motion.div
+          {/* uncomment when nafflings are to be released to public */}
+          {/* <motion.div
             whileHover={{ y: 30 }}
             className="absolute top-[-73px] left-[100px] w-[114.45px]"
           >
             <img src="/nafflings/hidden.png" alt="" />
-          </motion.div>
+          </motion.div> */}
           <div className="absolute bg-nafl-charcoal-600 rounded-full h-8 w-8 top-[-1rem]" />
 
           <div className="absolute left-[18px] top-[20px]">
@@ -309,12 +310,13 @@ export default function Home() {
       </div>
 
       <div className="flex lg:flex-row flex-col lg:items-start items-center justify-center pt-[60px] lg:pb-[125px] pb-[250px] w-full xl:gap-[90px] gap-[40px] relative bg-[#181818]">
-        {/* <img
+        <img
           src="/static/naffles-text-logo.png"
           alt="Naffles Text Logo"
           className="xl:w-[350px] lg:w-[250px] md:w-[50%] w-[80%] object-contain"
-        /> */}
-        <div className="relative">
+        />
+        {/* uncomment when nafflings are to be released to public */}
+        {/* <div className="relative">
           <img
             src="/static/naffles-text-logo.png"
             alt="Naffles Text Logo"
@@ -323,7 +325,7 @@ export default function Home() {
           <div className="w-[58px] absolute top-[20px] lg:top-[20px] xl:top-[40px] right-10 md:right-2">
             <img src="/nafflings/surprise4.png" alt="" />
           </div>
-        </div>
+        </div> */}
         <div className="flex md:flex-row flex-col items-center justify-center gap-[7px]">
           {/* <img
             src="/static/footer-secure-check.png"
