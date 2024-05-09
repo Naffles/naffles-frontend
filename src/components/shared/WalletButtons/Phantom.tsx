@@ -17,7 +17,7 @@ export const PhantomButton: React.FC<PhantomButtonProps> = ({ onConnectionSucces
         const message = new TextEncoder().encode(`naffles.com wants you to sign in with your address ${response.publicKey.toString()} Your signature will expire in 5 mins`);
         const signedMessage = await solana.signMessage(message, "utf8");
 
-        const validResponse = await axios.post("wallet/validate", {
+        const validResponse = await axios.post("wallet/validate/phantom", {
           signature: bs58.encode(signedMessage.signature),
           publickey: response.publicKey.toBase58(),
           timestamp: timestamp

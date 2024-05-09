@@ -64,7 +64,7 @@ const WalletSelectModal = (props: Props) => {
                 <div className="flex flex-col items-center w-full md:px-[54px] px-[54px] py-[32px] gap-[20px] rounded-b-[20px]">
                   <div className="flex flex-col w-full gap-[10px]">
                     <div className="w-full relative h-[55px]">
-                      <MetamaskButton />
+                      <MetamaskButton onConnectionSuccess={handleWalletConnection} />
                     </div>
                     <div className="w-full relative h-[55px]">
                       <PhantomButton onConnectionSuccess={handleWalletConnection} />
