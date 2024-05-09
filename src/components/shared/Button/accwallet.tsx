@@ -5,7 +5,6 @@ import axios from '@components/utils/axios';
 
 const AccWallet = () => {
   const [walletAddress, setWalletAddress] = useState(null);
-  const [signatureData, setSignatureData] = useState(null);
 
   const connectAndSign = async () => {
     try {
@@ -14,12 +13,14 @@ const AccWallet = () => {
       if (solana && solana.isPhantom) {
         const response = await solana.connect();
 
-        const message = new TextEncoder().encode("naffles.com wants you to sign in with your wallet");
+        const timestamp = Date.now();
+        const message = new TextEncoder().encode(`naffles.com wants you to sign in with your address ${response.publicKey.toString()} Your signature will expire in 5 mins`);
         const signedMessage = await solana.signMessage(message, "utf8");
 
         const validResponse = await axios.post("wallet/validate", {
           signature: bs58.encode(signedMessage.signature),
-          publickey: response.publicKey.toBase58()
+          publickey: response.publicKey.toBase58(),
+          timestamp: timestamp
         });
         if (validResponse.status === 200) {
           setWalletAddress(response.publicKey.toString())
@@ -35,8 +36,6 @@ const AccWallet = () => {
 
   const disconnect = async () => {
     setWalletAddress(null);
-    setSignatureData(null);
-
   }
 
   return (
