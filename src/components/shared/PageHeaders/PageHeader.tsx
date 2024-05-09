@@ -10,7 +10,7 @@ import { useUser } from "@blockchain/context/UserContext";
 import { ConnectButton } from "@components/magic/index";
 import Login from "@components/shared/Button/login";
 import colorVariants from "@components/utils/constants";
-import { Modal } from "@components/shared/Modal";
+// import { Modal } from "@components/shared/Modal";
 import { RegistrationForm, LoginForm } from "@components/shared/AuthForms";
 
 type PageHeaderProps = {

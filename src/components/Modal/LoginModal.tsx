@@ -5,7 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useMagic } from "@blockchain/context/MagicProvider";
 import { useUser } from "@blockchain/context/UserContext";
 import useStore from "../utils/store";
-import ModalContainer from "@components/shared/Modal/modal2";
+// import ModalContainer from "@components/shared/Modal/modal2";
 
 const LoginModal = () => {
   // Get the initializeWeb3 function from the Web3 context
@@ -42,14 +42,15 @@ const LoginModal = () => {
   };
 
   return (
-    <ModalContainer
-      title={"Connect with your email"}
-      content={<LoginModalContent />}
-      category={"login"}
-      isOpen={isOpen}
-      handleOnClick={handleConnect}
-      setIsOpen={setIsOpen}
-    />
+    <></>
+    // <ModalContainer
+    //   title={"Connect with your email"}
+    //   content={<LoginModalContent />}
+    //   category={"login"}
+    //   isOpen={isOpen}
+    //   handleOnClick={handleConnect}
+    //   setIsOpen={setIsOpen}
+    // />
   );
 };
 

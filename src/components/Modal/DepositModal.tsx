@@ -5,7 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useMagic } from "@blockchain/context/MagicProvider";
 import { useUser } from "@blockchain/context/UserContext";
 import useStore from "../utils/store";
-import ModalContainer from "../shared/Modal/modal2";
+// import ModalContainer from "../shared/Modal/modal2";
 import Banxa from "@banxa-global/js-sdk";
 
 const DepositModal = () => {
@@ -27,14 +27,15 @@ const DepositModal = () => {
   };
 
   return (
-    <ModalContainer
-      title={"Deposit fiat and get crypto"}
-      content={<DepositModalContent />}
-      category={"deposit"}
-      isOpen={isDepositOpen}
-      handleOnClick={handleDeposit}
-      setIsOpen={setIsDepositOpen}
-    />
+    <></>
+    // <ModalContainer
+    //   title={"Deposit fiat and get crypto"}
+    //   content={<DepositModalContent />}
+    //   category={"deposit"}
+    //   isOpen={isDepositOpen}
+    //   handleOnClick={handleDeposit}
+    //   setIsOpen={setIsDepositOpen}
+    // />
   );
 };
 
