@@ -9,12 +9,27 @@ import moment from "moment";
 import toast from "react-hot-toast";
 import DepositModal from "../Modal/DepositModal";
 import WithdrawModal from "../Modal/WithdrawModal";
+import useGame from "@components/utils/gamezone";
+
+interface GameData {
+  _id: string;
+  gameType: string;
+  creator: { profileImage: string; username: string; _id: string };
+  challengerBuyInAmount: { $numberDecimal: number };
+  payout: { $numberDecimal: number };
+  betAmount: { $numberDecimal: number };
+  odds: { $numberDecimal: number };
+  coinType: string;
+  status: string;
+}
 
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
   timestamp: Date;
   message: string | null;
+  game: GameData | null;
 }
+
 const GameZoneGlobalChat = () => {
   const { socket, socketId, user } = useUser();
   const [chatData, setChatData] = useState<Message[]>([]);
@@ -22,7 +37,15 @@ const GameZoneGlobalChat = () => {
   const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
 
-  const chatContainer = useRef<HTMLDivElement>(null);
+  const setCurrentScreen = useGame((state) => state.setScreen);
+  const setCurrentChallengerBuyIn = useGame(
+    (state) => state.setChallengerBuyIn
+  );
+  const setGameType = useGame((state) => state.setType);
+  const setCoinType = useGame((state) => state.setCoinType);
+  const setCurrentPayout = useGame((state) => state.setPayout);
+  const setGameId = useGame((state) => state.setGameId);
+
   const bottomChat = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,8 +58,24 @@ const GameZoneGlobalChat = () => {
 
     socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
 
+    const checkRoomOpen = (data: any) => {
+      console.log("roomstatus data:", data);
+      if (!data) {
+        toast.dismiss();
+        toast.error(
+          "Sorry room is currently occupied, try requesting again later"
+        );
+        // setCurrentScreen("main");
+      } else {
+        setCurrentScreen("joining");
+      }
+    };
+
+    socket?.on("roomStatus", checkRoomOpen);
+
     return () => {
       socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
+      socket?.off("roomStatus", checkRoomOpen);
     };
   }, [socket]);
 
@@ -45,6 +84,28 @@ const GameZoneGlobalChat = () => {
       scrollToBottom();
     }
   }, [chatData]);
+
+  const joinGame = (gameId: string, gameData: GameData) => {
+    console.log("joined a game start");
+    var currentDate = new Date();
+    currentDate.setSeconds(currentDate.getSeconds() + 10);
+
+    socket?.emit("joinRequest", {
+      gameId: gameId,
+    });
+
+    setGameType(
+      gameData.gameType == "rockPaperScissors"
+        ? "Rock, Paper, Scissors"
+        : "Coin Toss"
+    );
+
+    setCoinType(gameData.coinType);
+    setCurrentChallengerBuyIn(gameData.challengerBuyInAmount.toString());
+    // setBetOdds(gameData.odds.toString());
+    setCurrentPayout(gameData.payout.toString());
+    setGameId(gameId);
+  };
 
   const randomString = (length: number, chars: string) => {
     var result = "";
@@ -160,13 +221,14 @@ const GameZoneGlobalChat = () => {
     );
   };
 
-  const CommentSection = ({
+  const MessageSection = ({
     currentId,
     senderId,
     sender,
     image,
     timestamp,
     message,
+    game,
   }: {
     currentId: string | null;
     senderId: string;
@@ -174,6 +236,7 @@ const GameZoneGlobalChat = () => {
     image: string;
     timestamp: Date;
     message: string | null;
+    game: GameData | null;
   }): React.JSX.Element => {
     var options = {
       weekday: "long",
@@ -192,30 +255,82 @@ const GameZoneGlobalChat = () => {
 
     return (
       <>
-        <div className="flex flex-row items-start justify-start gap-[19px] w-full">
-          <img
-            src={image == "" ? "/static/user-circle.png" : image}
-            alt="Account Image"
-            className="w-[40px] h-[38px] rounded-full object-contain"
-          />
-          <div className="flex flex-col w-full items-start justify-start gap-[11px]">
-            <div className="flex flex-row items-end justify-start gap-[6px]">
-              {currentId == senderId ? (
-                <p className="text-[#DC2ABF] text-[14px] font-bold leading-[100%]">
-                  You
-                </p>
-              ) : (
-                <p className="text-nafl-sponge-500 text-[14px] font-bold leading-[100%]">
-                  {shortenUsername(sender)}
-                </p>
-              )}
-              <p className="text-[#fff]/50 text-[10px]">
-                {moment(messageTimeStamp).format("MM/DD/YYYY h:mmA")}
+        {game ? (
+          <div className="w-full px-[6px] pt-[13px] pb-[20px] bg-[#000000B2] flex flex-row gap-[12px] rounded-[6px]">
+            <img
+              src={image == "" ? "/static/user-circle.png" : image}
+              alt="Account Image"
+              className="w-[40px] h-[38px] rounded-full object-contain"
+            />
+            <div className="flex flex-col gap-[4px] pt-[6px]">
+              <p className="w-full text-left text-[10px] font-bold">
+                <span className="text-[14px] text-[#02B1B1]">
+                  {currentId == senderId ? "You" : shortenUsername(sender)}
+                </span>
+                {"  "}
+                CREATED A GAME OF{" "}
+                <span className="text-[14px] text-[#02B1B1]">
+                  {game.gameType == "rockPaperScissors" ? "RPS" : "Coin Toss"}
+                </span>
               </p>
+
+              <div className="flex flex-row ml-[42px] gap-[42px] items-start">
+                <div className="flex flex-col">
+                  <div className="flex flex-row items-center justify-center">
+                    <p className="text-[12px] text-nafl-white w-[63px] leading-[100%]">
+                      Buy-in:
+                    </p>
+                    <p className="text-[#02B1B1] text-[12px] font-bold w-[70px] uppercase">
+                      {game.challengerBuyInAmount.$numberDecimal}{" "}
+                      {game.coinType}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-row items-center justify-center">
+                    <p className="text-[12px] text-nafl-white w-[63px] leading-[100%]">
+                      Payout:
+                    </p>
+                    <p className="text-[#02B1B1] text-[12px] font-bold w-[70px] uppercase">
+                      {game.payout.$numberDecimal} {game.coinType}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => joinGame(game._id, game)}
+                  disabled={currentId == senderId}
+                  className={`flex items-center justify-center rounded-[5px] border-[1px] border-nafl-sponge-500 w-[115px] h-[28px] bg-[#464646] ${currentId != senderId ? "opacity-100" : "opacity-50"}`}
+                >
+                  <p className="text-nafl-white text-[12px] font-bold">JOIN</p>
+                </button>
+              </div>
             </div>
-            <p className="w-full text-[#B7B4B4] text-[16px]">{message}</p>
           </div>
-        </div>
+        ) : (
+          <div className="flex flex-row items-start justify-start gap-[19px] w-full">
+            <img
+              src={image == "" ? "/static/user-circle.png" : image}
+              alt="Account Image"
+              className="w-[40px] h-[38px] rounded-full object-contain"
+            />
+            <div className="flex flex-col w-full items-start justify-start gap-[11px]">
+              <div className="flex flex-row items-end justify-start gap-[6px]">
+                {currentId == senderId ? (
+                  <p className="text-[#DC2ABF] text-[14px] font-bold leading-[100%]">
+                    You
+                  </p>
+                ) : (
+                  <p className="text-nafl-sponge-500 text-[14px] font-bold leading-[100%]">
+                    {shortenUsername(sender)}
+                  </p>
+                )}
+                <p className="text-[#fff]/50 text-[10px]">
+                  {moment(messageTimeStamp).format("MM/DD/YYYY h:mmA")}
+                </p>
+              </div>
+              <p className="w-full text-[#B7B4B4] text-[16px]">{message}</p>
+            </div>
+          </div>
+        )}
       </>
     );
   };
@@ -264,8 +379,10 @@ const GameZoneGlobalChat = () => {
         </div>
 
         <div className="flex flex-row items-center justify-between w-full mt-[26px]">
-          <p className="text-[#C4C4C4] text-[20px]">SEASON TOAL:</p>
-          <p className="text-nafl-white text-[20px]">152,256 NAFFLINGS</p>
+          <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
+          <p className="text-nafl-white text-[20px]">
+            {user?.points} NAFFLINGS
+          </p>
         </div>
 
         <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
@@ -309,7 +426,7 @@ const GameZoneGlobalChat = () => {
         >
           <div className="flex flex-col w-full gap-[19px]">
             {chatData.map((item) => (
-              <CommentSection
+              <MessageSection
                 key={randomString(
                   12,
                   "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -320,6 +437,7 @@ const GameZoneGlobalChat = () => {
                 image={item.sender.profileImage}
                 timestamp={item.timestamp}
                 message={item.message}
+                game={item.game}
               />
             ))}
           </div>

@@ -31,16 +31,22 @@ export const RPSGamezone = () => {
   const { socket, user } = useUser();
   const currentGameMode = useGame((state) => state.mode);
   const currentCoinType = useGame((state) => state.coinType);
-  const currentBetAmount = useGame((state) => state.betAmount);
+  const currentCreatorBuyIn = useGame((state) => state.creatorBuyIn);
+  const currentChallengerBuyIn = useGame((state) => state.challengerBuyIn);
   const currentOdds = useGame((state) => state.betOdds);
   const currentGameId = useGame((state) => state.gameId);
   const currentDefaultChosen = useGame((state) => state.defaultChosen);
   const changingBet = useGame((state) => state.changingBet);
+  const currentPayout = useGame((state) => state.payout);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setChangingBet = useGame((state) => state.setChangingBet);
-  const setCurrentBetAmount = useGame((state) => state.setBetAmount);
+  const setCurrentCreatorBuyIn = useGame((state) => state.setCreatorBuyIn);
+  const setCurrentChallengerBuyIn = useGame(
+    (state) => state.setChallengerBuyIn
+  );
   const setCurrentBetOdds = useGame((state) => state.setBetOdds);
+  const setCurrentPayout = useGame((state) => state.setPayout);
 
   const [showVideo, setShowVideo] = useState<boolean>(false);
   const [showResultUI, setShowResultUI] = useState<boolean>(false);
@@ -92,6 +98,7 @@ export const RPSGamezone = () => {
 
   useEffect(() => {
     const timerUpdater = (data: any) => {
+      console.log(data.timeLeft);
       setTimeleft(data.timeLeft);
     };
     socket?.on("timerUpdate", timerUpdater);
@@ -137,7 +144,11 @@ export const RPSGamezone = () => {
     const betUpdates = (data: any) => {
       console.log("Bet Updated: ", data);
       if (data.status) {
-        setCurrentBetAmount(data.game.betAmount.$numberDecimal);
+        setCurrentCreatorBuyIn(data.game.betAmount.$numberDecimal);
+        setCurrentChallengerBuyIn(
+          data.game.challengerBuyInAmount.$numberDecimal
+        );
+        setCurrentPayout(data.game.payout.$numberDecimal);
         setCurrentBetOdds(data.game.odds.$numberDecimal);
         toast.dismiss();
         toast.success("Bet successfully changed");
@@ -197,6 +208,9 @@ export const RPSGamezone = () => {
         icon: "🔥",
       });
     } else {
+      socket?.emit("showUpdatedPoints", {
+        gameId: currentGameId,
+      });
       setShowResultUI(true);
     }
     setShowVideo(false);
@@ -262,7 +276,7 @@ export const RPSGamezone = () => {
                 muted={muteVideo}
               >
                 <source
-                  src={`/static/rps/${selectedChoice}/${result}${randomIntFromInterval(1, 4)}.mp4`}
+                  src={`/static/rps/${selectedChoice}/${result}${randomIntFromInterval(1, 3)}.mp4`}
                   type={`video/mp4`}
                 />
               </video>
@@ -298,13 +312,16 @@ export const RPSGamezone = () => {
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {currentBetAmount} {currentCoinType}
+                {currentPayout} {currentCoinType}
               </span>
             </p>
             <p className="text-[#989898] text-[12px]">
               Buy-in:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
+                {currentGameMode == "host"
+                  ? currentCreatorBuyIn
+                  : currentChallengerBuyIn}{" "}
+                {currentCoinType}
               </span>
             </p>
           </div>
@@ -346,13 +363,16 @@ export const RPSGamezone = () => {
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {currentBetAmount} {currentCoinType}
+                {currentPayout} {currentCoinType}
               </span>
             </p>
             <p className="text-[#989898] text-[12px]">
               Buy-in:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
+                {currentGameMode == "host"
+                  ? currentCreatorBuyIn
+                  : currentChallengerBuyIn}{" "}
+                {currentCoinType}
               </span>
             </p>
           </div>
@@ -393,13 +413,16 @@ export const RPSGamezone = () => {
           <p className="text-[#989898] text-[12px]">
             Payout:{" "}
             <span className="font-bold text-[#fff] font-face-roboto">
-              {currentBetAmount} {currentCoinType}
+              {currentPayout} {currentCoinType}
             </span>
           </p>
           <p className="text-[#989898] text-[12px]">
             Buy-in:{" "}
             <span className="font-bold text-[#fff] font-face-roboto">
-              {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
+              {currentGameMode == "host"
+                ? currentCreatorBuyIn
+                : currentChallengerBuyIn}{" "}
+              {currentCoinType}
             </span>
           </p>
         </div>
@@ -490,13 +513,16 @@ export const RPSGamezone = () => {
               <p className="text-[#989898] text-[12px]">
                 Payout:{" "}
                 <span className="font-bold text-[#fff] font-face-roboto">
-                  {currentBetAmount} {currentCoinType}
+                  {currentPayout} {currentCoinType}
                 </span>
               </p>
               <p className="text-[#989898] text-[12px]">
                 Buy-in:{" "}
                 <span className="font-bold text-[#fff] font-face-roboto">
-                  {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
+                  {currentGameMode == "host"
+                    ? currentCreatorBuyIn
+                    : currentChallengerBuyIn}{" "}
+                  {currentCoinType}
                 </span>
               </p>
             </div>

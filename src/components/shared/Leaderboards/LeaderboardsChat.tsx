@@ -1,15 +1,74 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { TfiMenu } from "react-icons/tfi";
 import DepositModal from "../Modal/DepositModal";
 import WithdrawModal from "../Modal/WithdrawModal";
+import { useUser } from "@blockchain/context/UserContext";
+import moment from "moment";
+import toast from "react-hot-toast";
+
+interface Message {
+  sender: { username: string; profileImage: string; _id: string };
+  timestamp: Date;
+  message: string | null;
+}
 
 const LeaderboardsChat = () => {
+  const { socket, socketId, user } = useUser();
+  const [chatData, setChatData] = useState<Message[]>([]);
+  const [message, setMessage] = useState<string>("");
   const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
+
+  const chatContainer = useRef<HTMLDivElement>(null);
+  const bottomChat = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    socket?.emit("joinGlobalChat");
+
+    const receiveGlobalChat = (data: any) => {
+      console.log("receiveGlobalChatMessage", data);
+      setChatData((oldData) => [...oldData, data]);
+    };
+
+    socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
+
+    return () => {
+      socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    if (chatData.length > 0) {
+      scrollToBottom();
+    }
+  }, [chatData]);
+
+  const randomString = (length: number, chars: string) => {
+    var result = "";
+    for (var i = length; i > 0; --i)
+      result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+  };
+
+  const sendGlobalChatMessage = (message: string) => {
+    console.log("message:", message);
+    if (user?.id) {
+      socket?.emit("sendGlobalChatMessage", { message: message });
+      setMessage("");
+    } else {
+      toast.error("You must login first to chat");
+    }
+  };
+
+  const scrollToBottom = () => {
+    if (bottomChat.current) {
+      bottomChat.current.scrollTop = bottomChat.current.scrollHeight;
+    }
+  };
 
   let sample_balances_json = [
     {
@@ -103,34 +162,59 @@ const LeaderboardsChat = () => {
   };
 
   const CommentSection = ({
-    name,
+    currentId,
+    senderId,
+    sender,
     image,
-    date,
-    time,
-    comment,
+    timestamp,
+    message,
   }: {
-    name: string;
+    currentId: string | null;
+    senderId: string;
+    sender: string;
     image: string;
-    date: string;
-    time: string;
-    comment: string;
+    timestamp: Date;
+    message: string | null;
   }): React.JSX.Element => {
+    var options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+
+    const messageTimeStamp = new Date(timestamp);
+
+    const shortenUsername = (username: string) => {
+      if (username?.length > 15) {
+        return username.slice(0, 15) + "...";
+      } else return username;
+    };
+
     return (
       <>
         <div className="flex flex-row items-start justify-start gap-[19px] w-full">
           <img
-            src={image}
+            src={image == "" ? "/static/user-circle.png" : image}
             alt="Account Image"
             className="w-[40px] h-[38px] rounded-full object-contain"
           />
-          <div className="flex flex-col w-[350px] items-start justify-start gap-[11px]">
+          <div className="flex flex-col w-full items-start justify-start gap-[11px]">
             <div className="flex flex-row items-end justify-start gap-[6px]">
-              <p className="text-[#DC2ABF] text-[14px] font-bold leading-[100%]">
-                {name}
+              {currentId == senderId ? (
+                <p className="text-[#DC2ABF] text-[14px] font-bold leading-[100%]">
+                  You
+                </p>
+              ) : (
+                <p className="text-nafl-sponge-500 text-[14px] font-bold leading-[100%]">
+                  {shortenUsername(sender)}
+                </p>
+              )}
+              <p className="text-[#fff]/50 text-[10px]">
+                {moment(messageTimeStamp).format("MM/DD/YYYY h:mmA")}
               </p>
-              <p className="text-[#fff]/50 text-[10px]">{`${date} ${time}`}</p>
             </div>
-            <p className="w-full text-[#B7B4B4] text-[16px]">{comment}</p>
+            <p className="w-full text-[#B7B4B4] text-[16px]">{message}</p>
           </div>
         </div>
       </>
@@ -167,8 +251,10 @@ const LeaderboardsChat = () => {
         </div>
 
         <div className="flex flex-row items-center justify-between w-full mt-[26px]">
-          <p className="text-[#C4C4C4] text-[20px]">SEASON TOAL:</p>
-          <p className="text-nafl-white text-[20px]">152,256 POINTS</p>
+          <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
+          <p className="text-nafl-white text-[20px]">
+            {user?.points} NAFFLINGS
+          </p>
         </div>
 
         <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
@@ -208,14 +294,18 @@ const LeaderboardsChat = () => {
       <div className="flex flex-col py-[10px] px-[10px] gap-[10px]">
         <div className="flex flex-col h-[488px] w-full overflow-hidden overflow-y-scroll pt-[15px] comments-scrollbar">
           <div className="flex flex-col min-h-[488px] w-full gap-[19px]">
-            {sample_comments_json.map((item) => (
+            {chatData.map((item) => (
               <CommentSection
-                key={item.id}
-                name={item.name}
-                image={item.image}
-                date={item.date}
-                time={item.time}
-                comment={item.comment}
+                key={randomString(
+                  12,
+                  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                )}
+                currentId={socketId}
+                senderId={item.sender._id}
+                sender={item.sender.username}
+                image={item.sender.profileImage}
+                timestamp={item.timestamp}
+                message={item.message}
               />
             ))}
           </div>

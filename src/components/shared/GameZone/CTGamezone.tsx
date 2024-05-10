@@ -22,22 +22,28 @@ export const CTGamezone = () => {
   const [result, setResult] = useState("");
   const [lastResult, setLastResult] = useState("");
   const [selectedChoice, setSelectedChoice] = useState("");
-
+  const [stopTimeListen, setStopTimeListen] = useState<boolean>(false);
+  const [lastWinningChoice, setLastWinningChoice] = useState<string>("");
   //ADDED
 
   const { socket, user } = useUser();
   const currentGameMode = useGame((state) => state.mode);
   const currentCoinType = useGame((state) => state.coinType);
-  const currentBetAmount = useGame((state) => state.betAmount);
-  const currentOdds = useGame((state) => state.betOdds);
+  const currentCreatorBuyIn = useGame((state) => state.creatorBuyIn);
+  const currentChallengerBuyIn = useGame((state) => state.challengerBuyIn);
+  const currentPayout = useGame((state) => state.payout);
   const currentGameId = useGame((state) => state.gameId);
   const currentDefaultChosen = useGame((state) => state.defaultChosen);
   const changingBet = useGame((state) => state.changingBet);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setChangingBet = useGame((state) => state.setChangingBet);
-  const setCurrentBetAmount = useGame((state) => state.setBetAmount);
   const setCurrentBetOdds = useGame((state) => state.setBetOdds);
+  const setCurrentCreatorBuyIn = useGame((state) => state.setCreatorBuyIn);
+  const setCurrentChallengerBuyIn = useGame(
+    (state) => state.setChallengerBuyIn
+  );
+  const setCurrentPayout = useGame((state) => state.setPayout);
 
   const [showVideo, setShowVideo] = useState<boolean>(false);
   const [showResultUI, setShowResultUI] = useState<boolean>(false);
@@ -106,6 +112,7 @@ export const CTGamezone = () => {
     const timerUpdater = (data: any) => {
       setTimeleft(data.timeLeft);
     };
+
     socket?.on("timerUpdate", timerUpdater);
 
     const gameResult = (data: any) => {
@@ -113,7 +120,9 @@ export const CTGamezone = () => {
       console.log("gameResult socket data:", data);
       data.winner == user?.id ? setLastResult("win") : setLastResult("lose");
       data.assignedChoice && setSelectedChoice(data.assignedChoice);
+      setLastWinningChoice(data.winnerChoice);
       setShowVideo(true);
+      setStopTimeListen(true);
     };
 
     socket?.on("gameResult", gameResult);
@@ -145,7 +154,11 @@ export const CTGamezone = () => {
     const betUpdates = (data: any) => {
       console.log("Bet Updated: ", data);
       if (data.status) {
-        setCurrentBetAmount(data.game.betAmount.$numberDecimal);
+        setCurrentCreatorBuyIn(data.game.betAmount.$numberDecimal);
+        setCurrentChallengerBuyIn(
+          data.game.challengerBuyInAmount.$numberDecimal
+        );
+        setCurrentPayout(data.game.payout.$numberDecimal);
         setCurrentBetOdds(data.game.odds.$numberDecimal);
         toast.dismiss();
         toast.success("Bet successfully changed");
@@ -182,8 +195,9 @@ export const CTGamezone = () => {
   }, [currentDefaultChosen]);
 
   useEffect(() => {
-    timeleft <= 0 && leaveGame();
-  }, [timeleft]);
+    !stopTimeListen && timeleft <= 0 && leaveGame();
+    console.log(timeleft);
+  }, [timeleft, stopTimeListen]);
 
   const handleChoiceClick = (choiceClicked: string) => {
     setSelectedChoice(choiceClicked);
@@ -199,10 +213,13 @@ export const CTGamezone = () => {
   };
 
   const handleVideoEnd = () => {
+    socket?.emit("showUpdatedPoints", {
+      gameId: currentGameId,
+    });
     setResult(lastResult);
     setShowResultUI(true);
     setShowVideo(false);
-    setResults((oldData) => [...oldData, selectedChoice]);
+    setResults((oldData) => [...oldData, lastWinningChoice]);
     setSelectedChoice("");
   };
 
@@ -325,13 +342,16 @@ export const CTGamezone = () => {
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {currentBetAmount} {currentCoinType}
+                {currentPayout} {currentCoinType}
               </span>
             </p>
             <p className="text-[#989898] text-[12px]">
               Buy-in:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
+                {currentGameMode == "host"
+                  ? currentCreatorBuyIn
+                  : currentChallengerBuyIn}{" "}
+                {currentCoinType}
               </span>
             </p>
           </div>
@@ -527,13 +547,16 @@ export const CTGamezone = () => {
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {currentBetAmount} {currentCoinType}
+                {currentPayout} {currentCoinType}
               </span>
             </p>
             <p className="text-[#989898] text-[12px]">
               Buy-in:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
+                {currentGameMode == "host"
+                  ? currentCreatorBuyIn
+                  : currentChallengerBuyIn}{" "}
+                {currentCoinType}
               </span>
             </p>
           </div>
@@ -587,196 +610,6 @@ export const CTGamezone = () => {
           )}
         </div>
       )}
-
-      {/* {!showAcceptChangeBet &&
-        !result &&
-        (selectedChoice ? (
-          <>
-            <div className="flex flex-col w-full gap-[4px]">
-              <div className="flex flex-row w-full items-center justify-between">
-                {currentGameMode == "host" ? (
-                  <p className="text-[20px] text-nafl-sponge-500 font-face-bebas">
-                    HEAD OR TAILS?
-                  </p>
-                ) : (
-                  <p className="text-[20px] text-nafl-sponge-500 font-face-bebas">
-                    HEAD OR TAILS?
-                  </p>
-                )}
-                <div className="flex flex-row items-center justify-center">
-                  <p className="text-[14px] text-nafl-white">Results</p>
-                </div>
-              </div>
-
-              <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
-            </div>
-            <div className="flex flex-col py-[30px] items-center relative w-full">
-              <div className="flex items-center justify-center scale-x-[-1] relative">
-                <CircularProgress
-                  aria-label="Gamezone countdown progress"
-                  classNames={{
-                    svg: "w-[160px] h-[160px] drop-shadow-md",
-                    indicator: "stroke-[#00e0df]",
-                    track: "stroke-[#ee26ff]",
-                    value: "text-3xl font-semibold text-nafl-white",
-                  }}
-                  value={timeleft}
-                  minValue={0}
-                  maxValue={DEFAULT_TIMER}
-                  strokeWidth={4}
-                  showValueLabel={false}
-                />
-                <div
-                  // onClick={() => setCountdownTimer(200)}
-                  className="flex flex-col items-center justify-center absolute top-[30px] h-[100px] w-[100px] rounded-full bg-[#383838] scale-x-[-1]"
-                >
-                  <p className="text-[#fff] font-face-bebas text-[50px] leading-[100%]">
-                    {timeleft}
-                  </p>
-                </div>
-              </div>
-              <p className="text-[#fff] text-center text-[16px] mt-[0px] leading-[100%] font-face-bebas">
-                SECONDS
-              </p>
-            </div>
-            <div className="flex flex-row items-center justify-center gap-[20px]">
-              <p className="text-[#989898] text-[12px]">
-                Payout:{" "}
-                <span className="font-bold text-[#fff] font-face-roboto">
-                  {currentBetAmount} {currentCoinType}
-                </span>
-              </p>
-              <p className="text-[#989898] text-[12px]">
-                Buy-in:{" "}
-                <span className="font-bold text-[#fff] font-face-roboto">
-                  {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
-                </span>
-              </p>
-            </div>
-            <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
-          </>
-        ) : currentGameMode == "host" && !changingBet ? (
-          <div className="flex flex-col w-full ">
-            {currentGameMode == "host" ? (
-              <p className="text-[20px] text-nafl-sponge-500 font-face-bebas">
-                YOU’ve GOT a CHALLENGER!
-              </p>
-            ) : (
-              <p className="text-[20px] text-nafl-sponge-500 font-face-bebas">
-                HEAD OR TAILS?
-              </p>
-            )}
-            <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
-            <div className="flex flex-col items-center justify-center gap-[4px]">
-              <p className="text-[24px] text-nafl-white font-bold leading-[100%]">
-                Choose Heads or Tails
-              </p>
-              <p className="text-[20px] text-nafl-white leading-[100%]">
-                before the timer runs out
-              </p>
-            </div>
-            <div className="flex flex-col py-[30px] items-center relative w-full">
-              <div className="flex items-center justify-center scale-x-[-1] relative">
-                <CircularProgress
-                  aria-label="Gamezone countdown progress"
-                  classNames={{
-                    svg: "w-[160px] h-[160px] drop-shadow-md",
-                    indicator: "stroke-[#00e0df]",
-                    track: "stroke-[#ee26ff]",
-                    value: "text-3xl font-semibold text-nafl-white",
-                  }}
-                  value={timeleft}
-                  minValue={0}
-                  maxValue={DEFAULT_TIMER}
-                  strokeWidth={4}
-                  showValueLabel={false}
-                />
-                <div
-                  // onClick={() => setCountdownTimer(200)}
-                  className="flex flex-col items-center justify-center absolute top-[30px] h-[100px] w-[100px] rounded-full bg-[#383838] scale-x-[-1]"
-                >
-                  <p className="text-[#fff] font-face-bebas text-[50px] leading-[100%]">
-                    {timeleft}
-                  </p>
-                </div>
-              </div>
-              <p className="text-[#fff] text-center text-[16px] mt-[0px] leading-[100%] font-face-bebas">
-                SECONDS
-              </p>
-            </div>
-            <div className="flex flex-row items-center justify-center gap-[20px]">
-              <p className="text-[#989898] text-[12px]">
-                Payout:{" "}
-                <span className="font-bold text-[#fff] font-face-roboto">
-                  {currentBetAmount} {currentCoinType}
-                </span>
-              </p>
-              <p className="text-[#989898] text-[12px]">
-                Buy-in:{" "}
-                <span className="font-bold text-[#fff] font-face-roboto">
-                  {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
-                </span>
-              </p>
-            </div>
-
-            <div
-              className={`flex flex-row items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
-            >
-              <button
-                onClick={() => leaveGame()}
-                className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
-              >
-                <p className="text-[#fff] text-[18px] font-bold">LEAVE GAME</p>
-              </button>
-              <button
-                // onClick={() => }
-                className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
-              >
-                <p className="text-[#fff] text-[18px] font-bold">HEADS</p>
-              </button>
-              <button
-                // onClick={() => }
-                className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
-              >
-                <p className="text-[#fff] text-[18px] font-bold">TAILS</p>
-              </button>
-              <a
-                onClick={() => setChangingBet(true)}
-                className="font-face-roboto text-[12px] italic underline cursor-pointer"
-              >
-                Change Bets
-              </a>
-            </div>
-          </div>
-        ) : (
-          !changingBet && (
-            <div className="flex flex-col w-full ">
-              <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
-              {result != "draw" && (
-                <div
-                  className={`flex flex-row items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
-                >
-                  <button
-                    onClick={() => leaveGame()}
-                    className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
-                  >
-                    <p className="text-[#fff] text-[18px] font-bold">
-                      LEAVE GAME
-                    </p>
-                  </button>
-                  <button
-                    onClick={() => playAgain()}
-                    className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 bg-nafl-sponge-500 my-[20px]"
-                  >
-                    <p className="text-[#000] text-[18px] font-bold">
-                      PLAY AGAIN
-                    </p>
-                  </button>
-                </div>
-              )}
-            </div>
-          )
-        ))} */}
     </>
   );
 };

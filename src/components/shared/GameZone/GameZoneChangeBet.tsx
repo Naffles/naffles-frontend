@@ -102,14 +102,31 @@ const GameZoneChangeBet = () => {
     setTotalPayout(balanceAmount * betMultiplierChoice);
   }, [balanceAmount, betMultiplierChoice]);
 
+  useEffect(() => {
+    const checkBetChangeRequestStatus = (data: any) => {
+      console.log("pa note", data);
+      if (data) {
+        toast.success("Bet change request succeeded");
+        setChangingBet(false);
+      } else {
+        toast.error("You do not have enough balance");
+      }
+    };
+
+    socket?.on("changeBetRequestSent", checkBetChangeRequestStatus);
+
+    return () => {
+      socket?.off("changeBetRequestSent", checkBetChangeRequestStatus);
+    };
+  }, [socket]);
+
   const changeBet = (gameId: string, betAmount: string, odds: string) => {
     socket?.emit("requestBetUpdate", {
       gameId: gameId,
       betAmount: betAmount,
       odds: odds,
     });
-    toast.success("Change bet request sent to opposing player");
-    setChangingBet(false);
+    // toast.success("Change bet request sent to opposing player");
   };
 
   const currencyIconReturner = (type: string) => {

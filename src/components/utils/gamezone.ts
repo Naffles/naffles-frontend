@@ -6,7 +6,9 @@ interface GameState {
   type: "Rock, Paper, Scissors" | "Coin Toss" | null;
   gameId: string | null;
   coinType: string | null;
-  betAmount: string | null;
+  creatorBuyIn: string | null;
+  challengerBuyIn: string | null;
+  payout: string | null;
   betOdds: string | null;
   challengerId: string | null;
   defaultChosen: string | null;
@@ -21,7 +23,9 @@ interface GameActions {
   setType: (type: "Rock, Paper, Scissors" | "Coin Toss" | null) => void;
   setGameId: (gameId: string | null) => void;
   setCoinType: (coinType: string | null) => void;
-  setBetAmount: (betAmount: string | null) => void;
+  setCreatorBuyIn: (creatorBuyIn: string | null) => void;
+  setChallengerBuyIn: (challengerBuyIn: string | null) => void;
+  setPayout: (payout: string | null) => void;
   setBetOdds: (betOdds: string | null) => void;
   setChallengerId: (challengerId: string | null) => void;
   setDefaultChosen: (defaultChosen: string | null) => void;
@@ -34,7 +38,9 @@ const initialState: Omit<GameState, "user"> = {
   type: null,
   gameId: null,
   coinType: null,
-  betAmount: null,
+  creatorBuyIn: null,
+  challengerBuyIn: null,
+  payout: null,
   betOdds: null,
   challengerId: null,
   defaultChosen: null,
@@ -48,7 +54,9 @@ const useGame = create<GameState & GameActions>((set) => ({
   setType: (type) => set(() => ({ type })),
   setGameId: (gameId) => set(() => ({ gameId })),
   setCoinType: (coinType) => set(() => ({ coinType })),
-  setBetAmount: (betAmount) => set(() => ({ betAmount })),
+  setCreatorBuyIn: (creatorBuyIn) => set(() => ({ creatorBuyIn })),
+  setChallengerBuyIn: (challengerBuyIn) => set(() => ({ challengerBuyIn })),
+  setPayout: (payout) => set(() => ({ payout })),
   setBetOdds: (betOdds) => set(() => ({ betOdds })),
   setChallengerId: (challengerId) => set(() => ({ challengerId })),
   setDefaultChosen: (defaultChosen) => set(() => ({ defaultChosen })),

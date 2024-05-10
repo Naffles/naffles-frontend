@@ -21,7 +21,8 @@ interface tableRow {
   player: string;
   playerId: string;
   image: string;
-  buyin: number;
+  creatorBuyin: number;
+  challengerBuyin: number;
   payout: number;
   odds: number;
   currency: string | null;
@@ -34,6 +35,8 @@ interface gamezoneReturnArr {
   _id: string;
   gameType: string;
   creator: { profileImage: string; username: string; _id: string };
+  challengerBuyInAmount: { $numberDecimal: number };
+  payout: { $numberDecimal: number };
   betAmount: { $numberDecimal: number };
   odds: { $numberDecimal: number };
   coinType: string;
@@ -45,10 +48,14 @@ const GameZoneGamesTable = () => {
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setGameType = useGame((state) => state.setType);
   const setCoinType = useGame((state) => state.setCoinType);
-  const setBetAmount = useGame((state) => state.setBetAmount);
-  const setBetOdds = useGame((state) => state.setBetOdds);
+  const setCurrentCreatorBuyIn = useGame((state) => state.setCreatorBuyIn);
+  const setCurrentChallengerBuyIn = useGame(
+    (state) => state.setChallengerBuyIn
+  );
+  // const setBetOdds = useGame((state) => state.setBetOdds);
   const setGameId = useGame((state) => state.setGameId);
   const setChallengerId = useGame((state) => state.setChallengerId);
+  const setCurrentPayout = useGame((state) => state.setPayout);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
@@ -159,10 +166,18 @@ const GameZoneGamesTable = () => {
       }
     };
 
+    const joinRequestErrorHandler = (data: any) => {
+      if (data) {
+        toast.error(data);
+      }
+    };
+
     socket?.on("newGameCreated", gameCreated);
+    socket?.on("errorJoinRequest", joinRequestErrorHandler);
 
     return () => {
       socket?.off("newGameCreated", gameCreated);
+      socket?.off("errorJoinRequest", joinRequestErrorHandler);
     };
   }, [socket, user]);
 
@@ -176,8 +191,10 @@ const GameZoneGamesTable = () => {
           : "Coin Toss"
       );
       setCoinType(data.game.coinType);
-      setBetAmount(data.game.betAmount.$numberDecimal);
-      setBetOdds(data.game.odds.$numberDecimal);
+      setCurrentChallengerBuyIn(data.game.challengerBuyInAmount.$numberDecimal);
+      setCurrentCreatorBuyIn(data.game.betAmount.$numberDecimal);
+      setCurrentPayout(data.game.payout.$numberDecimal);
+      // setBetOdds(data.game.odds.$numberDecimal);
       setGameId(data.game._id);
       setChallengerId(data.challengerId);
     };
@@ -256,8 +273,9 @@ const GameZoneGamesTable = () => {
         player: item.creator.username,
         playerId: item.creator._id,
         image: item.creator.profileImage,
-        buyin: item.betAmount.$numberDecimal,
-        payout: item.betAmount.$numberDecimal * item.odds.$numberDecimal,
+        creatorBuyin: item.betAmount.$numberDecimal,
+        challengerBuyin: item.challengerBuyInAmount.$numberDecimal,
+        payout: item.payout.$numberDecimal,
         odds: item.odds.$numberDecimal,
         currency: item.coinType,
         allowJoin: item.status == "waiting" ? true : false,
@@ -288,8 +306,9 @@ const GameZoneGamesTable = () => {
     );
 
     setCoinType(gameData.currency);
-    setBetAmount(gameData.buyin.toString());
-    setBetOdds(gameData.odds.toString());
+    setCurrentChallengerBuyIn(gameData.challengerBuyin.toString());
+    // setBetOdds(gameData.odds.toString());
+    setCurrentPayout(gameData.payout.toString());
     setGameId(gameId);
   };
 
@@ -387,7 +406,9 @@ const GameZoneGamesTable = () => {
                   <p
                     className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
                   >
-                    {item.buyin}
+                    {item.myUsername == item.player
+                      ? item.creatorBuyin
+                      : item.challengerBuyin}
                   </p>
                   <p
                     className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
