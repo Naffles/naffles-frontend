@@ -288,9 +288,9 @@ const GameZoneChatMobile = () => {
                   </div>
 
                   <div className="flex flex-row items-center justify-between w-full mt-[26px]">
-                    <p className="text-[#C4C4C4] text-[20px]">SEASON TOAL:</p>
+                    <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
                     <p className="text-nafl-white text-[20px]">
-                      152,256 POINTS
+                      {user?.points} NAFFLINGS
                     </p>
                   </div>
 

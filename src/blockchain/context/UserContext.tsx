@@ -11,6 +11,7 @@ type User = {
   id: string | null;
   name: string | null;
   image: string | null;
+  points: number;
 };
 
 // Define the type for the user context.
@@ -53,6 +54,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [socketId, setSocketId] = useState<string>("");
+  const [userPoints, setUserPoints] = useState<number>(0);
 
   const { jwt, user } = useBasicUser();
 
@@ -94,6 +96,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     !userJWT && jwt && setUserJWT(jwt);
     !userId && user?.id && setUserId(user?.id);
     !profileName && user?.username && setProfileName(user?.username);
+    !userPoints && user?.temporaryPoints && setUserPoints(user.temporaryPoints);
   }, [jwt, user]);
 
   useEffect(() => {
@@ -103,8 +106,15 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     };
     socket?.on("registered", setIntoSocketId);
 
+    const setPoints = (data: any) => {
+      setUserPoints(data);
+    };
+
+    socket?.on("realtimePoints", setPoints);
+
     return () => {
       socket?.off("registered", setIntoSocketId);
+      socket?.off("realtimePoints", setPoints);
     };
   }, [userId, socket]);
 
@@ -150,6 +160,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             setUserJWT(result?.data?.token);
             setUserId(result?.data?.user?._id);
             setProfileName(result?.data?.user?.username);
+            setUserPoints(result?.data?.user?.temporaryPoints);
             console.log("wallet login id:", result?.data?.user?._id);
             // Cookies.set("token", result?.token, { expires: 7, secure: true });
           } else {
@@ -172,6 +183,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 id: userId,
                 name: profileName,
                 image: profileImage,
+                points: userPoints,
               }
             : null,
         socket: socket,

@@ -9,22 +9,25 @@ import toast from "react-hot-toast";
 const GameZoneAccepting = () => {
   const { socket, user } = useUser();
   const [countdownTimer, setCountdownTimer] = useState<number>(200);
+  const [hostPayout, setHostPayout] = useState<number>(0);
 
   const currentGameType = useGame((state) => state.type);
   const currentCoinType = useGame((state) => state.coinType);
-  const currentBetAmount = useGame((state) => state.betAmount);
+  const currentBetAmount = useGame((state) => state.creatorBuyIn);
   const currentOdds = useGame((state) => state.betOdds);
   const currentGameId = useGame((state) => state.gameId);
   const currentChallengerId = useGame((state) => state.challengerId);
+  const currentPayout = useGame((state) => state.payout);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setGameType = useGame((state) => state.setType);
   const setCoinType = useGame((state) => state.setCoinType);
-  const setBetAmount = useGame((state) => state.setBetAmount);
+  const setBetAmount = useGame((state) => state.setCreatorBuyIn);
   const setBetOdds = useGame((state) => state.setBetOdds);
   const setDefaultChosen = useGame((state) => state.setDefaultChosen);
   const setCurrentGameId = useGame((state) => state.setGameId);
   const setCurrentGameMode = useGame((state) => state.setMode);
+  const setCurrentPayout = useGame((state) => state.setPayout);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -81,6 +84,16 @@ const GameZoneAccepting = () => {
       socket?.off("joinRequestCancelled", cancelMessage);
     };
   }, [socket]);
+
+  const setBuyIn = (betAmount: string | null, betOdds: string | null) => {
+    let betAmountValue = 0;
+    let betOddsValue = 0;
+
+    if (betAmount) betAmountValue = parseFloat(betAmount);
+    if (betOdds) betOddsValue = parseFloat(betOdds);
+    let buyIn = betAmountValue / betOddsValue;
+    return buyIn + betAmountValue;
+  };
 
   const setPayOut = (betAmount: string | null, betOdds: string | null) => {
     let betAmountValue = 0;
@@ -139,15 +152,15 @@ const GameZoneAccepting = () => {
         </p>
         <div className="flex flex-col items-center">
           <p className=" text-[#989898] text-[14px]">
-            Buy-in:{" "}
+            Your Buy-in:{" "}
             <span className="text-[#fff] font-face-roboto italic">
               {currentBetAmount} {currentCoinType}
             </span>
           </p>
           <p className=" text-[#989898] text-[14px]">
-            Payout:{" "}
+            Your Payout:{" "}
             <span className="text-[#fff] font-face-roboto italic">
-              {setPayOut(currentBetAmount, currentOdds)} {currentCoinType}
+              {currentPayout} {currentCoinType}
             </span>
           </p>
         </div>

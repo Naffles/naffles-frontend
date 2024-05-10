@@ -268,7 +268,9 @@ const GameZoneChat = () => {
 
         <div className="flex flex-row items-center justify-between w-full mt-[26px]">
           <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
-          <p className="text-nafl-white text-[20px]">152,256 NAFFLINGS</p>
+          <p className="text-nafl-white text-[20px]">
+            {user?.points} NAFFLINGS
+          </p>
         </div>
 
         <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">

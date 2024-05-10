@@ -11,11 +11,38 @@ import GameZoneGlobalChat from "@components/shared/GameZone/GameZoneGlobalChat";
 import GameZoneAccepting from "@components/shared/GameZone/GameZoneAccepting";
 import GameZoneChat from "@components/shared/GameZone/GameZoneChat";
 import GameZoneChatMobile from "@components/shared/GameZone/GameZoneChatMobile";
+import { useEffect } from "react";
 
 const GameZone = () => {
   const currentScreen = useGame((state) => state.screen);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
+
+  // const onConfirmRefresh = function (event: any) {
+  //   event.preventDefault();
+  //   return (event.returnValue = "Are you sure you to reload?");
+  // };
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", onConfirmRefresh, {
+  //     capture: true,
+  //   });
+  //   // return () => {
+  //   //   window.addEventListener("beforeunload", onConfirmRefresh, {
+  //   //     capture: false,
+  //   //   });
+  //   // };
+  // }, []);
+
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event: any) => {
+  //     const message =
+  //       "Are you sure you want to leave? Any unsaved changes will be lost.";
+  //     event.returnValue = message; // Standard for most browsers
+  //     return message; // For some older browsers
+  //   };
+
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+  // }, []);
 
   return (
     <div className="flex flex-col items-center w-full">
