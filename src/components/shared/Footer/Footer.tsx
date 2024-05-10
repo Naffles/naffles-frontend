@@ -16,9 +16,10 @@ const Footer = () => {
             </div>
           </div>
 
+          <div className="ml-embedded" data-form="ZpYFjE"></div>
           <div className="flex flex-col items-start justify-center md:w-[569px] max-w-[569px] w-[90%]">
             <p className="text-[42px] text-[#fff] font-face-bebas">
-              BE EARLY. BE READY.
+              BE EARLY. BE READY
             </p>
             <p className="text-[#BDBDBD] text-[19px]">
               Give us your email and we’ll give you free stuff and notifications
@@ -78,14 +79,19 @@ const Footer = () => {
             <div className="flex flex-row items-center justify-center gap-[6px]">
               {/* if privacy policy is clicked, redirect it to a link like dropbox */}
               <p className="text-[#626262] font-face-bebas">
-                <a href="https://www.dropbox.com/scl/fo/u6y3v0p1kofxnmhvv7ch8/ABPQNjicw5_4X0ODKxOiyQs?dl=0&e=1&preview=KYC+Policy+-+Naffles.pdf&rlkey=l65w2x8kelxew1lonehmey1ud" target="_blank">
+                <a
+                  href="https://www.dropbox.com/scl/fo/u6y3v0p1kofxnmhvv7ch8/ABPQNjicw5_4X0ODKxOiyQs?dl=0&e=1&preview=KYC+Policy+-+Naffles.pdf&rlkey=l65w2x8kelxew1lonehmey1ud"
+                  target="_blank"
+                >
                   PRIVACY POLICY
                 </a>
               </p>
               <p className="text-[#626262] font-face-bebas">|</p>
               <p className="text-[#626262] font-face-bebas">
-                <a href="https://www.dropbox.com/scl/fi/9ek0y9v7qzqszngel43rd/Terms-and-Conditions.docx?rlkey=8lf7pe02nilm12qhee5fw5su1&e=1&dl=0"
-                  target="_blank">
+                <a
+                  href="https://www.dropbox.com/scl/fi/9ek0y9v7qzqszngel43rd/Terms-and-Conditions.docx?rlkey=8lf7pe02nilm12qhee5fw5su1&e=1&dl=0"
+                  target="_blank"
+                >
                   TERMS OF USE
                 </a>
               </p>
@@ -104,10 +110,11 @@ const Footer = () => {
             <img src="/nafflings/surprise4.png" alt="" />
           </div>
         </div>
+        <div className="ml-embedded" data-form="ZpYFjE"></div>
         <div className="w-full p-10">
           <div className="flex flex-col items-start justify-center">
             <p className="text-4xl text-[#fff] font-face-bebas">
-              BE EARLY. BE READY.
+              BE EARLY. BE READY.aaa
             </p>
             <p className="text-[#BDBDBD] text-[19px]">
               Give us your email and we’ll give you free stuff and notifications
