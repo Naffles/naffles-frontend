@@ -6,6 +6,13 @@ interface MetamaskButtonProps {
   onConnectionSuccess: (address: string) => void;
 }
 
+declare global {
+  interface Window {
+    ethereum: any,
+    web3: any
+  }
+}
+
 export const MetamaskButton: React.FC<MetamaskButtonProps> = ({ onConnectionSuccess }) => {
 
   const connectAndSign = async () => {
@@ -14,26 +21,33 @@ export const MetamaskButton: React.FC<MetamaskButtonProps> = ({ onConnectionSucc
         window.web3 = new Web3(window.ethereum);
         await window.ethereum.enable();
         const ethAcc = await window.web3.eth.getAccounts();
-
         const publicKey = ethAcc[0]
-        const message = `naffles.com wants you to sign in with your address ${publicKey.toString()} Your signature will expire in 5 mins`;
+        const timestamp = new Date().toLocaleString('en-US', { timeZone: 'UTC' });
+        const message = `Welcome to Naffles.com!\nPlease confirm your sign-in request.\n\nYour Address: ${publicKey}\nTimestamp: ${timestamp}\n\nThis signature request will expire 5 minutes after the timestamp shown above.`
         const signature = await window.ethereum.request({
           method: "personal_sign",
           params: [message, publicKey],
         });
-        const timestamp = Date.now();
-        console.log(signature, publicKey, timestamp)
-        const validResponse = await axios.post("wallet/validate/metamask", {
+
+        console.log({
           signature: signature,
-          publicKey: publicKey,
+          address: publicKey,
           timestamp: timestamp
-        });
-        if (validResponse.status === 200) {
-          onConnectionSuccess(publicKey.toString())
-        } else (
-          console.log("Your signature has failed to verify")
-        )
-        console.log(validResponse)
+        })
+        // const validResponse = await axios.post("wallet/validate/metamask", {
+        //   signature: signature,
+        //   address: publicKey,
+        //   timestamp: timestamp,
+        //   walletType: "metamask",
+        //   network: "eth"
+        // });
+        // if (validResponse.status === 200) {
+        //   onConnectionSuccess(publicKey.toString())
+        // } else (
+        //   console.log("Your signature has failed to verify")
+        // )
+        // console.log(validResponse)
+
       } catch (error) {
         console.error("Error connecting to MetaMask", error);
       }

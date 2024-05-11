@@ -5,27 +5,41 @@ interface PhantomButtonProps {
   onConnectionSuccess: (address: string) => void;
 }
 
+declare global {
+  interface Window {
+    solana: any
+  }
+}
+
 export const PhantomButton: React.FC<PhantomButtonProps> = ({ onConnectionSuccess }) => {
   const connectAndSign = async () => {
     try {
       const { solana } = window;
-
       if (solana && solana.isPhantom) {
         const response = await solana.connect();
+        const timestamp = new Date().toLocaleString('en-US', { timeZone: 'UTC' });
+        const message = new TextEncoder().encode(
+          `Welcome to Naffles.com!\nPlease confirm your sign-in request.\n\nYour Address: ${response.publicKey.toString()}\nTimestamp: ${timestamp}\n\nThis signature request will expire 5 minutes after the timestamp shown above.`
+        );
 
-        const timestamp = Date.now();
-        const message = new TextEncoder().encode(`naffles.com wants you to sign in with your address ${response.publicKey.toString()} Your signature will expire in 5 mins`);
         const signedMessage = await solana.signMessage(message, "utf8");
-
-        const validResponse = await axios.post("wallet/validate/phantom", {
+        console.log("signed message: ", signedMessage);
+        console.log({
           signature: bs58.encode(signedMessage.signature),
-          publickey: response.publicKey.toBase58(),
+          address: response.publicKey.toBase58(),
           timestamp: timestamp
-        });
-        if (validResponse.status === 200) {
-          onConnectionSuccess(response.publicKey.toString())
-        }
-        console.log(validResponse)
+        })
+        // const validResponse = await axios.post("wallet/validate/phantom", {
+        //   signature: bs58.encode(signedMessage.signature),
+        //   address: response.publicKey.toBase58(),
+        //   timestamp: timestamp,
+        //   walletType: "phantom",
+        //   network: "sol"
+        // });
+        // if (validResponse.status === 200) {
+        //   onConnectionSuccess(response.publicKey.toString())
+        // }
+        // console.log(validResponse)
       } else {
         alert('Phantom wallet not found. Please install it.');
       }
