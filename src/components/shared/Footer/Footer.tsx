@@ -1,6 +1,36 @@
 import { FaDiscord, FaTwitter } from "react-icons/fa";
+import { useState } from "react";
+import { Spinner } from "@nextui-org/react";
+import axios from "axios";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const handleFormSubmit = async () => {
+    console.log("aaaa");
+    if (email) {
+      try {
+        setIsLoading(true);
+        const {
+          data: { success, errors },
+        } = await axios.post(
+          `https://assets.mailerlite.com/jsonp/${process.env.NEXT_PUBLIC_MAILERLITE_ACC_ID}/forms/${process.env.NEXT_PUBLIC_MAILERLITE_FORM_ID}/subscribe`,
+          { fields: { email } }
+        );
+        if (success) {
+          setEmail("");
+        } else {
+          setError(errors?.fields?.email?.join(" "));
+        }
+        setIsLoading(false);
+      } catch (err) {
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
   return (
     <>
       <div className="flex flex-col w-full bg-[#292929] z-20">
@@ -15,8 +45,6 @@ const Footer = () => {
               <img src="/nafflings/surprise4.png" alt="" />
             </div>
           </div>
-
-          <div className="ml-embedded" data-form="ZpYFjE"></div>
           <div className="flex flex-col items-start justify-center md:w-[569px] max-w-[569px] w-[90%]">
             <p className="text-[42px] text-[#fff] font-face-bebas">
               BE EARLY. BE READY
@@ -33,9 +61,19 @@ const Footer = () => {
                 type="text"
                 placeholder="Stick ya email here"
                 className="w-full h-[67px] bg-[#4B4B4B] font-face-roboto text-[23px] rounded-[10px] pl-[23px] pr-[140px] placeholder:text-[#868686]"
+                name="fields[email]"
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <button className="absolute right-[6px] flex items-center justify-center w-[138px] h-[57px] rounded-[10px] bg-nafl-sponge-500">
-                <p className="text-[#000] text-[19px] font-bold">SIGN UP</p>
+              <button
+                className="absolute right-[6px] flex items-center justify-center w-[138px] h-[57px] rounded-[10px] bg-nafl-sponge-500"
+                type="submit"
+                onClick={handleFormSubmit}
+              >
+                {isLoading ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <p className="text-[#000] text-[19px] font-bold">SIGN UP</p>
+                )}
               </button>
             </div>
             <div className="w-full flex flex-row items-center justify-center mt-[70px] gap-[40px]">
@@ -114,7 +152,7 @@ const Footer = () => {
         <div className="w-full p-10">
           <div className="flex flex-col items-start justify-center">
             <p className="text-4xl text-[#fff] font-face-bebas">
-              BE EARLY. BE READY.aaa
+              BE EARLY. BE READY.
             </p>
             <p className="text-[#BDBDBD] text-[19px]">
               Give us your email and we’ll give you free stuff and notifications
@@ -128,8 +166,12 @@ const Footer = () => {
                 type="text"
                 placeholder="Stick ya email here"
                 className="w-full h-[67px] bg-[#4B4B4B] font-face-roboto text-[23px] rounded-[10px] pl-[23px] pr-[140px] placeholder:text-[#868686]"
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <button className="absolute right-[6px] flex items-center justify-center w-[138px] h-[57px] rounded-[10px] bg-nafl-sponge-500">
+              <button
+                className="absolute right-[6px] flex items-center justify-center w-[138px] h-[57px] rounded-[10px] bg-nafl-sponge-500"
+                onClick={handleFormSubmit}
+              >
                 <p className="text-[#000] text-[19px] font-bold">SIGN UP</p>
               </button>
             </div>
