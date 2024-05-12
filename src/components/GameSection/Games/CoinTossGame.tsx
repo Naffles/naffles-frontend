@@ -5,7 +5,7 @@ import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { GameContainerProps } from "@type/GameSection";
 
 export const CoinTossGame = (props: GameContainerProps) => {
-  const { handlePlayCount, onGameStart, onGameReset, isPaused, onLimitReached } = props;
+  const { onGameStart, onGameReset, isPaused, onLimitReached } = props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
 
@@ -21,7 +21,6 @@ export const CoinTossGame = (props: GameContainerProps) => {
       if (error.response.data.statusCode === 429) {
         alert(error.response.data.message);
         onLimitReached();
-        onGameReset?.();
       } else {
         alert("An error occurred while playing Coin toss");
         onGameReset?.();
@@ -32,7 +31,6 @@ export const CoinTossGame = (props: GameContainerProps) => {
   const handleVideoEnd = (hasSelected?: boolean) => {
     if (hasSelected) {
       setPoints(displayPoints);
-      handlePlayCount?.(hasSelected);
     }
   };
 

@@ -1,68 +1,28 @@
-import { useState, useEffect } from "react";
-import { useLocalStorage } from "@hook/useLocalStorage";
+import { useState } from "react";
 import { Modal } from "@components/shared/Modal";
 import { RegistrationForm } from "@components/shared/AuthForms";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import DemoPointsLeaderboards from "./DemoPointsLeaderboards";
 import useScreenSize from "@hook/useScreenSize";
 import { RockPaperScissorsGame, CoinTossGame } from "./Games";
-import unixToString from "@components/utils/unixToString";
-
-const DAILY_PLAYS_THRESHOLD = 10;
-type PlaysObject = {
-  plays: number;
-  date: number;
-};
 
 export const GameSection = () => {
   const { user } = useBasicUser();
   const { isMobile } = useScreenSize();
-  const [playsToday, setPlaysToday] = useLocalStorage<PlaysObject | null>(
-    "daily-plays",
-    null,
-    {
-      initializeWithValue: false,
-    }
-  );
   const [openModal, setOpenModal] = useState(false);
   const [isCoinTossPaused, setIsCoinTossPaused] = useState(false);
   const [isRPSPaused, setIsRPSPaused] = useState(false);
 
-  // useEffect(() => {
-  //   let isPlaysCountToday = false;
-  //   if (playsToday?.date) {
-  //     const currentDateNumber = Date.now();
-  //     const currentDate = unixToString(currentDateNumber);
-  //     const previousDate = unixToString(playsToday.date);
-  //     isPlaysCountToday = previousDate === currentDate;
-  //   }
-  //   if (
-  //     isPlaysCountToday &&
-  //     playsToday?.plays &&
-  //     playsToday.plays >= DAILY_PLAYS_THRESHOLD
-  //   ) {
-  //     setOpenModal(true);
-  //   }
-  // }, [playsToday]);
+  const handleLimitReached = () => {
+    setOpenModal(true);
+    setIsRPSPaused(true);
+    setIsCoinTossPaused(true);
+  };
 
-  const onPlayEnd = () => {
-    if (!user) {
-      setPlaysToday((playsObject) => {
-        if (playsObject?.date && playsObject?.plays < DAILY_PLAYS_THRESHOLD) {
-          const currentDateNumber = Date.now();
-          const currentDate = unixToString(currentDateNumber);
-          const previousDate = unixToString(playsObject.date);
-          if (previousDate === currentDate) {
-            const currentPlays = playsObject?.plays || 0;
-            return {
-              plays: currentPlays + 1,
-              date: currentDateNumber,
-            };
-          }
-        }
-        return { plays: 1, date: Date.now() };
-      });
-    }
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setIsRPSPaused(false);
+    setIsCoinTossPaused(false);
   };
 
   return (
@@ -70,26 +30,23 @@ export const GameSection = () => {
       <Modal
         title="Register now to save your points"
         show={openModal && !user}
-        hideModal={() => setOpenModal(false)}
+        hideModal={handleCloseModal}
       >
         <RegistrationForm />
       </Modal>
       <div className="flex-row flex-wrap justify-center items-center gamezone-container gap-4 pt-8 hidden lg:flex">
         <div className="flex-col flex games-container gap-8">
           <RockPaperScissorsGame
-            handlePlayCount={onPlayEnd}
             onGameStart={() => setIsCoinTossPaused(true)}
             onGameReset={() => setIsCoinTossPaused(false)}
             isPaused={isRPSPaused}
-            onLimitReached={() => setOpenModal(true)}
-
+            onLimitReached={handleLimitReached}
           />
           <CoinTossGame
-            handlePlayCount={onPlayEnd}
             onGameStart={() => setIsRPSPaused(true)}
             onGameReset={() => setIsRPSPaused(false)}
             isPaused={isCoinTossPaused}
-            onLimitReached={() => setOpenModal(true)}
+            onLimitReached={handleLimitReached}
           />
         </div>
         <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl xl:mt-0 lg:mt-[100px]">
@@ -98,14 +55,18 @@ export const GameSection = () => {
       </div>
       {isMobile && (
         <div className="flex lg:hidden xl:hidden flex-col h-auto">
-          <RockPaperScissorsGame 
-            handlePlayCount={onPlayEnd}
-            onLimitReached={() => setOpenModal(true)}
+          <RockPaperScissorsGame
+            onGameStart={() => setIsCoinTossPaused(true)}
+            onGameReset={() => setIsCoinTossPaused(false)}
+            isPaused={isRPSPaused}
+            onLimitReached={handleLimitReached}
           />
-          <CoinTossGame 
-            handlePlayCount={onPlayEnd} 
-            onLimitReached={() => setOpenModal(true)}
-            />
+          <CoinTossGame
+            onGameStart={() => setIsRPSPaused(true)}
+            onGameReset={() => setIsRPSPaused(false)}
+            isPaused={isCoinTossPaused}
+            onLimitReached={handleLimitReached}
+          />
         </div>
       )}
     </>
