@@ -5,7 +5,7 @@ import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { GameContainerProps } from "@type/GameSection";
 
 export const RockPaperScissorsGame = (props: GameContainerProps) => {
-  const { handlePlayCount, onGameStart, onGameReset, isPaused, onLimitReached } = props;
+  const { onGameStart, onGameReset, isPaused, onLimitReached } = props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
 
@@ -21,7 +21,6 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       if (error.response.data.statusCode === 429) {
         onLimitReached();
         alert(error.response.data.message);
-        onGameReset?.();
       } else {
         alert("An error occurred while playing RPS");
         onGameReset?.();
@@ -32,7 +31,6 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
   const handleVideoEnd = (hasSelected: boolean) => {
     if (hasSelected) {
       setPoints(displayPoints);
-      handlePlayCount?.(hasSelected);
     }
   };
 

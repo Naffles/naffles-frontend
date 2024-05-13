@@ -1,6 +1,38 @@
 import { FaDiscord, FaTwitter } from "react-icons/fa";
+import { useState } from "react";
+import { Spinner } from "@nextui-org/react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const handleFormSubmit = async () => {
+    if (email) {
+      try {
+        setIsLoading(true);
+        const {
+          data: { success, errors },
+        } = await axios.post(
+          `https://assets.mailerlite.com/jsonp/${process.env.NEXT_PUBLIC_MAILERLITE_ACC_ID}/forms/${process.env.NEXT_PUBLIC_MAILERLITE_FORM_ID}/subscribe`,
+          { fields: { email } }
+        );
+        if (success) {
+          toast.success("You have successfully subscribed to our newsletter!");
+          setEmail("");
+        } else {
+          setError(errors?.fields?.email?.join(" "));
+        }
+        setIsLoading(false);
+      } catch (err) {
+        toast.error("An error occurred. Please try again later.");
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
   return (
     <>
       <div className="flex flex-col w-full bg-[#292929] z-20">
@@ -15,10 +47,9 @@ const Footer = () => {
               <img src="/nafflings/surprise4.png" alt="" />
             </div>
           </div>
-
           <div className="flex flex-col items-start justify-center md:w-[569px] max-w-[569px] w-[90%]">
             <p className="text-[42px] text-[#fff] font-face-bebas">
-              BE EARLY. BE READY.
+              BE EARLY. BE READY
             </p>
             <p className="text-[#BDBDBD] text-[19px]">
               Give us your email and we’ll give you free stuff and notifications
@@ -32,9 +63,20 @@ const Footer = () => {
                 type="text"
                 placeholder="Stick ya email here"
                 className="w-full h-[67px] bg-[#4B4B4B] font-face-roboto text-[23px] rounded-[10px] pl-[23px] pr-[140px] placeholder:text-[#868686]"
+                name="fields[email]"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <button className="absolute right-[6px] flex items-center justify-center w-[138px] h-[57px] rounded-[10px] bg-nafl-sponge-500">
-                <p className="text-[#000] text-[19px] font-bold">SIGN UP</p>
+              <button
+                className="absolute right-[6px] flex items-center justify-center w-[138px] h-[57px] rounded-[10px] bg-nafl-sponge-500"
+                type="submit"
+                onClick={handleFormSubmit}
+              >
+                {isLoading ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <p className="text-[#000] text-[19px] font-bold">SIGN UP</p>
+                )}
               </button>
             </div>
             <div className="w-full flex flex-row items-center justify-center mt-[70px] gap-[40px]">
@@ -78,14 +120,19 @@ const Footer = () => {
             <div className="flex flex-row items-center justify-center gap-[6px]">
               {/* if privacy policy is clicked, redirect it to a link like dropbox */}
               <p className="text-[#626262] font-face-bebas">
-                <a href="https://www.dropbox.com/scl/fo/u6y3v0p1kofxnmhvv7ch8/ABPQNjicw5_4X0ODKxOiyQs?dl=0&e=1&preview=KYC+Policy+-+Naffles.pdf&rlkey=l65w2x8kelxew1lonehmey1ud" target="_blank">
+                <a
+                  href="https://www.dropbox.com/scl/fo/u6y3v0p1kofxnmhvv7ch8/ABPQNjicw5_4X0ODKxOiyQs?dl=0&e=1&preview=KYC+Policy+-+Naffles.pdf&rlkey=l65w2x8kelxew1lonehmey1ud"
+                  target="_blank"
+                >
                   PRIVACY POLICY
                 </a>
               </p>
               <p className="text-[#626262] font-face-bebas">|</p>
               <p className="text-[#626262] font-face-bebas">
-                <a href="https://www.dropbox.com/scl/fi/9ek0y9v7qzqszngel43rd/Terms-and-Conditions.docx?rlkey=8lf7pe02nilm12qhee5fw5su1&e=1&dl=0"
-                  target="_blank">
+                <a
+                  href="https://www.dropbox.com/scl/fi/9ek0y9v7qzqszngel43rd/Terms-and-Conditions.docx?rlkey=8lf7pe02nilm12qhee5fw5su1&e=1&dl=0"
+                  target="_blank"
+                >
                   TERMS OF USE
                 </a>
               </p>
@@ -104,6 +151,7 @@ const Footer = () => {
             <img src="/nafflings/surprise4.png" alt="" />
           </div>
         </div>
+        <div className="ml-embedded" data-form="ZpYFjE"></div>
         <div className="w-full p-10">
           <div className="flex flex-col items-start justify-center">
             <p className="text-4xl text-[#fff] font-face-bebas">
@@ -121,8 +169,12 @@ const Footer = () => {
                 type="text"
                 placeholder="Stick ya email here"
                 className="w-full h-[67px] bg-[#4B4B4B] font-face-roboto text-[23px] rounded-[10px] pl-[23px] pr-[140px] placeholder:text-[#868686]"
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <button className="absolute right-[6px] flex items-center justify-center w-[138px] h-[57px] rounded-[10px] bg-nafl-sponge-500">
+              <button
+                className="absolute right-[6px] flex items-center justify-center w-[138px] h-[57px] rounded-[10px] bg-nafl-sponge-500"
+                onClick={handleFormSubmit}
+              >
                 <p className="text-[#000] text-[19px] font-bold">SIGN UP</p>
               </button>
             </div>
