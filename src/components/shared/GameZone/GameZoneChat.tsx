@@ -10,7 +10,7 @@ import useGame from "@components/utils/gamezone";
 import toast from "react-hot-toast";
 import DepositModal from "../Modal/DepositModal";
 import WithdrawModal from "../Modal/WithdrawModal";
-
+import { motion } from "framer-motion";
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
   timestamp: Date;
@@ -223,6 +223,17 @@ const GameZoneChat = () => {
     );
   };
 
+  const [previousPoints, setPreviousPoints] = useState(0);
+  const [showAddedPoints, setShowAddedPoints] = useState(false);
+
+  useEffect(() => {
+    setShowAddedPoints(true);
+    setTimeout(() => {
+      setPreviousPoints(user?.points || 0);
+      setShowAddedPoints(false);
+    }, 2000);
+  }, [user?.points]);
+
   return (
     <div className="xl:flex hidden flex-col items-center justify-start bg-[#383838] rounded-[16px] lg:w-[457px] max-w-[457px] w-[90%]">
       <div className="flex flex-col items-center justify-start py-[13px] px-[20px] rounded-t-[16px] border-b-[1px] border-nafl-sponge-500/50 w-full">
@@ -266,11 +277,26 @@ const GameZoneChat = () => {
           </p>
         </div>
 
-        <div className="flex flex-row items-center justify-between w-full mt-[26px]">
+        <div className="flex flex-row items-center justify-between w-full mt-[26px] relative">
           <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
           <p className="text-nafl-white text-[20px]">
             {user?.points} NAFFLINGS
           </p>
+          {showAddedPoints && (
+            <motion.div
+              initial={{ y: 0 }}
+              animate={{ y: -40 }}
+              transition={{ type: "spring", duration: 3 }}
+              className="absolute w-[52px] top-[-10px] right-[40px]"
+            >
+              <div className="relative flex items-center justify-center text-center">
+                <img src="/nafflings/surprise3.png" alt="" />
+                <p className="font-face-bebas absolute">
+                  +{user?.points - previousPoints}
+                </p>
+              </div>
+            </motion.div>
+          )}
         </div>
 
         <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
