@@ -2,13 +2,13 @@ import { FaDiscord, FaTwitter } from "react-icons/fa";
 import { useState } from "react";
 import { Spinner } from "@nextui-org/react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const handleFormSubmit = async () => {
-    console.log("aaaa");
     if (email) {
       try {
         setIsLoading(true);
@@ -19,12 +19,14 @@ const Footer = () => {
           { fields: { email } }
         );
         if (success) {
+          toast.success("You have successfully subscribed to our newsletter!");
           setEmail("");
         } else {
           setError(errors?.fields?.email?.join(" "));
         }
         setIsLoading(false);
       } catch (err) {
+        toast.error("An error occurred. Please try again later.");
         throw err;
       } finally {
         setIsLoading(false);
@@ -62,6 +64,7 @@ const Footer = () => {
                 placeholder="Stick ya email here"
                 className="w-full h-[67px] bg-[#4B4B4B] font-face-roboto text-[23px] rounded-[10px] pl-[23px] pr-[140px] placeholder:text-[#868686]"
                 name="fields[email]"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <button
