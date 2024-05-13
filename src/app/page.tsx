@@ -15,7 +15,7 @@ import { IoMdSearch } from "react-icons/io";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between mt-0 lg:pt-[80px] pt-[25px]">
+    <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
       <div className="w-full bg-[#464646] px-[25px] xl:h-[800px] lg:h-[1200px] md:h-[1200px] h-[1500px] mb-[380px]">
         <Swiper
           className="flex w-full"
@@ -160,15 +160,22 @@ export default function Home() {
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
               <SwiperSlide key={item} style={{ width: "290px" }}>
                 <div className="flex-row flex justify-between py-2 w-full mt-2">
-                  {
-                    item % 2 === 0 ? (
-                      <TrophyIcon size="xl" colour="dark-green" />
-                    ) : (
-                      <TrophyIcon size="xl" colour="purple" />
-                    )
-                  }
-                  <Typography size="text-lg" color={item % 2 === 0 ? "purple": "dark-green"}>
-                    Winner! <span style={{fontFamily: 'Bebas Neue', color: '#FEFF3D'}}>Eddie just won</span> 0.3ETH ($969.19) from Jay
+                  {item % 2 === 0 ? (
+                    <TrophyIcon size="xl" colour="dark-green" />
+                  ) : (
+                    <TrophyIcon size="xl" colour="purple" />
+                  )}
+                  <Typography
+                    size="text-lg"
+                    color={item % 2 === 0 ? "purple" : "dark-green"}
+                  >
+                    Winner!{" "}
+                    <span
+                      style={{ fontFamily: "Bebas Neue", color: "#FEFF3D" }}
+                    >
+                      Eddie just won
+                    </span>{" "}
+                    0.3ETH ($969.19) from Jay
                   </Typography>
                 </div>
               </SwiperSlide>

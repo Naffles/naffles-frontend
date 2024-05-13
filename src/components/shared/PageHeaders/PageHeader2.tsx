@@ -7,7 +7,7 @@ import colorVariants from "@components/utils/constants";
 import { useUser } from "@blockchain/context/UserContext";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import axios from "@components/utils/axios";
-
+import { motion } from "framer-motion";
 import WalletIcon from "@components/icons/walletIcon";
 import UserIcon from "@components/icons/userIcon";
 import { ConnectButton } from "@components/magic";
@@ -87,6 +87,22 @@ const PageHeader: React.FC<PageHeaderProps> = (
   //   return () => document.removeEventListener("click", handleClickOutside);
   // }, []);
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    document.addEventListener("scroll", (e) => {
+      if (window.scrollY < 25) {
+        setIsScrolled(false);
+      } else {
+        setIsScrolled(true);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(isScrolled);
+  }, [isScrolled]);
+
   const handleUserChange = useCallback(async () => {
     if (basicUser?.profileImage) {
       const { data: profileImageData } = await axios.get(
@@ -123,7 +139,12 @@ const PageHeader: React.FC<PageHeaderProps> = (
   };
 
   return (
-    <div className="fixed top-0 flex items-center justify-center w-full bg-transparent px-[25px] pt-[25px] z-40">
+    <motion.div
+      initial={{ paddingTop: 25 }}
+      animate={{ paddingTop: isScrolled ? 0 : 25 }}
+      transition={{ type: "spring" }}
+      className="sticky top-0 flex items-center justify-center w-full px-[25px] z-40"
+    >
       {!basicUser ? (
         <>
           <Modal
@@ -482,7 +503,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 export default PageHeader;
