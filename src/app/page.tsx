@@ -56,13 +56,15 @@ export default function Home() {
                       fun for everyone. Please degen responsibly!
                     </p>
                     <div className="relative w-fit flex lg:flex-row flex-col items-center justify-start gap-[16px]">
-                      <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
-                        <p className="text-[#FEFF3D]"> PLAY OUR GAMES</p>
-                      </button>
+                      <a href="/gamezone">
+                        <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
+                          <p className="text-[#FEFF3D]"> PLAY OUR GAMES</p>
+                        </button>
+                      </a>
                       {/* <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
                         <p className="text-[#FEFF3D]">EXPLORE LIVE NAFFLES</p>
                       </button> */}
-                      <div className="absolute w-[150px] right-[35px] top-[-20px] z-0">
+                      <div className="absolute w-[150px] right-[35px] top-[-20px] z-[-1]">
                         <img src="/nafflings/surprise3.png" alt="" />
                       </div>
                     </div>
@@ -128,16 +130,19 @@ export default function Home() {
                         <img src="/static/twitter.svg" alt="" />
                         <img src="/static/discord.svg" alt="" />
                       </div>
-                      <button className="flex items-center justify-center gap-[12px] w-[167px] h-[51px] border-[2px] border-[#FEFF3D] rounded-[11px] bg-gradient-to-r from-[#DC2ABF] to-[#00E0DF]">
-                        <p className="text-[24px] text-[#fff] font-face-bebas leading-[100%]">
-                          PLAY NOW..
-                        </p>
-                        <img
-                          src="/static/play-now-icon.png"
-                          alt="Play Now Image"
-                          className="w-[44px] object-contain"
-                        />
-                      </button>
+                      <a href="/gamezone">
+                        {" "}
+                        <button className="flex items-center justify-center gap-[12px] w-[167px] h-[51px] border-[2px] border-[#FEFF3D] rounded-[11px] bg-gradient-to-r from-[#DC2ABF] to-[#00E0DF]">
+                          <p className="text-[24px] text-[#fff] font-face-bebas leading-[100%]">
+                            PLAY NOW..
+                          </p>
+                          <img
+                            src="/static/play-now-icon.png"
+                            alt="Play Now Image"
+                            className="w-[44px] object-contain"
+                          />
+                        </button>
+                      </a>
                     </div>
                   </div>
                   {/* <>
@@ -260,16 +265,18 @@ export default function Home() {
         </div>
         <div className="flex flex-row flex-wrap items-center justify-center gap-x-[40px] lg:mb-[20px] mb-[50px]">
           <p className="text-[62px] text-[#fff] font-face-bebas">GAME ZONE</p>
-          <button className="flex items-center justify-center gap-[12px] w-[167px] h-[51px] border-[2px] border-[#FEFF3D] rounded-[11px] bg-gradient-to-r from-[#DC2ABF] to-[#00E0DF]">
-            <p className="text-[24px] text-[#fff] font-face-bebas leading-[100%]">
-              PLAY NOW..
-            </p>
-            <img
-              src="/static/play-now-icon.png"
-              alt="Play Now Image"
-              className="w-[44px] object-contain"
-            />
-          </button>
+          <a href="/gamezone">
+            <button className="flex items-center justify-center gap-[12px] w-[167px] h-[51px] border-[2px] border-[#FEFF3D] rounded-[11px] bg-gradient-to-r from-[#DC2ABF] to-[#00E0DF]">
+              <p className="text-[24px] text-[#fff] font-face-bebas leading-[100%]">
+                PLAY NOW..
+              </p>
+              <img
+                src="/static/play-now-icon.png"
+                alt="Play Now Image"
+                className="w-[44px] object-contain"
+              />
+            </button>
+          </a>
         </div>
         <GameSection />
       </div>
