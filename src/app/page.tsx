@@ -16,7 +16,7 @@ import { IoMdSearch } from "react-icons/io";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
-      <div className="w-full bg-[#464646] px-[25px] xl:h-[800px] lg:h-[1200px] md:h-[1200px] h-[1500px]">
+      <div className="w-full bg-[#464646] px-[25px] xl:h-[800px] lg:h-[1200px] md:h-[1200px] h-[1500px] pt-[100px]">
         <Swiper
           className="flex w-full"
           direction="vertical"

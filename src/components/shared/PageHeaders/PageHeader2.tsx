@@ -146,9 +146,11 @@ const PageHeader: React.FC<PageHeaderProps> = (
   return (
     <motion.div
       initial={{ paddingTop: 25 }}
-      animate={{ paddingTop: isScrolled ? 0 : 25 }}
-      transition={{ type: "spring" }}
-      className="sticky top-0 flex items-center justify-center w-full px-[25px] z-40"
+      animate={{
+        paddingTop: isScrolled ? 0 : 25,
+      }}
+      transition={{ type: "spring", duration: 0.2 }}
+      className="fixed top-0 flex items-center justify-center w-full px-[25px] z-40"
     >
       {!basicUser ? (
         <>
