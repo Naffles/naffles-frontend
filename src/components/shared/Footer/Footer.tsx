@@ -121,7 +121,7 @@ const Footer = () => {
               {/* if privacy policy is clicked, redirect it to a link like dropbox */}
               <p className="text-[#626262] font-face-bebas">
                 <a
-                  href="https://www.dropbox.com/scl/fo/u6y3v0p1kofxnmhvv7ch8/ABPQNjicw5_4X0ODKxOiyQs?dl=0&e=1&preview=KYC+Policy+-+Naffles.pdf&rlkey=l65w2x8kelxew1lonehmey1ud"
+                  href="/privacy-policy"
                   target="_blank"
                 >
                   PRIVACY POLICY
@@ -130,7 +130,7 @@ const Footer = () => {
               <p className="text-[#626262] font-face-bebas">|</p>
               <p className="text-[#626262] font-face-bebas">
                 <a
-                  href="https://www.dropbox.com/scl/fi/9ek0y9v7qzqszngel43rd/Terms-and-Conditions.docx?rlkey=8lf7pe02nilm12qhee5fw5su1&e=1&dl=0"
+                  href="/terms-and-conditions"
                   target="_blank"
                 >
                   TERMS OF USE

@@ -1,12 +1,43 @@
+import AscensiveAssets from "@components/icons/ascensiveAssets";
+import EighteenPlus from "@components/icons/eighteenPlus";
+import NafflesIcon from "@components/icons/nafflesIcon";
+import Footer from "@components/shared/Footer/Footer";
 import Link from "next/link";
 const TermsAndConditions = () => {
   return (
-    <div className="flex flex-col items-center w-full h-screen pt-28 px-8 overflow-hidden">
-      <span className="text-nafl-purple font-face-bebas text-title-4xl">
-        Terms and Conditions
-      </span>
+    <>
+    <div className="flex flex-col items-center w-full h-screen pt-28 px-8 overflow-hidden mt-[80px]">
+      <div className="flex-row flex justify-between w-[900px] lg:flex sm:hidden xs:hidden">
+        <div className="flex flex-row">
+          <span className="mt-4 mr-5">
+            <NafflesIcon colour="white"/>
+          </span>
+          <span>
+            <EighteenPlus size={75}/>
+          </span>
+        </div>
+        <div className="flex flex-row">
+          <span className="mx-2">
+            <AscensiveAssets colour="white" />
+          </span>
+          
+          <span className="mx-2">
+            <AscensiveAssets colour="white" />
+          </span>
+          <span className="mx-2">
+            <AscensiveAssets colour="white" />
+          </span>
 
-      <div className="w-full max-w-[900px] max-h-[1200px] h-5/6 mt-4 overflow-auto font-face-roboto text-body-base font-bold">
+        </div>
+      </div>
+      <div className="text-left my-5 lg:min-w-[900px] xs:min-w-[330px]">
+        <span className="text-nafl-purple font-face-bebas text-title-4xl text-left block">
+          Terms and Conditions
+        </span>
+      </div>
+      
+
+      <div className="w-full max-w-[900px] max-h-[1200px] h-5/6 mt-4 text-nafl-sponge-100 overflow-auto font-face-roboto text-body-base font-bold">
         Last updated: 23 January 202
         <br />
         BACKGROUND
@@ -970,6 +1001,72 @@ const TermsAndConditions = () => {
         or regulations.
       </div>
     </div>
+    <div className="flex lg:flex-row flex-col lg:items-start items-center justify-center pt-[60px] lg:pb-[125px] 
+    pb-[250px] w-full xl:gap-[90px] gap-[40px] relative bg-[#181818] mt-[90px]">
+        <img
+          src="/static/naffles-text-logo.png"
+          alt="Naffles Text Logo"
+          className="xl:w-[350px] lg:w-[250px] md:w-[50%] w-[80%] object-contain"
+        />
+        <div className="flex md:flex-row flex-col items-center justify-center gap-[7px]">
+          {/* <img
+            src="/static/footer-secure-check.png"
+            alt="Naffles Text Logo"
+            className="w-[75px] object-contain"
+          /> */}
+          <div
+            id="anj-163a3d88-a381-4928-873c-19ebd4bd977d"
+            data-anj-seal-id="163a3d88-a381-4928-873c-19ebd4bd977d"
+            data-anj-image-size="75"
+            data-anj-image-type="basic-small"
+          ></div>
+          <div className="flex flex-col xl:w-[960px] lg:w-[600px] md:w-[80%] w-[90%] gap-[12px]">
+            <p className="text-[16px] text-[#fff]">
+              https://naffles.com/ is owned and operated by Degentralised
+              Interactive Limited (Registration Number: 2134682) with the
+              Registered Address: Intershore Chambers, Road Town, Tortola,
+              British Virgin Islands.
+            </p>
+            <p className="text-[16px] text-[#fff]">
+              Contact us nft@naffles.com.
+            </p>
+            <p className="text-[16px] text-[#fff]">
+              naffles.com is licensed and regulated by the Government of the
+              Autonomous Island of Anjouan, Union of Comoros and operates under
+              License No. ALSI-062403009-F16.
+            </p>
+            <p className="text-[16px] text-[#fff]">
+              naffles.com has passed all regulatory compliance and is legally
+              authorized to conduct gaming operations for any and all games of
+              chance and wagering.
+            </p>
+          </div>
+        </div>
+        <div className="flex lg:flex-row flex-col items-center lg:justify-between center w-full py-[40px] absolute bottom-0 bg-[#181818] xl:px-[270px] lg:px-[50px] px-0 text-[23px]">
+          <p className="text-[#626262] font-face-bebas text-center">
+            © Copyright 2022 naffles All Rights Reserved.
+          </p>
+
+          <div className="flex flex-row items-center justify-center gap-[6px]">
+            <a
+              href="https://www.dropbox.com/scl/fi/28jmch0e45pwfwnjvea1j/Responsible-Gambling-Policy.pdf?rlkey=5oqm08umlcvizj56rkmlup19n&dl=0"
+              target="_blank"
+              className="text-[#626262] font-face-bebas hover:text-[#fff] duration-500"
+            >
+              RESPONSIBLE GAMBLING POLICY
+            </a>
+            <p className="text-[#626262] font-face-bebas">|</p>
+            <a
+              href="https://www.dropbox.com/scl/fi/og0mx4uquayhldpzm3hdi/Terms-and-Conditions.pdf?rlkey=zgg66vph42826xl8wqjy5tum0&dl=0"
+              target="_blank"
+              className="text-[#626262] font-face-bebas hover:text-[#fff] duration-500"
+            >
+              TERMS OF USE
+            </a>
+          </div>
+        </div>
+    </div>
+    </>
   );
 };
 export default TermsAndConditions;
