@@ -5,6 +5,21 @@
 @tailwind components;
 @tailwind utilities;
 
+
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #3E3E3E; /* Background of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #555353; /* Scrollbar thumb color */
+  border-radius: 10px; /* Rounded corners */
+  border: 1px solid #464646; /* Padding around the thumb */
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 70, 70, 70;
