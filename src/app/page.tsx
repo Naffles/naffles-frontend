@@ -16,7 +16,7 @@ import { IoMdSearch } from "react-icons/io";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
-      <div className="w-full bg-[#464646] px-[25px] xl:h-[800px] lg:h-[1200px] md:h-[1200px] h-[1500px] mb-[380px]">
+      <div className="w-full bg-[#464646] px-[25px] xl:h-[800px] lg:h-[1200px] md:h-[1200px] h-[1500px]">
         <Swiper
           className="flex w-full"
           direction="vertical"
@@ -34,7 +34,7 @@ export default function Home() {
               className="w-full bg-nafl-sponge-500 rounded-[16px] xl:pt-0 pt-[50px] xl:pb-[100px]"
               key={item}
             >
-              <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full">
+              <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full gap-[90px]">
                 <div className="xl:w-[1000px] lg:w-[700px] w-[90%] flex flex-col items-start justify-center 2xl:pl-0 xl:pl-[20px] pl-0">
                   <p className="xl:text-[125px] text-[100px] text-[#000] font-face-bebas leading-[110%]">
                     Wager & Win{" "}
@@ -56,97 +56,170 @@ export default function Home() {
                       fun for everyone. Please degen responsibly!
                     </p>
                     <div className="relative w-fit flex lg:flex-row flex-col items-center justify-start gap-[16px]">
-                      <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px]">
+                      <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
                         <p className="text-[#FEFF3D]"> PLAY OUR GAMES</p>
                       </button>
-                      <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
+                      {/* <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
                         <p className="text-[#FEFF3D]">EXPLORE LIVE NAFFLES</p>
-                      </button>
-                      <div className="absolute w-[150px] right-[35px] top-[50px] lg:top-[-20px] z-0">
+                      </button> */}
+                      <div className="absolute w-[150px] right-[35px] top-[-20px] z-0">
                         <img src="/nafflings/surprise3.png" alt="" />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col items-center justify-center xl:scale-100 scale-75">
-                  <div className="flex flex-row items-center justify-center">
-                    <Image
-                      src={"/static/hero-img1.png"}
-                      alt="Naffle"
-                      width={316}
-                      height={380}
-                      className="mr-[-20%]"
-                      style={{ zIndex: 2, objectFit: "contain" }}
-                    />
-                    <Image
-                      src={"/static/hero-img2.png"}
-                      alt="Naffle"
-                      width={290}
-                      height={290}
-                      sizes="290px"
-                      className="ml-[-18%]"
-                      style={{ zIndex: 1, objectFit: "contain" }}
-                    />
-                  </div>
-                  <p className="text-[50px] text-[#464646] font-face-bebas leading-[100%] mb-[30px]">
-                    VEEFRIENDS
-                  </p>
-                  <div className="flex flex-col items-center justify-center">
-                    <div className="border-t border-nafl-charcoal-300 my-4 w-64 opacity-35"></div>
-                    <div className="flex-row flex justify-between">
-                      <div className="flex flex-col items-start w-[190px] py-[5px] gap-[2px] border-r-[1px] border-[#000]/20">
-                        <p className="text-[16px] font-face-bebas text-[#464646] leading-[100%] ml-[50px]">
-                          TICKETS PRICE
-                        </p>
-                        <div className="flex flex-row items-center justify-center w-full gap-[8px]">
-                          <img
-                            src="/static/eth-logo.png"
-                            alt="ETH Logo"
-                            className="w-[25px] object-contain"
-                          />
-                          <p className="text-[33px] font-face-bebas text-[#464646] leading-[100%]">
-                            0.005
+                <div className="flex flex-col items-center justify-center md:scale-100 scale-[.6] py-0 md:py-[100px]">
+                  <div>
+                    <p className="text-[#371143] text-[32px] uppercase font-mono translate-x-[30%]">
+                      Jackpot Winner!!
+                    </p>
+                    <div className="bg-[#371143] h-[98px] w-[370px] rounded-[16px] relative flex items-center justify-center">
+                      <div className="translate-x-[20%]">
+                        <div className="flex items-center gap-[7px]">
+                          <img src="/static/avatar.svg" alt="" />
+                          <p className="font-mono text-white">
+                            0x45...t63f42 !!
                           </p>
                         </div>
-
-                        <p className="flex items-center justify-center w-full text-[16px] font-face-bebas text-[#02B1B1] leading-[100%]">
-                          ($ 16 USD)
-                        </p>
+                        <div>
+                          <p className="font-mono text-[48px] text-nafl-sponge-500 leading-[100%]">
+                            125 349.69{" "}
+                            <span className="text-[20px] text-white font-mono">
+                              NAFFLINGS
+                            </span>
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex flex-col items-start w-[190px] py-[5px] gap-[2px]">
-                        <p className="text-[16px] font-face-bebas text-[#464646] leading-[100%] ml-[50px]">
-                          TICKETS FROM
-                        </p>
-                        <div className="flex flex-row items-center justify-center w-full gap-[8px]">
+                      <div className="w-[320px] object-contain absolute top-[-135px] left-[-140px] shake">
+                        <div className="relative flex justify-center">
                           <img
-                            src="/static/eth-logo.png"
-                            alt="ETH Logo"
-                            className="w-[25px] object-contain"
+                            src="/static/jackpot-img.png"
+                            alt="Jackpot Image"
+                            className="z-1"
                           />
-                          <p className="text-[33px] font-face-bebas text-[#464646] leading-[100%]">
-                            0.005
-                          </p>
+                          <img
+                            src="/nafflings/chest-group.png"
+                            alt=""
+                            className="absolute top-[75px] z-20 w-[70px] drop-shadow-nafl-sponge-2xl "
+                          />
                         </div>
-
-                        <p className="flex items-center justify-center w-full text-[16px] font-face-bebas text-[#02B1B1] leading-[100%]">
-                          ($ 16 USD)
-                        </p>
                       </div>
                     </div>
                   </div>
+
+                  <div className="w-[480px] mt-[80px]">
+                    <div className="space-y-4 border-b-[1px] border-black border-opacity-[50%] pb-5">
+                      <p className="font-sans text-black opacity-[70%]">
+                        <span className="font-bold">EVERY</span> game, ticket
+                        and action on Naffles earns you entries into the
+                        Jackpot. You don’t even need to gamble to win.{" "}
+                        <span className="font-bold">Play now!</span>
+                      </p>
+                      <p className="font-mono uppercase text-[24px] text-[#02B1B1]">
+                        NEXT JACKPOT GIVE AWAY IN{" "}
+                        <span className="text-[#DC2ABF] font-mono">5 days</span>
+                      </p>
+                    </div>
+                    <div className="mt-5 flex items-center justify-between">
+                      <div className="flex gap-[10px]">
+                        <p className="font-mono text-[15px] text-black">
+                          like & share
+                        </p>
+                        <img src="/static/twitter.svg" alt="" />
+                        <img src="/static/discord.svg" alt="" />
+                      </div>
+                      <button className="flex items-center justify-center gap-[12px] w-[167px] h-[51px] border-[2px] border-[#FEFF3D] rounded-[11px] bg-gradient-to-r from-[#DC2ABF] to-[#00E0DF]">
+                        <p className="text-[24px] text-[#fff] font-face-bebas leading-[100%]">
+                          PLAY NOW..
+                        </p>
+                        <img
+                          src="/static/play-now-icon.png"
+                          alt="Play Now Image"
+                          className="w-[44px] object-contain"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  {/* <>
+                    <div className="flex flex-row items-center justify-center">
+                      <Image
+                        src={"/static/hero-img1.png"}
+                        alt="Naffle"
+                        width={316}
+                        height={380}
+                        className="mr-[-20%]"
+                        style={{ zIndex: 2, objectFit: "contain" }}
+                      />
+                      <Image
+                        src={"/static/hero-img2.png"}
+                        alt="Naffle"
+                        width={290}
+                        height={290}
+                        sizes="290px"
+                        className="ml-[-18%]"
+                        style={{ zIndex: 1, objectFit: "contain" }}
+                      />
+                    </div>
+                    <p className="text-[50px] text-[#464646] font-face-bebas leading-[100%] mb-[30px]">
+                      VEEFRIENDS
+                    </p>
+                    <div className="flex flex-col items-center justify-center">
+                      <div className="border-t border-nafl-charcoal-300 my-4 w-64 opacity-35"></div>
+                      <div className="flex-row flex justify-between">
+                        <div className="flex flex-col items-start w-[190px] py-[5px] gap-[2px] border-r-[1px] border-[#000]/20">
+                          <p className="text-[16px] font-face-bebas text-[#464646] leading-[100%] ml-[50px]">
+                            TICKETS PRICE
+                          </p>
+                          <div className="flex flex-row items-center justify-center w-full gap-[8px]">
+                            <img
+                              src="/static/eth-logo.png"
+                              alt="ETH Logo"
+                              className="w-[25px] object-contain"
+                            />
+                            <p className="text-[33px] font-face-bebas text-[#464646] leading-[100%]">
+                              0.005
+                            </p>
+                          </div>
+
+                          <p className="flex items-center justify-center w-full text-[16px] font-face-bebas text-[#02B1B1] leading-[100%]">
+                            ($ 16 USD)
+                          </p>
+                        </div>
+                        <div className="flex flex-col items-start w-[190px] py-[5px] gap-[2px]">
+                          <p className="text-[16px] font-face-bebas text-[#464646] leading-[100%] ml-[50px]">
+                            TICKETS FROM
+                          </p>
+                          <div className="flex flex-row items-center justify-center w-full gap-[8px]">
+                            <img
+                              src="/static/eth-logo.png"
+                              alt="ETH Logo"
+                              className="w-[25px] object-contain"
+                            />
+                            <p className="text-[33px] font-face-bebas text-[#464646] leading-[100%]">
+                              0.005
+                            </p>
+                          </div>
+
+                          <p className="flex items-center justify-center w-full text-[16px] font-face-bebas text-[#02B1B1] leading-[100%]">
+                            ($ 16 USD)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </> */}
                 </div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className="flex relative top-[-60px] px-[30px]">
+        {/* <div className="flex relative top-[-60px] px-[30px]">
           <CardCarousel />
-        </div>
+        </div> */}
       </div>
       <div className="w-full lg:px-24 md:px-5 xs:px-5 sm:px-5 bg-nafl-grey-800 pb-[50px]">
         <div
           className="flex-row flex border-4 border-nafl-purple 
-        rounded-lg bg-nafl-charcoal-800 relative top-[-50px]"
+        rounded-lg bg-nafl-charcoal-800 relative top-[-50px] z-10"
         >
           <Swiper
             spaceBetween={50}
@@ -197,7 +270,7 @@ export default function Home() {
         </div>
         <GameSection />
       </div>
-      <div className="items-center justify-center w-full lg:px-24 bg-nafl-grey-600 h-auto p-5 flex flex-col pb-[150px] pt-[80px] gap-[50px]">
+      <div className="items-center justify-center w-full lg:px-24 bg-nafl-grey-600 h-auto p-5 hidden flex-col pb-[150px] pt-[80px] gap-[50px]">
         <div className="relative">
           <div className="absolute w-[60px] md:w-[103px] top-[-14px] md:top-[-50px] left-[30px] md:left-[120px]">
             <img src="/nafflings/hottest.png" alt="" />
