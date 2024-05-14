@@ -99,10 +99,6 @@ const PageHeader: React.FC<PageHeaderProps> = (
     });
   }, []);
 
-  useEffect(() => {
-    console.log(isScrolled);
-  }, [isScrolled]);
-
   const handleUserChange = useCallback(async () => {
     if (basicUser?.profileImage) {
       const { data: profileImageData } = await axios.get(
