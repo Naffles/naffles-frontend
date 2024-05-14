@@ -120,8 +120,10 @@ const PageHeader: React.FC<PageHeaderProps> = (
   }, [open]);
 
   useEffect(() => {
+    console.log(window.location.pathname);
+
     const index = navigationOptions.findIndex((item) => {
-      if (window.location.href.includes(item.href)) {
+      if (window.location.pathname === item.href) {
         return item;
       }
     });
