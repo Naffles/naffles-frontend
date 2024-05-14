@@ -292,7 +292,7 @@ const GameZoneChat = () => {
               <div className="relative flex items-center justify-center text-center">
                 <img src="/nafflings/surprise3.png" alt="" />
                 <p className="font-face-bebas absolute">
-                  +{user?.points - previousPoints}
+                  +{Number(user?.points) - previousPoints}
                 </p>
               </div>
             </motion.div>
