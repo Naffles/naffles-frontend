@@ -216,7 +216,10 @@ export default function Home() {
           <CardCarousel />
         </div> */}
       </div>
-      <div className="w-full lg:px-24 md:px-5 xs:px-5 sm:px-5 bg-nafl-grey-800 pb-[50px]">
+      <div className="w-full lg:px-24 md:px-5 xs:px-5 sm:px-5 bg-nafl-grey-800 pb-[50px] relative">
+        <div className="absolute top-[-143px] right-[120px] z-10 w-[97px]">
+          <img src="/nafflings/cigar.png" alt="" />
+        </div>
         <div
           className="flex-row flex border-4 border-nafl-purple 
         rounded-lg bg-nafl-charcoal-800 relative top-[-50px] z-10"
