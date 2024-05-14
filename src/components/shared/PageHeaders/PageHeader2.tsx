@@ -48,14 +48,14 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const { jwt, user: basicUser, login, logout } = useBasicUser();
 
   const navigationOptions = [
-    {
-      title: "Naffle it",
-      href: "/",
-    },
-    {
-      title: "Live Naffles",
-      href: "/live-naffles",
-    },
+    // {
+    //   title: "Naffle it",
+    //   href: "/",
+    // },
+    // {
+    //   title: "Live Naffles",
+    //   href: "/live-naffles",
+    // },
     {
       title: "Gaming",
       href: "/gamezone",
@@ -119,6 +119,15 @@ const PageHeader: React.FC<PageHeaderProps> = (
     console.log("opening", open);
   }, [open]);
 
+  useEffect(() => {
+    const index = navigationOptions.findIndex((item) => {
+      if (window.location.href.includes(item.href)) {
+        return item;
+      }
+    });
+    setSelectedNavItem(index);
+  }, [navigationOptions]);
+
   const handleLogin = (response: any) => {
     console.log(response);
   };
@@ -137,9 +146,11 @@ const PageHeader: React.FC<PageHeaderProps> = (
   return (
     <motion.div
       initial={{ paddingTop: 25 }}
-      animate={{ paddingTop: isScrolled ? 0 : 25 }}
-      transition={{ type: "spring" }}
-      className="sticky top-0 flex items-center justify-center w-full px-[25px] z-40"
+      animate={{
+        paddingTop: isScrolled ? 0 : 25,
+      }}
+      transition={{ type: "spring", duration: 0.2 }}
+      className="fixed top-0 flex items-center justify-center w-full px-[25px] z-40"
     >
       {!basicUser ? (
         <>
