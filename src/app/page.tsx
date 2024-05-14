@@ -34,7 +34,7 @@ export default function Home() {
               className="w-full bg-nafl-sponge-500 rounded-[16px] xl:pt-0 pt-[50px] xl:pb-[100px]"
               key={item}
             >
-              <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full gap-[90px]">
+              <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full gap-[50px]">
                 <div className="xl:w-[1000px] lg:w-[700px] w-[90%] flex flex-col items-start justify-center 2xl:pl-0 xl:pl-[20px] pl-0">
                   <p className="xl:text-[125px] text-[100px] text-[#000] font-face-bebas leading-[110%]">
                     Wager & Win{" "}
