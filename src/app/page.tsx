@@ -102,7 +102,7 @@ export default function Home() {
                           <img
                             src="/nafflings/chest-group.png"
                             alt=""
-                            className="absolute top-[75px] z-20 w-[70px] drop-shadow-nafl-sponge-2xl "
+                            className="absolute top-[125px] z-20 w-[120px] drop-shadow-nafl-sponge-2xl "
                           />
                         </div>
                       </div>
