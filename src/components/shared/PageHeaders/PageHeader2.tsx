@@ -48,14 +48,14 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const { jwt, user: basicUser, login, logout } = useBasicUser();
 
   const navigationOptions = [
-    {
-      title: "Naffle it",
-      href: "/",
-    },
-    {
-      title: "Live Naffles",
-      href: "/live-naffles",
-    },
+    // {
+    //   title: "Naffle it",
+    //   href: "/",
+    // },
+    // {
+    //   title: "Live Naffles",
+    //   href: "/live-naffles",
+    // },
     {
       title: "Gaming",
       href: "/gamezone",
@@ -118,6 +118,15 @@ const PageHeader: React.FC<PageHeaderProps> = (
   useEffect(() => {
     console.log("opening", open);
   }, [open]);
+
+  useEffect(() => {
+    const index = navigationOptions.findIndex((item) => {
+      if (window.location.href.includes(item.href)) {
+        return item;
+      }
+    });
+    setSelectedNavItem(index);
+  }, [navigationOptions]);
 
   const handleLogin = (response: any) => {
     console.log(response);

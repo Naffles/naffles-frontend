@@ -179,7 +179,10 @@ const LeaderboardRafflersTable = () => {
 
   return (
     <div className="w-full lg:px-[20px] px-[10px] bg-[#383838] mb-[50px] mt-[80px] min-h-[800px]">
-      <Table
+      <div className="flex items-center justify-center h-[800px]">
+        <p className="font-mono text-[32px]">Coming Soon</p>
+      </div>
+      {/* <Table
         aria-label="Admin transactions table"
         removeWrapper
         classNames={{
@@ -261,7 +264,7 @@ const LeaderboardRafflersTable = () => {
             </TableRow>
           )}
         </TableBody>
-      </Table>
+      </Table> */}
     </div>
   );
 };
