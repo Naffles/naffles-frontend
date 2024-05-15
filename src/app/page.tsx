@@ -23,10 +23,10 @@ export default function Home() {
 
     let open = urlParams.get("open");
     if (open == "verify") {
+      setOpenVerifyModal(true)
     }
-
     window.scrollTo(0, 0);
-  }, [window.location.search]);
+  }, [window]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
