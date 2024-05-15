@@ -57,7 +57,7 @@ export default function Home() {
       } else {
         setActiveCodeIndex((prev) => prev + 1);
       }
-    }, 4000);
+    }, 2500);
 
     return () => clearInterval(debounce);
   }, [activeCodeIndex]);
