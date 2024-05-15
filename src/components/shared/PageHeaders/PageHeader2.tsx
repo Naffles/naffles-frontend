@@ -10,7 +10,6 @@ import axios from "@components/utils/axios";
 import { motion } from "framer-motion";
 import WalletIcon from "@components/icons/walletIcon";
 import UserIcon from "@components/icons/userIcon";
-import { ConnectButton } from "@components/magic";
 import { Modal } from "@components/shared/Modal";
 import {
   RegistrationForm,
@@ -20,6 +19,7 @@ import {
 import { ProfileForm } from "../AuthForms/ProfileForm";
 import { HiMenu } from "react-icons/hi";
 import AccWallet from "../Button/accwallet";
+import ConnectButton from "../Button/ConnectButton";
 
 type PageHeaderProps = {
   // onLogin?: () => void;
@@ -285,7 +285,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                     }} // Toggle open state on button click
                     type="button"
                     className="focus:outline-none rounded-full p-2 hover:bg-gray-300"
-                  // onBlur={() => setOpen(!open)}
+                    // onBlur={() => setOpen(!open)}
                   >
                     {basicUser && imageUrl ? (
                       <img
@@ -341,7 +341,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 </div>
 
                 <ConnectButton />
-                <AccWallet />
+                {/* <AccWallet /> */}
               </div>
 
               {/* <div ref={dropdownRef} className="relative">
@@ -463,7 +463,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
               onClick={() => setOpen(!open)} // Toggle open state on button click
               type="button"
               className="flex items-center justify-center focus:outline-none rounded-[10px] p-2 w-full"
-            // onBlur={() => setOpen(!open)}
+              // onBlur={() => setOpen(!open)}
             >
               {basicUser && imageUrl ? (
                 <img

@@ -5,13 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
-
 ::-webkit-scrollbar {
   width: 12px; /* Width of the scrollbar */
 }
 
 ::-webkit-scrollbar-track {
-  background: #3E3E3E; /* Background of the scrollbar track */
+  background: #3e3e3e; /* Background of the scrollbar track */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -181,6 +180,24 @@ body {
 }
 
 .comments-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(83, 83, 83, 1);
+}
+
+.wallets-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  background-color: #3e3e3e;
+  padding: 1px;
+  border-radius: 14px;
+}
+
+.wallets-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(82, 81, 81, 0.8);
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.wallets-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(83, 83, 83, 1);
 }
 

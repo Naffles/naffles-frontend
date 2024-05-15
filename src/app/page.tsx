@@ -12,8 +12,22 @@ import Footer from "@components/shared/Footer/Footer";
 import CollectionItem from "@components/shared/Collection/collection";
 import { GameSection } from "@components/GameSection";
 import { IoMdSearch } from "react-icons/io";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [openVerifyModal, setOpenVerifyModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    let open = urlParams.get("open");
+    if (open == "verify") {
+    }
+
+    window.scrollTo(0, 0);
+  }, [window.location.search]);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
       <div className="w-full bg-[#464646] px-[25px] xl:h-[800px] lg:h-[1200px] md:h-[1200px] h-[1500px] pt-[100px]">

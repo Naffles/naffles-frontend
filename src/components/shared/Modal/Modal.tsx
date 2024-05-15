@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Modal as ModalOverlay } from "@restart/ui";
-import { FaTimes } from "react-icons/fa";
+import { MdOutlineClose } from "react-icons/md";
 
 type ModalProps = {
   show: boolean;
@@ -27,25 +27,27 @@ export const Modal = ({
       )}
       className="fixed z-[51] top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 p-5"
     >
-      <div className="modal-container rounded-2xl bg-nafl-charcoal-500 min-w-64 text-2xl">
+      <div className="modal-container rounded-2xl bg-[#383838] min-w-64 text-[40px]">
         {title && (
-          <div className="modal-header bg-nafl-charcoal-600 rounded-t-2xl py-1 px-2 relative flex items-center justify-center">
+          <div className="modal-header bg-[#202020] rounded-t-2xl py-1 px-[18px] relative flex items-center justify-center">
             <div className="modal-close mr-auto invisible">
-              <FaTimes
+              <MdOutlineClose
                 className="hover:text-nafl-sponge-700 transition-colors ease-out duration-150 cursor-pointer text-body-xl"
                 onClick={hideModal}
               />
             </div>
             {title}
             <div className="modal-close ml-auto">
-              <FaTimes
-                className="hover:text-nafl-sponge-700 transition-colors ease-out duration-150 cursor-pointer text-lg -translate-y-0.5"
+              <MdOutlineClose
+                className="hover:text-nafl-sponge-700 transition-colors ease-out duration-150 cursor-pointer text-[24px] -translate-y-0.5"
                 onClick={hideModal}
               />
             </div>
           </div>
         )}
-        <div className="modal-content  p-8">{children}</div>
+        <div className="modal-content pt-[20px] pb-[40px] px-[50px]">
+          {children}
+        </div>
       </div>
     </ModalOverlay>
   );

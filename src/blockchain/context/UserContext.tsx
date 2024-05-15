@@ -23,7 +23,7 @@ type UserContextType = {
   setProfileImage: (imgURL: string | null) => void;
   setJWT: (jwt: string | null) => void;
   setId: (id: string | null) => void;
-  fetchUser: () => Promise<void>;
+  setWalletAddress: (id: string | null) => void;
 };
 
 // Create a context for user data.
@@ -35,7 +35,7 @@ const UserContext = createContext<UserContextType>({
   setProfileImage: () => {},
   setJWT: () => {},
   setId: () => {},
-  fetchUser: async () => {},
+  setWalletAddress: () => {},
 });
 
 // Custom hook for accessing user context data.
@@ -44,7 +44,7 @@ export const useUser = () => useContext(UserContext);
 // Provider component that wraps parts of the app that need user context.
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Use the web3 context.
-  const { web3, magic } = useMagic();
+  // const { web3, magic } = useMagic();
 
   // Initialize user state to hold user's account information.
   const [address, setAddress] = useState<string | null>(null);
@@ -58,25 +58,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const { jwt, user } = useBasicUser();
 
-  // Function to retrieve and set user's account.
-  const fetchUserAccount = async () => {
-    // Use Web3 to get user's accounts.
-    const accounts = await web3?.eth.getAccounts();
-
-    // Update the user state with the first account (if available), otherwise set to null.
-    setAddress(accounts ? accounts[0] : null);
-  };
-
   // Run fetchUserAccount function whenever the web3 instance changes.
-  useEffect(() => {
-    fetchUserAccount();
-  }, [web3]);
-
-  useEffect(() => {
-    if (magic?.user) {
-      getUserData();
-    }
-  }, [magic]);
 
   useEffect(() => {
     const newSocket = io(`${process.env.NEXT_PUBLIC_ENDPOINT}`, {
@@ -118,60 +100,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [userId, socket]);
 
-  const getUserData = async () => {
-    if (!magic?.user) return;
-    const userInfo = await magic?.user.getInfo();
-    console.log("userInfo:", userInfo);
-
-    const idToken = await magic?.user.getIdToken();
-
-    idToken && loginUsingDID(idToken);
-
-    if (process.env.SERVER_SECRET && !idToken) {
-      console.log("generated new idtoken");
-      const newIdToken = await magic?.user.generateIdToken({
-        attachment: process.env.SERVER_SECRET,
-      });
-      newIdToken && loginUsingDID(newIdToken);
-    }
-  };
-
-  const loginUsingDID = async (DIDtoken: string | undefined) => {
-    console.log("DIDtoken:", DIDtoken);
-    try {
-      let url = process.env.NEXT_PUBLIC_ENDPOINT + "user/login/wallet";
-
-      await fetch(url, {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": `${process.env.NEXT_PUBLIC_API_KEY}`,
-          Authorization: "Bearer " + DIDtoken,
-        },
-      })
-        .then((res) => {
-          if (res.ok) return res.json();
-        })
-        .then((result) => {
-          if (result) {
-            console.log("wallet login result:", result);
-            setUserJWT(result?.data?.token);
-            setUserId(result?.data?.user?._id);
-            setProfileName(result?.data?.user?.username);
-            setUserPoints(result?.data?.user?.temporaryPoints);
-            console.log("wallet login id:", result?.data?.user?._id);
-            // Cookies.set("token", result?.token, { expires: 7, secure: true });
-          } else {
-            console.log("error");
-          }
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <UserContext.Provider
       value={{
@@ -192,7 +120,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setProfileImage: setProfileImage,
         setJWT: setUserJWT,
         setId: setUserId,
-        fetchUser: fetchUserAccount,
+        setWalletAddress: setAddress,
       }}
     >
       {children}

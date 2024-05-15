@@ -4,11 +4,12 @@ import DeleteIcon from "@components/icons/deleteIcon";
 import axios from "@components/utils/axios";
 import { Button } from "../Button";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
-import { Spinner } from "@nextui-org/react";
+import { Spinner, divider } from "@nextui-org/react";
 import { strongPasswordRegex } from "../../utils/strongPasswordRegex";
 import { useForm } from "react-hook-form";
+import { IoIosCloseCircleOutline, IoMdAddCircleOutline } from "react-icons/io";
 
-export type ProfileSubmitData = { username: string };
+export type ProfileSubmitData = { username: string; email: string };
 
 type ChangePasswordData = {
   oldPassword: string;
@@ -21,7 +22,8 @@ export const ProfileForm = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isChangePasswordShowed, setIsChangePasswordShowed] = useState<boolean>(false);
+  const [isChangePasswordShowed, setIsChangePasswordShowed] =
+    useState<boolean>(false);
   const [passwordCheckErrors, setPasswordCheckErrors] = useState<string[]>([]);
   const { resetField } = useForm();
 
@@ -47,25 +49,38 @@ export const ProfileForm = () => {
   };
 
   const handleChangePassword = async (data: ChangePasswordData) => {
-    setIsLoading(prev => !prev);
-    if (data.newPassword !== data.confirmPassword ) {
-      !passwordCheckErrors.includes("New password and confirm password do not match") &&
-      setPasswordCheckErrors(prev => [...prev, "New password and confirm password do not match"]);
+    setIsLoading((prev) => !prev);
+    if (data.newPassword !== data.confirmPassword) {
+      !passwordCheckErrors.includes(
+        "New password and confirm password do not match"
+      ) &&
+        setPasswordCheckErrors((prev) => [
+          ...prev,
+          "New password and confirm password do not match",
+        ]);
       return;
     }
-    if (data.newPassword.length < 8 ) {
+    if (data.newPassword.length < 8) {
       !passwordCheckErrors.includes("Password must be at least 8 characters") &&
-      setPasswordCheckErrors(prev => [...prev, "Password must be at least 8 characters"]);
+        setPasswordCheckErrors((prev) => [
+          ...prev,
+          "Password must be at least 8 characters",
+        ]);
       return;
     }
     if (!strongPasswordRegex.test(data.newPassword)) {
-      !passwordCheckErrors.includes("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character") &&
-      setPasswordCheckErrors(prev => [...prev, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"]);
+      !passwordCheckErrors.includes(
+        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+      ) &&
+        setPasswordCheckErrors((prev) => [
+          ...prev,
+          "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+        ]);
       return;
     }
     const changePasswordRequest = {
       currentPassword: data.oldPassword,
-      newPassword : data.newPassword,
+      newPassword: data.newPassword,
     };
     setPasswordCheckErrors([]);
     try {
@@ -75,7 +90,7 @@ export const ProfileForm = () => {
       console.log(error);
     }
     setTimeout(() => {
-      setIsLoading(prev => !prev);
+      setIsLoading((prev) => !prev);
     }, 1000);
   };
 
@@ -84,13 +99,14 @@ export const ProfileForm = () => {
   };
 
   const handleProfileEditSubmit = (data: ProfileSubmitData) => {
-    setIsLoading(prev => !prev);
+    setIsLoading((prev) => !prev);
     const form = new FormData();
     if (data?.username) form.append("username", data.username);
+    if (data?.email) form.append("email", data.email);
     if (imageFile) form.append("file", imageFile);
     updateProfile(form);
     setTimeout(() => {
-      setIsLoading(prev => !prev);
+      setIsLoading((prev) => !prev);
     }, 2000);
   };
 
@@ -126,13 +142,11 @@ export const ProfileForm = () => {
             />
           </div>
           <div className="flex flex-col">
-            {
-              passwordCheckErrors.map((error, index) => (
-                <label key={index} className="text-nafl-sys-error text-sm">
-                  {error}
-                </label>
-              ))
-            }
+            {passwordCheckErrors.map((error, index) => (
+              <label key={index} className="text-nafl-sys-error text-sm">
+                {error}
+              </label>
+            ))}
           </div>
           <div className="flex flex-row w-[330px] justify-between mt-3">
             <Button
@@ -151,7 +165,7 @@ export const ProfileForm = () => {
               type="submit"
               width="inhert"
             >
-              { isLoading ? <Spinner size="sm" /> : "Save Changes"}
+              {isLoading ? <Spinner size="sm" /> : "Save Changes"}
             </Button>
           </div>
         </div>
@@ -159,23 +173,41 @@ export const ProfileForm = () => {
     );
   }
 
+  let sample_wallet_list = [
+    "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+    "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
+  ];
+
+  const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
+
+  useEffect(() => {
+    setWalletAddresses(sample_wallet_list);
+  }, []);
+
+  const shortenWalletAddress = (address: string) => {
+    if (address?.length > 10) {
+      return address.slice(0, 5) + "..." + address.slice(-7, -1);
+    } else return address;
+  };
+
   return (
     <FormContext
       onSubmit={handleProfileEditSubmit}
       className="flex flex-col items-start h-auto"
     >
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center gap-[5px] px-[20px]">
         <div className="relative">
           <input
             type="file"
             accept="image/*"
-            className={`w-[180px] h-[180px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 ${
+            className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 ${
               imageFile && "bg-gray-200 rounded-full"
             }`}
             onChange={handleChange}
           />
           <div
-            className={`w-[180px] h-[180px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${
+            className={`w-[120px] h-[120px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${
               !imageFile && "bg-gray-300"
             }`}
             style={
@@ -186,91 +218,167 @@ export const ProfileForm = () => {
             onClick={handleUpload}
           >
             {!imageFile && (
-              <div className="flex items-center justify-center h-full text-nafl-white bg-black bg-opacity-30 rounded-full">
+              <div className="flex items-center justify-center h-full text-nafl-white text-[16px] bg-black bg-opacity-30 rounded-full">
                 Click to upload
               </div>
             )}
           </div>
         </div>
         <div className="flex flex-col m-5 gap-4">
-        <TextInput
-          name="username"
-          label="Username"
-          placeholder={user?.username ? user.username : "New Username"}
-        />
-        <Button
-          label="Change Password"
-          variant="secondary"
-          size="sm"
-          onClick={() => setIsChangePasswordShowed(true)}
+          <div className="w-full h-[54px] relative">
+            <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
+              Username:
+            </p>
+            <input
+              type="text"
+              name="username"
+              placeholder="New Username"
+              value={user?.username}
+              className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
+            />
+          </div>
+          <div className="w-full h-[54px] relative">
+            <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
+              Email:
+            </p>
+            <input
+              type="email"
+              name="email"
+              placeholder="New Username"
+              value={user?.email}
+              className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
+            />
+          </div>
+          <div className="w-full flex flex-row items-center justify-end mt-[-14px]">
+            <p
+              onClick={() => setIsChangePasswordShowed(true)}
+              className="flex text-nafl-white text-[10px] italic cursor-pointer"
+            >
+              Change Password
+            </p>
+          </div>
+          {/* <TextInput
+            name="username"
+            label="Username"
+            placeholder={user?.username ? user.username : "New Username"}
+          /> 
+          <Button
+            label="Change Password"
+            variant="secondary"
+            size="sm"
+            onClick={() => setIsChangePasswordShowed(true)}
+          >
+            Change Password
+          </Button>*/}
+        </div>
+      </div>
+      <div className="w-full min-h-[150px] px-[20px]">
+        <div className="flex flex-col w-full mt-3 items-center rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] relative pt-[24px] pb-[4px] px-[30px] h-full">
+          <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
+            Connected Wallets:
+          </p>
+          <div className="flex flex-col w-full h-[120px] overflow-hidden overflow-y-scroll wallets-scrollbar pr-[5px]">
+            {/* not input, but a row displaying the wallet address plus delete icon button in the right of it */}
+            <div className="flex flex-col gap-[9px] w-full items-center justify-start">
+              {" "}
+              {walletAddresses?.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex flex-row items-center justify-between w-full"
+                >
+                  <p className="text-[16px] text-nafl-white">
+                    {shortenWalletAddress(item)}
+                  </p>
+                  <IoIosCloseCircleOutline className="text-[24px] text-nafl-white cursor-pointer" />
+                </div>
+              ))}
+              <div className="flex flex-row items-center justify-center gap-[6px] mb-[20px]">
+                <IoMdAddCircleOutline className="text-white text-[24px]" />
+                <p className="font-face-roboto text-nafl-white text-[14px] italic cursor-pointer">
+                  {walletAddresses?.length > 0
+                    ? "Add a wallet"
+                    : "Connect a wallet"}
+                </p>
+              </div>
+            </div>
+
+            {/* <div className="flex flex-row items-center justify-between w-[300px] mt-1">
+            <input
+              type="text"
+              name="wallet"
+              placeholder="0xb794f5ea0...ba74279579268"
+              className="border border-black p-2 w-[300px]"
+              disabled
+            />
+            <DeleteIcon
+              size="sm"
+              colour="yellow"
+              className="mt-[2px] ml-3 cursor-pointer"
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between w-[300px] mt-1">
+            <input
+              type="text"
+              name="wallet"
+              placeholder="0xb794f5ea0...ba74279579268"
+              className="border border-black p-2 w-[300px]"
+              disabled
+            />
+            <DeleteIcon
+              size="sm"
+              colour="yellow"
+              className="mt-[2px] ml-3 cursor-pointer"
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between w-[300px] mt-1">
+            <input
+              type="text"
+              name="wallet"
+              placeholder="0xb794f5ea0...ba74279579268"
+              className="border border-black p-2 w-[300px]"
+              disabled
+            />
+            <DeleteIcon
+              size="sm"
+              colour="yellow"
+              className="mt-[2px] ml-3 cursor-pointer"
+            />
+          </div> */}
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full bg-[#FEFF3D] h-[2px] rounded-full my-[25px]"></div>
+      <div className="flex flex-col items-center w-full">
+        <button
+          type="submit"
+          className="flex items-center justify-center font-face-roboto font-bold text-[18px] text-[#000] w-[107px] rounded-[8px] h-[54px] bg-nafl-sponge-500"
         >
-          Change Password
-        </Button>
-        </div>
-      </div>
-      <div className="flex flex-col w-full mt-3 items-center">
-        <label htmlFor="wallet" className="text-nafl-white tex-sm mt-5">
-          <h5 className="text-nafl-sponge-500 text-sm">Connected Wallet(s)</h5>
-        </label>
-        <div className="flex flex-col items-center justify-between w-full">
-          {/* not input, but a row displaying the wallet address plus delete icon button in the right of it */}
-          <div className="flex flex-row items-center justify-between w-[300px] mt-1">
-            <input
-              type="text"
-              name="wallet"
-              placeholder="0xb794f5ea0...ba74279579268"
-              className="border border-black p-2 w-[300px]"
-              disabled
-            />
-            <DeleteIcon
-              size="sm"
-              colour="yellow"
-              className="mt-[2px] ml-3 cursor-pointer"
-            />
-          </div>
-          <div className="flex flex-row items-center justify-between w-[300px] mt-1">
-            <input
-              type="text"
-              name="wallet"
-              placeholder="0xb794f5ea0...ba74279579268"
-              className="border border-black p-2 w-[300px]"
-              disabled
-            />
-            <DeleteIcon
-              size="sm"
-              colour="yellow"
-              className="mt-[2px] ml-3 cursor-pointer"
-            />
-          </div>
-          <div className="flex flex-row items-center justify-between w-[300px] mt-1">
-            <input
-              type="text"
-              name="wallet"
-              placeholder="0xb794f5ea0...ba74279579268"
-              className="border border-black p-2 w-[300px]"
-              disabled
-            />
-            <DeleteIcon
-              size="sm"
-              colour="yellow"
-              className="mt-[2px] ml-3 cursor-pointer"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col items-center w-full pt-2">
-        <Button
+          {isLoading ? (
+            <>
+              <Spinner size="sm" />
+              Loading . . .
+            </>
+          ) : (
+            "SAVE"
+          )}
+        </button>
+        {/* <Button
           label="submit"
           variant="secondary"
           size="base"
           type="submit"
           width="inhert"
         >
-          { isLoading ? <>
-            <Spinner size="sm" />
-            Loading . . .
-          </> : "Save Changes"}
-        </Button>
+          {isLoading ? (
+            <>
+              <Spinner size="sm" />
+              Loading . . .
+            </>
+          ) : (
+            "Save"
+          )}
+        </Button> */}
       </div>
     </FormContext>
   );

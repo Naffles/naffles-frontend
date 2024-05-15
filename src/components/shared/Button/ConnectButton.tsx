@@ -1,53 +1,25 @@
 "use client";
-import useStore from "../utils/store";
-import { useMagic } from "@blockchain/context/MagicProvider";
 import { useUser } from "@blockchain/context/UserContext";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { IoMdLogOut } from "react-icons/io";
 import WalletIcon from "@components/icons/walletIcon";
+import WalletSelectModal from "@components/shared/Modal/WalletSelectModal";
 
 const ConnectButton = () => {
-  const { magic } = useMagic();
-  const { user, setJWT, setId, fetchUser } = useUser();
+  const { user, setJWT, setId, setWalletAddress } = useUser();
   const [walletLoggedIn, setWalletLoggedIn] = useState(false);
+  const [showWalletSelectModal, setShowWalletSelectModal] =
+    useState<boolean>(false);
 
   useEffect(() => {
     user?.address ? setWalletLoggedIn(true) : setWalletLoggedIn(false);
   }, [user]);
 
-  const handleConnect = async () => {
-    try {
-      if (!magic) return;
-      await magic.wallet.connectWithUI();
-
-      await fetchUser();
-    } catch (error) {
-      console.error("handleConnect:", error);
-    }
-  };
-
-  const handleShowUI = async () => {
-    try {
-      // Try to show the magic wallet user interface
-      await magic?.wallet.showUI();
-    } catch (error) {
-      // Log any errors that occur during the process
-      console.error("handleShowUI:", error);
-    }
-  };
-
-  const handleDisconnect = async () => {
-    try {
-      // Try to disconnect the user's wallet using Magic's logout method
-      await magic?.user.logout();
-      await fetchUser();
-      setJWT(null);
-      setId(null);
-    } catch (error) {
-      // Log any errors that occur during the disconnection process
-      console.log("handleDisconnect:", error);
-    }
+  const handleDisconnect = () => {
+    setJWT(null);
+    setId(null);
+    setWalletAddress(null);
   };
 
   // Render the button component with the click event handler
@@ -56,8 +28,7 @@ const ConnectButton = () => {
       <button
         className="flex flex-row items-center justify-start"
         onClick={() => {
-          // setIsOpen(true);
-          walletLoggedIn ? handleShowUI() : handleConnect();
+          setShowWalletSelectModal(true);
         }}
       >
         <WalletIcon colour="black" size="lg" className="cursor-pointer" />
@@ -70,6 +41,11 @@ const ConnectButton = () => {
           <IoMdLogOut className="text-[#fff]" />
         </button>
       )}
+
+      <WalletSelectModal
+        show={showWalletSelectModal}
+        setShow={setShowWalletSelectModal}
+      />
     </div>
   );
 };
