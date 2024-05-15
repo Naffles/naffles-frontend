@@ -5,6 +5,8 @@ import { FaDiscord } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { codes } from "./codes";
+import { act } from "react-dom/test-utils";
 export default function Home() {
   //  20 April 2024, 09:44 UTC
   const [countdownDays, setCountdownDays] = useState<string>("00");
@@ -45,6 +47,19 @@ export default function Home() {
   }, []);
 
   // Update the count down every 1 second
+  const [activeCodeIndex, setActiveCodeIndex] = useState(0);
+
+  useEffect(() => {
+    const debounce = setInterval(() => {
+      if (activeCodeIndex === codes.length - 1) {
+        setActiveCodeIndex(0);
+      } else {
+        setActiveCodeIndex((prev) => prev + 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(debounce);
+  }, [activeCodeIndex]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start w-full">
@@ -111,7 +126,13 @@ export default function Home() {
           className="absolute top-0 w-full h-full object-cover z-10"
         />
 
-        <div className="flex flex-col w-full items-center z-20 py-[70px] lg:gap-[50px] gap-[20px]">
+        <div className="flex flex-col w-full items-center z-20 py-[70px] lg:gap-[50px] gap-[20px] relative">
+          <div className="w-[40px] lg:left-[100px] md:w-[68px] absolute left-[30px] lg:top-[320px] top-[180px]">
+            <img src="/static/eyes-1.png" alt="" />
+          </div>
+          <div className="w-[40px] lg:right-[100px] md:w-[68px] absolute right-[30px] lg:top-[120px]">
+            <img src="/static/eyes-2.png" alt="" />
+          </div>
           <div className="flex flex-col items-center justify-center lg:gap-[30px] gap-[10px] z-30">
             <p className="lg:text-[110px] text-[70px] font-face-bebas text-[#fff]">
               It&apos;s Coming
@@ -125,7 +146,8 @@ export default function Home() {
                     className="w-full object-contain absolute top-0"
                   />
                   <p className="text-[53px] font-face-bebas text-[#2c2d2e] z-20">
-                    {countdownDays.substring(0, 1)}
+                    {/* {countdownDays.substring(0, 1)} */}
+                    {codes[activeCodeIndex].substring(0, 1)}
                   </p>
                 </div>
 
@@ -136,11 +158,11 @@ export default function Home() {
                     className="w-full object-contain absolute top-0"
                   />
                   <p className="text-[53px] font-face-bebas text-[#2c2d2e] z-20">
-                    {countdownDays.substring(1, 2)}
+                    {/* {countdownDays.substring(1, 2)} */}
+                    {codes[activeCodeIndex].substring(1, 2)}
                   </p>
                 </div>
                 <p className="absolute top-[130px] text-[23px] font-face-bebas text-[#fff]">
-                  {" "}
                   DAYS
                 </p>
               </div>
@@ -155,7 +177,8 @@ export default function Home() {
                     className="w-full object-contain absolute top-0"
                   />
                   <p className="text-[53px] font-face-bebas text-[#2c2d2e] z-20">
-                    {countdownHours.substring(0, 1)}
+                    {/* {countdownHours.substring(0, 1)} */}
+                    {codes[activeCodeIndex].substring(3, 4)}
                   </p>
                 </div>
                 <div className="flex items-center justify-center w-[70px] h-[106px] relative">
@@ -165,7 +188,8 @@ export default function Home() {
                     className="w-full object-contain absolute top-0"
                   />
                   <p className="text-[53px] font-face-bebas text-[#2c2d2e] z-20">
-                    {countdownHours.substring(1, 2)}
+                    {/* {countdownHours.substring(1, 2)} */}
+                    {codes[activeCodeIndex].substring(4, 5)}
                   </p>
                 </div>
                 <p className="absolute top-[130px] text-[23px] font-face-bebas text-[#fff]">
@@ -184,7 +208,8 @@ export default function Home() {
                     className="w-full object-contain absolute top-0"
                   />
                   <p className="text-[53px] font-face-bebas text-[#2c2d2e] z-20">
-                    {countdownMinutes.substring(0, 1)}
+                    {/* {countdownMinutes.substring(0, 1)} */}
+                    {codes[activeCodeIndex].substring(6, 7)}
                   </p>
                 </div>
                 <div className="flex items-center justify-center w-[70px] h-[106px] relative">
@@ -194,7 +219,8 @@ export default function Home() {
                     className="w-full object-contain absolute top-0"
                   />
                   <p className="text-[53px] font-face-bebas text-[#2c2d2e] z-20">
-                    {countdownMinutes.substring(1, 2)}
+                    {/* {countdownMinutes.substring(1, 2)} */}
+                    {codes[activeCodeIndex].substring(7, 8)}
                   </p>
                 </div>
                 <p className="absolute top-[130px] text-[23px] font-face-bebas text-[#fff]">
@@ -213,7 +239,8 @@ export default function Home() {
                     className="w-full object-contain absolute top-0"
                   />
                   <p className="text-[53px] font-face-bebas text-[#2c2d2e] z-20">
-                    {countdownSeconds.substring(0, 1)}
+                    {/* {countdownSeconds.substring(0, 1)} */}
+                    {codes[activeCodeIndex].substring(9, 10)}
                   </p>
                 </div>
                 <div className="flex items-center justify-center w-[70px] h-[106px] relative">
@@ -223,7 +250,8 @@ export default function Home() {
                     className="w-full object-contain absolute top-0"
                   />
                   <p className="text-[53px] font-face-bebas text-[#2c2d2e] z-20">
-                    {countdownSeconds.substring(1, 2)}
+                    {/* {countdownSeconds.substring(1, 2)} */}
+                    {codes[activeCodeIndex].substring(10, 11)}
                   </p>
                 </div>
                 <p className="absolute top-[130px] text-[23px] font-face-bebas text-[#fff]">
@@ -233,7 +261,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
           <div className="flex xl:w-[1200px] w-[80%] h-[2px] bg-[#fff] lg:mt-[60px] mt-[30px] lg:mb-[30px] mb-[15px]"></div>
           <div className="flex flex-col w-full items-center justify-center lg:gap-[10px] gap-0 lg:mt-0 mt-[-100px]">
             <div className="w-[860px] h-[410px] relative lg:scale-100 md:scale-75 scale-[40%]">
@@ -291,7 +318,6 @@ export default function Home() {
               />
             </div>
           </div>
-
           <div className="flex flex-col gap-[10px] items-center justify-center lg:mt-[50px] mt-[20px]">
             <p className="lg:text-[64px] text-[34px] font-face-bebas xl:w-[1053px] w-[95%] text-center text-[#fff]">
               <a className="cursor-text text-nafl-sponge-500">
