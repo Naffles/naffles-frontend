@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { codes } from "./codes";
 import { act } from "react-dom/test-utils";
+import BlinkingEyes from "@components/shared/BlinkingEyes";
 export default function Home() {
   //  20 April 2024, 09:44 UTC
   const [countdownDays, setCountdownDays] = useState<string>("00");
@@ -56,7 +57,7 @@ export default function Home() {
       } else {
         setActiveCodeIndex((prev) => prev + 1);
       }
-    }, 1000);
+    }, 4000);
 
     return () => clearInterval(debounce);
   }, [activeCodeIndex]);
@@ -128,10 +129,10 @@ export default function Home() {
 
         <div className="flex flex-col w-full items-center z-20 py-[70px] lg:gap-[50px] gap-[20px] relative">
           <div className="w-[40px] lg:left-[100px] md:w-[68px] absolute left-[30px] lg:top-[320px] top-[180px]">
-            <img src="/static/eyes-1.png" alt="" />
+            <BlinkingEyes image="/static/eyes-1.png" />
           </div>
           <div className="w-[40px] lg:right-[100px] md:w-[68px] absolute right-[30px] lg:top-[120px]">
-            <img src="/static/eyes-2.png" alt="" />
+            <BlinkingEyes image="/static/eyes-2.png" delay={2} />
           </div>
           <div className="flex flex-col items-center justify-center lg:gap-[30px] gap-[10px] z-30">
             <p className="lg:text-[110px] text-[70px] font-face-bebas text-[#fff]">
