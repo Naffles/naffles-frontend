@@ -219,7 +219,7 @@ const LeaderboardNafflersTable = () => {
           )}
         </TableBody>
       </Table> */}
-      <div className="flex items-center justify-center h-[800px]">
+      <div className="flex items-center justify-center h-[200px]">
         <p className="font-mono text-[32px]">Coming Soon</p>
       </div>
     </div>
