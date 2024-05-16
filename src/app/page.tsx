@@ -109,7 +109,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="w-[480px] mt-[80px]">
+                  <div className="w-[480px] mt-[80px] pr-0 md:pr-10">
                     <div className="space-y-4 border-b-[1px] border-black border-opacity-[50%] pb-5">
                       <p className="font-sans text-black opacity-[70%]">
                         <span className="font-bold">EVERY</span> game, ticket
