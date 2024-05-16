@@ -8,8 +8,10 @@ export const CoinTossGame = (props: GameContainerProps) => {
   const { onGameStart, onGameReset, isPaused, onLimitReached } = props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
+  const [hasError, setHasError] = useState(false);
 
   const triggerCoinTossGame = useCallback(async () => {
+    setHasError(false);
     onGameStart?.();
     try {
       const {
@@ -18,9 +20,11 @@ export const CoinTossGame = (props: GameContainerProps) => {
       setDisplayPoints(data?.score || 0);
       return data;
     } catch (error: any) {
+      setHasError(true);
       if (error.response.data.statusCode === 429) {
         alert(error.response.data.message);
         onLimitReached();
+        throw error;
       } else {
         alert("An error occurred while playing Coin toss");
         onGameReset?.();
@@ -48,6 +52,7 @@ export const CoinTossGame = (props: GameContainerProps) => {
       onVideoFinish={handleVideoEnd}
       onGameReset={onGameReset}
       isPaused={isPaused}
+      hasError={hasError}
       initialTime={90}
       onCountdownFinish={onGameStart}
     />

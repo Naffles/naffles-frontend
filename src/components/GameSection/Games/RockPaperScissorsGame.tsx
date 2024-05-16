@@ -8,8 +8,10 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
   const { onGameStart, onGameReset, isPaused, onLimitReached } = props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
+  const [hasError, setHasError] = useState(false);
 
   const triggerRPSGame = useCallback(async () => {
+    setHasError(false);
     onGameStart?.();
     try {
       const {
@@ -18,9 +20,11 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       setDisplayPoints(data?.score || 0);
       return data;
     } catch (error: any) {
+      setHasError(true);
       if (error.response.data.statusCode === 429) {
         onLimitReached();
         alert(error.response.data.message);
+        throw error;
       } else {
         alert("An error occurred while playing RPS");
         onGameReset?.();
@@ -32,6 +36,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
     if (hasSelected) {
       setPoints(displayPoints);
     }
+    setHasError(false);
   };
 
   return (
@@ -48,6 +53,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       onVideoFinish={handleVideoEnd}
       onGameReset={onGameReset}
       isPaused={isPaused}
+      hasError={hasError}
       initialTime={30}
       onCountdownFinish={onGameStart}
     />

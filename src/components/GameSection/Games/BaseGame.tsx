@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@components/shared/Button";
 import { BaseGameProps } from "@type/GameSection";
 
@@ -7,6 +7,13 @@ type GameVideo = {
   result: string;
   choice: string;
 };
+
+enum GameState {
+  WAITING = "waiting",
+  COUNTDOWN = "countdown",
+  START = "start",
+  RESTDOWN = "restdown",
+}
 
 const DEFAULT_TIMER = 60;
 const REST_TIMER = 3;
@@ -29,125 +36,156 @@ export const BaseGame = (props: BaseGameProps) => {
     onChoiceClicked = () => {},
     onGameReset = () => {},
     isPaused,
+    hasError,
     initialTime,
   } = props;
-  const [timeleft, setTimeleft] = useState(initialTime);
-  const [restTimeleft, setRestTimeleft] = useState(REST_TIMER);
-  const [isRestingDown, setIsRestingDown] = useState(false);
-  const [isCountingDown, setIsCountingDown] = useState(true);
+  const [waitTimeLeft, setWaitTimeLeft] = useState(initialTime);
+  const [timeLeft, setTimeLeft] = useState(REST_TIMER);
+  const [restTimeLeft, setRestTimeLeft] = useState(REST_TIMER);
   const [result, setResult] = useState("");
-  const [isLocked, setIsLocked] = useState(false);
   const [selectedChoice, setSelectedChoice] = useState("");
   const [displayChoice, setDisplayChoice] = useState("");
   const [displayVideo, setDisplayVideo] = useState<GameVideo | null>(null);
   const videosRef = useRef<(HTMLVideoElement | null)[]>([]);
+  const [prevGameState, setPrevGameState] = useState<GameState | null>(null);
+  const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
 
-  const videoArray = useMemo(
-    () =>
-      choices
-        .map((choice) =>
-          results
-            .map((result) =>
-              variants.map((variant) => ({ choice, result, variant })).flat()
-            )
-            .flat()
+  const videoArray = choices
+    .map((choice) =>
+      results
+        .map((result) =>
+          variants.map((variant) => ({ choice, result, variant })).flat()
         )
-        .flat(),
-    [choices, results, variants]
-  );
+        .flat()
+    )
+    .flat();
+
+  const switchGameState = (targetState: GameState) => {
+    switch (targetState) {
+      case GameState.WAITING:
+        setWaitTimeLeft(DEFAULT_TIMER);
+        break;
+      case GameState.COUNTDOWN:
+        setTimeLeft(REST_TIMER);
+        break;
+      case GameState.START:
+        break;
+      case GameState.RESTDOWN:
+        setRestTimeLeft(REST_TIMER);
+        break;
+    }
+    setGameState(targetState);
+  };
 
   const triggerGame = useCallback(async () => {
-    setIsLocked(true);
     let result;
-    if (selectedChoice) {
+    if (selectedChoice && !hasError) {
       const data = (await gameCall()) || {};
       result = data?.result;
+      if (result) {
+        setResult(result);
+        switchGameState(GameState.START);
+      }
+    } else {
+      const randomResult = randomFromArray(results);
+      setResult(randomResult);
+      switchGameState(GameState.START);
     }
-    const randomResult = randomFromArray(results);
-    setResult(result ?? randomResult);
-    onCountdownFinish();
-  }, [gameCall, onCountdownFinish, results, selectedChoice]);
+  }, [gameCall, results, selectedChoice, hasError]);
+
+  if (
+    gameState === GameState.COUNTDOWN &&
+    hasError &&
+    !isPaused &&
+    timeLeft === 0
+  ) {
+    triggerGame();
+  }
+
+  if (prevGameState !== gameState) {
+    setPrevGameState(gameState);
+    switch (gameState) {
+      case GameState.WAITING:
+        if (prevGameState !== null) onGameReset();
+        break;
+      case GameState.COUNTDOWN:
+        break;
+      case GameState.START:
+        {
+          const variant = randomFromArray(variants);
+          const randomChoice = randomFromArray(choices);
+          const isChosen = (choiceVid: string) =>
+            selectedChoice
+              ? choiceVid === selectedChoice
+              : choiceVid === randomChoice;
+
+          const refIndex = videoArray.findIndex(
+            (item) =>
+              item.variant === variant &&
+              item.result === result &&
+              isChosen(item.choice)
+          );
+          if (!selectedChoice) {
+            setDisplayChoice(randomChoice);
+          }
+          setDisplayVideo({
+            variant,
+            result,
+            choice: selectedChoice || randomChoice,
+          });
+          videosRef?.current[refIndex]?.play();
+          onCountdownFinish();
+        }
+        break;
+      case GameState.RESTDOWN:
+        break;
+    }
+  }
+
+  useEffect(() => {
+    let waitInterval: NodeJS.Timeout;
+    if (gameState === GameState.WAITING && !isPaused && waitTimeLeft > 0) {
+      waitInterval = setInterval(() => {
+        if (waitTimeLeft <= 1) {
+          clearInterval(waitInterval);
+          switchGameState(GameState.COUNTDOWN);
+        }
+        setWaitTimeLeft((t) => t - 1);
+      }, 1000);
+    }
+
+    return () => clearInterval(waitInterval);
+  }, [gameState, waitTimeLeft, isPaused]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isCountingDown && timeleft > 0) {
-      interval = setInterval(() => {
-        if (timeleft <= 1) {
+    if (gameState === GameState.COUNTDOWN && !isPaused && timeLeft > 0) {
+      interval = setInterval(async () => {
+        if (timeLeft <= 1) {
           triggerGame();
           clearInterval(interval);
         }
-        setTimeleft((t) => t - 1);
+        setTimeLeft((t) => t - 1);
       }, 1000);
     }
 
     return () => clearInterval(interval);
-  }, [isCountingDown, timeleft, triggerGame]);
+  }, [gameState, timeLeft, isPaused, triggerGame]);
 
   useEffect(() => {
     let restInterval: NodeJS.Timeout;
-    if (isRestingDown && restTimeleft > 0) {
+    if (gameState === GameState.RESTDOWN && !isPaused && restTimeLeft > 0) {
       restInterval = setInterval(() => {
-        if (restTimeleft <= 1) {
-          setIsRestingDown(false);
-          setIsLocked(false);
-          if (!isPaused) setIsCountingDown(true);
-          setTimeleft(choices.length === 3 ? DEFAULT_TIMER : initialTime);
+        if (restTimeLeft <= 1) {
           clearInterval(restInterval);
-          onGameReset();
+          switchGameState(GameState.WAITING);
         }
-        setRestTimeleft((t) => t - 1);
+        setRestTimeLeft((t) => t - 1);
       }, 1000);
     }
 
     return () => clearInterval(restInterval);
-  }, [isRestingDown, onGameReset, restTimeleft, isPaused]);
-
-  useEffect(() => {
-    if (result && isLocked && timeleft === 0) {
-      const variant = randomFromArray(variants);
-      const randomChoice = randomFromArray(choices);
-      const isChosen = (choiceVid: string) =>
-        selectedChoice
-          ? choiceVid === selectedChoice
-          : choiceVid === randomChoice;
-
-      const refIndex = videoArray.findIndex(
-        (item) =>
-          item.variant === variant &&
-          item.result === result &&
-          isChosen(item.choice)
-      );
-      if (!selectedChoice) {
-        setDisplayChoice(randomChoice);
-      }
-      setDisplayVideo({
-        variant: variant,
-        result,
-        choice: selectedChoice || randomChoice,
-      });
-      videosRef?.current[refIndex]?.play();
-    }
-  }, [
-    result,
-    isLocked,
-    timeleft,
-    selectedChoice,
-    choices,
-    variants,
-    videoArray,
-  ]);
-
-  useEffect(() => {
-    if (!isPaused) {
-      setIsCountingDown(true);
-    }
-  }, [isPaused]);
-
-  useEffect(() => {
-    if (isPaused && !selectedChoice) {
-      setIsCountingDown(false);
-    }
-  }, [isPaused, selectedChoice]);
+  }, [gameState, restTimeLeft, isPaused]);
 
   const isVideoHidden = (
     variantVid: string | number,
@@ -165,12 +203,28 @@ export const BaseGame = (props: BaseGameProps) => {
     return "hidden";
   };
 
+  const buttonColor = useCallback(
+    (choice: string) => {
+      if (displayChoice === choice) return "secondary-outline";
+      if (displayChoice) return "primary-outline";
+      if (isPaused || gameState === GameState.RESTDOWN)
+        return "tertiary-outline";
+      return "primary-outline";
+    },
+    [isPaused, displayChoice, gameState]
+  );
+
   const handleChoiceClick = (choiceClicked: string) => {
-    if (!isLocked && !isPaused) {
+    if (
+      [GameState.WAITING, GameState.COUNTDOWN].includes(gameState) &&
+      !isPaused
+    ) {
       setSelectedChoice(choiceClicked);
       setDisplayChoice(choiceClicked);
       onChoiceClicked();
-      setTimeleft(3);
+      if (gameState === GameState.WAITING) {
+        switchGameState(GameState.COUNTDOWN);
+      }
     }
   };
 
@@ -178,29 +232,19 @@ export const BaseGame = (props: BaseGameProps) => {
     if (result === "win" && selectedChoice) {
       onWinNotify();
     }
-    if (isLocked) {
-      setResult("");
-      setTimeout(() => {
-        setDisplayVideo(null);
-      }, 1700);
-      setSelectedChoice("");
-      setDisplayChoice("");
-      setIsRestingDown(true);
-      setRestTimeleft(REST_TIMER);
-      onVideoFinish(!!selectedChoice);
-    }
+    setResult("");
+    setTimeout(() => {
+      setDisplayVideo(null);
+    }, 1700);
+    setSelectedChoice("");
+    setDisplayChoice("");
+    onVideoFinish(!!selectedChoice);
+    switchGameState(GameState.RESTDOWN);
   };
 
-  const buttonColor = useCallback(
-    (choice: string) => {
-      if (displayChoice === choice) return "secondary-outline";
-      if (displayChoice) return "primary-outline";
-      if (isPaused || isLocked) return "tertiary-outline";
-      return "primary-outline";
-    },
-    [isPaused, displayChoice, isLocked]
-  );
-
+  let seconds = timeLeft;
+  if (gameState === GameState.RESTDOWN) seconds = restTimeLeft;
+  if (gameState === GameState.WAITING) seconds = waitTimeLeft;
   return (
     <>
       <div className="flex-row flex items-center justify-center">
@@ -243,7 +287,7 @@ export const BaseGame = (props: BaseGameProps) => {
               autoPlay
               loop
               muted
-              className={result ? "hidden" : ""}
+              className={gameState !== GameState.START ? "" : "hidden"}
             >
               <source
                 src={`${basePath}waiting.${extension}`}
@@ -256,10 +300,12 @@ export const BaseGame = (props: BaseGameProps) => {
           >
             <div className="flex flex-col items-start justify-center mt-[5px]">
               <p className="text-[12px] leading-[100%] font-face-bebas">
-                {isRestingDown ? "Game restarts in" : "Starting in"}
+                {gameState === GameState.RESTDOWN
+                  ? "Game restarts in"
+                  : "Starting in"}
               </p>
               <div className="text-[25px] leading-[100%]">
-                {isRestingDown ? restTimeleft : timeleft} {""}
+                {seconds}{" "}
                 <span className="text-[16px] cursor-text font-face-bebas">
                   seconds
                 </span>
