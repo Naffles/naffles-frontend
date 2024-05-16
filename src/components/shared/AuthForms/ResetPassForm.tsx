@@ -5,6 +5,7 @@ import axios from "@components/utils/axios";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { AiOutlineLoading } from "react-icons/ai";
 import { strongPasswordRegex } from "@components/utils/strongPasswordRegex";
+import toast from "react-hot-toast";
 
 type RequestPasswordData = {
   emailAddress: string;
@@ -34,7 +35,9 @@ export const ResetPassForm = () => {
       setIsNext(true);
       setIsError(false);
       setErrorMessage("");
-      alert(message || "Temporary password has been sent to your email");
+      toast.success(
+        message || "Temporary password has been sent to your email"
+      );
     } catch (err: any) {
       setIsError(true);
       switch (err?.response?.status) {
@@ -65,7 +68,7 @@ export const ResetPassForm = () => {
         email: emailAddress,
         ...formData,
       });
-      alert(message || "Your password has been successfully reset.");
+      toast.success(message || "Your password has been successfully reset.");
       await login({ identifier: emailAddress, password: formData.newPassword });
     } catch (err: any) {
       switch (err?.response?.status) {

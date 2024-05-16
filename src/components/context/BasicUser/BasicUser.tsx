@@ -10,6 +10,8 @@ import React, {
 import { useLocalStorage } from "@hook/useLocalStorage";
 import axios from "@components/utils/axios";
 import unixToString from "@components/utils/unixToString";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 type LoginParams = {
   identifier: string;
@@ -127,55 +129,55 @@ export const BasicUserProvider = ({
     [setJWT]
   );
 
- const logout = useCallback(() => {
-   removeJWT();
-   removeUser();
-   removePoints();
- }, [removeJWT, removeUser, removePoints]);
+  const logout = useCallback(() => {
+    removeJWT();
+    removeUser();
+    removePoints();
+  }, [removeJWT, removeUser, removePoints]);
 
- const reloadProfile = useCallback(async () => {
-   try {
-     const {
-       data: { data },
-     } = await axios.get("user/profile");
-     setUser(data ?? null);
-     setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
-     return data;
-   } catch (err: any) {
-     if (err?.response?.status === 403) {
-       alert(err.response.data.message);
-       logout();
-     }
-     throw err;
-   }
- }, [setUser, setPointsObject, logout]);
+  const reloadProfile = useCallback(async () => {
+    try {
+      const {
+        data: { data },
+      } = await axios.get("user/profile");
+      setUser(data ?? null);
+      setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
+      return data;
+    } catch (err: any) {
+      if (err?.response?.status === 403) {
+        toast.error(err.response.data.message);
+        logout();
+      }
+      throw err;
+    }
+  }, [setUser, setPointsObject, logout]);
 
- const updateProfile = useCallback(
-   async (form: FormData) => {
-     try {
-       const {
-         data: { data },
-       } = await axios.patch("user/profile", form);
-       setUser(data ?? null);
-       setPointsObject({
-         points: data?.temporaryPoints || 0,
-         date: Date.now(),
-       });
-       alert("Profile updated successfully!");
-       return data;
-     } catch (error) {
-       console.error("Error updating profile:", error);
-       alert("Error updating profile. Please try again later.");
-     }
-   },
-   [setUser, setPointsObject]
- );
+  const updateProfile = useCallback(
+    async (form: FormData) => {
+      try {
+        const {
+          data: { data },
+        } = await axios.patch("user/profile", form);
+        setUser(data ?? null);
+        setPointsObject({
+          points: data?.temporaryPoints || 0,
+          date: Date.now(),
+        });
+        toast.success("Profile updated successfully!");
+        return data;
+      } catch (error: any) {
+        const errorData = error.response?.data;
+        toast.error(`Error updating profile: ${errorData.message}`);
+      }
+    },
+    [setUser, setPointsObject]
+  );
 
- useEffect(() => {
-   if (jwt) {
-     reloadProfile();
-   }
- }, [jwt, reloadProfile]);
+  useEffect(() => {
+    if (jwt) {
+      reloadProfile();
+    }
+  }, [jwt, reloadProfile]);
 
   const contextValue = useMemo(() => {
     const points = pointsObject?.points ?? 0;

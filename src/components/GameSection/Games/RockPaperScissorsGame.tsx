@@ -3,6 +3,7 @@ import { BaseGame } from "./BaseGame";
 import axios from "@components/utils/axios";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { GameContainerProps } from "@type/GameSection";
+import toast from "react-hot-toast";
 
 export const RockPaperScissorsGame = (props: GameContainerProps) => {
   const { onGameStart, onGameReset, isPaused, onLimitReached } = props;
@@ -20,9 +21,9 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
     } catch (error: any) {
       if (error.response.data.statusCode === 429) {
         onLimitReached();
-        alert(error.response.data.message);
+        toast.error(error.response.data.message);
       } else {
-        alert("An error occurred while playing RPS");
+        toast.success("An error occurred while playing RPS");
         onGameReset?.();
       }
     }

@@ -1,6 +1,7 @@
 import bs58 from "bs58";
 import axios from "@components/utils/axios";
 import { useUser } from "@blockchain/context/UserContext";
+import toast from "react-hot-toast";
 
 interface PhantomButtonProps {
   onConnectionSuccess: (address: string) => void;
@@ -50,7 +51,7 @@ export const PhantomButton: React.FC<PhantomButtonProps> = ({
         // }
         // console.log(validResponse)
       } else {
-        alert("Phantom wallet not found. Please install it.");
+        toast.error("Phantom wallet not found. Please install it.");
       }
     } catch (error) {
       console.error("Error connecting to the Phantom wallet:", error);

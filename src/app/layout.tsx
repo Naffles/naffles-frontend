@@ -7,8 +7,6 @@ import "swiper/css/navigation";
 import PageHeader from "@components/shared/PageHeaders/PageHeader2";
 import { Providers } from "./providers";
 import { UserProvider } from "@blockchain/context/UserContext";
-import LoginModal from "@components/Modal/LoginModal";
-import DepositModal from "@components/Modal/DepositModal";
 import "./globals.css";
 import { BasicUserProvider } from "@components/context/BasicUser/BasicUser";
 import { Toaster } from "react-hot-toast";
@@ -33,8 +31,6 @@ export default function RootLayout({
             <UserProvider>
               <PageHeader />
               {children}
-              <LoginModal />
-              <DepositModal />
               <Toaster
                 position="bottom-center"
                 reverseOrder={false}

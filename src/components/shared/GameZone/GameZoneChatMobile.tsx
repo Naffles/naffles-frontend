@@ -16,6 +16,7 @@ import useGame from "@components/utils/gamezone";
 import toast from "react-hot-toast";
 import DepositModal from "../Modal/DepositModal";
 import WithdrawModal from "../Modal/WithdrawModal";
+import Web3 from "web3";
 
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
@@ -26,11 +27,10 @@ interface Message {
 const GameZoneChatMobile = () => {
   const [showChat, setShowChat] = useState(false);
   const [showBalances, setShowBalances] = useState(false);
-  const { socket, socketId, user } = useUser();
+  const { socket, socketId, user, setShowDepositModal, setShowWithdrawModal } =
+    useUser();
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
-  const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
 
   const chatContainer = useRef<HTMLDivElement>(null);
   const bottomChat = useRef<HTMLDivElement>(null);
@@ -158,12 +158,18 @@ const GameZoneChatMobile = () => {
     balance: string;
     usd: string;
   }): React.JSX.Element => {
+    const weiToEther = (weiAmount: string) => {
+      const web3 = new Web3();
+      let weiAmoutBigInt = BigInt(weiAmount);
+      return web3.utils.fromWei(weiAmoutBigInt, "ether");
+    };
+
     return (
       <>
         <div className="flex flex-row items-center justify-start gap-[19px]">
           <TfiMenu className="text-nafl-white text-[12px]" />
           <div className="flex flex-row items-center justify-center gap-[6px]">
-            <p className="text-[16px] text-nafl-white">{`${balance} ${type}`}</p>
+            <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance).toLocaleString()} ${type}`}</p>
             <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
           </div>
         </div>
@@ -319,12 +325,12 @@ const GameZoneChatMobile = () => {
                     <div className="w-full py-[14px] px-[12px] bg-[#4B4B4B] rounded-b-[10px] ">
                       <div className="w-full h-[118px] overflow-hidden overflow-y-scroll balance-scrollbar">
                         <div className="flex flex-col gap-[10px] w-full min-h-[114px] items-start justify-start">
-                          {sample_balances_json.map((item) => (
+                          {user?.balances?.map((item, index) => (
                             <BalancesListOption
-                              key={item.id}
-                              type={item.type}
-                              balance={item.balance}
-                              usd={item.usd}
+                              key={index}
+                              type={item.tokenType}
+                              balance={item.amount}
+                              usd={item.conversion}
                             />
                           ))}
                         </div>
@@ -421,17 +427,6 @@ const GameZoneChatMobile = () => {
           </button>
         )}
       </div>
-
-      <DepositModal
-        show={showDepositModal}
-        setShow={setShowDepositModal}
-        walletBalances={sample_balances_json}
-      />
-      <WithdrawModal
-        show={showWithdrawModal}
-        setShow={setShowWithdrawModal}
-        walletBalances={sample_balances_json}
-      />
     </>
   );
 };

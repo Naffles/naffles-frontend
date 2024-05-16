@@ -1,8 +1,14 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useMagic } from "./MagicProvider";
 import { io, Socket } from "socket.io-client";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+
+// Define the type for the user
+type Balance = {
+  tokenType: string;
+  amount: string;
+  conversion: string;
+};
 
 // Define the type for the user
 type User = {
@@ -12,6 +18,7 @@ type User = {
   name: string | null;
   image: string | null;
   points: number;
+  balances: Balance[] | null;
 };
 
 // Define the type for the user context.
@@ -19,11 +26,15 @@ type UserContextType = {
   user: User | null;
   socket: Socket | null;
   socketId: string | null;
+  showDepositModal: boolean;
+  showWithdrawModal: boolean;
   setProfileName: (name: string | null) => void;
   setProfileImage: (imgURL: string | null) => void;
   setJWT: (jwt: string | null) => void;
   setId: (id: string | null) => void;
   setWalletAddress: (id: string | null) => void;
+  setShowDepositModal: (showDepositModal: boolean) => void;
+  setShowWithdrawModal: (showWithdrawModal: boolean) => void;
 };
 
 // Create a context for user data.
@@ -31,11 +42,15 @@ const UserContext = createContext<UserContextType>({
   user: null,
   socket: null,
   socketId: null,
+  showDepositModal: false,
+  showWithdrawModal: false,
   setProfileName: () => {},
   setProfileImage: () => {},
   setJWT: () => {},
   setId: () => {},
   setWalletAddress: () => {},
+  setShowDepositModal: () => {},
+  setShowWithdrawModal: () => {},
 });
 
 // Custom hook for accessing user context data.
@@ -55,6 +70,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [socketId, setSocketId] = useState<string>("");
   const [userPoints, setUserPoints] = useState<number>(0);
+  const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
+  const [userBalances, setUserBalances] = useState<Balance[] | null>(null);
 
   const { jwt, user } = useBasicUser();
 
@@ -79,6 +97,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     !userId && user?.id && setUserId(user?.id);
     !profileName && user?.username && setProfileName(user?.username);
     !userPoints && user?.temporaryPoints && setUserPoints(user.temporaryPoints);
+    user?.userBalance && setUserBalances(user?.userBalance);
   }, [jwt, user]);
 
   useEffect(() => {
@@ -112,15 +131,20 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 name: profileName,
                 image: profileImage,
                 points: userPoints,
+                balances: userBalances,
               }
             : null,
         socket: socket,
         socketId: socketId,
+        showDepositModal: showDepositModal,
+        showWithdrawModal: showWithdrawModal,
         setProfileName: setProfileName,
         setProfileImage: setProfileImage,
         setJWT: setUserJWT,
         setId: setUserId,
         setWalletAddress: setAddress,
+        setShowDepositModal: setShowDepositModal,
+        setShowWithdrawModal: setShowWithdrawModal,
       }}
     >
       {children}

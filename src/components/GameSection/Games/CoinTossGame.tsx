@@ -3,6 +3,7 @@ import { BaseGame } from "./BaseGame";
 import axios from "@components/utils/axios";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { GameContainerProps } from "@type/GameSection";
+import toast from "react-hot-toast";
 
 export const CoinTossGame = (props: GameContainerProps) => {
   const { onGameStart, onGameReset, isPaused, onLimitReached } = props;
@@ -19,10 +20,10 @@ export const CoinTossGame = (props: GameContainerProps) => {
       return data;
     } catch (error: any) {
       if (error.response.data.statusCode === 429) {
-        alert(error.response.data.message);
+        toast.error(error.response.data.message);
         onLimitReached();
       } else {
-        alert("An error occurred while playing Coin toss");
+        toast.success("An error occurred while playing Coin toss");
         onGameReset?.();
       }
     }

@@ -8,6 +8,9 @@ import { Spinner, divider } from "@nextui-org/react";
 import { strongPasswordRegex } from "../../utils/strongPasswordRegex";
 import { useForm } from "react-hook-form";
 import { IoIosCloseCircleOutline, IoMdAddCircleOutline } from "react-icons/io";
+import { useUser } from "@blockchain/context/UserContext";
+import WalletTypeModal from "../Modal/WalletTypeModal";
+import toast from "react-hot-toast";
 
 export type ProfileSubmitData = { username: string; email: string };
 
@@ -16,6 +19,14 @@ type ChangePasswordData = {
   newPassword: string;
   confirmPassword: string;
 };
+
+declare global {
+  interface Window {
+    ethereum: any;
+    web3: any;
+    solana: any;
+  }
+}
 
 export const ProfileForm = () => {
   const { user, reloadProfile, updateProfile } = useBasicUser();
@@ -26,6 +37,14 @@ export const ProfileForm = () => {
     useState<boolean>(false);
   const [passwordCheckErrors, setPasswordCheckErrors] = useState<string[]>([]);
   const { resetField } = useForm();
+  const [profileEmail, setProfileEmail] = useState<string>("");
+  const [profileUsername, setProfileUsername] = useState<string>("");
+
+  useEffect(() => {
+    setProfileUsername(user?.username);
+    setProfileEmail(user?.email);
+    setWalletAddresses(user?.walletAddresses);
+  }, [user]);
 
   const handleFirstLoad = useCallback(async () => {
     const userProfile = (await reloadProfile()) ?? {};
@@ -83,12 +102,23 @@ export const ProfileForm = () => {
       newPassword: data.newPassword,
     };
     setPasswordCheckErrors([]);
+
     try {
-      await axios.post("user/update-password", changePasswordRequest);
-      setIsChangePasswordShowed(false);
+      const result = await axios.post(
+        "user/update-password",
+        changePasswordRequest
+      );
+      if (result.status == 200) {
+        toast.success("password update successful");
+        setIsChangePasswordShowed(false);
+      } else {
+        toast.error("password update failed");
+      }
     } catch (error: any) {
-      console.log(error);
+      const errorData = error.response?.data;
+      toast.error(`Error updating password: ${errorData.message}`);
     }
+
     setTimeout(() => {
       setIsLoading((prev) => !prev);
     }, 1000);
@@ -98,16 +128,57 @@ export const ProfileForm = () => {
     console.log("Image uploaded:", imageFile);
   };
 
-  const handleProfileEditSubmit = (data: ProfileSubmitData) => {
+  const handleProfileEditSubmit = () => {
     setIsLoading((prev) => !prev);
     const form = new FormData();
-    if (data?.username) form.append("username", data.username);
-    if (data?.email) form.append("email", data.email);
+    console.log("form username:", profileUsername);
+    console.log("form email:", profileEmail);
+    if (profileUsername != user?.username && profileUsername)
+      form.append("username", profileUsername);
+    if (profileEmail != user?.email && profileEmail) {
+      form.append("email", profileEmail);
+      toast("Verification link sent to email", {
+        duration: 5000,
+        icon: "✉️",
+      });
+    }
+
     if (imageFile) form.append("file", imageFile);
     updateProfile(form);
     setTimeout(() => {
       setIsLoading((prev) => !prev);
     }, 2000);
+  };
+
+  const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
+  const [showChooseWalletType, setShowChooseWalletType] =
+    useState<boolean>(false);
+
+  const shortenWalletAddress = (address: string) => {
+    if (address?.length > 10) {
+      return address.slice(0, 5) + "..." + address.slice(-7, address.length);
+    } else return address;
+  };
+
+  const removeWallet = async (walletAddress: string) => {
+    // setWalletAddresses((oldData) =>
+    //   oldData.filter((item) => item !== walletAddress)
+    // );
+    try {
+      const result = await axios.delete("user/profile/wallet", {
+        data: { address: walletAddress },
+      });
+
+      if (result.status === 200) {
+        // onConnectionSuccess(publicKey.toString())
+        reloadProfile();
+        toast.success("wallet removed");
+      } else toast.error("error removing wallet please try again");
+      console.log(result);
+    } catch (error: any) {
+      const errorData = error.response?.data;
+      toast.error(`Error removing wallet: ${errorData.message}`);
+    }
   };
 
   if (isChangePasswordShowed) {
@@ -171,93 +242,80 @@ export const ProfileForm = () => {
         </div>
       </FormContext>
     );
-  }
-
-  let sample_wallet_list = [
-    "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-    "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-    "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-  ];
-
-  const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
-
-  useEffect(() => {
-    setWalletAddresses(sample_wallet_list);
-  }, []);
-
-  const shortenWalletAddress = (address: string) => {
-    if (address?.length > 10) {
-      return address.slice(0, 5) + "..." + address.slice(-7, -1);
-    } else return address;
-  };
-
-  return (
-    <FormContext
-      onSubmit={handleProfileEditSubmit}
-      className="flex flex-col items-start h-auto"
-    >
-      <div className="flex flex-row items-center gap-[5px] px-[20px]">
-        <div className="relative">
-          <input
-            type="file"
-            accept="image/*"
-            className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 ${
-              imageFile && "bg-gray-200 rounded-full"
-            }`}
-            onChange={handleChange}
-          />
-          <div
-            className={`w-[120px] h-[120px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${
-              !imageFile && "bg-gray-300"
-            }`}
-            style={
-              !imageUrl
-                ? { backgroundImage: `url(/static/nft-dummy.png)` }
-                : { backgroundImage: `url(${imageUrl})` }
-            }
-            onClick={handleUpload}
-          >
-            {!imageFile && (
-              <div className="flex items-center justify-center h-full text-nafl-white text-[16px] bg-black bg-opacity-30 rounded-full">
-                Click to upload
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="flex flex-col m-5 gap-4">
-          <div className="w-full h-[54px] relative">
-            <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
-              Username:
-            </p>
+  } else
+    return (
+      <FormContext
+        onSubmit={handleProfileEditSubmit}
+        className="flex flex-col items-start h-auto"
+      >
+        <WalletTypeModal
+          show={showChooseWalletType}
+          setShow={setShowChooseWalletType}
+        />
+        <div className="flex flex-row items-center gap-[5px] px-[20px]">
+          <div className="relative">
             <input
-              type="text"
-              name="username"
-              placeholder="New Username"
-              value={user?.username}
-              className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
+              type="file"
+              accept="image/*"
+              className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 ${
+                imageFile && "bg-gray-200 rounded-full"
+              }`}
+              onChange={handleChange}
             />
-          </div>
-          <div className="w-full h-[54px] relative">
-            <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
-              Email:
-            </p>
-            <input
-              type="email"
-              name="email"
-              placeholder="New Username"
-              value={user?.email}
-              className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
-            />
-          </div>
-          <div className="w-full flex flex-row items-center justify-end mt-[-14px]">
-            <p
-              onClick={() => setIsChangePasswordShowed(true)}
-              className="flex text-nafl-white text-[10px] italic cursor-pointer"
+            <div
+              className={`w-[120px] h-[120px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${
+                !imageFile && "bg-gray-300"
+              }`}
+              style={
+                !imageUrl
+                  ? { backgroundImage: `url(/static/nft-dummy.png)` }
+                  : { backgroundImage: `url(${imageUrl})` }
+              }
+              onClick={handleUpload}
             >
-              Change Password
-            </p>
+              {!imageFile && (
+                <div className="flex items-center justify-center h-full text-nafl-white text-[16px] bg-black bg-opacity-30 rounded-full">
+                  Click to upload
+                </div>
+              )}
+            </div>
           </div>
-          {/* <TextInput
+          <div className="flex flex-col m-5 gap-4">
+            <div className="w-full h-[54px] relative">
+              <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
+                Username:
+              </p>
+              <input
+                type="text"
+                name="username"
+                placeholder="New Username"
+                value={profileUsername}
+                onChange={(e) => setProfileUsername(e.target.value)}
+                className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
+              />
+            </div>
+            <div className="w-full h-[54px] relative">
+              <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
+                Email:
+              </p>
+              <input
+                type="email"
+                name="email"
+                placeholder="New Email"
+                value={profileEmail}
+                onChange={(e) => setProfileEmail(e.target.value)}
+                className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
+              />
+            </div>
+            <div className="w-full flex flex-row items-center justify-end mt-[-14px]">
+              <p
+                onClick={() => setIsChangePasswordShowed(true)}
+                className="flex text-nafl-white text-[10px] italic cursor-pointer"
+              >
+                Change Password
+              </p>
+            </div>
+            {/* <TextInput
             name="username"
             label="Username"
             placeholder={user?.username ? user.username : "New Username"}
@@ -270,39 +328,45 @@ export const ProfileForm = () => {
           >
             Change Password
           </Button>*/}
+          </div>
         </div>
-      </div>
-      <div className="w-full min-h-[150px] px-[20px]">
-        <div className="flex flex-col w-full mt-3 items-center rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] relative pt-[24px] pb-[4px] px-[30px] h-full">
-          <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
-            Connected Wallets:
-          </p>
-          <div className="flex flex-col w-full h-[120px] overflow-hidden overflow-y-scroll wallets-scrollbar pr-[5px]">
-            {/* not input, but a row displaying the wallet address plus delete icon button in the right of it */}
-            <div className="flex flex-col gap-[9px] w-full items-center justify-start">
-              {" "}
-              {walletAddresses?.map((item, index) => (
+        <div className="w-full min-h-[150px] px-[20px]">
+          <div className="flex flex-col w-full mt-3 items-center rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] relative pt-[24px] pb-[4px] px-[30px] h-full">
+            <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
+              Connected Wallets:
+            </p>
+            <div className="flex flex-col w-full h-[120px] overflow-hidden overflow-y-scroll wallets-scrollbar pr-[5px]">
+              {/* not input, but a row displaying the wallet address plus delete icon button in the right of it */}
+              <div className="flex flex-col gap-[9px] w-full items-center justify-start">
+                {" "}
+                {walletAddresses?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-row items-center justify-between w-full"
+                  >
+                    <p className="text-[16px] text-nafl-white">
+                      {shortenWalletAddress(item)}
+                    </p>
+                    <IoIosCloseCircleOutline
+                      onClick={() => removeWallet(item)}
+                      className="text-[24px] text-nafl-white cursor-pointer"
+                    />
+                  </div>
+                ))}
                 <div
-                  key={index}
-                  className="flex flex-row items-center justify-between w-full"
+                  className="flex flex-row items-center justify-center gap-[6px] mb-[20px]"
+                  onClick={() => setShowChooseWalletType(true)}
                 >
-                  <p className="text-[16px] text-nafl-white">
-                    {shortenWalletAddress(item)}
+                  <IoMdAddCircleOutline className="text-white text-[24px]" />
+                  <p className="font-face-roboto text-nafl-white text-[14px] italic cursor-pointer">
+                    {walletAddresses?.length > 0
+                      ? "Add a wallet"
+                      : "Connect a wallet"}
                   </p>
-                  <IoIosCloseCircleOutline className="text-[24px] text-nafl-white cursor-pointer" />
                 </div>
-              ))}
-              <div className="flex flex-row items-center justify-center gap-[6px] mb-[20px]">
-                <IoMdAddCircleOutline className="text-white text-[24px]" />
-                <p className="font-face-roboto text-nafl-white text-[14px] italic cursor-pointer">
-                  {walletAddresses?.length > 0
-                    ? "Add a wallet"
-                    : "Connect a wallet"}
-                </p>
               </div>
-            </div>
 
-            {/* <div className="flex flex-row items-center justify-between w-[300px] mt-1">
+              {/* <div className="flex flex-row items-center justify-between w-[300px] mt-1">
             <input
               type="text"
               name="wallet"
@@ -344,26 +408,26 @@ export const ProfileForm = () => {
               className="mt-[2px] ml-3 cursor-pointer"
             />
           </div> */}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="w-full bg-[#FEFF3D] h-[2px] rounded-full my-[25px]"></div>
-      <div className="flex flex-col items-center w-full">
-        <button
-          type="submit"
-          className="flex items-center justify-center font-face-roboto font-bold text-[18px] text-[#000] w-[107px] rounded-[8px] h-[54px] bg-nafl-sponge-500"
-        >
-          {isLoading ? (
-            <>
-              <Spinner size="sm" />
-              Loading . . .
-            </>
-          ) : (
-            "SAVE"
-          )}
-        </button>
-        {/* <Button
+        <div className="w-full bg-[#FEFF3D] h-[2px] rounded-full my-[25px]"></div>
+        <div className="flex flex-col items-center w-full">
+          <button
+            type="submit"
+            className="flex items-center justify-center font-face-roboto font-bold text-[18px] text-[#000] px-[30px] rounded-[8px] h-[54px] bg-nafl-sponge-500"
+          >
+            {isLoading ? (
+              <>
+                <Spinner size="sm" />
+                Loading . . .
+              </>
+            ) : (
+              "SAVE"
+            )}
+          </button>
+          {/* <Button
           label="submit"
           variant="secondary"
           size="base"
@@ -379,7 +443,7 @@ export const ProfileForm = () => {
             "Save"
           )}
         </Button> */}
-      </div>
-    </FormContext>
-  );
+        </div>
+      </FormContext>
+    );
 };
