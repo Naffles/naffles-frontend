@@ -13,6 +13,7 @@ export interface BaseGameProps {
   onWinNotify?: () => any;
   onGameReset?: () => any;
   isPaused?: boolean;
+  hasError?: boolean;
   initialTime: number;
 }
 

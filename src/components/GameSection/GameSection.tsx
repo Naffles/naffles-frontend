@@ -4,7 +4,8 @@ import { RegistrationForm } from "@components/shared/AuthForms";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import DemoPointsLeaderboards from "./DemoPointsLeaderboards";
 import useScreenSize from "@hook/useScreenSize";
-import { RockPaperScissorsGame, CoinTossGame } from "./Games";
+import { RockPaperScissorsGame } from "./Games/RockPaperScissorsGame";
+import { CoinTossGame } from "./Games/CoinTossGame";
 
 export const GameSection = () => {
   const { user } = useBasicUser();
