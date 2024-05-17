@@ -22,7 +22,7 @@ const LeaderboardCommunityMain = () => {
   return (
     <div className="flex flex-col w-full lg:px-[20px] px-[10px] bg-[#383838] mb-[50px] lg:gap-[30px] gap-[30px] mt-[30px] min-h-[800px]">
       <div className="flex items-center justify-center h-[300px]">
-        <p className="font-mono text-[32px]">Coming Soon</p>
+        <p className="font-mono text-[32px] text-white">Coming Soon</p>
       </div>
       {/* <div className="flex flex-row items-center justify-start h-[24px] w-full">
         <button
