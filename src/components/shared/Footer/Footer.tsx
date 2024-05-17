@@ -140,47 +140,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="xs:flex md:flex sm:flex lg:hidden xl:hidden flex-col w-full h-[557px] bg-[#292929] relative pt-[67px] z-30 bottom-0">
-        <div className="relative w-fit mx-auto">
-          <img
-            src="/static/naffles-text-logo.png"
-            alt="Naffles Text Logo"
-            className="w-[260px] object-contain mt-[54px] align-middle mx-auto"
-          />
-          <div className="w-[58px] absolute top-[30px] right-[0px]">
-            <img src="/nafflings/surprise4.png" alt="" />
-          </div>
-        </div>
-        <div className="ml-embedded" data-form="ZpYFjE"></div>
-        <div className="w-full p-10">
-          <div className="flex flex-col items-start justify-center">
-            <p className="text-4xl text-[#fff] font-face-bebas">
-              BE EARLY. BE READY.
-            </p>
-            <p className="text-[#BDBDBD] text-[19px]">
-              Give us your email and we’ll give you free stuff and notifications
-              when we drop{" "}
-              <span className="text-nafl-sponge-500 font-face-roboto">
-                real degen raffles
-              </span>
-            </p>
-            <div className="flex items-center w-full relative mt-[31px]">
-              <input
-                type="text"
-                placeholder="Stick ya email here"
-                className="w-full h-[67px] bg-[#4B4B4B] font-face-roboto text-[23px] rounded-[10px] pl-[23px] pr-[140px] placeholder:text-[#868686]"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button
-                className="absolute right-[6px] flex items-center justify-center w-[138px] h-[57px] rounded-[10px] bg-nafl-sponge-500"
-                onClick={handleFormSubmit}
-              >
-                <p className="text-[#000] text-[19px] font-bold">SIGN UP</p>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+ 
     </>
   );
 };
