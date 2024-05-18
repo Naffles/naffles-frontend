@@ -1,4 +1,5 @@
 import { useUser } from "@blockchain/context/UserContext";
+import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import axios from "@components/utils/axios";
 import bs58 from "bs58";
 import Web3 from "web3";
@@ -18,6 +19,7 @@ export const MetamaskButton: React.FC<MetamaskButtonProps> = ({
   onConnectionSuccess,
 }) => {
   const { setWalletAddress } = useUser();
+  const { loginWithWallet } = useBasicUser();
 
   const connectAndSign = async () => {
     if (window.ethereum) {
@@ -42,19 +44,15 @@ export const MetamaskButton: React.FC<MetamaskButtonProps> = ({
         });
 
         setWalletAddress(publicKey);
-        // const validResponse = await axios.post("wallet/validate/metamask", {
-        //   signature: signature,
-        //   address: publicKey,
-        //   timestamp: timestamp,
-        //   walletType: "metamask",
-        //   network: "eth"
-        // });
-        // if (validResponse.status === 200) {
-        //   onConnectionSuccess(publicKey.toString())
-        // } else (
-        //   console.log("Your signature has failed to verify")
-        // )
-        // console.log(validResponse)
+
+        let body = {
+          signature: signature,
+          address: publicKey,
+          timestamp: timestamp,
+          walletType: "metamask",
+          network: "eth",
+        };
+        loginWithWallet(body);
       } catch (error) {
         console.error("Error connecting to MetaMask", error);
       }

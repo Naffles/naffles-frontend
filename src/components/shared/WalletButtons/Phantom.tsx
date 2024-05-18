@@ -2,6 +2,7 @@ import bs58 from "bs58";
 import axios from "@components/utils/axios";
 import { useUser } from "@blockchain/context/UserContext";
 import toast from "react-hot-toast";
+import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 
 interface PhantomButtonProps {
   onConnectionSuccess: (address: string) => void;
@@ -17,6 +18,7 @@ export const PhantomButton: React.FC<PhantomButtonProps> = ({
   onConnectionSuccess,
 }) => {
   const { setWalletAddress } = useUser();
+  const { loginWithWallet } = useBasicUser();
 
   const connectAndSign = async () => {
     try {
@@ -39,17 +41,15 @@ export const PhantomButton: React.FC<PhantomButtonProps> = ({
         });
 
         setWalletAddress(response.publicKey.toBase58());
-        // const validResponse = await axios.post("wallet/validate/phantom", {
-        //   signature: bs58.encode(signedMessage.signature),
-        //   address: response.publicKey.toBase58(),
-        //   timestamp: timestamp,
-        //   walletType: "phantom",
-        //   network: "sol"
-        // });
-        // if (validResponse.status === 200) {
-        //   onConnectionSuccess(response.publicKey.toString())
-        // }
-        // console.log(validResponse)
+
+        let body = {
+          signature: bs58.encode(signedMessage.signature),
+          address: response.publicKey.toBase58(),
+          timestamp: timestamp,
+          walletType: "metamask",
+          network: "eth",
+        };
+        loginWithWallet(body);
       } else {
         toast.error("Phantom wallet not found. Please install it.");
       }

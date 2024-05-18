@@ -18,6 +18,14 @@ type LoginParams = {
   password: string;
 };
 
+type WalletLoginParams = {
+  signature: string;
+  address: string;
+  timestamp: string;
+  walletType: string;
+  network: string;
+};
+
 // Define the type for the user
 type BasicUser = Record<string, any>;
 type PointsObject = {
@@ -35,6 +43,7 @@ type BasicUserContextType = {
   logout: () => void;
   reloadProfile: () => Record<string, any> | void;
   updateProfile: (form: FormData) => void;
+  loginWithWallet: (data: WalletLoginParams) => Record<string, any> | void;
 };
 
 // // Create a context for user data.
@@ -48,6 +57,7 @@ const BasicUserContext = createContext<BasicUserContextType>({
   logout: () => {},
   reloadProfile: () => {},
   updateProfile: (form) => {},
+  loginWithWallet: (data) => {},
 });
 
 // Custom hook for accessing user context data.
@@ -173,6 +183,23 @@ export const BasicUserProvider = ({
     [setUser, setPointsObject]
   );
 
+  const loginWithWallet = useCallback(
+    async (data: WalletLoginParams) => {
+      try {
+        const validResponse = await axios.post("user/login/wallet", data);
+        console.log("WALLET LOGIN RESULT:", validResponse);
+        if (validResponse.status === 200) {
+          setJWT(validResponse.data?.data?.token ?? null);
+          toast.success("Successfully logged in using wallet!");
+        } else console.log("Login with wallet failed, please try again!");
+      } catch (error: any) {
+        const errorData = error.response?.data;
+        toast.error(`Error on Wallet Login: ${errorData.message}`);
+      }
+    },
+    [setUser]
+  );
+
   useEffect(() => {
     if (jwt) {
       reloadProfile();
@@ -191,6 +218,7 @@ export const BasicUserProvider = ({
       logout,
       reloadProfile,
       updateProfile,
+      loginWithWallet,
     };
   }, [
     jwt,
@@ -199,6 +227,7 @@ export const BasicUserProvider = ({
     logout,
     reloadProfile,
     updateProfile,
+    loginWithWallet,
     pointsObject,
     addPoints,
     setPoints,

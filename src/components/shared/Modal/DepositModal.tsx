@@ -22,10 +22,6 @@ interface Props {
 }
 
 const DepositModal = (props: Props) => {
-  const [stakingCount, setStakingCount] = useState<number>(1);
-  const [stakingPeriod, setStakingPeriod] = useState<string>("month");
-  const [showStakingPeriodDropdown, setShowStakingPeriodDropdown] =
-    useState<boolean>(false);
   const [showBalanceDropdown, setShowBalanceDropdown] =
     useState<boolean>(false);
   const [depositAmount, setDepositAmount] = useState<number>(0.0);
@@ -38,9 +34,7 @@ const DepositModal = (props: Props) => {
   const { reloadProfile } = useBasicUser();
 
   useEffect(() => {
-    if (balanceType.tokenType == "") {
-      props.walletBalances && setBalanceType(props.walletBalances[0]);
-    }
+    props.walletBalances && setBalanceType(props.walletBalances[0]);
   }, [props.walletBalances]);
 
   let currency_name = [

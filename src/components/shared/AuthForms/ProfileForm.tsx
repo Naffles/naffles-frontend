@@ -156,7 +156,7 @@ export const ProfileForm = () => {
 
   const shortenWalletAddress = (address: string) => {
     if (address?.length > 10) {
-      return address.slice(0, 5) + "..." + address.slice(-7, address.length);
+      return address.slice(0, 11) + "..." + address.slice(-13, address.length);
     } else return address;
   };
 
@@ -252,7 +252,7 @@ export const ProfileForm = () => {
           show={showChooseWalletType}
           setShow={setShowChooseWalletType}
         />
-        <div className="flex flex-row items-center gap-[5px] px-[20px]">
+        <div className="flex flex-row items-center gap-[5px] pl-[20px]">
           <div className="relative">
             <input
               type="file"
@@ -331,7 +331,7 @@ export const ProfileForm = () => {
           </div>
         </div>
         <div className="w-full min-h-[150px] px-[20px]">
-          <div className="flex flex-col w-full mt-3 items-center rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] relative pt-[24px] pb-[4px] px-[30px] h-full">
+          <div className="flex flex-col w-full mt-3 items-center rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] relative pt-[24px] pb-[4px] pl-[30px] pr-[10px] h-full">
             <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
               Connected Wallets:
             </p>

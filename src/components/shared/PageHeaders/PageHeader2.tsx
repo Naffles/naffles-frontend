@@ -34,6 +34,11 @@ enum ModalNames {
   RESET = "Reset Password",
 }
 
+type WithdrawWallets = {
+  address: string;
+  network: string;
+};
+
 const PageHeader: React.FC<PageHeaderProps> = (
   {
     // onLogin,
@@ -297,17 +302,19 @@ const PageHeader: React.FC<PageHeaderProps> = (
       )}
 
       {user?.balances && (
-        <DepositModal
-          show={showDepositModal}
-          setShow={setShowDepositModal}
-          walletBalances={user?.balances}
-        />
+        <>
+          <DepositModal
+            show={showDepositModal}
+            setShow={setShowDepositModal}
+            walletBalances={user?.balances}
+          />
+          <WithdrawModal
+            show={showWithdrawModal}
+            setShow={setShowWithdrawModal}
+            walletBalances={user?.balances}
+          />
+        </>
       )}
-      <WithdrawModal
-        show={showWithdrawModal}
-        setShow={setShowWithdrawModal}
-        walletBalances={sample_balances_json}
-      />
 
       <div className="lg:flex hidden flex-row items-center justify-between rounded-lg h-[84px] w-full relative px-[19px]">
         <div className="flex flex-row absolute inset-0 w-full h-full z-10 rounded-[16px] overflow-hidden">
@@ -430,7 +437,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
                   )}
                 </div>
 
-                <ConnectButton />
+                {!basicUser && <ConnectButton />}
                 {/* <AccWallet /> */}
               </div>
 
@@ -586,9 +593,6 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 </li>
               )}
               <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                <ConnectButton />
-              </li>
-              <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                 Settings
               </li>
               {basicUser && (
@@ -600,7 +604,9 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 </li>
               )}
             </ul>
-            <WalletIcon colour="black" size="lg" className="cursor-pointer" />
+            {!jwt && (
+              <WalletIcon colour="black" size="lg" className="cursor-pointer" />
+            )}
           </div>
         </div>
       </div>
