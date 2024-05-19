@@ -187,8 +187,9 @@ export const BasicUserProvider = ({
     async (data: WalletLoginParams) => {
       try {
         const validResponse = await axios.post("user/login/wallet", data);
+
         console.log("WALLET LOGIN RESULT:", validResponse);
-        if (validResponse.status === 200) {
+        if (validResponse.status === 200 || validResponse.status === 201) {
           setJWT(validResponse.data?.data?.token ?? null);
           toast.success("Successfully logged in using wallet!");
         } else toast.error("Login with wallet failed, please try again!");

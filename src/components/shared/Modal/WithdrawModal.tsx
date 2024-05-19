@@ -10,6 +10,7 @@ import { TbCurrencySolana } from "react-icons/tb";
 import Web3 from "web3";
 
 type Balance = {
+  id: string;
   tokenType: string;
   amount: string;
   conversion: string;
@@ -27,6 +28,7 @@ const WithdrawModal = (props: Props) => {
     useState<boolean>(false);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0.0);
   const [balanceType, setBalanceType] = useState<Balance>({
+    id: "",
     tokenType: "",
     amount: "",
     conversion: "",
