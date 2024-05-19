@@ -15,6 +15,7 @@ export interface BaseGameProps {
   isPaused?: boolean;
   hasError?: boolean;
   initialTime: number;
+  gameType: string;
 }
 
 export interface GameContainerProps {
