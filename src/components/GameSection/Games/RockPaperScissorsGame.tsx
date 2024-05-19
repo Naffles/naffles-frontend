@@ -60,6 +60,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       hasError={hasError}
       initialTime={30}
       onCountdownFinish={onGameStart}
+      gameType="rps"
     />
   );
 };
