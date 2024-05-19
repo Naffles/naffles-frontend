@@ -7,6 +7,7 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { TfiMenu } from "react-icons/tfi";
 import moment from "moment";
 import toast from "react-hot-toast";
+import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import DepositModal from "../Modal/DepositModal";
 import WithdrawModal from "../Modal/WithdrawModal";
 import useGame from "@components/utils/gamezone";
@@ -31,9 +32,96 @@ interface Message {
   game: GameData | null;
 }
 
+type Balance = {
+  id: string;
+  tokenType: string;
+  amount: string;
+  conversion: string;
+};
+
+let sample_balances_json = [
+  {
+    id: 1,
+    type: "ETH",
+    balance: "1.2369",
+    usd: "3569",
+  },
+  {
+    id: 2,
+    type: "BTC",
+    balance: "0.2369",
+    usd: "3569",
+  },
+  {
+    id: 3,
+    type: "BYTES",
+    balance: "23.2369",
+    usd: "3569",
+  },
+  {
+    id: 4,
+    type: "SOL",
+    balance: "5.2369",
+    usd: "3569",
+  },
+  {
+    id: 5,
+    type: "NAFF",
+    balance: "1.2369",
+    usd: "3569",
+  },
+  {
+    id: 6,
+    type: "BTC",
+    balance: "0.2369",
+    usd: "3569",
+  },
+];
+
+const BalancesListOption = ({
+  type,
+  balance,
+  usd,
+  value,
+}: {
+  type: string;
+  balance: string;
+  usd: string;
+  value: Balance;
+}): React.JSX.Element => {
+  const y = useMotionValue(0);
+  const controls = useDragControls();
+  const weiToEther = (weiAmount: string) => {
+    const web3 = new Web3();
+    let weiAmoutBigInt = BigInt(weiAmount);
+    return web3.utils.fromWei(weiAmoutBigInt, "ether");
+  };
+  return (
+    <Reorder.Item
+      id={value.id}
+      value={value}
+      dragListener={false}
+      dragControls={controls}
+      style={{ y }}
+    >
+      <div className="flex flex-row items-center justify-start gap-[19px]">
+        <TfiMenu
+          className="text-nafl-white text-[12px] cursor-grab"
+          onPointerDown={(e) => controls.start(e)}
+        />
+        <div className="flex flex-row items-center justify-center gap-[6px]">
+          <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance).toLocaleString()} ${type}`}</p>
+          <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
+        </div>
+      </div>
+    </Reorder.Item>
+  );
+};
+
 const GameZoneGlobalChat = () => {
   const { socket, socketId, user, setShowDepositModal, setShowWithdrawModal } =
     useUser();
+  const [balances, setBalances] = useState<Balance[]>([]);
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
 
@@ -47,6 +135,10 @@ const GameZoneGlobalChat = () => {
   const setGameId = useGame((state) => state.setGameId);
 
   const bottomChat = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    user?.balances && setBalances(user?.balances);
+  }, [user]);
 
   useEffect(() => {
     socket?.emit("joinGlobalChat");
@@ -114,45 +206,6 @@ const GameZoneGlobalChat = () => {
     return result;
   };
 
-  let sample_balances_json = [
-    {
-      id: 1,
-      type: "ETH",
-      balance: "1.2369",
-      usd: "3569",
-    },
-    {
-      id: 2,
-      type: "BTC",
-      balance: "0.2369",
-      usd: "3569",
-    },
-    {
-      id: 3,
-      type: "BYTES",
-      balance: "23.2369",
-      usd: "3569",
-    },
-    {
-      id: 4,
-      type: "SOL",
-      balance: "5.2369",
-      usd: "3569",
-    },
-    {
-      id: 5,
-      type: "NAFF",
-      balance: "1.2369",
-      usd: "3569",
-    },
-    {
-      id: 6,
-      type: "BTC",
-      balance: "0.2369",
-      usd: "3569",
-    },
-  ];
-
   let sample_comments_json = [
     {
       id: 1,
@@ -199,33 +252,33 @@ const GameZoneGlobalChat = () => {
     }
   };
 
-  const BalancesListOption = ({
-    type,
-    balance,
-    usd,
-  }: {
-    type: string;
-    balance: string;
-    usd: string;
-  }): React.JSX.Element => {
-    const weiToEther = (weiAmount: string) => {
-      const web3 = new Web3();
-      let weiAmoutBigInt = BigInt(weiAmount);
-      return web3.utils.fromWei(weiAmoutBigInt, "ether");
-    };
+  // const BalancesListOption = ({
+  //   type,
+  //   balance,
+  //   usd,
+  // }: {
+  //   type: string;
+  //   balance: string;
+  //   usd: string;
+  // }): React.JSX.Element => {
+  //   const weiToEther = (weiAmount: string) => {
+  //     const web3 = new Web3();
+  //     let weiAmoutBigInt = BigInt(weiAmount);
+  //     return web3.utils.fromWei(weiAmoutBigInt, "ether");
+  //   };
 
-    return (
-      <>
-        <div className="flex flex-row items-center justify-start gap-[19px]">
-          <TfiMenu className="text-nafl-white text-[12px]" />
-          <div className="flex flex-row items-center justify-center gap-[6px]">
-            <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance).toLocaleString()} ${type}`}</p>
-            <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
-          </div>
-        </div>
-      </>
-    );
-  };
+  //   return (
+  //     <>
+  //       <div className="flex flex-row items-center justify-start gap-[19px]">
+  //         <TfiMenu className="text-nafl-white text-[12px]" />
+  //         <div className="flex flex-row items-center justify-center gap-[6px]">
+  //           <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance).toLocaleString()} ${type}`}</p>
+  //           <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
+  //         </div>
+  //       </div>
+  //     </>
+  //   );
+  // };
 
   const MessageSection = ({
     currentId,
@@ -412,14 +465,21 @@ const GameZoneGlobalChat = () => {
           <div className="w-full py-[14px] px-[12px] bg-[#4B4B4B] rounded-b-[10px] ">
             <div className="w-full h-[118px] overflow-hidden overflow-y-scroll balance-scrollbar">
               <div className="flex flex-col gap-[10px] w-full min-h-[114px] items-start justify-start">
-                {user?.balances?.map((item, index) => (
-                  <BalancesListOption
-                    key={index}
-                    type={item.tokenType}
-                    balance={item.amount}
-                    usd={item.conversion}
-                  />
-                ))}
+                <Reorder.Group
+                  values={balances}
+                  onReorder={setBalances}
+                  axis="y"
+                >
+                  {balances.map((balance, index) => (
+                    <BalancesListOption
+                      key={index}
+                      value={balance}
+                      type={balance.tokenType}
+                      balance={balance.amount}
+                      usd={balance.conversion}
+                    />
+                  ))}
+                </Reorder.Group>
               </div>
             </div>
           </div>

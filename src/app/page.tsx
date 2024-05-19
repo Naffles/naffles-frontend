@@ -16,9 +16,9 @@ import { IoMdSearch } from "react-icons/io";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
-      <div className="w-full bg-[#464646] px-[25px] xl:h-[800px] lg:h-[1200px] md:h-[1200px] h-[1500px] pt-[100px]">
+      <div className="w-full bg-[#464646] px-[25px] h-[110vh] md:h-[1200px] xl:h-[950px] pt-[100px]">
         <Swiper
-          className="flex w-full"
+          className="flex w-full  "
           direction="vertical"
           slidesPerView={1}
           spaceBetween={0}
@@ -31,12 +31,12 @@ export default function Home() {
           {/* grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 */}
           {[1, 2, 3, 4].map((item) => (
             <SwiperSlide
-              className="w-full bg-nafl-sponge-500 rounded-[16px] xl:pt-0 pt-[50px] xl:pb-[100px]"
+              className="w-full bg-nafl-sponge-500 rounded-[16px] xl:pt-0 pt-[50px] xl:pb-[100px] px-4 md:px-10"
               key={item}
             >
               <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full gap-[50px]">
                 <div className="xl:w-[1000px] lg:w-[700px] w-[90%] flex flex-col items-start justify-center 2xl:pl-0 xl:pl-[20px] pl-0">
-                  <p className="xl:text-[125px] text-[100px] text-[#000] font-face-bebas leading-[110%]">
+                  <p className="xl:text-[125px] text-[60px] text-[#000] font-face-bebas leading-[110%]">
                     Wager & Win{" "}
                     <span className="text-[#00b3b2] font-face-bebas">
                       Life-changing
@@ -44,13 +44,13 @@ export default function Home() {
                     nfts &{" "}
                     <span className="relative font-face-bebas">
                       Crypto
-                      <div className="absolute w-[130px] top-[-112px] lg:top-[-108px] right-[-10px]">
+                      <div className="absolute w-[100px] md:w-[130px] top-[-90px] lg:top-[-108px] right-[-10px]">
                         <img src="/nafflings/surprise2.png" alt="" />
                       </div>
                     </span>
                   </p>
                   <div className="flex flex-col gap-[15px]">
-                    <p className="text-[25px] text-nafl-charcoal-800">
+                    <p className="text-[16px] md:text-[25px] text-nafl-charcoal-800 w-[80%] md:w-[100%]">
                       Win Raffles and Play PVP games against our community of
                       trusted degens, where profits can be verifiably-fair and
                       fun for everyone. Please degen responsibly!
@@ -109,7 +109,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="w-[480px] mt-[80px]">
+                  <div className="w-[480px] mt-[80px] pr-0 md:pr-10">
                     <div className="space-y-4 border-b-[1px] border-black border-opacity-[50%] pb-5">
                       <p className="font-sans text-black opacity-[70%]">
                         <span className="font-bold">EVERY</span> game, ticket

@@ -5,6 +5,7 @@ import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 
 // Define the type for the user
 type Balance = {
+  id: string;
   tokenType: string;
   amount: string;
   conversion: string;

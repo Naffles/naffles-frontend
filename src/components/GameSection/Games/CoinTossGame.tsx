@@ -6,10 +6,13 @@ import { GameContainerProps } from "@type/GameSection";
 import toast from "react-hot-toast";
 
 export const CoinTossGame = (props: GameContainerProps) => {
-  const { onGameStart, onGameReset, isPaused, onLimitReached } = props;
+  const { onGameStart, onGameReset, isPaused, resetToInitial, onLimitReached } =
+    props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
+  const [hasError, setHasError] = useState(false);
 
+<<<<<<< HEAD
   const triggerCoinTossGame = useCallback(async () => {
     onGameStart?.();
     try {
@@ -25,9 +28,31 @@ export const CoinTossGame = (props: GameContainerProps) => {
       } else {
         toast.success("An error occurred while playing Coin toss");
         onGameReset?.();
+=======
+  const triggerCoinTossGame = useCallback(
+    async (choice?: string) => {
+      setHasError(false);
+      onGameStart?.(choice);
+      try {
+        const {
+          data: { data },
+        } = await axios.post("game/demo/cointoss");
+        setDisplayPoints(data?.score || 0);
+        return data;
+      } catch (error: any) {
+        setHasError(true);
+        if (error.response.data.statusCode === 429) {
+          alert(error.response.data.message);
+          onLimitReached();
+          throw error;
+        } else {
+          alert("An error occurred while playing Coin toss");
+        }
+>>>>>>> fb92a39e4c323328b7093f8cbe026c3cf396c161
       }
-    }
-  }, [onGameReset, onGameStart, onLimitReached]);
+    },
+    [onGameStart, onLimitReached]
+  );
 
   const handleVideoEnd = (hasSelected?: boolean) => {
     if (hasSelected) {
@@ -37,6 +62,7 @@ export const CoinTossGame = (props: GameContainerProps) => {
 
   return (
     <BaseGame
+      resetToInitial={resetToInitial}
       results={["win", "lose"]}
       choices={["heads", "tails"]}
       variants={[1, 2, 3, 4]}
@@ -49,8 +75,10 @@ export const CoinTossGame = (props: GameContainerProps) => {
       onVideoFinish={handleVideoEnd}
       onGameReset={onGameReset}
       isPaused={isPaused}
-      initialTime={90}
+      hasError={hasError}
+      initialTime={60}
       onCountdownFinish={onGameStart}
+      gameType="cointoss"
     />
   );
 };

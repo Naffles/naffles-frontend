@@ -110,6 +110,31 @@ const GameZoneCreateGame = () => {
   let bet_multiplier_options = [1, 2, 3, 4, 5, 10];
 
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const clickedElement = event.target as HTMLElement;
+      const clickedElementClass = clickedElement.className;
+
+      if (!clickedElementClass || (typeof clickedElementClass != 'string') ||clickedElementClass.indexOf('game-choice-dropdown') < 0) {
+        setGameChoiceDropdown(false);
+      }
+
+      if (!clickedElementClass || (typeof clickedElementClass != 'string') || clickedElementClass.indexOf('balance-type-dropdown') < 0) {
+        setBalanceTypeDropdown(false);
+      }
+
+      if (!clickedElementClass || (typeof clickedElementClass != 'string') || clickedElementClass.indexOf('odds-dropdown') < 0) {
+        setBetMultiplierChoiceDropdown(false);
+      }
+    };
+
+    // Add event listener on document for clicks outside the dropdown
+    document.addEventListener("click", handleClickOutside);
+
+    // Cleanup function to remove event listener on unmount
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
     if (balanceType.type == "") {
       setBalanceType(balancesOptionData[0]);
     }
@@ -221,15 +246,15 @@ const GameZoneCreateGame = () => {
           <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
         </div>
 
-        <div className="flex items-center w-full relative">
+        <div className="flex items-center w-full relative game-choice-dropdown">
           <button
             onClick={() => {
               console.log("clicked");
               setGameChoiceDropdown(gameChoiceDropdown ? false : true);
             }}
-            className="flex items-center justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B]"
+            className="flex items-center justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] game-choice-dropdown"
           >
-            <p className="text-[#fff] text-[16px] font-face-bebas">
+            <p className="text-[#fff] text-[16px] font-face-bebas game-choice-dropdown">
               {gameChoice}
             </p>
           </button>
@@ -264,18 +289,18 @@ const GameZoneCreateGame = () => {
         </div>
 
         <div className="flex flex-row flex-wrap items-center gap-[20px]">
-          <div className="flex items-center w-[250px] relative">
+          <div className="flex items-center w-[250px] relative balance-type-dropdown">
             <button
               onClick={() =>
                 setBalanceTypeDropdown(balanceTypeDropdown ? false : true)
               }
-              className="flex items-center gap-[10px] justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B]"
+              className="flex items-center gap-[10px] justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] balance-type-dropdown"
             >
               {currencyIconReturner(balanceType?.type)}
-              <p className="text-[#fff] text-[16px] font-face-bebas">
+              <p className="text-[#fff] text-[16px] font-face-bebas balance-type-dropdown">
                 {currencyNameConverter(balanceType?.type)}
               </p>
-              <p className="text-[#867878] text-[16px] font-face-bebas">
+              <p className="text-[#867878] text-[16px] font-face-bebas balance-type-dropdown">
                 BALANCE:{" "}
                 {`${balanceType?.balance.toLocaleString()} ${balanceType?.type}`}
               </p>
@@ -329,16 +354,16 @@ const GameZoneCreateGame = () => {
         </div>
 
         <div className="flex flex-row items-center gap-[24px] justify-start w-full">
-          <div className="flex items-center w-[145px] relative">
+          <div className="flex items-center w-[145px] relative odds-dropdown">
             <button
               onClick={() =>
                 setBetMultiplierChoiceDropdown(
                   betMultiplierChoiceDropdown ? false : true
                 )
               }
-              className="flex items-center gap-[10px] justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B]"
+              className="flex items-center gap-[10px] justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] odds-dropdown"
             >
-              <p className="text-[#fff] text-[16px] font-face-bebas">
+              <p className="text-[#fff] text-[16px] font-face-bebas odds-dropdown">
                 x {betMultiplierChoice}
               </p>
             </button>

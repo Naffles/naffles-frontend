@@ -25,14 +25,14 @@ const LeaderboardsMain = () => {
                   TOP NAFFLERS
                 </p>
               </button>
-              <button
+              {/* <button
                 onClick={() => setSelectedTab("rafflers")}
                 className={`flex items-center justify-center rounded-t-[8.6px] lg:px-[40px] px-[20px] md:h-[38px] h-[54px] duration-500 ${selectedTab == "rafflers" ? "bg-[#FEFF3D] text-[#000]" : "bg-[#2F2F2F] text-[#D9D9D9]"}`}
               >
                 <p className="md:text-[23px] text-[12px] font-face-bebas">
                   TOP RAFFLERS
                 </p>
-              </button>
+              </button> */}
               <button
                 onClick={() => setSelectedTab("gamers")}
                 className={`flex items-center justify-center rounded-t-[8.6px] lg:px-[40px] px-[20px] md:h-[38px] h-[54px] duration-500 ${selectedTab == "gamers" ? "bg-[#FEFF3D] text-[#000]" : "bg-[#2F2F2F] text-[#D9D9D9]"}`}
@@ -41,14 +41,14 @@ const LeaderboardsMain = () => {
                   TOP GAMERS
                 </p>
               </button>
-              {/* <button
+              <button
                 onClick={() => setSelectedTab("communities")}
                 className={`flex items-center justify-center rounded-t-[8.6px] lg:px-[40px] px-[20px] md:h-[38px] h-[54px] duration-500 ${selectedTab == "communities" ? "bg-[#FEFF3D] text-[#000]" : "bg-[#2F2F2F] text-[#D9D9D9]"}`}
               >
                 <p className="md:text-[23px] text-[12px] font-face-bebas">
                   COMMUNITIES
                 </p>
-              </button> */}
+              </button>
             </div>
           </div>
 

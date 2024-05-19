@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation'
 import {
   Slider,
   Table,
@@ -108,6 +109,8 @@ const DemoPointsLeaderboards = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
 
+  const router = useRouter()
+
   useEffect(() => {
     const fetchTableData = () => {
       setTableData(sample_demo_leaderboards_json);
@@ -126,6 +129,10 @@ const DemoPointsLeaderboards = () => {
     } else return address;
   };
 
+  const navigaToGameZone = () => {
+    router.push('/gamezone')
+  }
+
   useEffect(() => {
     setShowAddedPoints(true);
     setTimeout(() => {
@@ -133,6 +140,8 @@ const DemoPointsLeaderboards = () => {
       setShowAddedPoints(false);
     }, 2000);
   }, [points]);
+
+  const pointsDifference = points - previousPoints;
 
   return (
     <div className="flex flex-col items-center justify-start w-full lg:h-[560px] h-[580px] rounded-[16px] relative bg-[#383838] pt-[65px] px-[5px] gap-[36px] pb-[8px] lg:mt-[32px] mt-[132px]">
@@ -147,7 +156,7 @@ const DemoPointsLeaderboards = () => {
                 {points}
               </p>
 
-              {showAddedPoints && (
+              {showAddedPoints && !!pointsDifference && (
                 <motion.div
                   initial={{ y: 0 }}
                   animate={{ y: -40 }}
@@ -157,7 +166,7 @@ const DemoPointsLeaderboards = () => {
                   <div className="relative flex items-center justify-center text-center">
                     <img src="/nafflings/surprise3.png" alt="" />
                     <p className="font-face-bebas absolute">
-                      +{points - previousPoints}
+                      +{pointsDifference}
                     </p>
                   </div>
                 </motion.div>
@@ -249,7 +258,10 @@ const DemoPointsLeaderboards = () => {
         </Table>
       </div>
 
-      <button className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-[96%] h-[45px] gap-[30px] relative bottom-[8px]">
+      <button 
+        className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-[96%] h-[45px] gap-[30px] relative bottom-[8px]"
+        onClick={() => navigaToGameZone()}
+      >
         <img
           src="/static/challenge-img.png"
           alt="Challenge Mate Image"

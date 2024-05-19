@@ -6,20 +6,24 @@ export interface BaseGameProps {
   extension: string;
   barColor: string;
   triggerUnlock?: () => any;
-  gameCall?: () => any;
+  gameCall?: (choice?: string) => any;
   onCountdownFinish?: () => any;
   onVideoFinish?: (hasSelected: boolean) => any;
   onChoiceClicked?: () => any;
   onWinNotify?: () => any;
   onGameReset?: () => any;
   isPaused?: boolean;
+  resetToInitial?: boolean;
+  hasError?: boolean;
   initialTime: number;
+  gameType: string;
 }
 
 export interface GameContainerProps {
   handlePlayCount?: (hasSelected?: boolean) => any;
   isPaused?: boolean;
-  onGameStart?: () => any;
+  resetToInitial?: boolean;
+  onGameStart?: (choice?: string) => any;
   onGameReset?: () => any;
   onLimitReached: () => any;
 }

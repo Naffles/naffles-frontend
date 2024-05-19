@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from 'react';
+
 import { MdOutlineSearch } from "react-icons/md";
 import { RiExpandUpDownLine } from "react-icons/ri";
 import { useState } from "react";
@@ -17,6 +19,27 @@ const GameZoneMain = () => {
     "ROCK, PAPERS, SCISSORS",
     "COIN TOSS",
   ];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const clickedElement = event.target as HTMLElement;
+      const containerElement = document.getElementById('game-type-dropdown');
+      const clickedElementId = clickedElement.id;
+      
+      if (
+          (!containerElement || !containerElement.contains(clickedElement)) ||
+          clickedElementId == 'game-type-dropdown'
+      ) {
+        setGameTypeDropdown(false);
+      }
+    };
+
+    // Add event listener on document for clicks outside the dropdown
+    document.addEventListener("click", handleClickOutside);
+
+    // Cleanup function to remove event listener on unmount
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -75,7 +98,7 @@ const GameZoneMain = () => {
                 </p>
 
                 <div className="flex md:flex-row flex-col items-center gap-[13px]">
-                  <div className="w-[154px] relative">
+                  <div id="game-type-dropdown" className="w-[154px] relative">
                     <button
                       onClick={() =>
                         setGameTypeDropdown(gameTypeDropdown ? false : true)
