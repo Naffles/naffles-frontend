@@ -22,10 +22,18 @@ const PrivacyPolicy = () => {
           </span>
           
           <span className="mx-2">
-            <AscensiveAssets colour="white" />
+            <img
+              src="/static/HGLS_white.png"
+              alt="HGLS_white"
+              className="w-[130px] h-[120px] object-contain top-[-15px] relative mx-5"
+            />
           </span>
           <span className="mx-2">
-            <AscensiveAssets colour="white" />
+            <img
+              src="/static/Apexblocklogo.png"
+              alt="HGLS_white"
+              className="w-[130px] h-[120px] object-contain top-[-15px] relative ml-2"
+            />
           </span>
         </div>
       </div>
@@ -34,11 +42,14 @@ const PrivacyPolicy = () => {
           NAFFLES KYC POLICY
         </span>
       </div>
-      <div className="w-full max-w-[900px] max-h-[1200px] h-5/6 mt-4 text-nafl-sponge-100 overflow-auto font-face-roboto text-body-base font-bold">
-        Last updated: 28December 2023
+      <div className="w-full max-w-[900px] max-h-[1200px] h-5/6 mt-4 text-nafl-white overflow-auto font-face-roboto text-body-base font-bold">
+        <p className="italic">
+          Last updated: 28December 2023
+        </p>
         <br />
         <br />
-        <span className="text-body-2xl font-bold">BACKGROUND</span>
+        <span className="text-body-2xl font-bold italic">BACKGROUND</span>
+        <br />
         <br />
         When a user makes an aggregatelifetime total of depositsexceeding
         USD10,000orrequestsawithdrawal of any amountinside{" "}
@@ -50,161 +61,307 @@ const PrivacyPolicy = () => {
         details about themselves and then uploadit as instructed on the Site.
         The following basic information will be asked from the user to provide:
         <br />
-        <li>1)A copyofGovernment Issued PhotoID;</li>
-        <li>2)A selfie of themselves holding the ID document; and</li>
-        <li>3)A bank statement/Utility Bill.</li>
+        <br />
+        <div className="flex flex-row">
+          <p>
+            1)
+          </p>
+          <p className="ml-4">
+            A copyofGovernment Issued PhotoID;
+          </p>
+        </div>
+        <div className="flex flex-row">
+          <p>
+            2)
+          </p>
+          <p className="ml-4">
+            A selfie of themselves holding the ID document; and
+          </p>
+        </div>
+        <div className="flex flex-row">
+          <p>
+            3)
+          </p>
+          <p className="ml-4">
+            A bank statement/Utility Bill.
+          </p>
+        </div>
+        <br />
         Once uploaded, the user will get a notification that their documents are
         being processed. Our teamwillthen process the documents andwill email
-        the user the outcome. The outcome will be one of the following:
-        <ul>Approval;</ul>
-        <ul>Rejection; or</ul>
-        <ul>Request Further Information–No change in Status.</ul>
+        the user the outcome. The outcome will be one of the following: Approval, Rejection, or Request Further Information–No change in Status. When the user’s information is still being processed,they can: Use the platformnormally; They cannot deposit more than USD2,000in aggregate total; and They cannot complete any withdrawal.
         <br />
         When the user’s information is still being processed,they can: Use the
         platformnormally; They cannot deposit more than USD2,000in aggregate
         total; and They cannot complete any withdrawal.
         <br />
         <br />
-        <span className="text-body-2xl font-bold">
+        <span className="text-body-2xl font-bold italic">
           I.GUIDELINE FOR THE KYC PROCESS
         </span>
         <br />
-        1)Proof of Identification
         <br />
-        a.Signature is displayedclearly;
+        <div className="flex flex-row">
+          <p>
+            1)
+          </p>
+          <p className="ml-4">
+            Proof of Identification
+            <br />
+            <br />
+            <div className="flex flex-row">
+              <p>
+                a)
+              </p>
+              <p className="ml-4">
+                Signature is displayedclearly;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>
+                b)
+              </p>
+              <p className="ml-4">
+                Country is not a Restricted Country: United States of America and its territories, France and its territories, Netherlands and its territories and countries that form the Kingdom of Netherlands including Bonaire, Sint Eustatius, Saba, Aruba, Anjouanand Sint Maarten, Australia and its territories, United Kingdom of Great Britain, Northern Ireland, Spainand Cyprus;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>
+                c)
+              </p>
+              <p className="ml-4">
+                Full Name on ID matches client’s nameas when they signed up to use the Site;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>
+                d)
+              </p>
+              <p className="ml-4">
+                Identification Document does not expire in the next 3 months; and
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>
+                e)
+              </p>
+              <p className="ml-4">
+                Owner is over 18 years of age.
+              </p>
+            </div>
+          </p>
+        </div>
         <br />
-        b.Country is not a Restricted Country: United States of America and its
-        territories, France and its territories, Netherlands and its territories
-        and countries that form the Kingdom of Netherlands including Bonaire,
-        Sint Eustatius, Saba, Aruba, Anjouanand Sint Maarten, Australia and its
-        territories, United Kingdom of Great Britain, Northern Ireland, Spainand
-        Cyprus;
         <br />
-        c.Full Name on ID matches client’s nameas when they signed up to use the
-        Site;
+        <div className="flex flex-row">
+          <p>
+            2)
+          </p>
+          <p className="ml-4">
+            Proof of Residence
+            <br />
+            <br />
+            <div className="flex flex-row">
+              <p>
+                a)
+              </p>
+              <p className="ml-4">
+                Bank Statement or Utility Bill;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>
+                b)
+              </p>
+              <p className="ml-4">
+                Country is not a Restricted Country: United States of America and its territories, France and its territories, Netherlands and its territories and countries that form the Kingdom of Netherlands including Bonaire, Sint Eustatius, Saba, Aruba, Anjouan,njouanand St Maarten, Australia and its territories, United Kingdom of Great Britain, Northern Ireland, Spain,and Cyprus;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>
+                c)
+              </p>
+              <p className="ml-4">
+                Full Name matches client’s nameas when they signed up to use the Siteand is same as in proof of ID; andd.Date of Issue: In the last 3 months.
+              </p>
+            </div>
+          </p>
+        </div>
         <br />
-        d.Identification Document does not expire in the next 3 months; and
         <br />
-        e.Owner is over 18 years of age.
-        <br />
-        2)Proof of Residence
-        <br />
-        a.Bank Statement or Utility Bill;
-        <br />
-        b.Country is not a Restricted Country: United States of America and its
-        territories, France and its territories, Netherlands and its territories
-        and countries that form the Kingdom of Netherlands including Bonaire,
-        Sint Eustatius, Saba, Aruba, Anjouan,njouanand St Maarten, Australia and
-        its territories, United Kingdom of Great Britain, Northern Ireland,
-        Spain,and Cyprus;
-        <br />
-        c.Full Name matches client’s nameas when they signed up to use the
-        Siteand is same as in proof of ID; andd.Date of Issue: In the last 3
-        months.
-        <br />
-        3)Selfie with ID
-        <br />
-        a.Holder is the same as in the ID document above; and
-        <br />
-        b.ID document is the same as in “1”. Ensure that thephoto/ID number is
-        the same.
+        <div className="flex flex-row">
+          <p>
+            3)
+          </p>
+          <p className="ml-4">
+            Selfie with ID
+            <br />
+            <div className="flex flex-row">
+              <p>
+                a)
+              </p>
+              <p className="ml-4">
+                Holder is the same as in the ID document above; and
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>
+                b)
+              </p>
+              <p className="ml-4">
+                ID document is the same as in “1”. Ensure that thephoto/ID number is the same.
+              </p>
+            </div>
+          </p>
+        </div>
         <br />
         <br />
         <span className="text-body-2xl font-bold">
           II.NOTES ON THE KYC PROCESS
         </span>
         <br />
-        1)When the KYC process is unsuccessful, the reason is documented,and
-        anexplanation is communicated back to the user.
         <br />
-        2)The user will then be given a chance to provide further information or
-        documentation as required.
+        <div className="flex flex-row">
+          <p>
+            1)
+          </p>
+          <p className="ml-4">
+            When the KYC process is unsuccessful, the reason is documented,and
+            anexplanation is communicated back to the user.
+          </p>
+        </div>
         <br />
-        3)Onceall proper documents are in our possession, the documents will be
-        further evaluated before being approved. <br />
+        <div className="flex flex-row">
+          <p>
+            2)
+          </p>
+          <p className="ml-4">
+            The user will then be given a chance to provide further information or
+            documentation as required.
+          </p>
+        </div>
+        <br />
+        <div className="flex flex-row">
+          <p>
+            3)
+          </p>
+          <p className="ml-4">
+            Onceall proper documents are in our possession, the documents will be
+            further evaluated before being approved.
+          </p>
+        </div>
         <br />
         <span className="text-body-2xl font-bold">III.OTHERAML MEASURES</span>
         <br />
-        1)If a user has failed to pass theKYC requirements, then they cannot
-        make additional deposits or withdrawals of any amount.
         <br />
-        2)If a user has passed the KYC process successfully then:
+        <div className="flex flex-row">
+          <p>
+            1)
+          </p>
+          <p className="ml-4">
+            If a user has failed to pass theKYC requirements, then they cannot
+            make additional deposits or withdrawals of any amount.
+          </p>
+        </div>
         <br />
-        a.There is a deposit limit per transaction (max USD10,000)
-        <br />
-        b.Prior to any withdrawal there is a detailed algorithmic and manual
-        check on the activity and balance of the user to see if the amount
-        withdrawn is a result of proper activity in the platform.
-        <br />
-        3)Under no circumstances may a user transfer funds directly to another
-        user.
+        <div className="flex flex-row">
+          <p>
+            2)
+          </p>
+          <p className="ml-4">
+            If a user has passed the KYC process successfully then:
+            <br />
+            <div className="flex flex-row">
+              <p>
+                a)
+              </p>
+              <p className="ml-4">
+                There is a deposit limit per transaction (max USD10,000)
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>
+                b)
+              </p>
+              <p className="ml-4">
+                Prior to any withdrawal there is a detailed algorithmic and manual
+                check on the activity and balance of the user to see if the amount
+                withdrawn is a result of proper activity in the platform.
+              </p>
+            </div>
+            </p>
+          </div>
+          <br />
+          <div className="flex flex-row">
+            <p>
+              3)
+            </p>
+            <p className="ml-4">
+              Under no circumstances may a user transfer funds directly to another
+              user.
+            </p>
+          </div>
+          <br />
+          <div className="flex flex-row">
+            <p>
+              4)
+            </p>
+            <p className="ml-4">
+              The user must have a verified account to be able to participate in
+              any raffles.
+            </p>
+          </div>
       </div>
     </div>
-    <div className="flex lg:flex-row flex-col lg:items-start items-center justify-center pt-[60px] lg:pb-[125px] 
-    pb-[250px] w-full xl:gap-[90px] gap-[40px] relative bg-[#181818] mt-[90px]">
-        <img
-          src="/static/naffles-text-logo.png"
-          alt="Naffles Text Logo"
-          className="xl:w-[350px] lg:w-[250px] md:w-[50%] w-[80%] object-contain"
-        />
-        <div className="flex md:flex-row flex-col items-center justify-center gap-[7px]">
-          {/* <img
-            src="/static/footer-secure-check.png"
-            alt="Naffles Text Logo"
-            className="w-[75px] object-contain"
-          /> */}
-          <div
-            id="anj-163a3d88-a381-4928-873c-19ebd4bd977d"
-            data-anj-seal-id="163a3d88-a381-4928-873c-19ebd4bd977d"
-            data-anj-image-size="75"
-            data-anj-image-type="basic-small"
-          ></div>
-          <div className="flex flex-col xl:w-[960px] lg:w-[600px] md:w-[80%] w-[90%] gap-[12px]">
-            <p className="text-[16px] text-[#fff]">
-              https://naffles.com/ is owned and operated by Degentralised
+    <div className="flex flex-col items-center bg-[#181818] pt-[20px] mt-[120px]">
+          <div className="flex flex-col gap-[10px] xl:w-[80%] w-[90%]">
+            <p className="text-nafl-white text-[16px] w-full">
+              https://naffles.com/ is owned and operated by Degentralised
               Interactive Limited (Registration Number: 2134682) with the
               Registered Address: Intershore Chambers, Road Town, Tortola,
               British Virgin Islands.
             </p>
-            <p className="text-[16px] text-[#fff]">
-              Contact us nft@naffles.com.
+            <p className="text-nafl-white text-[16px] w-full">
+              Contact us nft@naffles.com.
             </p>
-            <p className="text-[16px] text-[#fff]">
-              naffles.com is licensed and regulated by the Government of the
+            <p className="text-nafl-white text-[16px] w-full">
+              naffles.com is licensed and regulated by the Government of the
               Autonomous Island of Anjouan, Union of Comoros and operates under
               License No. ALSI-062403009-F16.
             </p>
-            <p className="text-[16px] text-[#fff]">
-              naffles.com has passed all regulatory compliance and is legally
+            <p className="text-nafl-white text-[16px] w-full">
+              naffles.com has passed all regulatory compliance and is legally
               authorized to conduct gaming operations for any and all games of
               chance and wagering.
             </p>
           </div>
-        </div>
-        <div className="flex lg:flex-row flex-col items-center lg:justify-between center w-full py-[40px] absolute bottom-0 bg-[#181818] xl:px-[270px] lg:px-[50px] px-0 text-[23px]">
-          <p className="text-[#626262] font-face-bebas text-center">
-            © Copyright 2022 naffles All Rights Reserved.
-          </p>
+          <div className="flex xl:flex-row flex-col items-center xl:justify-between justify-center w-full h-[120px] xl:px-[270px] text-[23px]">
+            <p className="text-[#626262] font-face-bebas">
+              © Copyright 2024 naffles All Rights Reserved.
+            </p>
 
-          <div className="flex flex-row items-center justify-center gap-[6px]">
-            <a
-              href="https://www.dropbox.com/scl/fi/28jmch0e45pwfwnjvea1j/Responsible-Gambling-Policy.pdf?rlkey=5oqm08umlcvizj56rkmlup19n&dl=0"
-              target="_blank"
-              className="text-[#626262] font-face-bebas hover:text-[#fff] duration-500"
-            >
-              RESPONSIBLE GAMBLING POLICY
-            </a>
-            <p className="text-[#626262] font-face-bebas">|</p>
-            <a
-              href="https://www.dropbox.com/scl/fi/og0mx4uquayhldpzm3hdi/Terms-and-Conditions.pdf?rlkey=zgg66vph42826xl8wqjy5tum0&dl=0"
-              target="_blank"
-              className="text-[#626262] font-face-bebas hover:text-[#fff] duration-500"
-            >
-              TERMS OF USE
-            </a>
+            <div className="flex flex-row items-center justify-center gap-[6px]">
+              {/* if privacy policy is clicked, redirect it to a link like dropbox */}
+              <p className="text-[#626262] font-face-bebas">
+                <a
+                  href="/privacy-policy"
+                  target="_blank"
+                >
+                  PRIVACY POLICY
+                </a>
+              </p>
+              <p className="text-[#626262] font-face-bebas">|</p>
+              <p className="text-[#626262] font-face-bebas">
+                <a
+                  href="/terms-and-conditions"
+                  target="_blank"
+                >
+                  TERMS OF USE
+                </a>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
     </>
   );
 };
