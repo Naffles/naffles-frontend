@@ -113,8 +113,6 @@ const GameZoneCreateGame = () => {
     const handleClickOutside = (event: MouseEvent) => {
       const clickedElement = event.target as HTMLElement;
       const clickedElementClass = clickedElement.className;
-      const clickedElementId = clickedElement.id;
-      console.log('clickedElementClass =>', clickedElementClass)
 
       if (!clickedElementClass || (typeof clickedElementClass != 'string') ||clickedElementClass.indexOf('game-choice-dropdown') < 0) {
         setGameChoiceDropdown(false);
