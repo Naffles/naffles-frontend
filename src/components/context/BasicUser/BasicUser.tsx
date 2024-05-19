@@ -191,7 +191,7 @@ export const BasicUserProvider = ({
         if (validResponse.status === 200) {
           setJWT(validResponse.data?.data?.token ?? null);
           toast.success("Successfully logged in using wallet!");
-        } else console.log("Login with wallet failed, please try again!");
+        } else toast.error("Login with wallet failed, please try again!");
       } catch (error: any) {
         const errorData = error.response?.data;
         toast.error(`Error on Wallet Login: ${errorData.message}`);

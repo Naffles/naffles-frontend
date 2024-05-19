@@ -1,5 +1,6 @@
 "use client";
 
+import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import axios from "@components/utils/axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const WithdrawModal = (props: Props) => {
+  const { reloadProfile } = useBasicUser();
   const [showBalanceDropdown, setShowBalanceDropdown] =
     useState<boolean>(false);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0.0);
@@ -48,6 +50,7 @@ const WithdrawModal = (props: Props) => {
         if (result.status == 200) {
           toast.success("successfully requested withdrawal");
           setWithdrawAmount(0);
+          reloadProfile();
         } else {
           toast.success("Requested withdrawal failed, please try again!");
         }
