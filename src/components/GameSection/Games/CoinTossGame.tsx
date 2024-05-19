@@ -12,23 +12,6 @@ export const CoinTossGame = (props: GameContainerProps) => {
   const [displayPoints, setDisplayPoints] = useState(0);
   const [hasError, setHasError] = useState(false);
 
-<<<<<<< HEAD
-  const triggerCoinTossGame = useCallback(async () => {
-    onGameStart?.();
-    try {
-      const {
-        data: { data },
-      } = await axios.post("game/demo/cointoss");
-      setDisplayPoints(data?.score || 0);
-      return data;
-    } catch (error: any) {
-      if (error.response.data.statusCode === 429) {
-        toast.error(error.response.data.message);
-        onLimitReached();
-      } else {
-        toast.success("An error occurred while playing Coin toss");
-        onGameReset?.();
-=======
   const triggerCoinTossGame = useCallback(
     async (choice?: string) => {
       setHasError(false);
@@ -48,7 +31,6 @@ export const CoinTossGame = (props: GameContainerProps) => {
         } else {
           alert("An error occurred while playing Coin toss");
         }
->>>>>>> fb92a39e4c323328b7093f8cbe026c3cf396c161
       }
     },
     [onGameStart, onLimitReached]

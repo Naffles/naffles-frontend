@@ -252,34 +252,6 @@ const GameZoneGlobalChat = () => {
     }
   };
 
-  // const BalancesListOption = ({
-  //   type,
-  //   balance,
-  //   usd,
-  // }: {
-  //   type: string;
-  //   balance: string;
-  //   usd: string;
-  // }): React.JSX.Element => {
-  //   const weiToEther = (weiAmount: string) => {
-  //     const web3 = new Web3();
-  //     let weiAmoutBigInt = BigInt(weiAmount);
-  //     return web3.utils.fromWei(weiAmoutBigInt, "ether");
-  //   };
-
-  //   return (
-  //     <>
-  //       <div className="flex flex-row items-center justify-start gap-[19px]">
-  //         <TfiMenu className="text-nafl-white text-[12px]" />
-  //         <div className="flex flex-row items-center justify-center gap-[6px]">
-  //           <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance).toLocaleString()} ${type}`}</p>
-  //           <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // };
-
   const MessageSection = ({
     currentId,
     senderId,

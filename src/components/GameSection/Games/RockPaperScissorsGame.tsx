@@ -12,23 +12,6 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
   const [displayPoints, setDisplayPoints] = useState(0);
   const [hasError, setHasError] = useState(false);
 
-<<<<<<< HEAD
-  const triggerRPSGame = useCallback(async () => {
-    onGameStart?.();
-    try {
-      const {
-        data: { data },
-      } = await axios.post("game/demo/rock-paper-scissors");
-      setDisplayPoints(data?.score || 0);
-      return data;
-    } catch (error: any) {
-      if (error.response.data.statusCode === 429) {
-        onLimitReached();
-        toast.error(error.response.data.message);
-      } else {
-        toast.success("An error occurred while playing RPS");
-        onGameReset?.();
-=======
   const triggerRPSGame = useCallback(
     async (choice?: string) => {
       setHasError(false);
@@ -48,7 +31,6 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
         } else {
           alert("An error occurred while playing RPS");
         }
->>>>>>> fb92a39e4c323328b7093f8cbe026c3cf396c161
       }
     },
     [onGameStart, onLimitReached]

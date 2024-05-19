@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { TfiMenu } from "react-icons/tfi";
-import DepositModal from "../Modal/DepositModal";
-import WithdrawModal from "../Modal/WithdrawModal";
 import { useUser } from "@blockchain/context/UserContext";
 import moment from "moment";
 import toast from "react-hot-toast";
+import { Reorder, useDragControls, useMotionValue } from "framer-motion";
+import Web3 from "web3";
 
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
@@ -16,15 +16,66 @@ interface Message {
   message: string | null;
 }
 
+type Balance = {
+  id: string;
+  tokenType: string;
+  amount: string;
+  conversion: string;
+};
+
+const BalancesListOption = ({
+  type,
+  balance,
+  usd,
+  value,
+}: {
+  type: string;
+  balance: string;
+  usd: string;
+  value: Balance;
+}): React.JSX.Element => {
+  const y = useMotionValue(0);
+  const controls = useDragControls();
+  const weiToEther = (weiAmount: string) => {
+    const web3 = new Web3();
+    let weiAmoutBigInt = BigInt(weiAmount);
+    return web3.utils.fromWei(weiAmoutBigInt, "ether");
+  };
+  return (
+    <Reorder.Item
+      id={value.id}
+      value={value}
+      dragListener={false}
+      dragControls={controls}
+      style={{ y }}
+    >
+      <div className="flex flex-row items-center justify-start gap-[19px]">
+        <TfiMenu
+          className="text-nafl-white text-[12px] cursor-grab"
+          onPointerDown={(e) => controls.start(e)}
+        />
+        <div className="flex flex-row items-center justify-center gap-[6px]">
+          <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance).toLocaleString()} ${type}`}</p>
+          <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
+        </div>
+      </div>
+    </Reorder.Item>
+  );
+};
+
 const LeaderboardsChat = () => {
-  const { socket, socketId, user } = useUser();
+  const { socket, socketId, user, setShowDepositModal, setShowWithdrawModal } =
+    useUser();
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
-  const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
+  const [balances, setBalances] = useState<Balance[]>([]);
 
   const chatContainer = useRef<HTMLDivElement>(null);
   const bottomChat = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    user?.balances && setBalances(user?.balances);
+  }, [user]);
 
   useEffect(() => {
     socket?.emit("joinGlobalChat");
@@ -70,96 +121,27 @@ const LeaderboardsChat = () => {
     }
   };
 
-  let sample_balances_json = [
-    {
-      id: 1,
-      type: "ETH",
-      balance: "1.2369",
-      usd: "3569",
-    },
-    {
-      id: 2,
-      type: "BTC",
-      balance: "0.2369",
-      usd: "3569",
-    },
-    {
-      id: 3,
-      type: "BYTES",
-      balance: "23.2369",
-      usd: "3569",
-    },
-    {
-      id: 4,
-      type: "SOL",
-      balance: "5.2369",
-      usd: "3569",
-    },
-    {
-      id: 5,
-      type: "NAFF",
-      balance: "1.2369",
-      usd: "3569",
-    },
-    {
-      id: 6,
-      type: "BTC",
-      balance: "0.2369",
-      usd: "3569",
-    },
-  ];
-
-  let sample_comments_json = [
-    {
-      id: 1,
-      name: "You",
-      image: "/static/sample-account-image-1.png",
-      date: "16/02/2024",
-      time: "9:14PM",
-      comment:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum. In placerat commodo justo,",
-    },
-    {
-      id: 2,
-      name: "Joe",
-      image: "/static/sample-account-image-2.png",
-      date: "16/02/2024",
-      time: "9:16PM",
-      comment:
-        "Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum. In placerat commodo justo,",
-    },
-    {
-      id: 3,
-      name: "PlayerOne",
-      image: "/static/sample-account-image-3.png",
-      date: "16/02/2024",
-      time: "9:17PM",
-      comment:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum.",
-    },
-  ];
-
-  const BalancesListOption = ({
-    type,
-    balance,
-    usd,
-  }: {
-    type: string;
-    balance: string;
-    usd: string;
-  }): React.JSX.Element => {
-    return (
-      <>
-        <div className="flex flex-row items-center justify-start gap-[19px]">
-          <TfiMenu className="text-nafl-white text-[12px]" />
-          <div className="flex flex-row items-center justify-center gap-[6px]">
-            <p className="text-[16px] text-nafl-white">{`${balance} ${type}`}</p>
-            <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
-          </div>
-        </div>
-      </>
-    );
-  };
+  // const BalancesListOption = ({
+  //   type,
+  //   balance,
+  //   usd,
+  // }: {
+  //   type: string;
+  //   balance: string;
+  //   usd: string;
+  // }): React.JSX.Element => {
+  //   return (
+  //     <>
+  //       <div className="flex flex-row items-center justify-start gap-[19px]">
+  //         <TfiMenu className="text-nafl-white text-[12px]" />
+  //         <div className="flex flex-row items-center justify-center gap-[6px]">
+  //           <p className="text-[16px] text-nafl-white">{`${balance} ${type}`}</p>
+  //           <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
+  //         </div>
+  //       </div>
+  //     </>
+  //   );
+  // };
 
   const CommentSection = ({
     currentId,
@@ -278,14 +260,21 @@ const LeaderboardsChat = () => {
           <div className="w-full py-[14px] px-[12px] bg-[#4B4B4B] rounded-b-[10px] ">
             <div className="w-full h-[118px]  overflow-hidden overflow-y-scroll balance-scrollbar">
               <div className="flex flex-col gap-[10px] w-full min-h-[114px] items-start justify-start">
-                {sample_balances_json.map((item) => (
-                  <BalancesListOption
-                    key={item.id}
-                    type={item.type}
-                    balance={item.balance}
-                    usd={item.usd}
-                  />
-                ))}
+                <Reorder.Group
+                  values={balances}
+                  onReorder={setBalances}
+                  axis="y"
+                >
+                  {balances.map((balance, index) => (
+                    <BalancesListOption
+                      key={index}
+                      value={balance}
+                      type={balance.tokenType}
+                      balance={balance.amount}
+                      usd={balance.conversion}
+                    />
+                  ))}
+                </Reorder.Group>
               </div>
             </div>
           </div>
@@ -338,16 +327,6 @@ const LeaderboardsChat = () => {
           </div>
         </div>
       </div>
-      <DepositModal
-        show={showDepositModal}
-        setShow={setShowDepositModal}
-        walletBalances={sample_balances_json}
-      />
-      <WithdrawModal
-        show={showWithdrawModal}
-        setShow={setShowWithdrawModal}
-        walletBalances={sample_balances_json}
-      />
     </div>
   );
 };
