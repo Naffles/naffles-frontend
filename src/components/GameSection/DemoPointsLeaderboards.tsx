@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation'
 import {
   Slider,
   Table,
@@ -108,6 +109,8 @@ const DemoPointsLeaderboards = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
 
+  const router = useRouter()
+
   useEffect(() => {
     const fetchTableData = () => {
       setTableData(sample_demo_leaderboards_json);
@@ -125,6 +128,10 @@ const DemoPointsLeaderboards = () => {
       return address.slice(0, 5) + "..." + address.slice(-7, -1);
     } else return address;
   };
+
+  const navigaToGameZone = () => {
+    router.push('/gamezone')
+  }
 
   useEffect(() => {
     setShowAddedPoints(true);
@@ -251,7 +258,10 @@ const DemoPointsLeaderboards = () => {
         </Table>
       </div>
 
-      <button className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-[96%] h-[45px] gap-[30px] relative bottom-[8px]">
+      <button 
+        className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-[96%] h-[45px] gap-[30px] relative bottom-[8px]"
+        onClick={() => navigaToGameZone()}
+      >
         <img
           src="/static/challenge-img.png"
           alt="Challenge Mate Image"
