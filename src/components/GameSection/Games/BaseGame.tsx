@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from 'next/navigation'
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@components/shared/Button";
 import { BaseGameProps } from "@type/GameSection";
 
@@ -30,13 +31,14 @@ export const BaseGame = (props: BaseGameProps) => {
     basePath,
     extension,
     barColor,
-    gameCall = () => {},
+    gameCall = (choice?: string) => {},
     onWinNotify = () => {},
     onCountdownFinish = () => {},
     onVideoFinish = () => {},
     onChoiceClicked = () => {},
     onGameReset = () => {},
     isPaused,
+    resetToInitial,
     hasError,
     initialTime,
     gameType,
@@ -65,27 +67,34 @@ export const BaseGame = (props: BaseGameProps) => {
     )
     .flat();
 
-  const switchGameState = (targetState: GameState) => {
-    switch (targetState) {
-      case GameState.WAITING:
-        setWaitTimeLeft(DEFAULT_TIMER);
-        break;
-      case GameState.COUNTDOWN:
-        setTimeLeft(REST_TIMER);
-        break;
-      case GameState.START:
-        break;
-      case GameState.RESTDOWN:
-        setRestTimeLeft(REST_TIMER);
-        break;
-    }
-    setGameState(targetState);
-  };
+  const switchGameState = useCallback(
+    (targetState: GameState) => {
+      switch (targetState) {
+        case GameState.WAITING:
+          if (resetToInitial) {
+            setWaitTimeLeft(initialTime);
+          } else {
+            setWaitTimeLeft(DEFAULT_TIMER);
+          }
+          break;
+        case GameState.COUNTDOWN:
+          setTimeLeft(REST_TIMER);
+          break;
+        case GameState.START:
+          break;
+        case GameState.RESTDOWN:
+          setRestTimeLeft(REST_TIMER);
+          break;
+      }
+      setGameState(targetState);
+    },
+    [initialTime, resetToInitial]
+  );
 
   const triggerGame = useCallback(async () => {
     let result;
     if (selectedChoice && !hasError) {
-      const data = (await gameCall()) || {};
+      const data = (await gameCall(selectedChoice)) || {};
       result = data?.result;
       if (result) {
         setResult(result);
@@ -96,7 +105,7 @@ export const BaseGame = (props: BaseGameProps) => {
       setResult(randomResult);
       switchGameState(GameState.START);
     }
-  }, [gameCall, results, selectedChoice, hasError]);
+  }, [selectedChoice, hasError, gameCall, switchGameState, results]);
 
   if (
     gameState === GameState.COUNTDOWN &&
@@ -160,7 +169,7 @@ export const BaseGame = (props: BaseGameProps) => {
     }
 
     return () => clearInterval(waitInterval);
-  }, [gameState, waitTimeLeft, isPaused]);
+  }, [gameState, waitTimeLeft, isPaused, switchGameState]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -190,7 +199,7 @@ export const BaseGame = (props: BaseGameProps) => {
     }
 
     return () => clearInterval(restInterval);
-  }, [gameState, restTimeLeft, isPaused]);
+  }, [gameState, restTimeLeft, isPaused, switchGameState]);
 
   const isVideoHidden = (
     variantVid: string | number,
@@ -281,7 +290,22 @@ export const BaseGame = (props: BaseGameProps) => {
           ))}
         </div>
         <div className="flex-col flex items-center justify-start bg-nafl-grey-700 lg:w-[530px] w-full rounded-3xl overflow-hidden h-[269px] relative">
-          <div className="lg:w-[600px] w-[180%] h-[240px]">
+          {gameState === GameState.COUNTDOWN && (
+            <AnimatePresence>
+              <div className="w-full h-full flex items-center justify-center text-[8rem]">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, display: "block" }}
+                  key={seconds}
+                >
+                  {seconds}
+                </motion.div>
+              </div>
+            </AnimatePresence>
+          )}
+          <div
+            className={`lg:w-[600px] w-[180%] h-[240px] ${gameState === GameState.COUNTDOWN ? "hidden" : ""}`}
+          >
             {videoArray.map(({ choice, result: vidResult, variant }, idx) => (
               <video
                 playsInline={true}
@@ -314,7 +338,7 @@ export const BaseGame = (props: BaseGameProps) => {
             </video>
           </div>
           <div
-            className={`${barColor} flex items-center bg-nafl-aqua-500 h-[50px] px-[20px] flex-row justify-between absolute bottom-0 w-full`}
+            className={`${barColor} flex items-center bg-nafl-aqua-500 h-[50px] px-[20px] flex-row justify-between absolute bottom-0 w-full ${gameState === GameState.COUNTDOWN ? "hidden" : ""}`}
           >
             <div className="flex flex-col items-start justify-center mt-[5px]">
               <p className="text-[12px] leading-[100%] font-face-bebas">
