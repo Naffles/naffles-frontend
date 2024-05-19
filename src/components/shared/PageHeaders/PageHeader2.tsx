@@ -70,22 +70,30 @@ const PageHeader: React.FC<PageHeaderProps> = (
     },
   ];
 
-  // const handleClickOutside = (event: MouseEvent) => {
-  //   if (
-  //     dropdownRef.current &&
-  //     !dropdownRef.current.contains(event.target as Node)
-  //   ) {
-  //     setOpen(false);
-  //   }
-  // };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const clickedElement = event.target as HTMLElement;
+      const containerElement = document.getElementById('dropdown-menu-button');
+      const clickedElementId = clickedElement.id;
+      
+      if (
+          (!containerElement || !containerElement.contains(clickedElement)) ||
+          clickedElementId == 'dropdown-menu-button'
+      ) {
+        setOpen(false);
+      }
+    };
 
-  // useEffect(() => {
-  //   // Add event listener on document for clicks outside the dropdown
-  //   document.addEventListener("click", handleClickOutside);
+    // Add event listener on document for clicks outside the dropdown
+    document.addEventListener("click", handleClickOutside);
 
-  //   // Cleanup function to remove event listener on unmount
-  //   return () => document.removeEventListener("click", handleClickOutside);
-  // }, []);
+    // Cleanup function to remove event listener on unmount
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const toggleDropdown = () => {
+    setOpen(!open);
+  };
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -278,10 +286,8 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 <div ref={dropdownRef} className="relative">
                   {" "}
                   <button
-                    onClick={() => {
-                      setOpen(!open);
-                      console.log("opened");
-                    }} // Toggle open state on button click
+                    id="dropdown-menu-button"
+                    onClick={toggleDropdown} // Toggle open state on button click
                     type="button"
                     className="focus:outline-none rounded-full p-2 hover:bg-gray-300"
                     // onBlur={() => setOpen(!open)}
