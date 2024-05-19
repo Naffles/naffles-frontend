@@ -18,7 +18,7 @@ const UserProfile = () => {
   const [openModal, setOpenModal] = useState(false);
   const [tabsState, setTabsState] = useState([
     { key: "live-naffles", state: true, title: "My Naffles" },
-    { key: "tickets-history", state: false, title: "Tickets History" },
+    { key: "tickets-history", state: false, title: "Transactions" },
     { key: "burn", state: false, title: "Burn" },
     { key: "affiliate-rewards", state: false, title: "Affiliate Rewards" },
   ]);
@@ -61,9 +61,9 @@ const UserProfile = () => {
             <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-nafl-sponge-500 dark:border-gray-700 dark:text-gray-400">
               {tabsState.map((tab, index) => {
                 const activeString =
-                  "inline-block text-lg p-4 text-nafl-charcoal-800 bg-nafl-sponge-500 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500";
+                  "inline-block text-nafl-charcoal-800 bg-nafl-sponge-500 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500";
                 const inactiveString =
-                  "inline-block text-lg p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 text-nafl-charcoal-100";
+                  "inline-block rounded-t-lg bg-nafl-grey-700 hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 text-nafl-charcoal-100";
                 return (
                   <li
                     className="me-2"
@@ -73,7 +73,14 @@ const UserProfile = () => {
                     <a
                       href="#"
                       aria-current="page"
-                      className={tab.state ? activeString : inactiveString}
+                      className={`
+                        font-normal
+                        text-[22px]
+                        lead-8
+                        px-[48px]
+                        py-[10px]
+                        ${tab.state ? activeString : inactiveString}`
+                      }
                     >
                       {tab.title}
                     </a>
@@ -84,7 +91,7 @@ const UserProfile = () => {
             {liveNaffles.state && (
               <div className="flex flex-col w-full h-full">
                 <h1 className="text-5xl text-nafl-white mt-5 mb-5">
-                  LIVE NAFFLES
+                  LIVE NAFFLES - Coming Soon
                 </h1>
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10 mb-10 pb-10">
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
@@ -103,7 +110,7 @@ const UserProfile = () => {
             )}
             {ticketsHistory.state && (
               <div className="flex flex-col w-full h-full">
-                <h1 className="text-5xl text-nafl-white mt-5 mb-5">Actions</h1>
+                <h1 className="text-5xl text-nafl-white mt-5 mb-5">Actions - Coming Soon</h1>
                 <div className="overflow-x-auto h-auto">
                   <Table className="bg-nafle-charcoal-800">
                     <Table.Head className="bg-nafle-charcoal-800 text-nafl-charcoal-100 text-lg border-t-orange-50 border-b-1 border-t-1">
@@ -156,7 +163,7 @@ const UserProfile = () => {
                     </Table.Body>
                   </Table>
                 </div>
-                <h1 className="text-5xl text-nafl-sponge-100 mt-3">History</h1>
+                <h1 className="text-5xl text-nafl-sponge-100 mt-3">History - Coming Soon</h1>
                 <div className="overflow-x-auto h-auto">
                   <Table className="bg-nafle-charcoal-800">
                     <Table.Head className="bg-nafle-charcoal-800 text-nafl-charcoal-100 text-lg border-t-orange-50 border-b-1 border-t-1">
@@ -213,7 +220,7 @@ const UserProfile = () => {
             )}
             {burn.state && (
               <div className="flex flex-col w-full h-full">
-                <h1 className="text-5xl text-nafl-white mt-5 mb-5">BURN</h1>
+                <h1 className="text-5xl text-nafl-white mt-5 mb-5">BURN - Coming Soon</h1>
 
                 <div className="overflow-x-auto h-auto">
                   <Table className="bg-nafle-charcoal-800">
@@ -272,7 +279,7 @@ const UserProfile = () => {
             {affiliateRewards.state && (
               <div className="flex flex-col w-full h-full">
                 <h1 className="text-5xl text-nafl-white mt-5">
-                  AFFILIATE REWARDS
+                  AFFILIATE REWARDS - Coming Soon
                 </h1>
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10 mb-10">
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
