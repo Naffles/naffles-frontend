@@ -134,6 +134,8 @@ const DemoPointsLeaderboards = () => {
     }, 2000);
   }, [points]);
 
+  const pointsDifference = points - previousPoints;
+
   return (
     <div className="flex flex-col items-center justify-start w-full lg:h-[560px] h-[580px] rounded-[16px] relative bg-[#383838] pt-[65px] px-[5px] gap-[36px] pb-[8px] lg:mt-[32px] mt-[132px]">
       <div className="flex items-center justify-center w-full absolute top-[-40px]">
@@ -147,7 +149,7 @@ const DemoPointsLeaderboards = () => {
                 {points}
               </p>
 
-              {showAddedPoints && (
+              {showAddedPoints && !!pointsDifference && (
                 <motion.div
                   initial={{ y: 0 }}
                   animate={{ y: -40 }}
@@ -157,7 +159,7 @@ const DemoPointsLeaderboards = () => {
                   <div className="relative flex items-center justify-center text-center">
                     <img src="/nafflings/surprise3.png" alt="" />
                     <p className="font-face-bebas absolute">
-                      +{points - previousPoints}
+                      +{pointsDifference}
                     </p>
                   </div>
                 </motion.div>

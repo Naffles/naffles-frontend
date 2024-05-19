@@ -229,11 +229,12 @@ const GameZoneChat = () => {
   useEffect(() => {
     setShowAddedPoints(true);
     setTimeout(() => {
-      setPreviousPoints(user?.points || 0);
+      setPreviousPoints(user?.points ?? 0);
       setShowAddedPoints(false);
     }, 2000);
   }, [user?.points]);
 
+  const pointsDifference = Number(user?.points ?? 0) - previousPoints;
   return (
     <div className="xl:flex hidden flex-col items-center justify-start bg-[#383838] rounded-[16px] lg:w-[457px] max-w-[457px] w-[90%]">
       <div className="flex flex-col items-center justify-start py-[13px] px-[20px] rounded-t-[16px] border-b-[1px] border-nafl-sponge-500/50 w-full">
@@ -282,7 +283,7 @@ const GameZoneChat = () => {
           <p className="text-nafl-white text-[20px]">
             {user?.points} NAFFLINGS
           </p>
-          {showAddedPoints && (
+          {showAddedPoints && !!pointsDifference && (
             <motion.div
               initial={{ y: 0 }}
               animate={{ y: -40 }}
@@ -291,9 +292,7 @@ const GameZoneChat = () => {
             >
               <div className="relative flex items-center justify-center text-center">
                 <img src="/nafflings/surprise3.png" alt="" />
-                <p className="font-face-bebas absolute">
-                  +{Number(user?.points) - previousPoints}
-                </p>
+                <p className="font-face-bebas absolute">+{pointsDifference}</p>
               </div>
             </motion.div>
           )}
