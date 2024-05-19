@@ -1,39 +1,63 @@
 "use client";
 
+import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import axios from "@components/utils/axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { RiCloseLine, RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
+import Web3 from "web3";
+
+type Balance = {
+  tokenType: string;
+  amount: string;
+  conversion: string;
+};
 
 interface Props {
   show: boolean;
   setShow: Function;
-  walletBalances: {
-    id: number;
-    type: string;
-    balance: string;
-    usd: string;
-  }[];
+  walletBalances: Balance[] | null;
 }
 
 const WithdrawModal = (props: Props) => {
+  const { reloadProfile } = useBasicUser();
   const [showBalanceDropdown, setShowBalanceDropdown] =
     useState<boolean>(false);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0.0);
-  const [balanceType, setBalanceType] = useState<{
-    type: string;
-    balance: string;
-    usd: string;
-  }>({
-    type: "",
-    balance: "",
-    usd: "",
+  const [balanceType, setBalanceType] = useState<Balance>({
+    tokenType: "",
+    amount: "",
+    conversion: "",
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const withdraw = () => {
+  const requestWithdraw = async (amount: number, type: Balance) => {
     if (withdrawAmount > 0) {
-      toast.success("You have successfully requested for a withdraw");
+      const web3 = new Web3();
+      let weiAmount = web3.utils.toWei(amount.toString(), "ether");
+      console.log("weiAmount: ", weiAmount);
+      console.log("type: ", type);
+      try {
+        const result = await axios.post("user/withdraw", {
+          amount: weiAmount,
+          coinType: type.tokenType,
+          network: type.tokenType,
+        });
+
+        console.log(result);
+        if (result.status == 200) {
+          toast.success("successfully requested withdrawal");
+          setWithdrawAmount(0);
+          reloadProfile();
+        } else {
+          toast.success("Requested withdrawal failed, please try again!");
+        }
+      } catch (error: any) {
+        const errorData = error.response?.data;
+        toast.error(`Error on Requesting Withdrawal: ${errorData.message}`);
+      }
       props.setShow(false);
     } else {
       toast.error("Withdaw amount cannot be 0");
@@ -41,28 +65,26 @@ const WithdrawModal = (props: Props) => {
   };
 
   useEffect(() => {
-    if (balanceType.type == "") {
-      setBalanceType(props.walletBalances[0]);
-    }
-  }, [balanceType, props.walletBalances]);
+    props.walletBalances && setBalanceType(props.walletBalances[0]);
+  }, [props.walletBalances]);
 
   let currency_name = [
-    { type: "PTS", name: "Points" },
-    { type: "ETH", name: "Ethereum" },
-    { type: "BTC", name: "Bitcoin" },
-    { type: "BYTES", name: "Neo Tokyo" },
-    { type: "SOL", name: "Solana" },
-    { type: "NAFF", name: "Naffles" },
+    { type: "pts", name: "Points" },
+    { type: "eth", name: "Ethereum" },
+    { type: "btc", name: "Bitcoin" },
+    { type: "bytes", name: "Neo Tokyo" },
+    { type: "sol", name: "Solana" },
+    { type: "naff", name: "Naffles" },
   ];
 
   const currencyIconReturner = (type: string) => {
-    if (type == "ETH") {
+    if (type == "eth") {
       return <FaEthereum className="text-[#fff]" />;
-    } else if (type == "BTC") {
+    } else if (type == "btc") {
       return <FaBitcoin className="text-[#fff]" />;
-    } else if (type == "SOL") {
+    } else if (type == "sol") {
       return <TbCurrencySolana className="text-[#fff]" />;
-    } else if (type == "NAFF") {
+    } else if (type == "naff") {
       return (
         <img
           src="/static/naff-icon.png"
@@ -70,7 +92,7 @@ const WithdrawModal = (props: Props) => {
           className="w-[12px] object-contain"
         />
       );
-    } else if (type == "BYTES") {
+    } else if (type == "bytes") {
       return (
         <img
           src="/static/bytes-icon.png"
@@ -90,7 +112,13 @@ const WithdrawModal = (props: Props) => {
 
   const setToMax = () => {
     toast.success("Max amount set");
-    setWithdrawAmount(sampleMaxAmount);
+    setWithdrawAmount(parseFloat(weiToEther(balanceType.amount)));
+  };
+
+  const weiToEther = (weiAmount: string) => {
+    const web3 = new Web3();
+    let weiAmoutBigInt = BigInt(weiAmount);
+    return web3.utils.fromWei(weiAmoutBigInt, "ether");
   };
 
   return (
@@ -118,35 +146,37 @@ const WithdrawModal = (props: Props) => {
                     onClick={() => setShowBalanceDropdown(!showBalanceDropdown)}
                     className="flex items-center w-full h-full rounded-[11px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] gap-[10px]"
                   >
-                    {currencyIconReturner(balanceType?.type)}
+                    {currencyIconReturner(balanceType?.tokenType)}
                     <p className="text-[#fff] text-[16px] font-face-bebas">
-                      {currencyNameConverter(balanceType?.type)}
+                      {currencyNameConverter(balanceType?.tokenType)}
                     </p>
                     <p className="text-[#867878] text-[16px] font-face-bebas">
-                      {`${balanceType?.balance} ${balanceType?.type}`}
+                      {`${weiToEther(balanceType?.amount)} ${balanceType?.tokenType}`}
                     </p>
                     <RiExpandUpDownLine className="absolute text-[20px] right-[12px] text-nafl-sponge-500" />
                   </button>
                   {showBalanceDropdown && (
                     <div className="flex absolute top-[60px] w-full h-[160px] z-40 p-[10px] rounded-[10px] bg-[#4B4B4B] overflow-hidden overflow-y-scroll balance-scrollbar">
                       <div className="flex flex-col w-full gap-[6px]">
-                        {props.walletBalances.map((item) => (
+                        {props.walletBalances?.map((item, index) => (
                           <button
                             onClick={() => {
                               setBalanceType(item);
                               setShowBalanceDropdown(false);
                             }}
-                            key={item.id}
+                            key={index}
                             className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${
-                              balanceType.type == item?.type && "bg-[#fff]/30"
+                              balanceType.tokenType == item?.tokenType &&
+                              "bg-[#fff]/30"
                             }`}
                           >
-                            {currencyIconReturner(item?.type)}
+                            {currencyIconReturner(item?.tokenType)}
                             <p className="text-[#fff] text-[16px] font-face-bebas">
-                              {currencyNameConverter(item?.type)}
+                              {currencyNameConverter(item?.tokenType)}
                             </p>
                             <p className="text-[#cfcece] text-[16px] font-face-bebas truncate">
-                              BALANCE: {`${item?.balance} ${item?.type}`}
+                              BALANCE:{" "}
+                              {`${weiToEther(item?.amount)} ${item?.tokenType}`}
                             </p>
                           </button>
                         ))}
@@ -167,10 +197,10 @@ const WithdrawModal = (props: Props) => {
                   step={0.01}
                   min={0}
                   max={sampleMaxAmount}
-                  className="w-full h-[50px] border-[1px] border-nafl-sponge-500 pl-[36px] pr-[60px] font-face-roboto bg-[#4B4B4B] border-0 rounded-[10px]"
+                  className="w-full h-[50px] border-[1px] border-nafl-sponge-500 pl-[36px] pr-[60px] font-face-roboto bg-[#4B4B4B] rounded-[10px]"
                 />
                 <div className="absolute left-[13px] top-[20px]">
-                  {currencyIconReturner(balanceType?.type)}
+                  {currencyIconReturner(balanceType?.tokenType)}
                 </div>
                 <div
                   onClick={() => setToMax()}
@@ -185,7 +215,7 @@ const WithdrawModal = (props: Props) => {
                 </div>
               </div>
               <button
-                onClick={() => withdraw()}
+                onClick={() => requestWithdraw(withdrawAmount, balanceType)}
                 className="bg-nafl-sponge-500 rounded-[8px] w-[240px] h-[54px] mx-[6px]"
               >
                 <p className="text-[#000] text-[18px] font-bold">

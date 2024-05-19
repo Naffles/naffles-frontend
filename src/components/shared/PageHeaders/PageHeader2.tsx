@@ -10,7 +10,6 @@ import axios from "@components/utils/axios";
 import { motion } from "framer-motion";
 import WalletIcon from "@components/icons/walletIcon";
 import UserIcon from "@components/icons/userIcon";
-import { ConnectButton } from "@components/magic";
 import { Modal } from "@components/shared/Modal";
 import {
   RegistrationForm,
@@ -19,6 +18,11 @@ import {
 } from "@components/shared/AuthForms";
 import { ProfileForm } from "../AuthForms/ProfileForm";
 import { HiMenu } from "react-icons/hi";
+import AccWallet from "../Button/accwallet";
+import ConnectButton from "../Button/ConnectButton";
+import VerifyModal from "../Modal/VerifyModal";
+import DepositModal from "../Modal/DepositModal";
+import WithdrawModal from "../Modal/WithdrawModal";
 
 type PageHeaderProps = {
   // onLogin?: () => void;
@@ -30,6 +34,11 @@ enum ModalNames {
   RESET = "Reset Password",
 }
 
+type WithdrawWallets = {
+  address: string;
+  network: string;
+};
+
 const PageHeader: React.FC<PageHeaderProps> = (
   {
     // onLogin,
@@ -39,13 +48,71 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Use useRef for dropdown element reference
-
   const [shownModal, setShownModal] = useState<ModalNames | "">("");
   const [showModal, setShowModal] = useState(false);
   const [showOtherModal, setShowOtherModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { jwt, user: basicUser, login, logout } = useBasicUser();
+
+  const [openVerifyModal, setOpenVerifyModal] = useState<boolean>(false);
+  const [verificationToken, setVerificationToken] = useState<string | null>(
+    null
+  );
+  const [verificationFinished, setVerificationFinished] =
+    useState<boolean>(false);
+
+  const {
+    user,
+    showDepositModal,
+    showWithdrawModal,
+    setShowDepositModal,
+    setShowWithdrawModal,
+  } = useUser();
+
+  useEffect(() => {
+    verificationFinished &&
+      window.history.replaceState(null, "", window.location.pathname);
+  }, [verificationFinished]);
+
+  let sample_balances_json = [
+    {
+      id: 1,
+      type: "ETH",
+      balance: "1.2369",
+      usd: "3569",
+    },
+    {
+      id: 2,
+      type: "BTC",
+      balance: "0.2369",
+      usd: "3569",
+    },
+    {
+      id: 3,
+      type: "BYTES",
+      balance: "23.2369",
+      usd: "3569",
+    },
+    {
+      id: 4,
+      type: "SOL",
+      balance: "5.2369",
+      usd: "3569",
+    },
+    {
+      id: 5,
+      type: "NAFF",
+      balance: "1.2369",
+      usd: "3569",
+    },
+    {
+      id: 6,
+      type: "BTC",
+      balance: "0.2369",
+      usd: "3569",
+    },
+  ];
 
   const navigationOptions = [
     // {
@@ -105,6 +172,15 @@ const PageHeader: React.FC<PageHeaderProps> = (
         setIsScrolled(true);
       }
     });
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    let open = urlParams.get("open");
+    let token = urlParams.get("token");
+
+    open == "verify" && setOpenVerifyModal(true);
+    token && setVerificationToken(token);
   }, []);
 
   const handleUserChange = useCallback(async () => {
@@ -128,8 +204,6 @@ const PageHeader: React.FC<PageHeaderProps> = (
   }, [open]);
 
   useEffect(() => {
-    console.log(window.location.pathname);
-
     const index = navigationOptions.findIndex((item) => {
       if (window.location.pathname === item.href) {
         return item;
@@ -224,6 +298,30 @@ const PageHeader: React.FC<PageHeaderProps> = (
         >
           <ProfileForm />
         </Modal>
+      )}
+
+      {verificationToken && (
+        <VerifyModal
+          show={openVerifyModal}
+          setShow={setOpenVerifyModal}
+          verificationToken={verificationToken}
+          finished={setVerificationFinished}
+        />
+      )}
+
+      {user?.balances && (
+        <>
+          <DepositModal
+            show={showDepositModal}
+            setShow={setShowDepositModal}
+            walletBalances={user?.balances}
+          />
+          <WithdrawModal
+            show={showWithdrawModal}
+            setShow={setShowWithdrawModal}
+            walletBalances={user?.balances}
+          />
+        </>
       )}
 
       <div className="lg:flex hidden flex-row items-center justify-between rounded-lg h-[84px] w-full relative px-[19px]">
@@ -345,7 +443,8 @@ const PageHeader: React.FC<PageHeaderProps> = (
                   )}
                 </div>
 
-                <ConnectButton />
+                {!basicUser && <ConnectButton />}
+                {/* <AccWallet /> */}
               </div>
 
               {/* <div ref={dropdownRef} className="relative">
@@ -500,9 +599,6 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 </li>
               )}
               <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                <ConnectButton />
-              </li>
-              <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                 Settings
               </li>
               {basicUser && (
@@ -514,7 +610,9 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 </li>
               )}
             </ul>
-            <WalletIcon colour="black" size="lg" className="cursor-pointer" />
+            {!jwt && (
+              <WalletIcon colour="black" size="lg" className="cursor-pointer" />
+            )}
           </div>
         </div>
       </div>

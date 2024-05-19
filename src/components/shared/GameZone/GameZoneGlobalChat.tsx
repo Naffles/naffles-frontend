@@ -11,6 +11,7 @@ import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import DepositModal from "../Modal/DepositModal";
 import WithdrawModal from "../Modal/WithdrawModal";
 import useGame from "@components/utils/gamezone";
+import Web3 from "web3";
 
 interface GameData {
   _id: string;
@@ -30,6 +31,13 @@ interface Message {
   message: string | null;
   game: GameData | null;
 }
+
+type Balance = {
+  id: string;
+  tokenType: string;
+  amount: string;
+  conversion: string;
+};
 
 let sample_balances_json = [
   {
@@ -69,6 +77,7 @@ let sample_balances_json = [
     usd: "3569",
   },
 ];
+
 const BalancesListOption = ({
   type,
   balance,
@@ -78,13 +87,18 @@ const BalancesListOption = ({
   type: string;
   balance: string;
   usd: string;
-  value: { type: string; balance: string; usd: string; id: number };
+  value: Balance;
 }): React.JSX.Element => {
   const y = useMotionValue(0);
   const controls = useDragControls();
+  const weiToEther = (weiAmount: string) => {
+    const web3 = new Web3();
+    let weiAmoutBigInt = BigInt(weiAmount);
+    return web3.utils.fromWei(weiAmoutBigInt, "ether");
+  };
   return (
     <Reorder.Item
-      id={value.id.toString()}
+      id={value.id}
       value={value}
       dragListener={false}
       dragControls={controls}
@@ -96,20 +110,20 @@ const BalancesListOption = ({
           onPointerDown={(e) => controls.start(e)}
         />
         <div className="flex flex-row items-center justify-center gap-[6px]">
-          <p className="text-[16px] text-nafl-white">{`${balance} ${type}`}</p>
+          <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance).toLocaleString()} ${type}`}</p>
           <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
         </div>
       </div>
     </Reorder.Item>
   );
 };
+
 const GameZoneGlobalChat = () => {
-  const { socket, socketId, user } = useUser();
-  const [balances, setBalances] = useState(sample_balances_json);
+  const { socket, socketId, user, setShowDepositModal, setShowWithdrawModal } =
+    useUser();
+  const [balances, setBalances] = useState<Balance[]>([]);
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
-  const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setCurrentChallengerBuyIn = useGame(
@@ -121,6 +135,10 @@ const GameZoneGlobalChat = () => {
   const setGameId = useGame((state) => state.setGameId);
 
   const bottomChat = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    user?.balances && setBalances(user?.balances);
+  }, [user]);
 
   useEffect(() => {
     socket?.emit("joinGlobalChat");
@@ -233,6 +251,34 @@ const GameZoneGlobalChat = () => {
       bottomChat.current.scrollTop = bottomChat.current.scrollHeight;
     }
   };
+
+  // const BalancesListOption = ({
+  //   type,
+  //   balance,
+  //   usd,
+  // }: {
+  //   type: string;
+  //   balance: string;
+  //   usd: string;
+  // }): React.JSX.Element => {
+  //   const weiToEther = (weiAmount: string) => {
+  //     const web3 = new Web3();
+  //     let weiAmoutBigInt = BigInt(weiAmount);
+  //     return web3.utils.fromWei(weiAmoutBigInt, "ether");
+  //   };
+
+  //   return (
+  //     <>
+  //       <div className="flex flex-row items-center justify-start gap-[19px]">
+  //         <TfiMenu className="text-nafl-white text-[12px]" />
+  //         <div className="flex flex-row items-center justify-center gap-[6px]">
+  //           <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance).toLocaleString()} ${type}`}</p>
+  //           <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
+  //         </div>
+  //       </div>
+  //     </>
+  //   );
+  // };
 
   const MessageSection = ({
     currentId,
@@ -424,13 +470,13 @@ const GameZoneGlobalChat = () => {
                   onReorder={setBalances}
                   axis="y"
                 >
-                  {balances.map((balance) => (
+                  {balances.map((balance, index) => (
                     <BalancesListOption
-                      key={balance.id}
+                      key={index}
                       value={balance}
-                      type={balance.type}
-                      balance={balance.balance}
-                      usd={balance.usd}
+                      type={balance.tokenType}
+                      balance={balance.amount}
+                      usd={balance.conversion}
                     />
                   ))}
                 </Reorder.Group>
@@ -500,16 +546,6 @@ const GameZoneGlobalChat = () => {
           </div>
         </div>
       </div>
-      <DepositModal
-        show={showDepositModal}
-        setShow={setShowDepositModal}
-        walletBalances={sample_balances_json}
-      />
-      <WithdrawModal
-        show={showWithdrawModal}
-        setShow={setShowWithdrawModal}
-        walletBalances={sample_balances_json}
-      />
     </div>
   );
 };

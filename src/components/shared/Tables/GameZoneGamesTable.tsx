@@ -255,7 +255,7 @@ const GameZoneGamesTable = () => {
 
   const shortenWalletAddress = (address: string) => {
     if (address?.length > 30) {
-      return address.slice(0, 5) + "..." + address.slice(-7, -1);
+      return address.slice(0, 5) + "..." + address.slice(-7, address.length);
     } else if (address?.length > 15) {
       return address.slice(0, 15) + "...";
     } else return address;
