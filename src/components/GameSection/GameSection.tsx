@@ -8,6 +8,7 @@ import { RockPaperScissorsGame } from "./Games/RockPaperScissorsGame";
 import { CoinTossGame } from "./Games/CoinTossGame";
 
 export const GameSection = () => {
+  const [hasSelected, setHasSelected] = useState(false);
   const { user } = useBasicUser();
   const { isMobile } = useScreenSize();
   const [openModal, setOpenModal] = useState(false);
@@ -26,6 +27,34 @@ export const GameSection = () => {
     setIsCoinTossPaused(false);
   };
 
+  const handleRPSStart = (choice?: string) => {
+    if (choice) {
+      setHasSelected(true);
+    }
+    setIsCoinTossPaused(true);
+  };
+
+  const handleCoinTossStart = (choice?: string) => {
+    if (choice) {
+      setHasSelected(true);
+    }
+    setIsRPSPaused(true);
+  };
+
+  const handleRPSEnd = () => {
+    if (hasSelected) {
+      setHasSelected(false);
+    }
+    setIsCoinTossPaused(false);
+  };
+
+  const handleCoinTossEnd = () => {
+    if (hasSelected) {
+      setHasSelected(false);
+    }
+    setIsRPSPaused(false);
+  };
+
   return (
     <>
       <Modal
@@ -38,14 +67,16 @@ export const GameSection = () => {
       <div className="flex-row flex-wrap justify-center items-center gamezone-container gap-4 pt-8 hidden lg:flex">
         <div className="flex-col flex games-container gap-8">
           <RockPaperScissorsGame
-            onGameStart={() => setIsCoinTossPaused(true)}
-            onGameReset={() => setIsCoinTossPaused(false)}
+            resetToInitial={hasSelected}
+            onGameStart={handleRPSStart}
+            onGameReset={handleRPSEnd}
             isPaused={isRPSPaused}
             onLimitReached={handleLimitReached}
           />
           <CoinTossGame
-            onGameStart={() => setIsRPSPaused(true)}
-            onGameReset={() => setIsRPSPaused(false)}
+            resetToInitial={hasSelected}
+            onGameStart={handleCoinTossStart}
+            onGameReset={handleCoinTossEnd}
             isPaused={isCoinTossPaused}
             onLimitReached={handleLimitReached}
           />
@@ -57,14 +88,16 @@ export const GameSection = () => {
       {isMobile && (
         <div className="flex lg:hidden xl:hidden flex-col h-auto">
           <RockPaperScissorsGame
-            onGameStart={() => setIsCoinTossPaused(true)}
-            onGameReset={() => setIsCoinTossPaused(false)}
+            resetToInitial={hasSelected}
+            onGameStart={handleRPSStart}
+            onGameReset={handleRPSEnd}
             isPaused={isRPSPaused}
             onLimitReached={handleLimitReached}
           />
           <CoinTossGame
-            onGameStart={() => setIsRPSPaused(true)}
-            onGameReset={() => setIsRPSPaused(false)}
+            resetToInitial={hasSelected}
+            onGameStart={handleCoinTossStart}
+            onGameReset={handleCoinTossEnd}
             isPaused={isCoinTossPaused}
             onLimitReached={handleLimitReached}
           />
