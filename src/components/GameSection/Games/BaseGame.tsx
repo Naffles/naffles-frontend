@@ -32,7 +32,7 @@ export const BaseGame = (props: BaseGameProps) => {
     extension,
     barColor,
     gameCall = (choice?: string) => {},
-    onWinNotify = () => {},
+    onWinNotify = (result: string) => {},
     onCountdownStart = () => {},
     onCountdownFinish = () => {},
     onVideoFinish = () => {},
@@ -256,8 +256,8 @@ export const BaseGame = (props: BaseGameProps) => {
   };
 
   const handleVideoEnd = () => {
-    if (result === "win" && selectedChoice) {
-      onWinNotify();
+    if ((result === "win" || result == "lose") && selectedChoice) {
+      onWinNotify(result);
     }
     setResult("");
     setTimeout(() => {

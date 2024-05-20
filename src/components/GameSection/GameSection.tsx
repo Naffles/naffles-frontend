@@ -6,6 +6,7 @@ import DemoPointsLeaderboards from "./DemoPointsLeaderboards";
 import useScreenSize from "@hook/useScreenSize";
 import { RockPaperScissorsGame } from "./Games/RockPaperScissorsGame";
 import { CoinTossGame } from "./Games/CoinTossGame";
+import GameResultModal from "@components/shared/Modal/GameResultModal";
 
 export const GameSection = () => {
   const [hasSelected, setHasSelected] = useState(false);
@@ -14,6 +15,8 @@ export const GameSection = () => {
   const [openModal, setOpenModal] = useState(false);
   const [isCoinTossPaused, setIsCoinTossPaused] = useState(false);
   const [isRPSPaused, setIsRPSPaused] = useState(false);
+  const [showGameResultModal, setShowGameResultModal] = useState(false);
+  const [gameResult, setGameResult] = useState('');
 
   const handleLimitReached = () => {
     setOpenModal(true);
@@ -55,6 +58,11 @@ export const GameSection = () => {
     setIsRPSPaused(false);
   };
 
+  const handleResultModal = (result: string) => {
+    setGameResult(result);
+    setShowGameResultModal(true)
+  }
+
   return (
     <>
       <Modal
@@ -66,11 +74,17 @@ export const GameSection = () => {
       </Modal>
       <div className="flex-row flex-wrap justify-center items-center gamezone-container gap-4 pt-8 hidden lg:flex">
         <div className="flex-col flex games-container gap-8">
+          <GameResultModal 
+            show={showGameResultModal} 
+            hideModal={() => setShowGameResultModal(!showGameResultModal)} 
+            result={gameResult} 
+          />
           <RockPaperScissorsGame
             resetToInitial={hasSelected}
             onGameStart={handleRPSStart}
             onGameReset={handleRPSEnd}
             isPaused={isRPSPaused}
+            callGameResultModal={handleResultModal}
             onLimitReached={handleLimitReached}
           />
           <CoinTossGame
@@ -78,6 +92,7 @@ export const GameSection = () => {
             onGameStart={handleCoinTossStart}
             onGameReset={handleCoinTossEnd}
             isPaused={isCoinTossPaused}
+            callGameResultModal={handleResultModal}
             onLimitReached={handleLimitReached}
           />
         </div>
@@ -87,11 +102,17 @@ export const GameSection = () => {
       </div>
       {isMobile && (
         <div className="flex lg:hidden xl:hidden flex-col h-auto">
+          <GameResultModal 
+            show={showGameResultModal} 
+            hideModal={() => setShowGameResultModal(!showGameResultModal)} 
+            result={gameResult} 
+          />
           <RockPaperScissorsGame
             resetToInitial={hasSelected}
             onGameStart={handleRPSStart}
             onGameReset={handleRPSEnd}
             isPaused={isRPSPaused}
+            callGameResultModal={handleResultModal}
             onLimitReached={handleLimitReached}
           />
           <CoinTossGame
@@ -99,6 +120,7 @@ export const GameSection = () => {
             onGameStart={handleCoinTossStart}
             onGameReset={handleCoinTossEnd}
             isPaused={isCoinTossPaused}
+            callGameResultModal={handleResultModal}
             onLimitReached={handleLimitReached}
           />
         </div>
