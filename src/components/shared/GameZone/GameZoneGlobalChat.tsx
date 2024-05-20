@@ -511,7 +511,11 @@ const GameZoneGlobalChat = () => {
             alt="Naffle"
             className="w-full h-full object-cover object-center"
           />
-          <div className="flex flex-row items-center justify-between absolute inset-0 w-full h-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[18px]">
+          <div 
+          onClick={() => {
+            window.open("https://discord.com/invite/naffles", "_blank");
+          }}
+          className="flex flex-row items-center justify-between absolute inset-0 w-full h-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[18px] cursor-pointer">
             <img
               src={"/static/naffles-text-logo-dark.png"}
               alt="Naffle"
