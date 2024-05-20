@@ -240,7 +240,12 @@ const GameZoneChat = () => {
             </div>
           </div>
           <p className="text-[14px] text-nafl-white font-face-bebas">
-            HOW TO WIN THE JACKPOT?
+            <a
+              href="/win-the-jackpot"
+              target="_blank"
+            >
+              HOW TO WIN THE JACKPOT?
+            </a>
           </p>
         </div>
 
