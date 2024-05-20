@@ -7,6 +7,7 @@ export interface BaseGameProps {
   barColor: string;
   triggerUnlock?: () => any;
   gameCall?: (choice?: string) => any;
+  onCountdownStart?: () => any;
   onCountdownFinish?: () => any;
   onVideoFinish?: (hasSelected: boolean) => any;
   onChoiceClicked?: () => any;

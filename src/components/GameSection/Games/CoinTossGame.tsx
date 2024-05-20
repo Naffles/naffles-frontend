@@ -59,7 +59,7 @@ export const CoinTossGame = (props: GameContainerProps) => {
       isPaused={isPaused}
       hasError={hasError}
       initialTime={60}
-      onCountdownFinish={onGameStart}
+      onCountdownStart={onGameStart}
       gameType="cointoss"
     />
   );
