@@ -55,7 +55,7 @@ const UserProfile = () => {
   return (
     <Fragment>
       {/* open a modal to edit profile */}
-      <div className="flex flex-col items-center w-full mt-[85px] h-auto px-[125px]">
+      <div className="flex flex-col items-center w-full mt-[85px] h-auto px-[125px] min-h-[800px]">
         <div className="flex w-full h-auto">
           <div className="w-full h-full bg-nafl-charcoal-500 mt-[60px]">
             <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-nafl-sponge-500 dark:border-gray-700 dark:text-gray-400">
@@ -88,10 +88,10 @@ const UserProfile = () => {
                 );
               })}
             </ul>
-            {liveNaffles.state && (
+            {/* {liveNaffles.state && (
               <div className="flex flex-col w-full h-full">
                 <h1 className="text-5xl text-nafl-white mt-5 mb-5">
-                  LIVE NAFFLES - Coming Soon
+                  LIVE NAFFLES
                 </h1>
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10 mb-10 pb-10">
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
@@ -110,7 +110,7 @@ const UserProfile = () => {
             )}
             {ticketsHistory.state && (
               <div className="flex flex-col w-full h-full">
-                <h1 className="text-5xl text-nafl-white mt-5 mb-5">Actions - Coming Soon</h1>
+                <h1 className="text-5xl text-nafl-white mt-5 mb-5">Actions</h1>
                 <div className="overflow-x-auto h-auto">
                   <Table className="bg-nafle-charcoal-800">
                     <Table.Head className="bg-nafle-charcoal-800 text-nafl-charcoal-100 text-lg border-t-orange-50 border-b-1 border-t-1">
@@ -163,7 +163,7 @@ const UserProfile = () => {
                     </Table.Body>
                   </Table>
                 </div>
-                <h1 className="text-5xl text-nafl-sponge-100 mt-3">History - Coming Soon</h1>
+                <h1 className="text-5xl text-nafl-sponge-100 mt-3">History</h1>
                 <div className="overflow-x-auto h-auto">
                   <Table className="bg-nafle-charcoal-800">
                     <Table.Head className="bg-nafle-charcoal-800 text-nafl-charcoal-100 text-lg border-t-orange-50 border-b-1 border-t-1">
@@ -220,7 +220,7 @@ const UserProfile = () => {
             )}
             {burn.state && (
               <div className="flex flex-col w-full h-full">
-                <h1 className="text-5xl text-nafl-white mt-5 mb-5">BURN - Coming Soon</h1>
+                <h1 className="text-5xl text-nafl-white mt-5 mb-5">BURN</h1>
 
                 <div className="overflow-x-auto h-auto">
                   <Table className="bg-nafle-charcoal-800">
@@ -279,7 +279,7 @@ const UserProfile = () => {
             {affiliateRewards.state && (
               <div className="flex flex-col w-full h-full">
                 <h1 className="text-5xl text-nafl-white mt-5">
-                  AFFILIATE REWARDS - Coming Soon
+                  AFFILIATE REWARDS
                 </h1>
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10 mb-10">
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
@@ -295,7 +295,10 @@ const UserProfile = () => {
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
+            <div className="flex items-center justify-center h-[300px]">
+              <p className="font-mono text-[32px] text-white">Coming Soon</p>
+            </div>
           </div>
         </div>
       </div>
