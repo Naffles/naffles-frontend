@@ -92,6 +92,7 @@ const BalancesListOption = ({
   const y = useMotionValue(0);
   const controls = useDragControls();
   const weiToEther = (weiAmount: string) => {
+    if (weiAmount === "0") return weiAmount;
     const web3 = new Web3();
     let weiAmoutBigInt = BigInt(weiAmount);
     return web3.utils.fromWei(weiAmoutBigInt, "ether");
