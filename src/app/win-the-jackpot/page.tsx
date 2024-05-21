@@ -63,16 +63,28 @@ const WinTheJackpot = () => {
         Jackpot draws will be duration based, which means draws will be run every day, week or month depending on demand.  Entry to the jackpot is through several methods:
         </p>
         <br />
+        <div className="flex flex-row">
+          <p>1</p>
+          <p className="ml-4">
+          The Nafflings that you collect will infiltrate our systems to give you chances to win.  The more Nafflings you have, the better your chance of winning. 
+          <br />
+          <span className="text-nafl-purple">Moarr activity = Moarr Nafflings = Moarr entries. Simples!</span>
+          </p>
+        </div>
         <br />
-        1. The Nafflings that you collect will infiltrate our systems to give you chances to win.  The more Nafflings you have, the better your chance of winning. 
-          Moarr activity = Moarr Nafflings = Moarr entries. Simples!
+        <div className="flex flex-row">
+          <p>2</p>
+          <p className="ml-4">
+          Holders of staked founders keys will be given passive entry into the jackpot giveaways, based on the duration of staking. A % of entries into the jackpot draw will be allocated to founders key stakers, which will be distributed amongst staked holders, pro-rata based on the staking duration.
+          </p>
+        </div>
         <br />
-        <br />
-        2. Holders of staked founders keys will be given passive entry into the jackpot giveaways, based on the duration of staking. A % of entries into the jackpot draw will be allocated to founders key stakers, which will be distributed amongst staked holders, pro-rata based on the staking duration.
-        <br />
-        <br />
-        3. Holders of staked elevation passes will be given pass entry into the jackpot giveaways based on the tier of the Elevation pass.  A % of entries into the jackpot giveaways will be allocated to Elevation pass stakers, which will be distributed amongst stakers, pro-rata based on the tier. Higher tiers will get more entries.
-        <br />
+        <div className="flex flex-row">
+          <p>3</p>
+          <p className="ml-4">
+          Holders of staked elevation passes will be given pass entry into the jackpot giveaways based on the tier of the Elevation pass.  A % of entries into the jackpot giveaways will be allocated to Elevation pass stakers, which will be distributed amongst stakers, pro-rata based on the tier. Higher tiers will get more entries.
+          </p>
+        </div>
         <br />
       </div>
     </div>
