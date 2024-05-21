@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ComingSoon } from "@components/shared/ComingSoon/ComingSoon";
 import StakingTokens from "./StakingTokens";
 import StakingFoundersKeys from "./StakingFoundersKeys";
 import StakingOpenEntry from "./StakingOpenEntry";
@@ -45,9 +46,10 @@ const StakingDashboardMain = () => {
 
         {/* TABS CONTENT */}
         <div className="flex flex-col w-full md:px-[21px] px-[0px] mb-[50px]">
-          {selectedTab == "tokens" && <StakingTokens />}
+          <ComingSoon />
+          {/* {selectedTab == "tokens" && <StakingTokens />}
           {selectedTab == "foundersKeys" && <StakingFoundersKeys />}
-          {selectedTab == "openEntry" && <StakingOpenEntry />}
+          {selectedTab == "openEntry" && <StakingOpenEntry />} */}
         </div>
       </div>
     </>
