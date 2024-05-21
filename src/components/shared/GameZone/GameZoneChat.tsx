@@ -15,6 +15,7 @@ import {
   useMotionValue,
 } from "framer-motion";
 import Web3 from "web3";
+import { jackpotAmount } from "@components/utils/jackpotCounter";
 
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
@@ -75,6 +76,7 @@ const GameZoneChat = () => {
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const [balances, setBalances] = useState<Balance[]>([]);
+  const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
 
   const chatContainer = useRef<HTMLDivElement>(null);
   const bottomChat = useRef<HTMLDivElement>(null);
@@ -101,6 +103,30 @@ const GameZoneChat = () => {
       scrollToBottom();
     }
   }, [chatData]);
+
+  const intervalSet = useRef(false);
+  useEffect(() => {
+    const fetchInitialJackpot = async () => {
+        try {
+            const initialAmount = await jackpotAmount('nafflings');
+            setJackpotTotalAmount(initialAmount.jackpotInitial);
+            if (!intervalSet.current) {
+                intervalSet.current = true;
+                const interval = setInterval(() => {
+                    setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
+                }, 10000);
+
+                return () => {
+                    clearInterval(interval);
+                    intervalSet.current = false;
+                };
+            }
+        } catch (error) {
+            console.error('Failed to fetch initial jackpot amount:', error);
+        }
+    };
+    fetchInitialJackpot();
+  }, []);
 
   const randomString = (length: number, chars: string) => {
     var result = "";
@@ -231,7 +257,7 @@ const GameZoneChat = () => {
               </p>
               <div className="flex flex-row items-end justify-center gap-[2px]">
                 <p className="text-[30px] text-nafl-white font-face-bebas leading-[100%]">
-                  1259.69
+                  {jackpotTotalAmount}
                 </p>
                 <p className="text-[14px] text-nafl-white font-face-bebas">
                   NAFFLINGS

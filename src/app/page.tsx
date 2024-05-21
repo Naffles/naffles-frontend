@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import CardCarousel from "@components/shared/CardCarousel/CardCarousel";
 import TrophyIcon from "@components/icons/trophyIcon";
 import Typography from "@components/shared/Typography/typography";
@@ -12,8 +13,35 @@ import Footer from "@components/shared/Footer/Footer";
 import CollectionItem from "@components/shared/Collection/collection";
 import { GameSection } from "@components/GameSection";
 import { IoMdSearch } from "react-icons/io";
+import { jackpotAmount } from "@components/utils/jackpotCounter";
 
 export default function Home() {
+  const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
+
+  const intervalSet = useRef(false);
+  useEffect(() => {
+    const fetchInitialJackpot = async () => {
+        try {
+            const initialAmount = await jackpotAmount('nafflings');
+            setJackpotTotalAmount(initialAmount.jackpotInitial);
+            if (!intervalSet.current) {
+                intervalSet.current = true;
+                const interval = setInterval(() => {
+                    setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
+                }, 10000);
+
+                return () => {
+                    clearInterval(interval);
+                    intervalSet.current = false;
+                };
+            }
+        } catch (error) {
+            console.error('Failed to fetch initial jackpot amount:', error);
+        }
+    };
+    fetchInitialJackpot();
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
       <div className="w-full bg-[#464646] px-[25px] h-[110vh] md:h-[1200px] xl:h-[950px] pt-[100px]">
@@ -85,7 +113,7 @@ export default function Home() {
                         </div>
                         <div>
                           <p className="font-mono text-[48px] text-nafl-sponge-500 leading-[100%]">
-                            125 349.69{" "}
+                            {jackpotTotalAmount}{" "}
                             <span className="text-[20px] text-white font-mono">
                               NAFFLINGS
                             </span>
