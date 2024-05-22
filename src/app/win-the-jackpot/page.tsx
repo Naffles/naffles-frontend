@@ -64,24 +64,24 @@ const WinTheJackpot = () => {
         </p>
         <br />
         <div className="flex flex-row">
-          <p>1</p>
-          <p className="ml-4">
+          <p className="text-small">1</p>
+          <p className="ml-4 text-small">
           The Nafflings that you collect will infiltrate our systems to give you chances to win.  The more Nafflings you have, the better your chance of winning. 
           <br />
-          <span className="text-nafl-purple">Moarr activity = Moarr Nafflings = Moarr entries. Simples!</span>
+          <span className="text-nafl-purple text-small">Moarr activity = Moarr Nafflings = Moarr entries. Simples!</span>
           </p>
         </div>
         <br />
         <div className="flex flex-row">
-          <p>2</p>
-          <p className="ml-4">
+          <p className="text-small">2</p>
+          <p className="ml-4 text-small">
           Holders of staked founders keys will be given passive entry into the jackpot giveaways, based on the duration of staking. A % of entries into the jackpot draw will be allocated to founders key stakers, which will be distributed amongst staked holders, pro-rata based on the staking duration.
           </p>
         </div>
         <br />
         <div className="flex flex-row">
-          <p>3</p>
-          <p className="ml-4">
+          <p className="text-small">3</p>
+          <p className="ml-4 text-small">
           Holders of staked elevation passes will be given pass entry into the jackpot giveaways based on the tier of the Elevation pass.  A % of entries into the jackpot giveaways will be allocated to Elevation pass stakers, which will be distributed amongst stakers, pro-rata based on the tier. Higher tiers will get more entries.
           </p>
         </div>
