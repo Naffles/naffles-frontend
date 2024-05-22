@@ -12,6 +12,7 @@ import DepositModal from "../Modal/DepositModal";
 import WithdrawModal from "../Modal/WithdrawModal";
 import useGame from "@components/utils/gamezone";
 import Web3 from "web3";
+import { jackpotAmount } from "@components/utils/jackpotCounter";
 
 interface GameData {
   _id: string;
@@ -92,6 +93,7 @@ const BalancesListOption = ({
   const y = useMotionValue(0);
   const controls = useDragControls();
   const weiToEther = (weiAmount: string) => {
+    if (weiAmount === "0") return weiAmount;
     const web3 = new Web3();
     let weiAmoutBigInt = BigInt(weiAmount);
     return web3.utils.fromWei(weiAmoutBigInt, "ether");
@@ -124,6 +126,7 @@ const GameZoneGlobalChat = () => {
   const [balances, setBalances] = useState<Balance[]>([]);
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
+  const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setCurrentChallengerBuyIn = useGame(
@@ -176,6 +179,49 @@ const GameZoneGlobalChat = () => {
       scrollToBottom();
     }
   }, [chatData]);
+
+  // useEffect(() => {
+  //   const fetchInitialJackpot = async () => {
+  //       try {
+  //           const initialAmount = await jackpotAmount('nafflings');
+  //           setJackpotTotalAmount(initialAmount.jackpotInitial);
+  //           const interval = setInterval(() => {
+  //             console.log('INTERVAL')
+  //               setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
+  //           }, 10000);
+
+  //           return () => clearInterval(interval);
+  //       } catch (error) {
+  //           console.error('Failed to fetch initial jackpot amount:', error);
+  //       }
+  //   };
+
+  //   fetchInitialJackpot();
+  // }, []);
+
+  const intervalSet = useRef(false);
+  useEffect(() => {
+    const fetchInitialJackpot = async () => {
+        try {
+            const initialAmount = await jackpotAmount('nafflings');
+            setJackpotTotalAmount(initialAmount.jackpotInitial);
+            if (!intervalSet.current) {
+                intervalSet.current = true;
+                const interval = setInterval(() => {
+                    setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
+                }, 10000);
+
+                return () => {
+                    clearInterval(interval);
+                    intervalSet.current = false;
+                };
+            }
+        } catch (error) {
+            console.error('Failed to fetch initial jackpot amount:', error);
+        }
+    };
+    fetchInitialJackpot();
+  }, []);
 
   const joinGame = (gameId: string, gameData: GameData) => {
     console.log("joined a game start");
@@ -396,7 +442,8 @@ const GameZoneGlobalChat = () => {
               </p>
               <div className="flex flex-row items-end justify-center gap-[2px]">
                 <p className="text-[30px] text-nafl-white font-face-bebas leading-[100%]">
-                  1259.69
+                  {/* 1259.69 */}
+                  {jackpotTotalAmount}
                 </p>
                 <p className="text-[14px] text-nafl-white font-face-bebas">
                   NAFFLINGS
