@@ -62,7 +62,10 @@ export const RegistrationForm = () => {
     setIsLoading((prev) => !prev);
   };
   return (
-    <FormContext onSubmit={onSubmit} className="flex flex-col gap-4 min-w-64">
+    <FormContext
+      onSubmit={onSubmit}
+      className="flex flex-col gap-4 w-64 mx-auto"
+    >
       {!showNext ? (
         <>
           <TextInput
