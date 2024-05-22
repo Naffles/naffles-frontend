@@ -239,8 +239,9 @@ body {
 .swiper-pagination-bullet {
   width: 16px;
   height: 16px;
+  
 }
 
 .swiper-pagination {
-  margin-right: 35px;
+  margin-right: 0;
 }
