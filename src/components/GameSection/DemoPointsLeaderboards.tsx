@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from 'next/navigation'
 import {
   Slider,
@@ -15,6 +15,7 @@ import {
 } from "@nextui-org/react";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { motion } from "framer-motion";
+import { jackpotAmount } from "@components/utils/jackpotCounter";
 interface tableRow {
   id: number;
   rank: number;
@@ -108,6 +109,7 @@ const DemoPointsLeaderboards = () => {
   const { points } = useBasicUser();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<tableRow[]>([]);
+  const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
 
   const router = useRouter()
 
@@ -117,6 +119,30 @@ const DemoPointsLeaderboards = () => {
     };
     fetchTableData();
     setIsLoading(false);
+  }, []);
+
+  const intervalSet = useRef(false);
+  useEffect(() => {
+    const fetchInitialJackpot = async () => {
+        try {
+            const initialAmount = await jackpotAmount('nafflings');
+            setJackpotTotalAmount(initialAmount.jackpotInitial);
+            if (!intervalSet.current) {
+                intervalSet.current = true;
+                const interval = setInterval(() => {
+                    setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
+                }, 10000);
+
+                return () => {
+                    clearInterval(interval);
+                    intervalSet.current = false;
+                };
+            }
+        } catch (error) {
+            console.error('Failed to fetch initial jackpot amount:', error);
+        }
+    };
+    fetchInitialJackpot();
   }, []);
 
   const fetchTableData = () => {
@@ -180,7 +206,7 @@ const DemoPointsLeaderboards = () => {
             </p>
             <div className="flex flex-row items-end justify-center gap-[3px]">
               <p className="font-face-bebas text-[24px] text-nafl-sponge-500 leading-[100%]">
-                1259.69
+                {jackpotTotalAmount}
               </p>
               <p className="font-face-bebas text-[20px] text-nafl-sponge-500 leading-[110%]">
                 NAFFLINGS
