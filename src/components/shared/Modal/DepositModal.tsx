@@ -8,6 +8,7 @@ import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { RiCloseLine, RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
 import Web3 from "web3";
+import { getCryptoPrice } from "@components/utils/jackpotCounter";
 
 type Balance = {
   id: string;
@@ -33,7 +34,14 @@ const DepositModal = (props: Props) => {
     conversion: "",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currencyConverted, setCurrencyConverted] = useState<number>(0);
   const { reloadProfile } = useBasicUser();
+
+  useEffect(() => {
+    getCryptoPrice(balanceType?.tokenType, depositAmount).then(price => {
+      setCurrencyConverted(price)
+    })
+  }, [depositAmount, balanceType?.tokenType])
 
   useEffect(() => {
     props.walletBalances && setBalanceType(props.walletBalances[0]);
@@ -212,7 +220,7 @@ const DepositModal = (props: Props) => {
                 </div>
                 <div className="flex w-full items-center justify-end">
                   <p className="text-[#00E0DF] text-[12px]">
-                    Estimated value: ~ $0.00
+                    Estimated value: ~ ${currencyConverted.toFixed(2)}
                   </p>
                 </div>
               </div>
