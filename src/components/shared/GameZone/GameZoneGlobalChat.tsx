@@ -249,9 +249,11 @@ const GameZoneGlobalChat = () => {
     );
 
     setCoinType(gameData.coinType);
-    setCurrentChallengerBuyIn(gameData.challengerBuyInAmount.toString());
+    setCurrentChallengerBuyIn(
+      gameData.challengerBuyInAmount.$numberDecimal.toString()
+    );
     // setBetOdds(gameData.odds.toString());
-    setCurrentPayout(gameData.payout.toString());
+    setCurrentPayout(gameData.payout.$numberDecimal.toString());
     setGameId(gameId);
   };
 

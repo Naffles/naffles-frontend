@@ -14,7 +14,7 @@ const GameZoneJoining = () => {
   const currentCoinType = useGame((state) => state.coinType);
   const currentBetAmount = useGame((state) => state.challengerBuyIn);
   const currentGameId = useGame((state) => state.gameId);
-  const setCurrentPayout = useGame((state) => state.payout);
+  const currentPayout = useGame((state) => state.payout);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setGameType = useGame((state) => state.setType);
@@ -114,7 +114,7 @@ const GameZoneJoining = () => {
           <p className=" text-[#989898] text-[14px]">
             Your Payout:{" "}
             <span className="text-[#fff] font-face-roboto italic">
-              {setCurrentPayout} {currentCoinType}
+              {currentPayout} {currentCoinType}
             </span>
           </p>
         </div>

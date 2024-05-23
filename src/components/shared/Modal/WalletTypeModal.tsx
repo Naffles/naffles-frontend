@@ -55,9 +55,7 @@ const WalletTypeModal = (props: Props) => {
       }
     } catch (error: any) {
       const errorData = error.response?.data;
-      toast.error(
-        `Error connecting to the Phantom wallet: ${errorData.message}`
-      );
+      toast.error(`${errorData.message}`);
     }
   };
 
@@ -102,9 +100,7 @@ const WalletTypeModal = (props: Props) => {
         console.log(validResponse);
       } catch (error: any) {
         const errorData = error.response?.data;
-        toast.error(
-          `Error connecting to the Metamask wallet: ${errorData.message}`
-        );
+        toast.error(`${errorData.message}`);
       }
     } else {
       console.log("MetaMask is not installed");
