@@ -1,7 +1,13 @@
 import { create } from "zustand";
 
 interface GameState {
-  screen: "main" | "create" | "joining" | "accepting" | "ingame";
+  screen:
+    | "main"
+    | "create"
+    | "createNafflings"
+    | "joining"
+    | "accepting"
+    | "ingame";
   mode: "challenger" | "host" | null;
   type: "Rock, Paper, Scissors" | "Coin Toss" | null;
   gameId: string | null;
@@ -17,7 +23,13 @@ interface GameState {
 
 interface GameActions {
   setScreen: (
-    screen: "main" | "create" | "joining" | "accepting" | "ingame"
+    screen:
+      | "main"
+      | "create"
+      | "createNafflings"
+      | "joining"
+      | "accepting"
+      | "ingame"
   ) => void;
   setMode: (mode: "challenger" | "host" | null) => void;
   setType: (type: "Rock, Paper, Scissors" | "Coin Toss" | null) => void;

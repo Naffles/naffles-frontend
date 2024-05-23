@@ -29,7 +29,7 @@ export const Modal = ({
     >
       <div className="modal-container rounded-2xl bg-[#383838] min-w-64 text-[40px]">
         {title && (
-          <div className="modal-header bg-[#202020] rounded-t-2xl py-1 px-[18px] relative flex items-center justify-center">
+          <div className="modal-header bg-[#202020] rounded-t-2xl py-1 px-[18px] relative flex items-center justify-center text-nafl-white">
             <div className="modal-close mr-auto invisible">
               <MdOutlineClose
                 className="hover:text-nafl-sponge-700 transition-colors ease-out duration-150 cursor-pointer text-body-xl"

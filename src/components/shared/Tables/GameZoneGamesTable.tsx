@@ -365,66 +365,56 @@ const GameZoneGamesTable = () => {
           isLoading={isLoading}
           loadingContent={<Spinner label="Loading..." />}
         >
-          {tableData.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell>
-                <div className="flex flex-row items-center gap-[7px] h-[70px]">
-                  <img
-                    src=""
-                    alt="Game Icon"
-                    className="w-[33px] h-[33px] bg-[#D9D9D9] border-[1px] border-[#DC2ABF] rounded-full"
-                  />{" "}
-                  <p
-                    className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
-                  >
-                    {item.game == "rockPaperScissors"
-                      ? "ROCK, PAPER, SCISSORS"
-                      : "COIN TOSS"}
-                  </p>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex flex-row items-center gap-[7px]">
-                  <img
-                    src={
-                      item.image ? item.image : "/static/no-image-account.png"
-                    }
-                    alt="Game Icon"
-                    className="w-[33px] h-[33px] rounded-full"
-                  />{" "}
-                  <p
-                    className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
-                  >
-                    {item.myUsername == item.player
-                      ? "You"
-                      : shortenWalletAddress(item.player)}
-                  </p>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex flex-row items-center gap-[6px]">
-                  <p
-                    className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
-                  >
-                    {item.myUsername == item.player
-                      ? item.creatorBuyin
-                      : item.challengerBuyin}
-                  </p>
-                  <p
-                    className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
-                  >
-                    {item.currency}
-                  </p>
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <div className="flex flex-row items-center justify-between gap-[7px]">
-                  <div className="flex flex-row items-center justify-center gap-[6px]">
+          {tableData.map((item) => {
+            const onImageError = (e: any) => {
+              e.target.src = "/static/no-image-account.png";
+            };
+            return (
+              <TableRow key={item.id}>
+                <TableCell>
+                  <div className="flex flex-row items-center gap-[7px] h-[70px]">
+                    <div className="w-[33px] h-[33px] bg-[#D9D9D9] border-[1px] border-[#DC2ABF] rounded-full overflow-hidden">
+                      {/* <img
+                        src=""
+                        alt="Game Icon"
+                        className="w-full h-full bg-[#D9D9D9] border-[1px] border-[#DC2ABF] object-cover"
+                      />{" "} */}
+                    </div>
                     <p
                       className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
                     >
-                      {item.payout}
+                      {item.game == "rockPaperScissors"
+                        ? "ROCK, PAPER, SCISSORS"
+                        : "COIN TOSS"}
+                    </p>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-row items-center gap-[7px]">
+                    <img
+                      src={item.image ?? "/static/no-image-account.png"}
+                      aria-placeholder=""
+                      alt="Game Icon"
+                      className="w-[33px] h-[33px] rounded-full"
+                      onError={onImageError}
+                    />{" "}
+                    <p
+                      className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                    >
+                      {item.myUsername == item.player
+                        ? "You"
+                        : shortenWalletAddress(item.player)}
+                    </p>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-row items-center gap-[6px]">
+                    <p
+                      className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                    >
+                      {item.myUsername == item.player
+                        ? item.creatorBuyin
+                        : item.challengerBuyin}
                     </p>
                     <p
                       className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
@@ -432,30 +422,47 @@ const GameZoneGamesTable = () => {
                       {item.currency}
                     </p>
                   </div>
-                  {item.allowJoin &&
-                    (item.myUsername != item.player ? (
-                      item.myId && (
-                        <button
-                          onClick={() => joinGame(item.id, item)}
-                          className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] border-[#DC2ABF] border-[1px] bg-trasparent"
-                        >
-                          <p className="text-[18px] font-bold">JOIN</p>
-                        </button>
-                      )
-                    ) : (
-                      <button
-                        onClick={() => deleteGame(item.id, item)}
-                        className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] bg-[#ff3636] bg-trasparent"
+                </TableCell>
+
+                <TableCell>
+                  <div className="flex flex-row items-center justify-between gap-[7px]">
+                    <div className="flex flex-row items-center justify-center gap-[6px]">
+                      <p
+                        className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
                       >
-                        <p className="text-[18px] font-bold text-nafl-white">
-                          DELETE
-                        </p>
-                      </button>
-                    ))}
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                        {item.payout}
+                      </p>
+                      <p
+                        className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                      >
+                        {item.currency}
+                      </p>
+                    </div>
+                    {item.allowJoin &&
+                      (item.myUsername != item.player ? (
+                        item.myId && (
+                          <button
+                            onClick={() => joinGame(item.id, item)}
+                            className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] border-[#DC2ABF] border-[1px] bg-trasparent"
+                          >
+                            <p className="text-[18px] font-bold">JOIN</p>
+                          </button>
+                        )
+                      ) : (
+                        <button
+                          onClick={() => deleteGame(item.id, item)}
+                          className="flex items-center justify-center w-[110px] h-[40px] rounded-[8px] bg-[#ff3636] bg-trasparent"
+                        >
+                          <p className="text-[18px] font-bold text-nafl-white">
+                            DELETE
+                          </p>
+                        </button>
+                      ))}
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>

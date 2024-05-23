@@ -25,7 +25,7 @@ interface Props {
 const DepositModal = (props: Props) => {
   const [showBalanceDropdown, setShowBalanceDropdown] =
     useState<boolean>(false);
-  const [depositAmount, setDepositAmount] = useState<number>(0.0);
+  const [depositAmount, setDepositAmount] = useState<string>("0.0");
   const [balanceType, setBalanceType] = useState<Balance>({
     id: "",
     tokenType: "",
@@ -38,6 +38,27 @@ const DepositModal = (props: Props) => {
   useEffect(() => {
     props.walletBalances && setBalanceType(props.walletBalances[0]);
   }, [props.walletBalances]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const clickedElement = event.target as HTMLElement;
+      const clickedElementClass = clickedElement.className;
+
+      if (
+        !clickedElementClass ||
+        typeof clickedElementClass != "string" ||
+        clickedElementClass.indexOf("balance-type-dropdown") < 0
+      ) {
+        setShowBalanceDropdown(false);
+      }
+    };
+
+    // Add event listener on document for clicks outside the dropdown
+    document.addEventListener("click", handleClickOutside);
+
+    // Cleanup function to remove event listener on unmount
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   let currency_name = [
     { type: "pts", name: "Points" },
@@ -79,7 +100,7 @@ const DepositModal = (props: Props) => {
     return currencyName[0]?.name;
   };
 
-  const createTransaction = async (amount: number, toAddress: string) => {
+  const createTransaction = async (amount: string, toAddress: string) => {
     if (window.ethereum) {
       setIsLoading(true);
       window.web3 = new Web3(window.ethereum);
@@ -90,7 +111,7 @@ const DepositModal = (props: Props) => {
         return;
       }
 
-      const amountInWei = window.web3.utils.toWei(amount.toString(), "ether");
+      const amountInWei = window.web3.utils.toWei(amount, "ether");
       const ethAcc = await window.web3.eth.getAccounts();
 
       window.web3.eth
@@ -111,7 +132,7 @@ const DepositModal = (props: Props) => {
             amount: "",
             conversion: "",
           });
-          setDepositAmount(0);
+          setDepositAmount("0");
           setTimeout(() => {
             props.setShow(false);
           }, 2000);
@@ -154,19 +175,19 @@ const DepositModal = (props: Props) => {
                 <div className="w-full relative h-[55px]">
                   <button
                     onClick={() => setShowBalanceDropdown(!showBalanceDropdown)}
-                    className="flex items-center w-full h-full rounded-[11px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] gap-[10px]"
+                    className="flex items-center w-full h-full rounded-[11px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] gap-[10px] balance-type-dropdown"
                   >
                     {currencyIconReturner(balanceType?.tokenType)}
-                    <p className="text-[#fff] text-[16px] font-face-bebas">
+                    <p className="text-[#fff] text-[16px] font-face-bebas balance-type-dropdown">
                       {currencyNameConverter(balanceType?.tokenType)}
                     </p>
-                    <p className="text-[#867878] text-[16px] font-face-bebas">
-                      {`${weiToEther(balanceType?.amount)} ${balanceType?.tokenType}`}
+                    <p className="text-[#867878] text-[16px] font-face-bebas balance-type-dropdown">
+                      {`${weiToEther(balanceType?.amount) == "0." ? 0 : weiToEther(balanceType?.amount)} ${balanceType?.tokenType}`}
                     </p>
                     <RiExpandUpDownLine className="absolute text-[20px] right-[12px] text-nafl-sponge-500" />
                   </button>
                   {showBalanceDropdown && (
-                    <div className="flex absolute top-[60px] w-full h-[160px] z-40 p-[10px] rounded-[10px] bg-[#4B4B4B] overflow-hidden overflow-y-scroll balance-scrollbar">
+                    <div className="flex absolute top-[60px] w-full h-[160px] z-40 p-[10px] rounded-[10px] bg-[#4B4B4B] overflow-hidden overflow-y-scroll balance-scrollbar balance-type-dropdown">
                       <div className="flex flex-col w-full gap-[6px]">
                         {props?.walletBalances?.map((item, index) => (
                           <button
@@ -175,18 +196,18 @@ const DepositModal = (props: Props) => {
                               setShowBalanceDropdown(false);
                             }}
                             key={index}
-                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${
+                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] balance-type-dropdown ${
                               balanceType.tokenType == item?.tokenType &&
                               "bg-[#fff]/30"
                             }`}
                           >
                             {currencyIconReturner(item?.tokenType)}
-                            <p className="text-[#fff] text-[16px] font-face-bebas">
+                            <p className="text-[#fff] text-[16px] font-face-bebas balance-type-dropdown">
                               {currencyNameConverter(item?.tokenType)}
                             </p>
-                            <p className="text-[#cfcece] text-[16px] font-face-bebas truncate">
+                            <p className="text-[#cfcece] text-[16px] font-face-bebas truncate balance-type-dropdown">
                               BALANCE:{" "}
-                              {`${weiToEther(item?.amount)} ${item?.tokenType}`}
+                              {`${weiToEther(item?.amount) == "0." ? 0 : weiToEther(item?.amount)} ${item?.tokenType}`}
                             </p>
                           </button>
                         ))}
@@ -198,14 +219,12 @@ const DepositModal = (props: Props) => {
               <div className="flex flex-col justify-center w-full relative overflow-hidden gap-[10px]">
                 <input
                   value={depositAmount}
-                  onChange={(e) =>
-                    parseFloat(e.target.value) > 0 &&
-                    setDepositAmount(parseFloat(e.target.value))
-                  }
+                  onChange={(e) => setDepositAmount(e.target.value)}
                   placeholder="Amount"
                   type="number"
                   step={0.01}
-                  className="w-full h-[50px] border-[1px] border-nafl-sponge-500 px-[36px] font-face-roboto bg-[#4B4B4B] rounded-[10px]"
+                  min={0}
+                  className="w-full h-[50px] border-[1px] border-nafl-sponge-500 px-[36px] font-face-roboto bg-[#4B4B4B] rounded-[10px] text-nafl-white"
                 />
                 <div className="absolute left-[13px] top-[20px]">
                   {currencyIconReturner(balanceType?.tokenType)}
