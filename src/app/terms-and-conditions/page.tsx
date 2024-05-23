@@ -47,47 +47,62 @@ const TermsAndConditions = () => {
       
 
       <div className="w-full max-w-[900px] max-h-[1200px] h-5/6 mt-4 text-nafl-white overflow-auto font-face-roboto text-body-base font-bold">
-        <p className="italic text-small mb-2">Last updated: 23 January 202</p>
+        <p className="italic text-small mb-2">Last updated: 23rd January 2024</p>
         <br />
-        <p className="italic text-large my-3">
+        <p className="text-body-2xl font-bold italic">
           BACKGROUND
         </p>
         <br />
+        <p className="text-small">
         This Website{" "}
         <Link href="/" className="font-face-roboto">
           https://naffles.com
         </Link>{" "}
-        <p className="text-small">
           as well as any other media channel, mobile Website, or mobile
           application related, linked, or otherwise connected thereto
           (collectively, the “Website”) and its related or connected services
           (collectively, the “Services”) is owned and operated by Degentralised
           Interactive Limited, which along with its directors or employees are
-          referred to as “Naffles”, “we”, “us”, or “our”. These Terms and
+          referred to as “Naffles”, “we”, “us”, or “our”. 
+          <br />
+          <br />
+          These Terms and
           Conditions (“Terms”) constitute a legally binding agreement made between
           you, whether personally or on behalf of an entity (“you”) and Naffles
-          concerning your access to and use of our Website. The information on the
+          concerning your access to and use of our Website. 
+          <br />
+          <br />
+          The information on the
           Website is not intended for distribution or to be used by any person or
           entity in any jurisdiction or country where such distribution or use
           would be contrary to law or regulation or which would subject us to any
           registration requirement within such jurisdiction or country.
-          Accordingly, persons who chooseto access the Website from other
+          Accordingly, persons who choose to access the Website from other
           locations do so on their own initiative and are solely responsible for
           compliance of local laws, to the extent local laws are
-          applicable.Information on this Website is not, in any circumstance,
+          applicable.
+          <br />
+          <br />
+          Information on this Website is not, in any circumstance,
           financial advice. The Company nor any of its affiliates will or shall
-          provide financial advice in any form.Any purchaseor sale you make,
+          provide financial advice in any form. 
+          <br />
+          <br />
+          Any purchase or sale you make,
           accept, or facilitate outside of the Website will be entirely at your
           own risk. You expressly indemnify us and hold us harmless for any losses
           you may incur by transacting or facilitating transactions outside of
-          this Website.This document contains very important information regarding
+          this Website.
+          <br />
+          <br />
+          This document contains very important information regarding
           your rights and obligations, as well as conditions, limitations and
           exclusions that may apply to you. Please read it carefully.
         </p>
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          1.ACCEPTANCE OF THESE TERMS AND CONDITION
+          1. ACCEPTANCE OF THESE TERMS AND CONDITION
         </p>
         <br />
         Our Services are only available to you upon acceptance of these terms
@@ -99,17 +114,17 @@ const TermsAndConditions = () => {
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          2.CHANGES TO THESE TERMS AND CONDITIONS
+          2. CHANGES TO THESE TERMS AND CONDITIONS
         </p>
         <br />
         Supplemental terms and conditions or documents that may be posted on the
         Website from time to time are hereby expressly incorporated herein by
         reference. We reserve the right, in our sole discretion, to make changes
         or modifications to these Terms and Conditions at any time and for
-        anyreason. We will alert you of any changes by updating the “Last
+        any reason. We will alert you of any changes by updating the “Last
         Updated” date of these Terms and Conditions, and you waive any right to
         receive specific notice of each such change. It is your responsibility
-        to periodically review these Terms and Conditionsto stay informed of
+        to periodically review these Terms and Conditions to stay informed of
         updates. You will be subject to and will be deemed to have been made
         aware of and to have accepted, the changes in any revised Terms of Use
         by your continued use of the Website after the date such revised Terms
@@ -118,7 +133,7 @@ const TermsAndConditions = () => {
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          3.APPLICATION OF THESE TERMS AND CONDITIONS
+          3. APPLICATION OF THESE TERMS AND CONDITIONS
         </p>
         <br />
         These Terms and Conditions apply to all users of our Services, including
@@ -129,7 +144,7 @@ const TermsAndConditions = () => {
         permitted to use, access, register an account or purchase our Services.
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">4.USER REGISTRATION</p>
+        <p className="text-body-2xl font-bold italic">4. USER REGISTRATION</p>
         <br />
         <div className="flex flex-row">
           <p>4.1</p>
@@ -176,7 +191,7 @@ const TermsAndConditions = () => {
         </div>
         <div className="flex flex-row">
           <p>4.6</p>
-          <p className="ml-4">To participate in the raffleshosted on our Website
+          <p className="ml-4">To participate in the raffles hosted on our Website
           (&quot;Raffles&quot;),we may require you to become a verified User which
           includes passing certain checks. You may be required to provide
           verification documentation in accordance with our KYC policy. We reserve
@@ -189,7 +204,7 @@ const TermsAndConditions = () => {
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">5.YOUR ACCOUNT</p>
+        <p className="text-body-2xl font-bold italic">5. YOUR ACCOUNT</p>
         <br />
         <div className="flex flex-row">
           <p>5.1</p>
@@ -208,7 +223,7 @@ const TermsAndConditions = () => {
           <p className="ml-4">We may close or suspend an Account if you are not or we reasonably
           believe that you are not complying with these Terms, or to ensure the
           integrity or fairness of the Service or if we have other reasonable
-          grounds to do so. We may not always be able to giveyou prior notice. If
+          grounds to do so. We may not always be able to give you prior notice. If
           we close or suspend your Account due to you not complying with these
           Terms, we may cancel and/or void any of your entries and withhold any
           funds in your account.</p>
@@ -226,13 +241,13 @@ const TermsAndConditions = () => {
           <p>5.5</p>
           <p className="ml-4">We reserve the right to refuse, restrict, cancel or limit any
           participation in Raffles at any time for whatever reason, including any
-          participationperceived to be fraudulent in order to circumvent our
+          participation perceived to be fraudulent in order to circumvent our
           raffles system. </p>
         </div>
         <br />
         <div className="flex flex-row">
           <p>5.6</p>
-          <p className="ml-4">If any prizeis mistakenly transferred to your Account, it remains our
+          <p className="ml-4">If any prize is mistakenly transferred to your Account, it remains our
           property and when we become aware of any such mistake, we shall notify
           you and you must return such prize immediately.
           </p>
@@ -254,15 +269,15 @@ const TermsAndConditions = () => {
         <br />
         <div className="flex flex-row">
           <p>5.9</p>
-          <p className="ml-4">Please remember that rafflesis purely for entertainment and pleasure,
+          <p className="ml-4">Please remember that raffles is purely for entertainment and pleasure,
           and you should stop as soon as it stops being fun. Absolutely do not
-          participate in anything you can’t afford to lose. If you feel that you
+          participate in anything you can&apos;t afford to lose. If you feel that you
           may have lost control of your gambling, we offer a self-exclusion
           option. Just send a message to our customer support using your
-          registeredemail address that you wish to self-exclude and this request
+          registered email address that you wish to self-exclude and this request
           will take effect within 24 hours from the moment of its receipt. In this
           case your account will be disabled until your further notice, and you
-          won’t be able to login to it.</p>
+          won&apos;t be able to login to it.</p>
         </div>
         <br />
         <div className="flex flex-row">
@@ -286,7 +301,7 @@ const TermsAndConditions = () => {
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">6.USER OBLIGATIONS</p>
+        <p className="text-body-2xl font-bold italic">6. USER OBLIGATIONS</p>
         <br />
         You acknowledge that at all times when accessing the Website and using
         the Services:
@@ -303,7 +318,7 @@ const TermsAndConditions = () => {
           <p>(b)</p>
           <p className="ml-4">You are of legal capacity and can enter into a binding legal
           agreement with us. You must not access the Website or utilize the
-          Service if you arenot of legal capacity.</p>
+          Service if you are not of legal capacity.</p>
         </div>
         <br />
         <div className="flex flex-row">
@@ -356,26 +371,26 @@ const TermsAndConditions = () => {
         <div className="flex flex-row">
           <p>(j)</p>
           <p className="ml-4">You must generally act in good faith in relation to us of the Service
-          at all times and for all activitiesperformed using the Service.</p>
+          at all times and for all activities performed using the Service.</p>
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">7.RESTRICTED USE</p>
+        <p className="text-body-2xl font-bold italic">7. RESTRICTED USE</p>
         <br />
         You must not use the Service:
         <br />
         <div className="flex flex-row">
           <p>(a)</p>
           <p className="ml-4">if you are under the age of 18 years (or below the age of majority as
-          stipulated in the laws of the jurisdictionapplicable to you) or if you
+          stipulated in the laws of the jurisdiction applicable to you) or if you
           are not legally able to enter into a binding legal agreement with us or
           you acting as an agent for, or otherwise on behalf, of a person under 18
           years (or below the age of majority as stipulated in the laws of the
-          jurisdictionapplicable to you); or</p>
+          jurisdiction applicable to you); or</p>
         </div>
         <div className="flex flex-row">
           <p>(b)</p>
-          <p className="ml-4">if you residein a country in which access to online gambling to its
+          <p className="ml-4">if you reside in a country in which access to online gambling to its
           residents or to any person within such country is prohibited; or</p>
         </div>
         <br />
@@ -397,7 +412,7 @@ const TermsAndConditions = () => {
         <div className="flex flex-row">
           <p>(e)</p>
           <p className="ml-4">if you accessor use the Website in connection with any commercial
-          endeavours except if agreed to in a bindinglegal contract with Naffles; or</p>
+          endeavours except if agreed to in a binding legal contract with Naffles; or</p>
         </div>
         <br />
         <div className="flex flex-row">
@@ -407,7 +422,7 @@ const TermsAndConditions = () => {
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">8.USER REPRESENTATIONS</p>
+        <p className="text-body-2xl font-bold italic">8. USER REPRESENTATIONS</p>
         <br />
         By accessing and/or using the Services, you represent and warrant that:
         <br />
@@ -449,7 +464,7 @@ const TermsAndConditions = () => {
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">9.GAMBLING BY A MINOR</p>
+        <p className="text-body-2xl font-bold italic">9. GAMBLING BY A MINOR</p>
         <br />
         <div className="flex flex-row">
           <p>9.1</p>
@@ -457,7 +472,7 @@ const TermsAndConditions = () => {
           currently under 18 years or were under 18 years (or below the age of
           majority as stipulated in the laws of the jurisdiction applicable to
           you) when you participated through your account, your account will be
-          suspended (locked) to prevent you using our Serviceor participating in
+          suspended (locked) to prevent you using our Service or participating in
           the Raffles further.</p>
         </div>
         <br />
@@ -476,20 +491,23 @@ const TermsAndConditions = () => {
           relevant time or have been participating in the Raffles as an agent for
           or at the behest of a person under 18 years or below the majority age
           which applies:
-          <br/>
-          (a)all prizes currently or due to be transferred to your Account will be
-          retainedby us;
-          <br />
-          (b)all prizesgained from participating in the Raffles through our
+          <p>(a)</p>
+          <p className="ml-4">all prizes currently or due to be transferred to your Account will be
+          retained by us;
+          </p>
+          <p>(b)</p>
+          <p className="ml-4">all prizes gained from participating in the Raffles through our
           Website whilst underage must be returned to us on demand (if you fail to
           comply with this provision, we will seek to recover all costs associated
           with recovery of such sums); and/or
-          <br />
-          (c)any monies deposited in your Account which are not used to
+          </p>
+          <p>(c)</p>
+          <p className="ml-4">any monies deposited in your Account which are not used to
           participate in the Raffles will be returned to you OR retained until you
           turn 18 years old at our sole discretion. We reserve the right to deduct
-          payment transactionfees from the amount to return, including transaction
+          payment transaction fees from the amount to return, including transaction
           fees for deposits to your naffles.com account which we covered.
+          </p>
           </p>
         </div>
         <br />
@@ -512,17 +530,17 @@ const TermsAndConditions = () => {
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">10.DEPOSIT OF FUNDS</p>
+        <p className="text-body-2xl font-bold italic">10. DEPOSIT OF FUNDS</p>
         <br />
         <div className="flex flex-row">
           <p>10.1</p>
           <p className="ml-4">All deposits, whether made via traditional banking methods or from
           self-custody crypto wallets,should be made from an account or payment
-          system or credit cardthat is registered in your own name,or a crypto
+          system or credit card that is registered in your own name,or a crypto
           wallet that you nominated and linked to your Account, and any deposits
           made in any other currency will be converted using the daily exchange
-          rate at the Company’s sole discretion,or at our own bank's or our
-          payment processor’s prevailing rate of exchange following which your
+          rate at the Company&apos;s sole discretion,or at our own bank&apos;s or our
+          payment processor&apos;s prevailing rate of exchange following which your
           Account will be deposited accordingly. Note that some payment systems
           may apply additional currency exchange fees or cryptocurrency network
           fees which will be deducted from the sum of your deposit.</p>
@@ -530,18 +548,18 @@ const TermsAndConditions = () => {
         <br />
         <div className="flex flex-row">
           <p>10.2</p>
-          <p className="ml-4">Fees and charges may apply to userdeposits and withdrawals, which
+          <p className="ml-4">Fees and charges may apply to user deposits and withdrawals, which
           can be found on the Website. In most cases we absorb transaction fees
           for deposits to your Account. You are responsible for your own bank
           charges and any cryptocurrency network fees that you may incur due to
-          depositing fundswith us.</p>
+          depositing funds with us.</p>
         </div>
         <br />
         <div className="flex flex-row">
           <p>10.3</p>
           <p className="ml-4">Naffles is not a financial institution and uses third-party
           electronic payment processors to process credit and debit card
-          depositsas well as crypto transactions; they are not processed directly
+          deposits as well as crypto transactions; they are not processed directly
           by us. If you deposit funds by either a credit card or a debit card,
           your Account will only be credited if we receive an approval and
           authorisation code from the payment issuing institution. If your card
@@ -582,7 +600,7 @@ const TermsAndConditions = () => {
         <div className="flex flex-row">
           <p>10.7</p>
           <p className="ml-4">Internet Gambling may be illegal in the jurisdiction in which you
-          are located; if so, you arenot authorized to use your payment cardor
+          are located; if so, you are not authorized to use your payment card or
           cryptocurrency wallets to deposit on this site. It is your
           responsibility to know the laws concerning online gambling in your
           country of domicile.</p>
@@ -590,7 +608,7 @@ const TermsAndConditions = () => {
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          11.PAYMENT TRANSACTIONS AND PROCESSORS
+          11. PAYMENT TRANSACTIONS AND PROCESSORS
         </p>
         <br />
         <div className="flex flex-row">
@@ -623,13 +641,13 @@ const TermsAndConditions = () => {
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic"> 12.ERRORS</p>
+        <p className="text-body-2xl font-bold italic"> 12. ERRORS</p>
         <br />
         <div className="flex flex-row">
           <p>12.1</p>
           <p className="ml-4">
-            In the event of a system malfunctionor smart contract errors or
-            bugsaffecting our raffle processes, all rafflesand associated
+            In the event of a system malfunction or smart contract errors or
+            bugs affecting our raffle processes, all raffles and associated
             transactions are rendered void. You are under an obligation to inform us
             immediately as soon as you become aware of any error with the Service.
             In the event of communication or system errors or smart contract bugs or
@@ -638,28 +656,31 @@ const TermsAndConditions = () => {
             liable to you or to any third party for any direct or indirect costs,
             expenses, losses or claims arising or resulting from such errors, and we
             reserve the right to void all affected raffle entries or transactions in
-            question and take any other action to correct such errors.13.2We have
-            the right to recover from you any amount overpaid and to adjust your
+            question and take any other action to correct such errors.
+          </p>
+          <p>12.2</p>
+          <p className="ml-4">
+            We have the right to recover from you any amount overpaid and to adjust your
             Account to rectify any mistake, including errors due to incorrect smart
             contract execution or pricing errors. An example of such a mistake might
             be where a price is incorrect or where we enter a result of an event
             incorrectly. If there are insufficient funds in your Account, we may
             demand that you pay us the relevant outstanding amount. Accordingly, we
-            reserve the right to cancel or delete any pending raffleplays, whether
+            reserve the right to cancel or delete any pending raffle plays, whether
             placed with funds resulting from the error or not.
           </p>
         </div>
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          13.RULES OF PLAY, REFUNDS AND CANCELLATIONS
+          13. RULES OF PLAY, REFUNDS AND CANCELLATIONS
         </p>
         <br />
         <div className="flex flex-row">
           <p>13.1</p>
           <p className="ml-4">
             Entitled to participate but excluded from the receipt of any prizes
-            areemployees of Nafflesand immediate family members of the employees of
+            are employees of Naffles and immediate family members of the employees of
             Naffles.
           </p>
         </div>
@@ -668,10 +689,10 @@ const TermsAndConditions = () => {
           <p>13.2</p>
           <p className="ml-4">
             All raffles hosted on our Website shall be conducted under and
-            governed by Naffles’ gambling license. Users acknowledge that all
+            governed by Naffles&apos; gambling license. Users acknowledge that all
             Raffles hosted on our Website are conducted by Naffles and agree not to
             hold themselves out as the operator of the Raffles, nor to suggest or
-            imply that they are conducting the Raffles independently of Naffles’
+            imply that they are conducting the Raffles independently of Naffles&apos;
             gambling license.
           </p>
         </div>
@@ -730,7 +751,7 @@ const TermsAndConditions = () => {
         <div className="flex flex-row">
           <p>13.8</p>
           <p className="ml-4">
-            Usersare solely responsible for their own Account transactionsand
+            Users are solely responsible for their own Account transactions and
             tax implication from winning prizes. Once a transaction is complete, it
             cannot be changed.
           </p>
@@ -752,34 +773,40 @@ const TermsAndConditions = () => {
             Company reserves the right to remove events, markets and any other
             products from the Website. To the maximum extent permitted by law, you
             agree and acknowledge that we are under no obligation to allow refunds
-            on the Websitein relation to any transactions that may, be refundable.
+            on the Website in relation to any transactions that may, be refundable.
             Any refunds or compensation, whether monetary or otherwise, in relation
             to the Website and your use of the Website and all its features and
             assets are considered, accepted, or rejected at our sole discretion.
             This includes, but is not limited to, the following scenarios in
-            whichyou may potentially suffer loss, harm, or damage:
+            which you may potentially suffer loss, harm, or damage:
             <br />
-            (a)accidental purchasesmade by you;
-            <br />
-            (b)glitches, malfunctions, or other technical errors encountered on the
+            <p>(a)</p>
+            <p className="ml-4"> accidental purchases made by you;
+            </p>
+            <p>(b)</p>
+            <p className="ml-4">glitches, malfunctions, or other technical errors encountered on the
             Website;
-            <br />
-            (c)being made victim of another user’s fraud, deceit, prohibited
+            </p>
+            <p>(c)</p>
+            <p className="ml-4">being made victim of another user&apos;s fraud, deceit, prohibited
             activity, or misdemeanour;
-            <br />
-            (d)fluctuating pricing by other users;
-            <br />
-            (e)unreasonable pricing by other users;
-            <br />
-            (f)the use of the Website and/or its features and assets in a manner not
+            </p>
+            <p>(d)</p>
+            <p className="ml-4">fluctuating pricing by other users;
+            </p>
+            <p>(e)</p>
+            <p className="ml-4">unreasonable pricing by other users;
+            </p>
+            <p>(f)</p>
+            <p className="ml-4">the use of the Website and/or its features and assets in a manner not
             consistent with a relevant intended purpose.
-            <br />
+            </p>
           </p>
         </div>
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          14.INTELLECTUAL PROPERTY RIGHTS
+          14. INTELLECTUAL PROPERTY RIGHTS
         </p>
         <br />
         <div className="flex flex-row">
@@ -829,19 +856,19 @@ const TermsAndConditions = () => {
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">15.DATA PROTECTION</p>
+        <p className="text-body-2xl font-bold italic">15. DATA PROTECTION</p>
         <br />
         In order to provide you with the Website and its Services, you
         acknowledge and agree that Naffles may collect, store, and process your
         personal data and/or information. By accessing and/or using the Website,
         you acknowledge to have read, understood, and accepted the terms of
-        Naffles’ privacy policy, and you further acknowledge and agree that
+        Naffles&apos; privacy policy, and you further acknowledge and agree that
         Naffles may use such data and/or information in accordance with the
         terms of its privacy policy.
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          16.THIRD-PARTY PAYMENT GATEWAYS
+          16. THIRD-PARTY PAYMENT GATEWAYS
         </p>
         <br />
         The Website reserves the right to employ and use third-party payment
@@ -850,14 +877,14 @@ const TermsAndConditions = () => {
         <br />
         gateway service, requires you to abide by their terms and conditions.
         Any third-party payment services used are not controlled by us. You
-        agree to use the third-party payment servicesat your own risk. You agree
-        to indemnify Nafflesfrom all liability in relation to any third-party
+        agree to use the third-party payment services at your own risk. You agree
+        to indemnify Naffles from all liability in relation to any third-party
         payment services. We accept no liability owed to you or to any third
         party for any claims or damages that may arise as a result of any
         transactions that you engage in via any third-party payment gateways.
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">17.TAXES</p>
+        <p className="text-body-2xl font-bold italic">17. TAXES</p>
         <br />
         You shall be solely responsible for any taxes applying to the payments
         you make or receive through the Website, and to collect, report, and
@@ -868,19 +895,19 @@ const TermsAndConditions = () => {
         order to comply with your tax obligations.
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">18.FRAUD</p>
+        <p className="text-body-2xl font-bold italic">18. FRAUD</p>
         <br />
         We will seek criminal and contractual sanctions against any user
         involved in fraud, dishonesty or criminal acts. We will withhold payment
         to any user where any of these are suspected. The user shall indemnify
-        and shall be liable to pay to us on demand allcosts, charges or losses
+        and shall be liable to pay to us on demand all costs, charges or losses
         sustained or incurred by us (including any direct, indirect or
         consequential losses, loss of profit, loss of business and loss of
-        reputation) arising directly or indirectly from the user’s fraud,
+        reputation) arising directly or indirectly from the user&apos;s fraud,
         dishonesty or criminal act.
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">19.SUBMISSIONS</p>
+        <p className="text-body-2xl font-bold italic">19. SUBMISSIONS</p>
         <br />
         You acknowledge and agree that any questions, comments, suggestions,
         ideas, feedback, or other information regarding the Website, the
@@ -898,7 +925,7 @@ const TermsAndConditions = () => {
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          20.THIRD PARTY WEBSITE AND CONTENT
+          20. THIRD PARTY WEBSITE AND CONTENT
         </p>
         <br />
         <div className="flex flex-row">
@@ -955,7 +982,7 @@ const TermsAndConditions = () => {
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">21.ADVERTISING</p>
+        <p className="text-body-2xl font-bold italic">21. ADVERTISING</p>
         <br />
         We may allow advertisers to display their advertisements and other
         information in certain areas of the Website, including sidebars,
@@ -971,7 +998,7 @@ const TermsAndConditions = () => {
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          22.TERMINATION OF USE AND BANNING OF WALLET ADDRESS
+          22. TERMINATION OF USE AND BANNING OF WALLET ADDRESS
         </p>
         <br />
         <div className="flex flex-row">
@@ -1001,7 +1028,7 @@ const TermsAndConditions = () => {
           <p>22.3</p>
           <p className="ml-4">
             If we terminate these Terms or suspend or terminate your access or a
-            wallet’s access to or use of the Website due to your breach of these
+            wallet&apos;s access to or use of the Website due to your breach of these
             Terms or any suspected fraudulent, abusive, or illegal activity
             (including, without limitation, if you engage in any of the Prohibited
             Activities), then termination of these Terms will be in addition to
@@ -1036,7 +1063,7 @@ const TermsAndConditions = () => {
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          23.LIMITATION OF LIABILITY
+          23. LIMITATION OF LIABILITY
         </p>
         <br />
         <div className="flex flex-row">
@@ -1061,25 +1088,36 @@ const TermsAndConditions = () => {
           loss or damages arising from or related to the use of the Website or
           Services, including, without limitation, to any of the following:
           <br />
-        (a)as a result of your own fault whether acts or omissions;
-        <br />
-        (b)delays, interruption or loss of services;
-        <br />
-        (c)technical failure, malfunction or shutdown;
-        <br />
-        (d)server failure, hacks or unavailability;
-        <br />
-        (e)data loss;
-        <br />
-        (f)corrupted data on Naffles’ servers;
-        <br />
-        (g)failure to update or provide correct information;
-        <br />
-        (h)“phishing” or other Websites masquerading as Naffles;
-        <br />
-        (i)stolen, lost, or unauthorised use of your means of authorization; and
-        <br />
-        (j)loss of business or goodwill.
+          <p>(a)</p>
+          <p className="ml-4">as a result of your own fault whether acts or omissions;
+          </p>
+          <p>(b)</p>
+          <p className="ml-4">delays, interruption or loss of services;
+          </p>
+          <p>(c)</p>
+          <p className="ml-4">echnical failure, malfunction or shutdown;
+          </p>
+          <p>(d)</p>
+          <p className="ml-4">server failure, hacks or unavailability;
+          </p>
+          <p>(e)</p>
+          <p className="ml-4">data loss;
+          </p>
+          <p>(f)</p>
+          <p className="ml-4">corrupted data on Naffles&apos; servers;
+          </p>
+          <p>(g)</p>
+          <p className="ml-4">failure to update or provide correct information;
+          </p>
+          <p>(h)</p>
+          <p className="ml-4">“phishing” or other Websites masquerading as Naffles;
+          </p>
+          <p>(i)</p>
+          <p className="ml-4">stolen, lost, or unauthorised use of your means of authorization; and
+          </p>
+          <p>(j)</p>
+          <p className="ml-4">loss of business or goodwill.
+          </p>
           </p>
         </div>
         <br />
@@ -1113,7 +1151,7 @@ const TermsAndConditions = () => {
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">24.INDEMNIFICATION</p>
+        <p className="text-body-2xl font-bold italic">24. INDEMNIFICATION</p>
         <br />
         To the fullest extent permitted under applicable laws, you agree to hold
         harmless and indemnify Naffles, its officers, shareholders, employees,
@@ -1127,7 +1165,7 @@ const TermsAndConditions = () => {
         <div className="flex flex-row">
           <p>(a)</p>
           <p className="ml-4">
-          (a)Your alleged or actual breach of these Terms, including, without
+          Your alleged or actual breach of these Terms, including, without
         limitation, Your express representations and warranties;
           </p>
         </div>
@@ -1135,20 +1173,20 @@ const TermsAndConditions = () => {
         <div className="flex flex-row">
           <p>(b)</p>
           <p className="ml-4">
-          (b)Your alleged or actual use or misuse of the Services; and
+          Your alleged or actual use or misuse of the Services; and
         </p>
         </div>
         <br />
         <div className="flex flex-row">
           <p>(c)</p>
           <p className="ml-4">
-          (c)Your alleged or actual infringement or violation of any laws or of
+          Your alleged or actual infringement or violation of any laws or of
         the rights of a third party.
         </p>
         </div>
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">25.ENTIRE AGREEMENT</p>
+        <p className="text-body-2xl font-bold italic">25. ENTIRE AGREEMENT</p>
         <br />
         These Terms constitute all the terms and conditions agreed upon between
         you and Degentralised Interactive Limited and supersede any prior
@@ -1157,49 +1195,49 @@ const TermsAndConditions = () => {
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          26.SEVERABILITY AND WAIVER
+          26. SEVERABILITY AND WAIVER
         </p>
         <br />
         Unless as otherwise stated in these Terms, should any provision of these
         Terms be held totally or partially invalid or unenforceable, such
         invalidity or unenforceability shall not in any manner affect or render
         invalid or unenforceable the remaining provisions of these Terms, and
-        the application of that provision shallbe enforced to the extent
-        permitted by applicable laws.The failure of Nafflesto exercise or
+        the application of that provision shall be enforced to the extent
+        permitted by applicable laws.The failure of Naffles to exercise or
         enforce any of the rights or provisions of these Terms shall not
-        considered as a waiver of Naffles’ rights to do so.
+        considered as a waiver of Naffles&apos; rights to do so.
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">27.ASSIGNMENT</p>
+        <p className="text-body-2xl font-bold italic">27. ASSIGNMENT</p>
         <br />
-        Nafflesmay assign these Terms and/or delegate any of its obligations
+        Naffles may assign these Terms and/or delegate any of its obligations
         hereunder, in whole or in part. You may not assign these Terms or any
         part of them, nor transfer or sub-license your rights under these Terms
         to any third party.
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">28.NO PARTNERSHIP</p>
+        <p className="text-body-2xl font-bold italic">28. NO PARTNERSHIP</p>
         <br />
         Nothing contained in these Terms shall be deemed or construed to create
         a principal and agent, partnership, or joint venture relationship
         between you and Naffles.
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">29.FORCE MAJEURE</p>
+        <p className="text-body-2xl font-bold italic">29. FORCE MAJEURE</p>
         <br />
-        Naffleswill not be deemed in default of these Terms to the extent that
+        Naffles will not be deemed in default of these Terms to the extent that
         performance of its obligations is delayed or prevented by reason of any
         external force including, without limitation, war, insurrections, bank
         failures, strikes, fires, floods, earthquakes, labour disputes,
         epidemics, governmental regulations, freight embargoes, natural
         disaster, act of government, or any other delay or failure caused by a
         third party, obstruction or failure of telecommunication services, any
-        other cause beyond Naffles’ reasonable control. In such an event, we
+        other cause beyond Naffles&apos; reasonable control. In such an event, we
         reserve the right to cancel or suspend our Services without incurring
         any liability.
         <br />
         <br />
-        <p className="text-body-2xl font-bold italic">30.GOVERNING LAW</p>
+        <p className="text-body-2xl font-bold italic">30. GOVERNING LAW</p>
         <br />
         These Terms, and your use of the Website and Service, are/is governed by
         and constructed in accordance with the law in force in the state of
@@ -1207,7 +1245,7 @@ const TermsAndConditions = () => {
         <br />
         <br />
         <p className="text-body-2xl font-bold italic">
-          31.ACCESSING AND AMENDING PERSONAL INFORMATION
+          31. ACCESSING AND AMENDING PERSONAL INFORMATION
         </p>
         <br />
         You are entitled to review, correct, or amend your personal information,
@@ -1225,6 +1263,7 @@ const TermsAndConditions = () => {
         <p className="text-body-2xl font-bold italic">PROHIBITED ACTIVITIES</p>
         <br />
         Prohibited Activities include but not limited to:
+        <br />
         <br />
         <div className="flex flex-row">
           <p>1.</p>
@@ -1265,7 +1304,7 @@ const TermsAndConditions = () => {
           <p className="ml-4">
             Circumventing or disabling or otherwise interfering with
             security-related features of the Website, including features that
-            prevent or restrict theuse or copying of any Website content or enforce
+            prevent or restrict the use or copying of any Website content or enforce
             limitations on the use of the Website and/or the content contained
             therein;
           </p>
@@ -1282,7 +1321,7 @@ const TermsAndConditions = () => {
           <p>7.</p>
           <p className="ml-4">
             Defrauding or misleading us and/or other users, especially in
-            anyattempt to learn sensitive account information such as user password;
+            any attempt to learn sensitive account information such as user password;
           </p>
         </div>
         <br />
@@ -1387,7 +1426,7 @@ const TermsAndConditions = () => {
         <div className="flex flex-row">
           <p>20.</p>
           <p className="ml-4">
-            Copying or adapting the Website’s software, including, but not
+            Copying or adapting the Website&apos;s software, including, but not
             limited to HTML, JavaScript, or other code;
           </p>
         </div>
@@ -1398,7 +1437,7 @@ const TermsAndConditions = () => {
             Uploading or transmitting (or attempting to upload or to transmit)
             viruses, Trojan horses, or other material, including excessive use of
             capital letters and spamming (continuous posting of repetitive text),
-            that interferes with any party’s uninterrupted use and enjoyment of
+            that interferes with any party&apos;s uninterrupted use and enjoyment of
             the Website or that modifies, impairs, disrupts, alters, or interferes
             with the use, features, functions, operation, or maintenance of the
             Website;
@@ -1475,7 +1514,7 @@ const TermsAndConditions = () => {
             Using the Website or the information contained in it for any
             revenue-generation endeavours or commercial purposes, including those
             which are competitive to the Website or our business, or which would
-            otherwise be detrimental or prejudicial to our interestsin any way;
+            otherwise be detrimental or prejudicial to our interests in any way;
             and
           </p>
         </div>
