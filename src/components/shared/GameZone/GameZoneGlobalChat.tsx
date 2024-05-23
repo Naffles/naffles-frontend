@@ -427,13 +427,8 @@ const GameZoneGlobalChat = () => {
       <div className="xl:flex hidden flex-col items-center justify-start bg-[#383838] rounded-[16px] lg:w-[457px] max-w-[457px] w-[90%]">
         <div className="flex flex-col items-center justify-start py-[13px] px-[20px] rounded-t-[16px] border-b-[1px] border-nafl-sponge-500/50 w-full">
           <div className="flex flex-row items-center justify-between py-[7px] px-[20px] rounded-[13px] border-[1px] border-[#DC2ABF] h-[54px] lg:w-[394px] w-full">
-            <div className="relative flex flex-row items-center justify-center gap-[19px]">
-              {/* <img
-              src="/static/naffles-jackpot-token.png"
-              alt="Naffles"
-              className="h-[41px] w-[41px] object-contain"
-            /> */}
-              <div className="absolute opacity-1 w-[120px] top-[-45px] left-[-20px]">
+            <div className="relative flex flex-row items-center justify-center gap-[50px]">
+              <div className="absolute opacity-1 w-[120px] top-[-45px] left-[-30px]">
                 <div className="relative flex justify-center">
                   <img
                     src="/static/jackpot-img.png"
@@ -447,99 +442,87 @@ const GameZoneGlobalChat = () => {
                   />
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col items-center justify-center ml-[96px]">
-              <p className="text-[14px] text-nafl-white font-face-bebas">
-                JACKPOT
-              </p>
-              <div className="flex flex-row items-end justify-center gap-[2px]">
-                <p className="text-[30px] text-nafl-white font-face-bebas leading-[100%]">
-                  {/* 1259.69 */}
-                  {jackpotTotalAmount}
-                </p>
-                <p className="text-[14px] text-nafl-white font-face-bebas">
-                  JACKPOT
-                </p>
-                <div className="flex flex-row items-end justify-center gap-[2px]">
-                  <p className="text-[30px] text-nafl-white font-face-bebas leading-[100%]">
-                    1259.69
+              <div className="flex flex-row items-center justify-center">
+                <div className="flex flex-col items-center justify-center ml-[76px]">
+                  <p className="text-[14px] text-nafl-white font-face-bebas">
+                    JACKPOT
                   </p>
+                  <div className="flex flex-row items-end justify-center gap-[2px]">
+                    <p className="text-[30px] text-nafl-white font-face-bebas leading-[100%]">
+                      {jackpotTotalAmount}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center justify-center">
+                  <img
+                    src="/nafflings/three-group.png"
+                    alt="Naffles Image"
+                    className="w-[61px] h-[34px] object-contain mb-[-8px]"
+                  />
                   <p className="text-[14px] text-nafl-white font-face-bebas">
                     NAFFLINGS
                   </p>
                 </div>
               </div>
             </div>
-          </div>
-          <p className="text-[14px] text-nafl-white font-face-bebas">
-            <a href="/win-the-jackpot" target="_blank">
-              HOW TO WIN THE JACKPOT?
-            </a>
-          </p>
-        </div>
 
-        <div className="flex flex-row items-center justify-between w-full mt-[26px]">
-          <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
-          <p className="text-nafl-white text-[20px]">
-            {user?.points} NAFFLINGS
-          </p>
-        </div>
-
-        <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
-          <div className="flex flex-row items-center justify-center p-[5px] bg-[#292929] rounded-t-[10px] h-[37px] gap-[8px]">
-            <p className="text-nafl-white font-bold w-[156px] text-center">
-              BALANCES
+            <p className="text-[14px] text-nafl-white font-face-bebas">
+              <a href="/win-the-jackpot" target="_blank">
+                HOW TO WIN THE JACKPOT?
+              </a>
             </p>
           </div>
-
-          <div className="flex flex-row items-center justify-between w-full mt-[26px]">
-            <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
-            <p className="text-nafl-white text-[20px]">
-              {user?.points} NAFFLINGS
-            </p>
-          </div>
-
-          <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
-            <div className="flex flex-row items-center justify-center p-[5px] bg-[#292929] rounded-t-[10px] h-[37px] gap-[8px]">
-              <p className="text-nafl-white font-bold w-[156px] text-center">
-                BALANCES
+          <div className="flex flex-col items-nceter justify-center w-full rounded-[10px]">
+            <div className="flex flex-row items-center justify-between w-full mt-[26px]">
+              <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
+              <p className="text-nafl-white text-[20px]">
+                {user?.points ?? 0} NAFFLINGS
               </p>
-              <button
-                onClick={() => setShowDepositModal(true)}
-                className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]"
-              >
-                <p className="text-[#000] text-[12px] font-bold">DEPOSIT</p>
-              </button>
-              <button
-                onClick={() => setShowWithdrawModal(true)}
-                className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]"
-              >
-                <p className="text-[#000] text-[12px] font-bold">WITHDRAW</p>
-              </button>
             </div>
-            <div className="w-full py-[14px] px-[12px] bg-[#4B4B4B] rounded-b-[10px] ">
-              <div className="w-full h-[118px] overflow-hidden overflow-y-scroll balance-scrollbar">
-                <div className="flex flex-col gap-[10px] w-full min-h-[114px] items-start justify-start">
-                  <Reorder.Group
-                    values={balances}
-                    onReorder={setBalances}
-                    axis="y"
-                  >
-                    {balances.map((balance, index) => (
-                      <BalancesListOption
-                        key={index}
-                        value={balance}
-                        type={balance.tokenType}
-                        balance={balance.amount}
-                        usd={balance.conversion}
-                      />
-                    ))}
-                  </Reorder.Group>
+
+            <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
+              <div className="flex flex-row items-center justify-center p-[5px] bg-[#292929] rounded-t-[10px] h-[37px] gap-[8px]">
+                <p className="text-nafl-white font-bold w-[156px] text-center">
+                  BALANCES
+                </p>
+                <button
+                  onClick={() => setShowDepositModal(true)}
+                  className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]"
+                >
+                  <p className="text-[#000] text-[12px] font-bold">DEPOSIT</p>
+                </button>
+                <button
+                  onClick={() => setShowWithdrawModal(true)}
+                  className="flex items-center justify-center w-[115px] h-[28px] bg-nafl-sponge-500 rounded-[5px]"
+                >
+                  <p className="text-[#000] text-[12px] font-bold">WITHDRAW</p>
+                </button>
+              </div>
+              <div className="w-full py-[14px] px-[12px] bg-[#4B4B4B] rounded-b-[10px] ">
+                <div className="w-full h-[118px] overflow-hidden overflow-y-scroll balance-scrollbar">
+                  <div className="flex flex-col gap-[10px] w-full min-h-[114px] items-start justify-start">
+                    <Reorder.Group
+                      values={balances}
+                      onReorder={setBalances}
+                      axis="y"
+                    >
+                      {balances.map((balance, index) => (
+                        <BalancesListOption
+                          key={index}
+                          value={balance}
+                          type={balance.tokenType}
+                          balance={balance.amount}
+                          usd={balance.conversion}
+                        />
+                      ))}
+                    </Reorder.Group>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <div className="flex flex-col py-[10px] px-[21px] gap-[10px] w-full">
           <div
             className="flex flex-col h-[488px] w-full overflow-hidden overflow-y-scroll pt-[15px] comments-scrollbar"
@@ -565,42 +548,17 @@ const GameZoneGlobalChat = () => {
             {/* <div ref={bottomChat} /> */}
           </div>
           {/* <div ref={bottomChat} /> */}
-        </div>
-        <div className="flex items-center w-full relative">
-          <input
-            type="text"
-            placeholder="Message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) =>
-              e.key == "Enter" && message && sendGlobalChatMessage(message)
-            }
-            maxLength={50}
-            className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
-          />
-          <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
-          <BiSend
-            onClick={() => message && sendGlobalChatMessage(message)}
-            className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer"
-          />
-        </div>
-
-        <div className="w-full h-[58px] rounded-[10px] relative overflow-hidden">
-          <img
-            src={"/static/gamezone-header-bg.png"}
-            alt="Naffle"
-            className="w-full h-full object-cover object-center"
-          />
-          <div
-            onClick={() => {
-              window.open("https://discord.com/invite/naffles", "_blank");
-            }}
-            className="flex flex-row items-center justify-between absolute inset-0 w-full h-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[18px] cursor-pointer"
-          >
-            <img
-              src={"/static/naffles-text-logo-dark.png"}
-              alt="Naffle"
-              className="w-[95px] object-contain"
+          <div className="flex items-center w-full relative">
+            <input
+              type="text"
+              placeholder="Message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) =>
+                e.key == "Enter" && message && sendGlobalChatMessage(message)
+              }
+              maxLength={50}
+              className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
             />
             <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
             <BiSend
@@ -609,7 +567,11 @@ const GameZoneGlobalChat = () => {
             />
           </div>
 
-          <div className="w-full h-[58px] rounded-[10px] relative overflow-hidden">
+          <a
+            href="https://discord.gg/naffles"
+            target="_blank"
+            className="w-full h-[58px] rounded-[10px] relative overflow-hidden cursor-pointer"
+          >
             <img
               src={"/static/gamezone-header-bg.png"}
               alt="Naffle"
@@ -625,7 +587,7 @@ const GameZoneGlobalChat = () => {
                 <b>JOIN</b> OUR DISCORD!
               </p>
             </div>
-          </div>
+          </a>
         </div>
       </div>
 
@@ -799,7 +761,11 @@ const GameZoneGlobalChat = () => {
                     />
                   </div>
 
-                  <div className="w-full h-[58px] rounded-[10px] relative overflow-hidden">
+                  <a
+                    href="https://discord.gg/naffles"
+                    target="_blank"
+                    className="w-full h-[58px] rounded-[10px] relative overflow-hidden cursor-pointer"
+                  >
                     <img
                       src={"/static/gamezone-header-bg.png"}
                       alt="Naffle"
@@ -815,7 +781,7 @@ const GameZoneGlobalChat = () => {
                         <b>JOIN</b> OUR DISCORD!
                       </p>
                     </div>
-                  </div>
+                  </a>
                 </div>
               </div>
             </div>
