@@ -217,7 +217,7 @@ const WithdrawModal = (props: Props) => {
                   type="number"
                   step={0.01}
                   min={0}
-                  max={sampleMaxAmount}
+                  max={parseFloat(balanceType.amount)}
                   className="w-full h-[50px] border-[1px] border-nafl-sponge-500 pl-[36px] pr-[60px] font-face-roboto bg-[#4B4B4B] rounded-[10px]"
                 />
                 <div className="absolute left-[13px] top-[20px]">

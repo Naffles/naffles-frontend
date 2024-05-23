@@ -168,7 +168,7 @@ export const BasicUserProvider = ({
         const {
           data: { data },
         } = await axios.patch("user/profile", form);
-        setUser(data ?? null);
+        reloadProfile();
         setPointsObject({
           points: data?.temporaryPoints || 0,
           date: Date.now(),
