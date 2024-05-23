@@ -23,6 +23,7 @@ import ConnectButton from "../Button/ConnectButton";
 import VerifyModal from "../Modal/VerifyModal";
 import DepositModal from "../Modal/DepositModal";
 import WithdrawModal from "../Modal/WithdrawModal";
+import { ModalProfile } from "../Modal/ModalProfile";
 
 type PageHeaderProps = {
   // onLogin?: () => void;
@@ -47,6 +48,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
 ) => {
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openMobile, setOpenMobile] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // Use useRef for dropdown element reference
   const [shownModal, setShownModal] = useState<ModalNames | "">("");
   const [showModal, setShowModal] = useState(false);
@@ -140,12 +142,13 @@ const PageHeader: React.FC<PageHeaderProps> = (
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const clickedElement = event.target as HTMLElement;
-      const containerElement = document.getElementById('dropdown-menu-button');
+      const containerElement = document.getElementById("dropdown-menu-button");
       const clickedElementId = clickedElement.id;
-      
+
       if (
-          (!containerElement || !containerElement.contains(clickedElement)) ||
-          clickedElementId == 'dropdown-menu-button'
+        !containerElement ||
+        !containerElement.contains(clickedElement) ||
+        clickedElementId == "dropdown-menu-button"
       ) {
         setOpen(false);
       }
@@ -263,7 +266,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
               handleLogin={handleLogin}
               handleForgotClick={handleForgotClick}
             />
-            <div className="text-body-sm text-nafl-charcoal-100 px-1">
+            <div className="text-body-sm text-nafl-charcoal-100 px-1 font-face-roboto mt-[14px]">
               No Account?{" "}
               <u
                 className="cursor-pointer"
@@ -291,13 +294,13 @@ const PageHeader: React.FC<PageHeaderProps> = (
           </Modal>
         </>
       ) : (
-        <Modal
+        <ModalProfile
           show={openEditModal}
           hideModal={() => setOpenEditModal(false)}
           title="Edit Profile"
         >
           <ProfileForm />
-        </Modal>
+        </ModalProfile>
       )}
 
       {verificationToken && (
@@ -534,88 +537,89 @@ const PageHeader: React.FC<PageHeaderProps> = (
             </Link>
             <div className="flex flex-col items-center">
               {navigationOptions.map((navItem, index) => (
-                <Link
+                <a
                   key={index}
                   href={navItem.href}
                   style={{
                     backgroundColor:
-                      selectedNavItem === index
-                        ? colorVariants["dark-accent"]
-                        : colorVariants["yellow"],
+                      selectedNavItem === index ? "#000" : "#00000000",
                     color:
                       selectedNavItem === index
-                        ? colorVariants["yellow"]
-                        : "#000",
+                        ? "#fff"
+                        : colorVariants["black"],
+                    paddingLeft: selectedNavItem === index ? "32px" : "0px",
+                    paddingRight: selectedNavItem === index ? "32px" : "0px",
                   }}
                   className="text-xl transition-colors ease-out duration-150 hover:text-[#8a8013] cursor-pointer pt-[0.2rem] border-radius-[0.5rem] p-1 rounded-lg px-3"
-                  onClick={() => setSelectedNavItem(index)}
+                  onClick={() => {
+                    setSelectedNavItem(index);
+                    setShowMobileMenu(false);
+                  }}
                 >
                   {navItem.title}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
 
-          <div
-            ref={dropdownRef}
-            className={`flex flex-col relative items-center w-[90%] bg-white rounded-[10px] duration-500 overflow-hidden border-[2px] border-[#252525] ${open ? "h-[200px]" : "h-[43px]"}`}
-          >
-            {" "}
-            {/* Assign ref to outer div */}
-            <button
-              onClick={() => setOpen(!open)} // Toggle open state on button click
-              type="button"
-              className="flex items-center justify-center focus:outline-none rounded-[10px] p-2 w-full"
-              // onBlur={() => setOpen(!open)}
+          <div className="flex flex-col gap-[14px] w-full items-center">
+            <div
+              ref={dropdownRef}
+              onClick={() => setOpenMobile(!openMobile)}
+              className={`flex flex-col relative items-center w-[90%] bg-white rounded-[10px] duration-500 overflow-hidden border-[2px] border-[#252525] ${openMobile ? (basicUser ? "h-[220px]" : "h-[110px]") : "h-[50px]"}`}
             >
-              {basicUser && imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt="Profile"
-                  className="w-[30px] h-[30px] rounded-full"
-                />
-              ) : (
-                <FaUserCircle className="text-[#212121] text-[30px]" />
-              )}
-            </button>
-            <ul
-              onBlur={() => setOpen(false)}
-              className={`flex flex-col w-[90%] rounded-md bg-white dark:bg-gray-800 overflow-hidden duration-500 ${open ? "h-[140px]" : "h-[0px]"}`}
-            >
-              {basicUser ? (
-                <Link
-                  href={"/profile/user-profile"}
-                  className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                >
-                  View Profile
-                  {/* if user then View Profile else Login button */}
-                </Link>
-              ) : (
-                <li
-                  className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                  onClick={() => setShowOtherModal(true)}
-                >
-                  Login
-                </li>
-              )}
-              <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                <ConnectButton />
-              </li>
-              {/* <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                Settings
-              </li> */}
-              {basicUser && (
-                <li
-                  className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </li>
-              )}
-            </ul>
-            {!jwt && (
-              <WalletIcon colour="black" size="lg" className="cursor-pointer" />
-            )}
+              <button
+                type="button"
+                className="flex flex-row items-center justify-center focus:outline-none rounded-[10px] p-2 w-full gap-[8px]"
+              >
+                {basicUser && imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="Profile"
+                    className="w-[30px] h-[30px] rounded-full"
+                  />
+                ) : (
+                  <FaUserCircle className="text-[#212121] text-[30px]" />
+                )}
+              </button>
+              <ul
+                onBlur={() => setOpenMobile(false)}
+                className={`flex flex-col w-[90%] rounded-md bg-white dark:bg-gray-800 overflow-hidden duration-500 ${openMobile ? "h-[140px]" : "h-[0px]"}`}
+              >
+                {basicUser ? (
+                  <>
+                    <Link
+                      href={"/profile/user-profile"}
+                      onClick={() => setShowMobileMenu(false)}
+                      className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                    >
+                      View Profile
+                    </Link>
+                    <li
+                      className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                      onClick={() => setOpenEditModal(true)}
+                    >
+                      Edit Profile
+                    </li>
+                    <li
+                      className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </li>
+                  </>
+                ) : (
+                  <li
+                    className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                    onClick={() => setShownModal(ModalNames.LOGIN)}
+                  >
+                    Login
+                  </li>
+                )}
+              </ul>
+            </div>
+
+            {!basicUser && <ConnectButton />}
           </div>
         </div>
       </div>

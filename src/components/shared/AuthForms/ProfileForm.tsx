@@ -246,13 +246,13 @@ export const ProfileForm = () => {
     return (
       <FormContext
         onSubmit={handleProfileEditSubmit}
-        className="flex flex-col items-start h-auto"
+        className="flex flex-col md:items-start items-center h-auto w-full"
       >
         <WalletTypeModal
           show={showChooseWalletType}
           setShow={setShowChooseWalletType}
         />
-        <div className="flex flex-row items-center gap-[5px] pl-[20px]">
+        <div className="flex md:flex-row flex-col items-center gap-[5px] md:pl-[20px] w-full">
           <div className="relative">
             <input
               type="file"
@@ -280,7 +280,7 @@ export const ProfileForm = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-col m-5 gap-4">
+          <div className="flex flex-col m-5 gap-4 w-full">
             <div className="w-full h-[54px] relative">
               <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
                 Username:
@@ -330,7 +330,7 @@ export const ProfileForm = () => {
           </Button>*/}
           </div>
         </div>
-        <div className="w-full min-h-[150px] px-[20px]">
+        <div className="w-full min-h-[150px] md:px-[20px] px-[0px]">
           <div className="flex flex-col w-full mt-3 items-center rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] relative pt-[24px] pb-[4px] pl-[30px] pr-[10px] h-full">
             <p className="absolute top-0 left-[5px] text-nafl-white text-[10px] italic">
               Connected Wallets:
@@ -344,7 +344,7 @@ export const ProfileForm = () => {
                     key={index}
                     className="flex flex-row items-center justify-between w-full"
                   >
-                    <p className="text-[16px] text-nafl-white">
+                    <p className="md:text-[16px] text-[12px] text-nafl-white">
                       {shortenWalletAddress(item)}
                     </p>
                     <IoIosCloseCircleOutline

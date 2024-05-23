@@ -64,7 +64,7 @@ export const RegistrationForm = () => {
   return (
     <FormContext
       onSubmit={onSubmit}
-      className="flex flex-col gap-4 w-64 mx-auto"
+      className="flex flex-col gap-4 w-full mx-auto items-center"
     >
       {!showNext ? (
         <>
@@ -100,15 +100,22 @@ export const RegistrationForm = () => {
           Something went wrong in verification.
         </label>
       )}
-      <Button
+      {/* <Button
         label="submit"
         variant="secondary"
         size="lg"
         type="submit"
         width="span"
       >
-        {isLoading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
-      </Button>
+        {isLoading ? <AiOutlineLoading className="animate-spin" /> : "Register"}
+      </Button> */}
+      <button
+        type="submit"
+        className="flex items-center justify-center text-[#000] text-[18px] h-[45px] md:w-[267px] w-full rounded-[10px] bg-nafl-sponge-500 font-face-roboto font-bold"
+        disabled={isLoading}
+      >
+        {isLoading ? <AiOutlineLoading className="animate-spin" /> : "REGISTER"}
+      </button>
     </FormContext>
   );
 };
