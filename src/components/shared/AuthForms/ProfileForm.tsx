@@ -257,7 +257,7 @@ export const ProfileForm = () => {
             <input
               type="file"
               accept="image/*"
-              className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 ${
+              className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 text-nafl-white ${
                 imageFile && "bg-gray-200 rounded-full"
               }`}
               onChange={handleChange}
@@ -291,7 +291,7 @@ export const ProfileForm = () => {
                 placeholder="New Username"
                 value={profileUsername}
                 onChange={(e) => setProfileUsername(e.target.value)}
-                className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
+                className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 text-nafl-white bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
               />
             </div>
             <div className="w-full h-[54px] relative">
@@ -304,7 +304,7 @@ export const ProfileForm = () => {
                 placeholder="New Email"
                 value={profileEmail}
                 onChange={(e) => setProfileEmail(e.target.value)}
-                className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
+                className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 text-nafl-white bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
               />
             </div>
             <div className="w-full flex flex-row items-center justify-end mt-[-14px]">

@@ -26,7 +26,7 @@ const WithdrawModal = (props: Props) => {
   const { reloadProfile } = useBasicUser();
   const [showBalanceDropdown, setShowBalanceDropdown] =
     useState<boolean>(false);
-  const [withdrawAmount, setWithdrawAmount] = useState<number>(0.0);
+  const [withdrawAmount, setWithdrawAmount] = useState<string>("0");
   const [balanceType, setBalanceType] = useState<Balance>({
     id: "",
     tokenType: "",
@@ -35,8 +35,8 @@ const WithdrawModal = (props: Props) => {
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const requestWithdraw = async (amount: number, type: Balance) => {
-    if (withdrawAmount > 0) {
+  const requestWithdraw = async (amount: string, type: Balance) => {
+    if (parseFloat(withdrawAmount) > 0) {
       const web3 = new Web3();
       let weiAmount = web3.utils.toWei(amount.toString(), "ether");
       console.log("weiAmount: ", weiAmount);
@@ -51,7 +51,7 @@ const WithdrawModal = (props: Props) => {
         console.log(result);
         if (result.status == 200) {
           toast.success("successfully requested withdrawal");
-          setWithdrawAmount(0);
+          setWithdrawAmount("0");
           reloadProfile();
         } else {
           toast.success("Requested withdrawal failed, please try again!");
@@ -69,6 +69,27 @@ const WithdrawModal = (props: Props) => {
   useEffect(() => {
     props.walletBalances && setBalanceType(props.walletBalances[0]);
   }, [props.walletBalances]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const clickedElement = event.target as HTMLElement;
+      const clickedElementClass = clickedElement.className;
+
+      if (
+        !clickedElementClass ||
+        typeof clickedElementClass != "string" ||
+        clickedElementClass.indexOf("balance-type-dropdown") < 0
+      ) {
+        setShowBalanceDropdown(false);
+      }
+    };
+
+    // Add event listener on document for clicks outside the dropdown
+    document.addEventListener("click", handleClickOutside);
+
+    // Cleanup function to remove event listener on unmount
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   let currency_name = [
     { type: "pts", name: "Points" },
@@ -114,7 +135,8 @@ const WithdrawModal = (props: Props) => {
 
   const setToMax = () => {
     toast.success("Max amount set");
-    setWithdrawAmount(parseFloat(weiToEther(balanceType.amount)));
+    let maxAmount = weiToEther(balanceType.amount);
+    setWithdrawAmount(maxAmount ?? "0");
   };
 
   const weiToEther = (weiAmount: string) => {
@@ -146,16 +168,16 @@ const WithdrawModal = (props: Props) => {
                 <div className="w-full relative h-[55px]">
                   <button
                     onClick={() => setShowBalanceDropdown(!showBalanceDropdown)}
-                    className="flex items-center w-full h-full rounded-[11px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] gap-[10px]"
+                    className="flex items-center w-full h-full rounded-[11px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] gap-[10px] balance-type-dropdown"
                   >
                     {currencyIconReturner(balanceType?.tokenType)}
-                    <p className="text-[#fff] text-[16px] font-face-bebas">
+                    <p className="text-[#fff] text-[16px] font-face-bebas balance-type-dropdown">
                       {currencyNameConverter(balanceType?.tokenType)}
                     </p>
-                    <p className="text-[#867878] text-[16px] font-face-bebas">
-                      {`${weiToEther(balanceType?.amount)} ${balanceType?.tokenType}`}
+                    <p className="text-[#867878] text-[16px] font-face-bebas balance-type-dropdown">
+                      {`${weiToEther(balanceType?.amount) == "0." ? 0 : weiToEther(balanceType?.amount)} ${balanceType?.tokenType}`}
                     </p>
-                    <RiExpandUpDownLine className="absolute text-[20px] right-[12px] text-nafl-sponge-500" />
+                    <RiExpandUpDownLine className="absolute text-[20px] right-[12px] text-nafl-sponge-500 balance-type-dropdown" />
                   </button>
                   {showBalanceDropdown && (
                     <div className="flex absolute top-[60px] w-full h-[160px] z-40 p-[10px] rounded-[10px] bg-[#4B4B4B] overflow-hidden overflow-y-scroll balance-scrollbar">
@@ -178,7 +200,7 @@ const WithdrawModal = (props: Props) => {
                             </p>
                             <p className="text-[#cfcece] text-[16px] font-face-bebas truncate">
                               BALANCE:{" "}
-                              {`${weiToEther(item?.amount)} ${item?.tokenType}`}
+                              {`${weiToEther(item?.amount) == "0." ? 0 : weiToEther(item?.amount)} ${item?.tokenType}`}
                             </p>
                           </button>
                         ))}
@@ -190,10 +212,7 @@ const WithdrawModal = (props: Props) => {
               <div className="flex flex-col justify-center w-full relative overflow-hidden gap-[10px]">
                 <input
                   value={withdrawAmount}
-                  onChange={(e) =>
-                    parseFloat(e.target.value) > 0 &&
-                    setWithdrawAmount(parseFloat(e.target.value))
-                  }
+                  onChange={(e) => setWithdrawAmount(e.target.value)}
                   placeholder="Amount"
                   type="number"
                   step={0.01}
