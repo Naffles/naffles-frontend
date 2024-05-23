@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@components/shared/Button";
 import { BaseGameProps } from "@type/GameSection";
@@ -32,7 +32,8 @@ export const BaseGame = (props: BaseGameProps) => {
     extension,
     barColor,
     gameCall = (choice?: string) => {},
-    onWinNotify = () => {},
+    onWinNotify = (result: string) => {},
+    onCountdownStart = () => {},
     onCountdownFinish = () => {},
     onVideoFinish = () => {},
     onChoiceClicked = () => {},
@@ -52,10 +53,11 @@ export const BaseGame = (props: BaseGameProps) => {
   const [displayVideo, setDisplayVideo] = useState<GameVideo | null>(null);
   const videosRef = useRef<(HTMLVideoElement | null)[]>([]);
   const [prevGameState, setPrevGameState] = useState<GameState | null>(null);
+  const [prevResetState, setPrevResetState] = useState<boolean | null>(false);
   const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
   const [gameText, setGameText] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const videoArray = choices
     .map((choice) =>
@@ -116,13 +118,24 @@ export const BaseGame = (props: BaseGameProps) => {
     triggerGame();
   }
 
+  if (prevResetState !== resetToInitial) {
+    setPrevResetState(!!resetToInitial);
+    if (isPaused && !selectedChoice && resetToInitial) {
+      setWaitTimeLeft(initialTime);
+    }
+  }
+
   if (prevGameState !== gameState) {
     setPrevGameState(gameState);
     switch (gameState) {
       case GameState.WAITING:
-        if (prevGameState !== null) {onGameReset(); setGameText(!gameText)};
+        if (prevGameState !== null) {
+          onGameReset();
+          setGameText(!gameText);
+        }
         break;
       case GameState.COUNTDOWN:
+        onCountdownStart();
         break;
       case GameState.START:
         {
@@ -243,8 +256,8 @@ export const BaseGame = (props: BaseGameProps) => {
   };
 
   const handleVideoEnd = () => {
-    if (result === "win" && selectedChoice) {
-      onWinNotify();
+    if ((result === "win" || result == "lose") && selectedChoice) {
+      onWinNotify(result);
     }
     setResult("");
     setTimeout(() => {
@@ -257,18 +270,18 @@ export const BaseGame = (props: BaseGameProps) => {
   };
 
   const navigaToGameZone = () => {
-    router.push('/gamezone')
-  }
+    router.push("/gamezone");
+  };
 
   const getGameText = (type: string) => {
-    const text = ['Ready to win real crypto?', 'Go to the game zone!']
-    if (type == 'rps') {
-      return text[gameText ? 1 : 0]
+    const text = ["Ready to win real crypto?", "Go to the game zone!"];
+    if (type === "rps") {
+      return text[gameText ? 1 : 0];
     } else {
-      return text[gameText ? 0 : 1]
+      return text[gameText ? 0 : 1];
     }
-  }
-  
+  };
+
   let seconds = timeLeft;
   if (gameState === GameState.RESTDOWN) seconds = restTimeLeft;
   if (gameState === GameState.WAITING) seconds = waitTimeLeft;
@@ -353,7 +366,7 @@ export const BaseGame = (props: BaseGameProps) => {
                 </span>
               </div>
             </div>
-            <div 
+            <div
               className="flex items-center text-[18px] leading-[100%] cursor-pointer"
               onClick={() => navigaToGameZone()}
             >

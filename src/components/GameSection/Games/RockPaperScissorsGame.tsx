@@ -6,7 +6,7 @@ import { GameContainerProps } from "@type/GameSection";
 import toast from "react-hot-toast";
 
 export const RockPaperScissorsGame = (props: GameContainerProps) => {
-  const { onGameStart, onGameReset, isPaused, resetToInitial, onLimitReached } =
+  const { onGameStart, onGameReset, isPaused, resetToInitial, onLimitReached, callGameResultModal } =
     props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
@@ -54,13 +54,13 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       barColor="bg-nafl-aqua-500"
       gameCall={triggerRPSGame}
       onChoiceClicked={onGameStart}
-      onWinNotify={() => alert("You won RPS")}
+      onWinNotify={callGameResultModal}
       onVideoFinish={handleVideoEnd}
       onGameReset={onGameReset}
       isPaused={isPaused}
       hasError={hasError}
       initialTime={30}
-      onCountdownFinish={onGameStart}
+      onCountdownStart={onGameStart}
       gameType="rps"
     />
   );

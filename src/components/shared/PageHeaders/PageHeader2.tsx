@@ -428,9 +428,9 @@ const PageHeader: React.FC<PageHeaderProps> = (
                           Login
                         </li>
                       )}
-                      <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                      {/* <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                         Settings
-                      </li>
+                      </li> */}
                       {basicUser && (
                         <li
                           className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
@@ -599,8 +599,11 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 </li>
               )}
               <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                Settings
+                <ConnectButton />
               </li>
+              {/* <li className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                Settings
+              </li> */}
               {basicUser && (
                 <li
                   className="block px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"

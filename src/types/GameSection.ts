@@ -7,10 +7,11 @@ export interface BaseGameProps {
   barColor: string;
   triggerUnlock?: () => any;
   gameCall?: (choice?: string) => any;
+  onCountdownStart?: () => any;
   onCountdownFinish?: () => any;
   onVideoFinish?: (hasSelected: boolean) => any;
   onChoiceClicked?: () => any;
-  onWinNotify?: () => any;
+  onWinNotify?: (result: string) => any;
   onGameReset?: () => any;
   isPaused?: boolean;
   resetToInitial?: boolean;
@@ -26,4 +27,5 @@ export interface GameContainerProps {
   onGameStart?: (choice?: string) => any;
   onGameReset?: () => any;
   onLimitReached: () => any;
+  callGameResultModal: (result: string) => any;
 }

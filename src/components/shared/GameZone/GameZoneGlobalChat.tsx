@@ -17,6 +17,7 @@ import {
   MdOutlineKeyboardDoubleArrowUp,
 } from "react-icons/md";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
+import { jackpotAmount } from "@components/utils/jackpotCounter";
 
 interface GameData {
   _id: string;
@@ -97,6 +98,7 @@ const BalancesListOption = ({
   const y = useMotionValue(0);
   const controls = useDragControls();
   const weiToEther = (weiAmount: string) => {
+    if (weiAmount === "0") return weiAmount;
     const web3 = new Web3();
     let weiAmoutBigInt = BigInt(weiAmount);
     return web3.utils.fromWei(weiAmoutBigInt, "ether");
@@ -131,6 +133,7 @@ const GameZoneGlobalChat = () => {
   const [message, setMessage] = useState<string>("");
   const [showChat, setShowChat] = useState(false);
   const [showBalances, setShowBalances] = useState(false);
+  const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setCurrentChallengerBuyIn = useGame(
@@ -185,25 +188,50 @@ const GameZoneGlobalChat = () => {
   }, [chatData]);
 
   // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     const clickedElement = event.target as HTMLElement;
-  //     const clickedElementClass = clickedElement.className;
+  //   const fetchInitialJackpot = async () => {
+  //       try {
+  //           const initialAmount = await jackpotAmount('nafflings');
+  //           setJackpotTotalAmount(initialAmount.jackpotInitial);
+  //           const interval = setInterval(() => {
+  //             console.log('INTERVAL')
+  //               setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
+  //           }, 10000);
 
-  //     if (
-  //       !clickedElementClass ||
-  //       typeof clickedElementClass != "string" ||
-  //       clickedElementClass.indexOf("mobile-chat-popup") < 0
-  //     ) {
-  //       setShowChat(false);
-  //     }
+  //           return () => clearInterval(interval);
+  //       } catch (error) {
+  //           console.error('Failed to fetch initial jackpot amount:', error);
+  //       }
   //   };
 
-  //   // Add event listener on document for clicks outside the dropdown
-  //   document.addEventListener("click", handleClickOutside);
-
-  //   // Cleanup function to remove event listener on unmount
-  //   return () => document.removeEventListener("click", handleClickOutside);
+  //   fetchInitialJackpot();
   // }, []);
+
+  const intervalSet = useRef(false);
+  useEffect(() => {
+    const fetchInitialJackpot = async () => {
+      try {
+        const initialAmount = await jackpotAmount("nafflings");
+        setJackpotTotalAmount(initialAmount.jackpotInitial);
+        if (!intervalSet.current) {
+          intervalSet.current = true;
+          const interval = setInterval(() => {
+            setJackpotTotalAmount(
+              (prevAmount: number) =>
+                prevAmount + initialAmount.jackpotPointPerSec
+            );
+          }, 10000);
+
+          return () => {
+            clearInterval(interval);
+            intervalSet.current = false;
+          };
+        }
+      } catch (error) {
+        console.error("Failed to fetch initial jackpot amount:", error);
+      }
+    };
+    fetchInitialJackpot();
+  }, []);
 
   const joinGame = (gameId: string, gameData: GameData) => {
     console.log("joined a game start");
@@ -419,7 +447,16 @@ const GameZoneGlobalChat = () => {
                   />
                 </div>
               </div>
-              <div className="flex flex-col items-center justify-center ml-[96px]">
+            </div>
+            <div className="flex flex-col items-center justify-center ml-[96px]">
+              <p className="text-[14px] text-nafl-white font-face-bebas">
+                JACKPOT
+              </p>
+              <div className="flex flex-row items-end justify-center gap-[2px]">
+                <p className="text-[30px] text-nafl-white font-face-bebas leading-[100%]">
+                  {/* 1259.69 */}
+                  {jackpotTotalAmount}
+                </p>
                 <p className="text-[14px] text-nafl-white font-face-bebas">
                   JACKPOT
                 </p>
@@ -433,8 +470,25 @@ const GameZoneGlobalChat = () => {
                 </div>
               </div>
             </div>
-            <p className="text-[14px] text-nafl-white font-face-bebas">
+          </div>
+          <p className="text-[14px] text-nafl-white font-face-bebas">
+            <a href="/win-the-jackpot" target="_blank">
               HOW TO WIN THE JACKPOT?
+            </a>
+          </p>
+        </div>
+
+        <div className="flex flex-row items-center justify-between w-full mt-[26px]">
+          <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
+          <p className="text-nafl-white text-[20px]">
+            {user?.points} NAFFLINGS
+          </p>
+        </div>
+
+        <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
+          <div className="flex flex-row items-center justify-center p-[5px] bg-[#292929] rounded-t-[10px] h-[37px] gap-[8px]">
+            <p className="text-nafl-white font-bold w-[156px] text-center">
+              BALANCES
             </p>
           </div>
 
@@ -510,17 +564,43 @@ const GameZoneGlobalChat = () => {
             </div>
             {/* <div ref={bottomChat} /> */}
           </div>
-          <div className="flex items-center w-full relative">
-            <input
-              type="text"
-              placeholder="Message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) =>
-                e.key == "Enter" && message && sendGlobalChatMessage(message)
-              }
-              maxLength={50}
-              className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
+          {/* <div ref={bottomChat} /> */}
+        </div>
+        <div className="flex items-center w-full relative">
+          <input
+            type="text"
+            placeholder="Message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) =>
+              e.key == "Enter" && message && sendGlobalChatMessage(message)
+            }
+            maxLength={50}
+            className="w-full h-[55px] bg-[#4B4B4B] text-[#C4C4C4] rounded-[10px] font-face-roboto text-[16px] px-[53px] placeholder:font-bold placeholder:opacity-30"
+          />
+          <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
+          <BiSend
+            onClick={() => message && sendGlobalChatMessage(message)}
+            className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer"
+          />
+        </div>
+
+        <div className="w-full h-[58px] rounded-[10px] relative overflow-hidden">
+          <img
+            src={"/static/gamezone-header-bg.png"}
+            alt="Naffle"
+            className="w-full h-full object-cover object-center"
+          />
+          <div
+            onClick={() => {
+              window.open("https://discord.com/invite/naffles", "_blank");
+            }}
+            className="flex flex-row items-center justify-between absolute inset-0 w-full h-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[18px] cursor-pointer"
+          >
+            <img
+              src={"/static/naffles-text-logo-dark.png"}
+              alt="Naffle"
+              className="w-[95px] object-contain"
             />
             <IoMdAddCircleOutline className="absolute left-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
             <BiSend

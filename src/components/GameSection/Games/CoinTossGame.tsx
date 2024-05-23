@@ -6,7 +6,7 @@ import { GameContainerProps } from "@type/GameSection";
 import toast from "react-hot-toast";
 
 export const CoinTossGame = (props: GameContainerProps) => {
-  const { onGameStart, onGameReset, isPaused, resetToInitial, onLimitReached } =
+  const { onGameStart, onGameReset, isPaused, resetToInitial, onLimitReached, callGameResultModal } =
     props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
@@ -53,13 +53,13 @@ export const CoinTossGame = (props: GameContainerProps) => {
       barColor="bg-nafl-purple"
       gameCall={triggerCoinTossGame}
       onChoiceClicked={onGameStart}
-      onWinNotify={() => alert("You won Coin toss")}
+      onWinNotify={callGameResultModal}
       onVideoFinish={handleVideoEnd}
       onGameReset={onGameReset}
       isPaused={isPaused}
       hasError={hasError}
       initialTime={60}
-      onCountdownFinish={onGameStart}
+      onCountdownStart={onGameStart}
       gameType="cointoss"
     />
   );
