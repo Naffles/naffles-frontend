@@ -93,7 +93,7 @@ const PrivacyPolicy = () => {
         When the user&apos;s information is still being processed, 
         they can: Use the platform normally; They cannot deposit more than USD2,000 in aggregate total; and They cannot complete any withdrawal.
         <br />
-        When the user&apos;s information is still being processed,they can: Use the
+        When the user&apos;s information is still being processed, they can: Use the
         platform normally; They cannot deposit more than USD2,000 in aggregate
         total; and They cannot complete any withdrawal.
         <br />
