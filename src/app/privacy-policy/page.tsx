@@ -89,10 +89,12 @@ const PrivacyPolicy = () => {
         <br />
         Once uploaded, the user will get a notification that their documents are
         being processed. Our team will then process the documents and will email
-        the user the outcome. The outcome will be one of the following: Approval, Rejection, or Request Further Information–No change in Status. When the user&apos;s information is still being processed,they can: Use the platformnormally; They cannot deposit more than USD2,000in aggregate total; and They cannot complete any withdrawal.
+        the user the outcome. The outcome will be one of the following: Approval, Rejection, or Request Further Information–No change in Status. 
+        When the user&apos;s information is still being processed, 
+        they can: Use the platform normally; They cannot deposit more than USD2,000 in aggregate total; and They cannot complete any withdrawal.
         <br />
         When the user&apos;s information is still being processed,they can: Use the
-        platformnormally; They cannot deposit more than USD2,000 in aggregate
+        platform normally; They cannot deposit more than USD2,000 in aggregate
         total; and They cannot complete any withdrawal.
         <br />
         <br />
@@ -114,7 +116,7 @@ const PrivacyPolicy = () => {
                 a)
               </p>
               <p className="ml-4">
-                Signature is displayedclearly;
+                Signature is displayed clearly;
               </p>
             </div>
             <div className="flex flex-row">
@@ -130,7 +132,7 @@ const PrivacyPolicy = () => {
                 c)
               </p>
               <p className="ml-4">
-                Full Name on ID matches client&apos;s nameas when they signed up to use the Site;
+                Full Name on ID matches client&apos;s name as when they signed up to use the Site;
               </p>
             </div>
             <div className="flex flex-row">
@@ -182,7 +184,7 @@ const PrivacyPolicy = () => {
                 c)
               </p>
               <p className="ml-4">
-                Full Name matches client&apos;s nameas when they signed up to use the Siteand is same as in proof of ID; andd.Date of Issue: In the last 3 months.
+                Full Name matches client&apos;s nameas when they signed up to use the Site and is same as in proof of ID; and Date of Issue: In the last 3 months.
               </p>
             </div>
           </p>
@@ -209,7 +211,7 @@ const PrivacyPolicy = () => {
                 b)
               </p>
               <p className="ml-4">
-                ID document is the same as in “1”. Ensure that thephoto/ID number is the same.
+                ID document is the same as in “1”. Ensure that the photo/ID number is the same.
               </p>
             </div>
           </p>
@@ -226,8 +228,8 @@ const PrivacyPolicy = () => {
             1)
           </p>
           <p className="ml-4">
-            When the KYC process is unsuccessful, the reason is documented,and
-            anexplanation is communicated back to the user.
+            When the KYC process is unsuccessful, the reason is documented, and
+            an explanation is communicated back to the user.
           </p>
         </div>
         <br />
@@ -246,7 +248,7 @@ const PrivacyPolicy = () => {
             3)
           </p>
           <p className="ml-4">
-            Onceall proper documents are in our possession, the documents will be
+            Once all proper documents are in our possession, the documents will be
             further evaluated before being approved.
           </p>
         </div>
@@ -259,7 +261,7 @@ const PrivacyPolicy = () => {
             1)
           </p>
           <p className="ml-4">
-            If a user has failed to pass theKYC requirements, then they cannot
+            If a user has failed to pass the KYC requirements, then they cannot
             make additional deposits or withdrawals of any amount.
           </p>
         </div>
@@ -316,21 +318,21 @@ const PrivacyPolicy = () => {
     <div className="flex flex-col items-center bg-[#181818] pt-[20px] mt-[120px]">
           <div className="flex flex-col gap-[10px] xl:w-[80%] w-[90%]">
             <p className="text-nafl-white text-[16px] w-full">
-              https://naffles.com/ is owned and operated by Degentralised
+              https://naffles.com/ is owned and operated by Degentralised
               Interactive Limited (Registration Number: 2134682) with the
               Registered Address: Intershore Chambers, Road Town, Tortola,
               British Virgin Islands.
             </p>
             <p className="text-nafl-white text-[16px] w-full">
-              Contact us nft@naffles.com.
+              Contact us nft@naffles.com.
             </p>
             <p className="text-nafl-white text-[16px] w-full">
-              naffles.com is licensed and regulated by the Government of the
+              naffles.com is licensed and regulated by the Government of the
               Autonomous Island of Anjouan, Union of Comoros and operates under
               License No. ALSI-062403009-F16.
             </p>
             <p className="text-nafl-white text-[16px] w-full">
-              naffles.com has passed all regulatory compliance and is legally
+              naffles.com has passed all regulatory compliance and is legally
               authorized to conduct gaming operations for any and all games of
               chance and wagering.
             </p>
