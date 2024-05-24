@@ -31,7 +31,7 @@ export const jackpotWinners = async (limit: number) => {
     return response.data.data.jackpotHistory;
 }
 
-export const getCryptoPrice = async (cryptoName: string, amount: number) => {
+export const getCryptoPrice = async (cryptoName: string, amount: any) => {
     const response = await axios.get(
         `/crypto/price`
     );
