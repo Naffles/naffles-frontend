@@ -181,7 +181,7 @@ const GameZoneMain = () => {
                       <RiExpandUpDownLine className="absolute text-[20px] right-[10px]" />
                     </button>
                     {oddsDropdown && (
-                      <div className="flex flex-col absolute top-[40px] w-full rounded-[10px] bg-[#4B4B4B] h-[180px] z-[100] pt-[5px]">
+                      <div className="flex flex-col absolute top-[40px] w-full rounded-[10px] bg-[#4B4B4B] h-[260px] z-[100] pt-[5px]">
                         <div className="flex flex-col w-full gap-[6px] px-[5px]">
                           {odds_options.map((item) => (
                             <button
@@ -227,9 +227,11 @@ const GameZoneMain = () => {
                       aria-label="Min Max Value slider"
                       size="sm"
                       step={1}
-                      minValue={0}
-                      maxValue={1000}
-                      defaultValue={[0, 1000]}
+                      onChangeEnd={(e: any) => {
+                        setMinText(e[0]);
+                        setMaxText(e[1]);
+                      }}
+                      defaultValue={[0, 100]}
                       classNames={{
                         base: "w-[170px]",
                         track: "bg-[#000]/30 w-full",

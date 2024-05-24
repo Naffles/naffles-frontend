@@ -75,7 +75,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
   const [userBalances, setUserBalances] = useState<Balance[] | null>(null);
 
-  const { jwt, user } = useBasicUser();
+  const { jwt, user, reloadProfile } = useBasicUser();
 
   // Run fetchUserAccount function whenever the web3 instance changes.
 
@@ -108,15 +108,24 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     };
     socket?.on("registered", setIntoSocketId);
 
-    const setPoints = (data: any) => {
-      setUserPoints(data);
+    // const setPoints = (data: any) => {
+    //   setUserPoints(data);
+    // };
+
+    // socket?.on("realtimePoints", setPoints);
+
+    const tokenBalanceUpdate = (data: any) => {
+      if (data) {
+        reloadProfile();
+      }
     };
 
-    socket?.on("realtimePoints", setPoints);
+    socket?.on("updateTokenBalance", tokenBalanceUpdate);
 
     return () => {
       socket?.off("registered", setIntoSocketId);
-      socket?.off("realtimePoints", setPoints);
+      // socket?.off("realtimePoints", setPoints);
+      socket?.off("updateTokenBalance", tokenBalanceUpdate);
     };
   }, [userId, socket]);
 
