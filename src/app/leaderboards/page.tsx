@@ -7,7 +7,6 @@ import useGame from "../../components/utils/gamezone";
 import GameZoneGame from "@components/shared/GameZone/GameZoneGame";
 import LeaderboardsChat from "@components/shared/Leaderboards/LeaderboardsChat";
 import LeaderboardsMain from "@components/shared/Leaderboards/LeaderboardsMain";
-import GameZoneChatMobile from "@components/shared/GameZone/GameZoneChatMobile";
 import GameZoneChat from "@components/shared/GameZone/GameZoneChat";
 
 const Leaderboards = () => {
@@ -53,8 +52,6 @@ const Leaderboards = () => {
           <LeaderboardsMain />
           <GameZoneChat />
         </div>
-
-        <GameZoneChatMobile />
         <Footer />
       </div>
     </div>

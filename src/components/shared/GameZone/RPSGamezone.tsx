@@ -136,6 +136,7 @@ export const RPSGamezone = () => {
 
     const playerHasLeft = (data: any) => {
       console.log("player left data:", data);
+      setSelectedChoice("");
       setCurrentScreen("main");
     };
 

@@ -6,12 +6,11 @@ import GameZoneMain from "@components/shared/GameZone/GameZoneMain";
 import useGame from "../../components/utils/gamezone";
 import GameZoneGame from "@components/shared/GameZone/GameZoneGame";
 import GameZoneJoining from "@components/shared/GameZone/GameZoneJoining";
-import GameZoneChatGlobalMobile from "@components/shared/GameZone/GameZoneChatGlobalMobile";
 import GameZoneGlobalChat from "@components/shared/GameZone/GameZoneGlobalChat";
 import GameZoneAccepting from "@components/shared/GameZone/GameZoneAccepting";
 import GameZoneChat from "@components/shared/GameZone/GameZoneChat";
-import GameZoneChatMobile from "@components/shared/GameZone/GameZoneChatMobile";
 import { useEffect } from "react";
+import GameZoneCreateNafflingsGame from "@components/shared/GameZone/GameZoneCreateNafflingsGame";
 
 const GameZone = () => {
   const currentScreen = useGame((state) => state.screen);
@@ -73,7 +72,10 @@ const GameZone = () => {
                 CREATE GAME
               </p>
             </button>
-            <button className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]">
+            <button
+              onClick={() => setCurrentScreen("createNafflings")}
+              className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
+            >
               <p className="text-nafl-white text-[18px] font-bold">
                 PLAY FOR NAFFLINGS
               </p>
@@ -85,13 +87,19 @@ const GameZone = () => {
           <div className="flex flex-row flex-wrap items-start justify-center gap-[36px] duration-500 z-30 w-full pb-[100px]">
             <GameZoneMain />
             <GameZoneGlobalChat />
-            <GameZoneChatGlobalMobile />
+            {/* <GameZoneChatGlobalMobile /> */}
           </div>
         )}
 
         {currentScreen == "create" && (
           <div className="flex items-start justify-center duration-500 pb-[300px] z-20 w-full">
             <GameZoneCreateGame />
+          </div>
+        )}
+
+        {currentScreen == "createNafflings" && (
+          <div className="flex items-start justify-center duration-500 pb-[300px] z-20 w-full">
+            <GameZoneCreateNafflingsGame />
           </div>
         )}
 
@@ -111,7 +119,7 @@ const GameZone = () => {
           <div className="flex flex-row items-start justify-center gap-[36px] duration-500 pb-[300px] z-30">
             <GameZoneGame />
             <GameZoneChat />
-            <GameZoneChatMobile />
+            {/* <GameZoneChatMobile /> */}
           </div>
         )}
 

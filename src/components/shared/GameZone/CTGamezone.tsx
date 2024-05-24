@@ -146,6 +146,7 @@ export const CTGamezone = () => {
 
     const playerHasLeft = (data: any) => {
       console.log("player left data:", data);
+      setSelectedChoice("");
       setCurrentScreen("main");
     };
 
