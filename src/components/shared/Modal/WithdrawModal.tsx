@@ -8,6 +8,7 @@ import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { RiCloseLine, RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
 import Web3 from "web3";
+import { getCryptoPrice } from "@components/utils/jackpotCounter";
 
 type Balance = {
   id: string;
@@ -34,6 +35,13 @@ const WithdrawModal = (props: Props) => {
     conversion: "",
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currencyConverted, setCurrencyConverted] = useState<number>(0);
+
+  useEffect(() => {
+    getCryptoPrice(balanceType?.tokenType, withdrawAmount).then(price => {
+      setCurrencyConverted(price)
+    })
+  }, [withdrawAmount, balanceType?.tokenType])
 
   const requestWithdraw = async (amount: string, type: Balance) => {
     if (parseFloat(withdrawAmount) > 0) {
@@ -231,7 +239,7 @@ const WithdrawModal = (props: Props) => {
                 </div>
                 <div className="flex w-full items-center justify-end">
                   <p className="text-[#00E0DF] text-[12px]">
-                    Estimated value: ~ $0.00
+                    Estimated value: ~ ${currencyConverted.toFixed(2)}
                   </p>
                 </div>
               </div>
