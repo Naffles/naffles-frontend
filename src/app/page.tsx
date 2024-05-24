@@ -120,7 +120,7 @@ export default function Home() {
                     <div className="bg-[#371143] h-[98px] w-[370px] rounded-[16px] relative flex items-center justify-center">
                       <div className="translate-x-[20%]">
                         <div className="flex items-center gap-[7px]">
-                          <img src={item.userProfileImage.length > 0 ? item.userProfileImage : "/static/avatar.svg"} alt="" />
+                          <img src={item.userProfileImage.length > 0 ? item.userProfileImage : "/static/avatar.svg"} alt="" className="w-5 h-5 rounded-[10px]" />
                           <p className="font-mono text-white">
                           {item.walletAddress.slice(0, 4)}...{item.walletAddress.slice(-6)} !!
                           </p>
