@@ -6,7 +6,6 @@ export const jackpotDetails = async (prizePoolType: string) => {
         `/admin/jackpot/${prizePoolType}?isGiveaway=true`
     );
 
-    console.log(data, 'data')
     return data;
 } 
 
@@ -29,8 +28,6 @@ export const jackpotWinners = async (limit: number) => {
         `/raffle/jackpot/history/all?page=1&limit=${limit}`
     );
 
-    console.log(response.data.data.jackpotHistory, 'asd')
-
     return response.data.data.jackpotHistory;
 }
 
@@ -39,7 +36,6 @@ export const getCryptoPrice = async (cryptoName: string, amount: number) => {
         `/crypto/price`
     );
 
-    console.log(response.data.data, 'asd')
     switch (cryptoName.toLowerCase()) {
         case 'eth':
             return response.data.data.ethereum.usd * amount;
