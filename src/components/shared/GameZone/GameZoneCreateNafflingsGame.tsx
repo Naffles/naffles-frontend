@@ -10,6 +10,8 @@ import useGame from "@components/utils/gamezone";
 import { AiOutlineLoading } from "react-icons/ai";
 import toast, { Toaster } from "react-hot-toast";
 import { error } from "console";
+import Web3 from "web3";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
 const GameZoneCreateNafflingsGame = () => {
   const { user, socket } = useUser();
@@ -30,7 +32,7 @@ const GameZoneCreateNafflingsGame = () => {
   });
   const [balanceTypeDropdown, setBalanceTypeDropdown] =
     useState<boolean>(false);
-  const [balanceAmount, setBalanceAmount] = useState<number>(1);
+  const [balanceAmount, setBalanceAmount] = useState<string>("1");
   const [betMultiplierChoice, setBetMultiplierChoice] = useState<number>(1);
   const [betMultiplierChoiceDropdown, setBetMultiplierChoiceDropdown] =
     useState<boolean>(false);
@@ -128,8 +130,8 @@ const GameZoneCreateNafflingsGame = () => {
   };
 
   useEffect(() => {
-    let challengerBuyIn = balanceAmount / betMultiplierChoice;
-    setTotalPayout(balanceAmount + challengerBuyIn);
+    let challengerBuyIn = parseFloat(balanceAmount) / betMultiplierChoice;
+    setTotalPayout(parseFloat(balanceAmount) + challengerBuyIn);
 
     setChallengerBuyIn(challengerBuyIn);
   }, [balanceAmount, betMultiplierChoice]);
@@ -143,6 +145,16 @@ const GameZoneCreateNafflingsGame = () => {
     if (!socket) {
       console.error("Socket not connected");
       return;
+    }
+
+    const web3 = new Web3();
+
+    let tokenAmount = "0";
+    if (balanceType.type == "sol") {
+      let solValue = parseFloat(balanceAmount) / Math.pow(10, 9);
+      tokenAmount = solValue.toString();
+    } else {
+      tokenAmount = web3.utils.toWei(balanceAmount, "ether");
     }
 
     try {
@@ -159,7 +171,7 @@ const GameZoneCreateNafflingsGame = () => {
               ? "rockPaperScissors"
               : "coinToss",
           coinType: "points",
-          betAmount: balanceAmount,
+          betAmount: tokenAmount,
           odds: betMultiplierChoice,
         }),
       });
@@ -278,15 +290,14 @@ const GameZoneCreateNafflingsGame = () => {
                 {currencyNameConverter(balanceType?.type)}
               </p>
               <p className="text-[#867878] text-[16px] font-face-bebas balance-type-dropdown">
-                BALANCE:{" "}
-                {`${balanceType?.balance.toLocaleString()} ${balanceType?.type}`}
+                BALANCE: {`${user?.points} ${balanceType?.type}`}
               </p>
             </button>
           </div>
           <input
             type="number"
             value={balanceAmount}
-            onChange={(e) => setBalanceAmount(parseFloat(e.target.value))}
+            onChange={(e) => setBalanceAmount(e.target.value)}
             min={0}
             max={user?.points}
             className="flex items-center justify-start w-[126px] h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] font-face-bebas text-[16px] text-[#fff]"
@@ -341,7 +352,7 @@ const GameZoneCreateNafflingsGame = () => {
             <p className=" text-[#989898] text-[14px]">
               Your Buy-in:{" "}
               <span className="text-[#fff] font-face-roboto italic">
-                {balanceAmount.toFixed(2)} {balanceType.type}
+                {parseFloat(balanceAmount).toFixed(2)} {balanceType.type}
               </span>
             </p>
             <p className=" text-[#989898] text-[14px]">
@@ -364,7 +375,7 @@ const GameZoneCreateNafflingsGame = () => {
         <button
           onClick={() =>
             user?.jwt
-              ? balanceAmount <= 0
+              ? parseFloat(balanceAmount) <= 0
                 ? toast.error("Bet amount should cannot be set to 0.")
                 : createGame()
               : toast.error("Login first before making a game.")

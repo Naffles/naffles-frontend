@@ -18,6 +18,7 @@ import {
 } from "react-icons/md";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { jackpotAmount } from "@components/utils/jackpotCounter";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
 interface GameData {
   _id: string;
@@ -97,12 +98,7 @@ const BalancesListOption = ({
 }): React.JSX.Element => {
   const y = useMotionValue(0);
   const controls = useDragControls();
-  const weiToEther = (weiAmount: string) => {
-    if (weiAmount === "0") return weiAmount;
-    const web3 = new Web3();
-    let weiAmoutBigInt = BigInt(weiAmount);
-    return web3.utils.fromWei(weiAmoutBigInt, "ether");
-  };
+
   return (
     <Reorder.Item
       id={value.id}
@@ -117,7 +113,7 @@ const BalancesListOption = ({
           onPointerDown={(e) => controls.start(e)}
         />
         <div className="flex flex-row items-center justify-center gap-[6px]">
-          <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance) == "0." ? 0 : weiToEther(balance)} ${type}`}</p>
+          <p className="text-[16px] text-nafl-white uppercase">{`${tokenValueConversion(balance, type) == "0." ? 0 : tokenValueConversion(balance, type)} ${type}`}</p>
           <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
         </div>
       </div>
@@ -478,9 +474,16 @@ const GameZoneGlobalChat = () => {
           <div className="flex flex-col items-nceter justify-center w-full rounded-[10px]">
             <div className="flex flex-row items-center justify-between w-full mt-[26px]">
               <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
-              <p className="text-nafl-white text-[20px]">
-                {user?.points ?? 0} NAFFLINGS
-              </p>
+              <div className="flex flex-row items-center justify-center gap-[6px]">
+                <p className="text-nafl-white text-[20px]">
+                  {user?.points?.toLocaleString() ?? 0}
+                </p>
+                <img
+                  src="/nafflings/three-group.png"
+                  alt="Naffles Image"
+                  className="w-[61px] h-[34px] object-contain mr-[22px]"
+                />
+              </div>
             </div>
 
             <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
@@ -792,7 +795,7 @@ const GameZoneGlobalChat = () => {
         ) : (
           <button
             onClick={() => setShowChat(true)}
-            className="flex items-center justify-center w-[60px] h-[60px] rounded-[10px] bg-nafl-sponge-500"
+            className="flex items-center justify-center w-[60px] h-[60px] rounded-[10px] bg-nafl-sponge-500 "
           >
             <BsFillChatLeftTextFill className="text-[#000] text-[30px]" />
           </button>
