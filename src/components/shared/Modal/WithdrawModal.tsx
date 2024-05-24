@@ -158,7 +158,7 @@ const WithdrawModal = (props: Props) => {
       <>
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center animate-fade-in">
           <div
-            className="absolute inset-0 z-10 bg-[#464646CC] w-full h-screen"
+            className="absolute inset-0 z-10 bg-[#464646CC] w-full h-screen backdrop-blur-md"
             onClick={() => props.setShow(false)}
           />
           <div className="flex flex-col md:w-[374px] max-w-[374px] w-[95%] bg-[#292929] z-30 rounded-[35px]">

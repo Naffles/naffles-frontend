@@ -12,7 +12,7 @@ type LoginProps = {
 export const LoginForm = (props: LoginProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { handleLogin, handleForgotClick } = props;
-  const [ authErrors, setAuthErrors ] = useState<string[]>([]);
+  const [authErrors, setAuthErrors] = useState<string[]>([]);
 
   const { login } = useBasicUser();
   const onSubmit = async (data: LoginSubmitData) => {
@@ -27,14 +27,21 @@ export const LoginForm = (props: LoginProps) => {
     } catch (error: any) {
       console.error(error);
       authErrors.includes(error.response.data.message) ||
-      setAuthErrors(prev => [...prev, error.response.data.message ?? "Something went wrong, please try again later."]);
+        setAuthErrors((prev) => [
+          ...prev,
+          error.response.data.message ??
+            "Something went wrong, please try again later.",
+        ]);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <FormContext onSubmit={onSubmit} className="flex flex-col gap-4 min-w-64">
+    <FormContext
+      onSubmit={onSubmit}
+      className="flex flex-col gap-[20px] w-full items-center"
+    >
       <TextInput
         name="emailAddress"
         label="Email Address"
@@ -51,15 +58,18 @@ export const LoginForm = (props: LoginProps) => {
           </u>
         }
       />
-      {authErrors && authErrors.map((error, index) => (
-        <p key={index} className="text-red-500 text-sm">{error}</p>
-      ))}
+      {authErrors &&
+        authErrors.map((error, index) => (
+          <p key={index} className="text-red-500 text-sm">
+            {error}
+          </p>
+        ))}
       <button
         type="submit"
-        className="flex items-center justify-center text-[#000] h-[45px] w-full rounded-[10px] bg-nafl-sponge-500"
+        className="flex items-center justify-center text-[#000] text-[18px] h-[45px] md:w-[267px] w-full rounded-[10px] bg-nafl-sponge-500 font-face-roboto font-bold"
         disabled={isLoading}
       >
-        {isLoading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
+        {isLoading ? <AiOutlineLoading className="animate-spin" /> : "LOGIN"}
       </button>
     </FormContext>
   );
