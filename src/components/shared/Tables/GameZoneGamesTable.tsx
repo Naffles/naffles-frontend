@@ -161,7 +161,7 @@ const GameZoneGamesTable = () => {
 
     const gameCreated = (data: any) => {
       console.log("gameCreated data", data);
-      if (data?.message) {
+      if (data) {
         fetchTableData(user?.id, user?.name);
       }
     };

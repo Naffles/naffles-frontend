@@ -22,12 +22,15 @@ export default function Home() {
   useEffect(() => {
     const fetchInitialJackpot = async () => {
       try {
-        const initialAmount = await jackpotAmount('nafflings');
+        const initialAmount = await jackpotAmount("nafflings");
         setJackpotTotalAmount(initialAmount.jackpotInitial);
         if (!intervalSet.current) {
           intervalSet.current = true;
           const interval = setInterval(() => {
-            setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
+            setJackpotTotalAmount(
+              (prevAmount: number) =>
+                prevAmount + initialAmount.jackpotPointPerSec
+            );
           }, 10000);
 
           return () => {
@@ -36,7 +39,7 @@ export default function Home() {
           };
         }
       } catch (error) {
-        console.error('Failed to fetch initial jackpot amount:', error);
+        console.error("Failed to fetch initial jackpot amount:", error);
       }
     };
     fetchInitialJackpot();
@@ -44,10 +47,11 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
-      <div className="w-full bg-[#464646] px-[25px] h-[110vh] md:h-[1200px] xl:h-[950px] pt-[100px]">
+      {/* <div className="w-full bg-[#464646] md:px-[25px] px-[15px] h-[120vh] md:h-[1200px] xl:h-[950px] pt-[100px]"> */}
+      <div className="w-full bg-[#464646] md:px-[25px] px-[15px] pt-[100px]">
         <div className="w-full bg-nafl-sponge-500 rounded-[16px] xl:pt-0 pt-[50px] xl:pb-[100px] px-4 md:px-10">
-          <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full gap-[50px]">
-            <div className="xl:w-[1000px] lg:w-[700px] w-[90%] flex flex-col items-start justify-center 2xl:pl-0 xl:pl-[20px] pl-0">
+          <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full gap-x-[50px] gap-y-[0px]">
+            <div className="xl:w-[1000px] lg:w-[700px] w-[90%] flex flex-col items-start justify-center 2xl:pl-0 xl:pl-[20px] pl-0 md:mb-0 mb-[-100px]">
               <p className="xl:text-[125px] text-[60px] text-[#000] font-face-bebas leading-[110%]">
                 Wager & Win{" "}
                 <span className="text-[#00b3b2] font-face-bebas">
@@ -64,8 +68,8 @@ export default function Home() {
               <div className="flex flex-col gap-[15px]">
                 <p className="text-[16px] md:text-[25px] text-nafl-charcoal-800 w-[80%] md:w-[100%]">
                   Win Raffles and Play PVP games against our community of
-                  trusted degens, where profits can be verifiably-fair and
-                  fun for everyone. Please degen responsibly!
+                  trusted degens, where profits can be verifiably-fair and fun
+                  for everyone. Please degen responsibly!
                 </p>
                 <div className="relative w-fit flex lg:flex-row flex-col items-center justify-start gap-[16px]">
                   <a href="/gamezone">
@@ -94,9 +98,7 @@ export default function Home() {
               modules={[Pagination]}
             >
               {[1, 2, 3, 4].map((item) => (
-                <SwiperSlide
-                  key={item}
-                >
+                <SwiperSlide key={item}>
                   <div className="flex flex-col items-center justify-center md:scale-100 scale-[.6] py-0 md:py-[100px]">
                     <div>
                       <p className="text-[#371143] text-[32px] uppercase font-mono translate-x-[30%]">
@@ -146,7 +148,9 @@ export default function Home() {
                         </p>
                         <p className="font-mono uppercase text-[24px] text-[#02B1B1]">
                           NEXT JACKPOT GIVE AWAY IN{" "}
-                          <span className="text-[#DC2ABF] font-mono">5 days</span>
+                          <span className="text-[#DC2ABF] font-mono">
+                            5 days
+                          </span>
                         </p>
                       </div>
                       <div className="mt-5 flex items-center justify-between">
@@ -158,13 +162,18 @@ export default function Home() {
                             href="https://x.com/Nafflesofficial"
                             target="_blank"
                           >
-                            <img src="/static/twitter.svg" title="Twitter" alt="Twitter" />
+                            <img
+                              src="/static/twitter.svg"
+                              title="Twitter"
+                              alt="Twitter"
+                            />
                           </a>
-                          <a
-                            href="https://discord.gg/naffles"
-                            target="_blank"
-                          >
-                            <img src="/static/discord.svg" title="Discord" alt="Discord" />
+                          <a href="https://discord.gg/naffles" target="_blank">
+                            <img
+                              src="/static/discord.svg"
+                              title="Discord"
+                              alt="Discord"
+                            />
                           </a>
                         </div>
                         <a href="/gamezone">

@@ -46,17 +46,17 @@ const GameZoneCreateGame = () => {
 
   useEffect(() => {
     if (balancesOptionData.length <= 0) return;
-
+    console.log("balancesOptionData", balancesOptionData);
     setBalanceType(balancesOptionData[0]);
   }, [balancesOptionData]);
 
   let currency_name = [
-    { type: "PTS", name: "Points" },
-    { type: "ETH", name: "Ethereum" },
-    { type: "BTC", name: "Bitcoin" },
-    { type: "BYTES", name: "Neo Tokyo" },
-    { type: "SOL", name: "Solana" },
-    { type: "NAFF", name: "Naffles" },
+    { type: "pts", name: "Points" },
+    { type: "eth", name: "Ethereum" },
+    { type: "btc", name: "Bitcoin" },
+    { type: "bytes", name: "Neo Tokyo" },
+    { type: "sol", name: "Solana" },
+    { type: "naff", name: "Naffles" },
   ];
 
   let bet_multiplier_options = [1, 2, 3, 4, 5, 10];
@@ -112,7 +112,8 @@ const GameZoneCreateGame = () => {
 
   const createGame = async (
     balanceAmount: number,
-    betMultiplierChoice: number
+    betMultiplierChoice: number,
+    coinType: string
   ) => {
     setIsLoading(true);
     var jwt = user?.jwt;
@@ -137,7 +138,7 @@ const GameZoneCreateGame = () => {
             gameChoice == "ROCK, PAPERS, SCISSORS"
               ? "rockPaperScissors"
               : "coinToss",
-          coinType: "points",
+          coinType: coinType,
           betAmount: balanceAmount,
           odds: betMultiplierChoice,
         }),
@@ -382,7 +383,12 @@ const GameZoneCreateGame = () => {
             user?.jwt
               ? balanceAmount <= 0
                 ? toast.error("Bet amount should cannot be set to 0.")
-                : createGame(balanceAmount, betMultiplierChoice)
+                : balanceType &&
+                  createGame(
+                    balanceAmount,
+                    betMultiplierChoice,
+                    balanceType?.tokenType
+                  )
               : toast.error("Login first before making a game.")
           }
           className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] bg-nafl-sponge-500 mb-[17px]"

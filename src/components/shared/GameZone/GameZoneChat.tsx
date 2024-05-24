@@ -98,6 +98,7 @@ const GameZoneChat = () => {
     const receiveMessage = (data: any) => {
       console.log("receivePrivateChatRoomMessage", data);
       setChatData((oldData) => [...oldData, data]);
+      // setChatData(data);
     };
     socket?.on("receivePrivateChatRoomMessage", receiveMessage);
     return () => {

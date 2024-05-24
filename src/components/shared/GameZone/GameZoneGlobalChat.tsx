@@ -156,6 +156,7 @@ const GameZoneGlobalChat = () => {
     const receiveGlobalChat = (data: any) => {
       console.log("receiveGlobalChatMessage", data);
       setChatData((oldData) => [...oldData, data]);
+      // setChatData(data);
     };
 
     socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
