@@ -282,7 +282,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
             hideModal={() => setShownModal("")}
           >
             <ResetPassForm />
-            <div className="text-body-sm text-nafl-charcoal-100 px-1">
+            <div className="text-body-sm text-center text-nafl-charcoal-100 px-1">
               No Account?{" "}
               <u
                 className="cursor-pointer"
