@@ -19,6 +19,7 @@ export const GameSection = () => {
   const [showGameResultModal, setShowGameResultModal] = useState(false);
   const [gameResult, setGameResult] = useState('');
   const [showStartGameModal, setShowStartGameModal] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -44,14 +45,17 @@ export const GameSection = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsRPSPaused(true);
-      setIsCoinTossPaused(true);
-      setShowStartGameModal(true);
-    }, 20000); // 20 minutes in milliseconds
-
-    return () => clearTimeout(timer); // Cleanup function to clear timeout on unmount
-  }, []);
+    if (firstLoad) {
+      const timer = setTimeout(() => {
+        setIsRPSPaused(true);
+        setIsCoinTossPaused(true);
+        setShowStartGameModal(true);
+        setFirstLoad(false)
+      }, 20000); // milliseconds
+  
+      return () => clearTimeout(timer); // Cleanup function to clear timeout on unmount
+    }
+  }, [firstLoad]);
 
   const handleLimitReached = () => {
     setOpenModal(true);
@@ -67,6 +71,7 @@ export const GameSection = () => {
 
   const handleRPSStart = (choice?: string) => {
     if (choice) {
+      setFirstLoad(false)
       setHasSelected(true);
     }
     setIsCoinTossPaused(true);
@@ -74,6 +79,7 @@ export const GameSection = () => {
 
   const handleCoinTossStart = (choice?: string) => {
     if (choice) {
+      setFirstLoad(false)
       setHasSelected(true);
     }
     setIsRPSPaused(true);

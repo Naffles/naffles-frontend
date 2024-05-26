@@ -226,8 +226,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const handleLogout = () => {
     setShownModal("");
     setOpenEditModal(false);
-    logout();
-    window.location.reload();
+    logout();    
   };
   const handleForgotClick = () => {
     setShownModal(ModalNames.RESET);
