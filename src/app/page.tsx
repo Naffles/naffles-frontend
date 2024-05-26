@@ -18,6 +18,7 @@ import {
   jackpotWinners,
   recentWinners,
 } from "@components/utils/jackpotCounter";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
 interface JackpotWinner {
   id: string;
@@ -28,14 +29,37 @@ interface JackpotWinner {
   isGiveaway: boolean;
 }
 
-interface RecentWinners {}
+interface User {
+  _id: string;
+  username: string;
+}
+
+interface GameData {
+  _id: string;
+  gameType: string;
+  creator: User;
+  challenger: User;
+  challengerBuyInAmount: string;
+  payout: string;
+  betAmount: string;
+  odds: string;
+  coinType: string;
+  winner: User;
+}
+
+interface RecentWinners {
+  game: GameData;
+  payoutConverted: string;
+}
 
 export default function Home() {
   const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
   const [jackpotWinnersArr, setJackpotWinnersArr] = useState<JackpotWinner[]>(
     []
   );
-  // const [recentWinnersData, setRecentWinnersData] = useState<>(null)
+  const [recentWinnersData, setRecentWinnersData] = useState<
+    RecentWinners[] | null
+  >(null);
 
   useEffect(() => {
     jackpotWinners(4).then((winners) => {
@@ -44,10 +68,10 @@ export default function Home() {
     });
 
     const recentWinnersInterval = setInterval(() => {
-      recentWinners();
+      recentWinners().then((gameData) => setRecentWinnersData(gameData));
     }, 10000);
 
-    recentWinners();
+    // recentWinners();
 
     // recentWinners().then((winners) => setRecentWinnersData(winners))
     return () => {
@@ -86,6 +110,16 @@ export default function Home() {
     if (address?.length > 10) {
       return address.slice(0, 4) + "..." + address.slice(-6, address.length);
     } else return address;
+  };
+
+  const shortenName = (name: string) => {
+    if (name?.length > 10) {
+      return name.slice(0, 9) + "...";
+    } else return name;
+  };
+
+  const onImageError = (e: any) => {
+    e.target.src = "/static/avatar.svg";
   };
 
   return (
@@ -156,6 +190,7 @@ export default function Home() {
                               }
                               alt="Profile Image"
                               className="w-[20px] h-[20px] rounded-full object-cover"
+                              onError={onImageError}
                             />
                             <p className="font-mono text-white">
                               {shortenWalletAddress(item.walletAddress)}
@@ -334,10 +369,10 @@ export default function Home() {
             }}
             modules={[Autoplay]}
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
-              <SwiperSlide key={item} style={{ width: "290px" }}>
+            {recentWinnersData?.map((item, index) => (
+              <SwiperSlide key={item.game._id} style={{ width: "290px" }}>
                 <div className="flex-row flex items-center justify-center py-2 w-full h-[100px] gap-[20px]">
-                  {item % 2 === 0 ? (
+                  {(index + 1) % 2 === 0 ? (
                     // <TrophyIcon size="xl" colour="dark-green" />
                     <img
                       src="/static/trophy-cyan.png"
@@ -355,12 +390,22 @@ export default function Home() {
                   <Typography
                     className="font-face-roboto uppercase font-bold w-full"
                     size="text-[13px]"
-                    color={item % 2 === 0 ? "purple" : "dark-green"}
+                    color={(index + 1) % 2 === 0 ? "purple" : "dark-green"}
                   >
                     Winner!{" "}
-                    <span style={{ color: "#FEFF3D" }}>Eddie just won</span>{" "}
+                    <span style={{ color: "#FEFF3D" }}>
+                      {" "}
+                      {shortenName(item.game.winner.username)} just won
+                    </span>{" "}
                     <br />
-                    0.3ETH ($969.19) from Jay
+                    {tokenValueConversion(
+                      item.game.payout,
+                      item.payoutConverted
+                    )}{" "}
+                    <span className="font-face-roboto uppercase">
+                      {item.game.coinType}
+                    </span>{" "}
+                    (${item.payoutConverted}) from Jay
                   </Typography>
                 </div>
               </SwiperSlide>

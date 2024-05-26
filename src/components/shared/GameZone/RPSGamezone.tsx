@@ -117,6 +117,7 @@ export const RPSGamezone = () => {
 
     const gameZoneStart = (data: any) => {
       console.log("gameStarted data: ", data);
+      reloadProfile();
       setResult("");
       setShowResultUI(false);
       setshowWaitingReplayUI(false);
