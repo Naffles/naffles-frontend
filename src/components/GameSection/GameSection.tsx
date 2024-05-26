@@ -30,6 +30,8 @@ export const GameSection = () => {
           (!containerElement || !containerElement.contains(clickedElement)) ||
           clickedElementId == 'start-game-modal-pop-up'
       ) {
+        setIsRPSPaused(false);
+        setIsCoinTossPaused(false);
         setShowStartGameModal(false);
       }
     };
@@ -43,6 +45,8 @@ export const GameSection = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      setIsRPSPaused(true);
+      setIsCoinTossPaused(true);
       setShowStartGameModal(true);
     }, 20000); // 20 minutes in milliseconds
 
