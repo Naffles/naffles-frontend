@@ -24,10 +24,10 @@ interface GameData {
   _id: string;
   gameType: string;
   creator: { profileImage: string; username: string; _id: string };
-  challengerBuyInAmount: { $numberDecimal: number };
-  payout: { $numberDecimal: number };
-  betAmount: { $numberDecimal: number };
-  odds: { $numberDecimal: number };
+  challengerBuyInAmount: string;
+  payout: string;
+  betAmount: string;
+  odds: string;
   coinType: string;
   status: string;
 }
@@ -122,10 +122,16 @@ const BalancesListOption = ({
 };
 
 const GameZoneGlobalChat = () => {
-  const { socket, socketId, user, setShowDepositModal, setShowWithdrawModal } =
-    useUser();
+  const {
+    socket,
+    socketId,
+    user,
+    setShowDepositModal,
+    setShowWithdrawModal,
+    chatData,
+  } = useUser();
   const [balances, setBalances] = useState<Balance[]>([]);
-  const [chatData, setChatData] = useState<Message[]>([]);
+  // const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const [showChat, setShowChat] = useState(false);
   const [showBalances, setShowBalances] = useState(false);
@@ -147,16 +153,6 @@ const GameZoneGlobalChat = () => {
   }, [user]);
 
   useEffect(() => {
-    socket?.emit("joinGlobalChat");
-
-    const receiveGlobalChat = (data: any) => {
-      console.log("receiveGlobalChatMessage", data);
-      setChatData((oldData) => [...oldData, data]);
-      // setChatData(data);
-    };
-
-    socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
-
     const checkRoomOpen = (data: any) => {
       console.log("roomstatus data:", data);
       if (!data) {
@@ -173,13 +169,12 @@ const GameZoneGlobalChat = () => {
     socket?.on("roomStatus", checkRoomOpen);
 
     return () => {
-      socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
       socket?.off("roomStatus", checkRoomOpen);
     };
   }, [socket]);
 
   useEffect(() => {
-    if (chatData.length > 0) {
+    if (chatData && chatData?.length > 0) {
       scrollToBottom();
     }
   }, [chatData]);
@@ -246,11 +241,9 @@ const GameZoneGlobalChat = () => {
     );
 
     setCoinType(gameData.coinType);
-    setCurrentChallengerBuyIn(
-      gameData.challengerBuyInAmount.$numberDecimal.toString()
-    );
+    setCurrentChallengerBuyIn(gameData.challengerBuyInAmount);
     // setBetOdds(gameData.odds.toString());
-    setCurrentPayout(gameData.payout.$numberDecimal.toString());
+    setCurrentPayout(gameData.payout);
     setGameId(gameId);
   };
 
@@ -260,36 +253,6 @@ const GameZoneGlobalChat = () => {
       result += chars[Math.floor(Math.random() * chars.length)];
     return result;
   };
-
-  let sample_comments_json = [
-    {
-      id: 1,
-      name: "You",
-      image: "/static/sample-account-image-1.png",
-      date: "16/02/2024",
-      time: "9:14PM",
-      comment:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum. In placerat commodo justo,",
-    },
-    {
-      id: 2,
-      name: "Joe",
-      image: "/static/sample-account-image-2.png",
-      date: "16/02/2024",
-      time: "9:16PM",
-      comment:
-        "Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum. In placerat commodo justo,",
-    },
-    {
-      id: 3,
-      name: "PlayerOne",
-      image: "/static/sample-account-image-3.png",
-      date: "16/02/2024",
-      time: "9:17PM",
-      comment:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum.",
-    },
-  ];
 
   const sendGlobalChatMessage = (message: string) => {
     console.log("message:", message);
@@ -367,7 +330,10 @@ const GameZoneGlobalChat = () => {
                       Buy-in:
                     </p>
                     <p className="text-[#02B1B1] text-[12px] font-bold w-[70px] uppercase">
-                      {game.challengerBuyInAmount.$numberDecimal}{" "}
+                      {tokenValueConversion(
+                        game.challengerBuyInAmount,
+                        game.coinType
+                      )}{" "}
                       {game.coinType}
                     </p>
                   </div>
@@ -377,7 +343,8 @@ const GameZoneGlobalChat = () => {
                       Payout:
                     </p>
                     <p className="text-[#02B1B1] text-[12px] font-bold w-[70px] uppercase">
-                      {game.payout.$numberDecimal} {game.coinType}
+                      {tokenValueConversion(game.payout, game.coinType)}{" "}
+                      {game.coinType}
                     </p>
                   </div>
                 </div>
@@ -535,7 +502,7 @@ const GameZoneGlobalChat = () => {
             ref={bottomChat}
           >
             <div className="flex flex-col w-full gap-[19px]">
-              {chatData.map((item) => (
+              {chatData?.map((item) => (
                 <MessageSection
                   key={randomString(
                     12,
@@ -727,7 +694,7 @@ const GameZoneGlobalChat = () => {
                     ref={bottomChat}
                   >
                     <div className="flex flex-col w-full gap-[19px]">
-                      {chatData.map((item) => (
+                      {chatData?.map((item) => (
                         <MessageSection
                           key={randomString(
                             12,

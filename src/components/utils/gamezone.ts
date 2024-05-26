@@ -11,11 +11,11 @@ interface GameState {
   mode: "challenger" | "host" | null;
   type: "Rock, Paper, Scissors" | "Coin Toss" | null;
   gameId: string | null;
-  coinType: string | null;
-  creatorBuyIn: string | null;
-  challengerBuyIn: string | null;
-  payout: string | null;
-  betOdds: string | null;
+  coinType: string;
+  creatorBuyIn: string;
+  challengerBuyIn: string;
+  payout: string;
+  betOdds: string;
   challengerId: string | null;
   defaultChosen: string | null;
   changingBet: boolean;
@@ -34,11 +34,11 @@ interface GameActions {
   setMode: (mode: "challenger" | "host" | null) => void;
   setType: (type: "Rock, Paper, Scissors" | "Coin Toss" | null) => void;
   setGameId: (gameId: string | null) => void;
-  setCoinType: (coinType: string | null) => void;
-  setCreatorBuyIn: (creatorBuyIn: string | null) => void;
-  setChallengerBuyIn: (challengerBuyIn: string | null) => void;
-  setPayout: (payout: string | null) => void;
-  setBetOdds: (betOdds: string | null) => void;
+  setCoinType: (coinType: string) => void;
+  setCreatorBuyIn: (creatorBuyIn: string) => void;
+  setChallengerBuyIn: (challengerBuyIn: string) => void;
+  setPayout: (payout: string) => void;
+  setBetOdds: (betOdds: string) => void;
   setChallengerId: (challengerId: string | null) => void;
   setDefaultChosen: (defaultChosen: string | null) => void;
   setChangingBet: (changingBet: boolean) => void;
@@ -49,11 +49,11 @@ const initialState: Omit<GameState, "user"> = {
   mode: null,
   type: null,
   gameId: null,
-  coinType: null,
-  creatorBuyIn: null,
-  challengerBuyIn: null,
-  payout: null,
-  betOdds: null,
+  coinType: "",
+  creatorBuyIn: "",
+  challengerBuyIn: "",
+  payout: "",
+  betOdds: "",
   challengerId: null,
   defaultChosen: null,
   changingBet: false,

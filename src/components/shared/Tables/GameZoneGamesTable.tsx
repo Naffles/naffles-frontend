@@ -26,7 +26,7 @@ interface tableRow {
   challengerBuyin: string;
   payout: string;
   odds: string;
-  currency: string | null;
+  currency: string;
   allowJoin: boolean;
   myId: string | null | undefined;
   myUsername: string | null | undefined;
@@ -225,10 +225,9 @@ const GameZoneGamesTable = (props: Props) => {
           : "Coin Toss"
       );
       setCoinType(data.game.coinType);
-      setCurrentChallengerBuyIn(data.game.challengerBuyInAmount.$numberDecimal);
-      setCurrentCreatorBuyIn(data.game.betAmount.$numberDecimal);
-      setCurrentPayout(data.game.payout.$numberDecimal);
-      // setBetOdds(data.game.odds.$numberDecimal);
+      setCurrentChallengerBuyIn(data.game.challengerBuyInAmount);
+      setCurrentCreatorBuyIn(data.game.betAmount);
+      setCurrentPayout(data.game.payout);
       setGameId(data.game._id);
       setChallengerId(data.challengerId);
     };
@@ -276,10 +275,10 @@ const GameZoneGamesTable = (props: Props) => {
       }
       console.log(
         "table fetch URL:",
-        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${odds ? "&odds=" + odds : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}&coinType=points`
+        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${odds ? "&odds=" + odds : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`
       );
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${odds ? "&odds=" + odds : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}&coinType=points`,
+        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${odds ? "&odds=" + odds : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`,
         {
           method: "GET",
           mode: "cors",
@@ -434,13 +433,17 @@ const GameZoneGamesTable = (props: Props) => {
             return (
               <TableRow key={item.id}>
                 <TableCell>
-                  <div className="flex flex-row items-center gap-[7px] h-[70px]">
-                    <div className="w-[33px] h-[33px] bg-[#D9D9D9] border-[1px] border-[#DC2ABF] rounded-full overflow-hidden">
-                      {/* <img
-                        src=""
+                  <div className="flex flex-row items-center gap-[11px] h-[70px]">
+                    <div className="w-[33px] h-[33px] rounded-full overflow-hidden">
+                      <img
+                        src={
+                          item.game == "rockPaperScissors"
+                            ? "/static/rock-hand-magenta.png"
+                            : "/static/naffles-jackpot-token.png"
+                        }
                         alt="Game Icon"
-                        className="w-full h-full bg-[#D9D9D9] border-[1px] border-[#DC2ABF] object-cover"
-                      />{" "} */}
+                        className="w-full h-full object-cover"
+                      />{" "}
                     </div>
                     <p
                       className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}

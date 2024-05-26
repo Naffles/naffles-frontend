@@ -276,7 +276,7 @@ const GameZoneCreateGame = () => {
               </p>
               <p className="text-[#867878] text-[16px] font-face-bebas balance-type-dropdown">
                 BALANCE:{" "}
-                {`${(balanceType?.amount && tokenValueConversion(balanceType?.amount, balanceType.tokenType)) == "0." ? 0 : balanceType?.amount && tokenValueConversion(balanceType?.amount, balanceType.tokenType)} ${balanceType?.tokenType ?? "NA"}`}
+                {`${(balanceType && tokenValueConversion(balanceType?.amount, balanceType.tokenType)) == "0." ? 0 : balanceType && tokenValueConversion(balanceType?.amount, balanceType.tokenType)} ${balanceType?.tokenType ?? "NA"}`}
               </p>
             </button>
             <RiExpandUpDownLine className="absolute text-[20px] right-[20px] text-nafl-sponge-500" />

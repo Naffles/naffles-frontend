@@ -13,10 +13,47 @@ import Footer from "@components/shared/Footer/Footer";
 import CollectionItem from "@components/shared/Collection/collection";
 import { GameSection } from "@components/GameSection";
 import { IoMdSearch } from "react-icons/io";
-import { jackpotAmount } from "@components/utils/jackpotCounter";
+import {
+  jackpotAmount,
+  jackpotWinners,
+  recentWinners,
+} from "@components/utils/jackpotCounter";
+
+interface JackpotWinner {
+  id: string;
+  userProfileImage: string | null;
+  walletAddress: string;
+  wonAmount: string;
+  tokenType: string;
+  isGiveaway: boolean;
+}
+
+interface RecentWinners {}
 
 export default function Home() {
   const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
+  const [jackpotWinnersArr, setJackpotWinnersArr] = useState<JackpotWinner[]>(
+    []
+  );
+  // const [recentWinnersData, setRecentWinnersData] = useState<>(null)
+
+  useEffect(() => {
+    jackpotWinners(4).then((winners) => {
+      setJackpotWinnersArr(winners);
+      console.log(jackpotWinnersArr, "jackpotWinnersArr");
+    });
+
+    const recentWinnersInterval = setInterval(() => {
+      recentWinners();
+    }, 10000);
+
+    recentWinners();
+
+    // recentWinners().then((winners) => setRecentWinnersData(winners))
+    return () => {
+      clearInterval(recentWinnersInterval);
+    };
+  }, []);
 
   const intervalSet = useRef(false);
   useEffect(() => {
@@ -44,6 +81,12 @@ export default function Home() {
     };
     fetchInitialJackpot();
   }, []);
+
+  const shortenWalletAddress = (address: string) => {
+    if (address?.length > 10) {
+      return address.slice(0, 4) + "..." + address.slice(-6, address.length);
+    } else return address;
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
@@ -97,8 +140,8 @@ export default function Home() {
               }}
               modules={[Pagination]}
             >
-              {[1, 2, 3, 4].map((item) => (
-                <SwiperSlide key={item}>
+              {jackpotWinnersArr.map((item: any) => (
+                <SwiperSlide key={item.id}>
                   <div className="flex flex-col items-center justify-center md:scale-100 scale-[.6] py-0 md:py-[100px]">
                     <div>
                       <p className="text-[#371143] text-[32px] uppercase font-mono translate-x-[30%]">
@@ -107,14 +150,20 @@ export default function Home() {
                       <div className="bg-[#371143] h-[98px] w-[370px] rounded-[16px] relative flex items-center justify-center">
                         <div className="translate-x-[20%]">
                           <div className="flex items-center gap-[7px]">
-                            <img src="/static/avatar.svg" alt="" />
+                            <img
+                              src={
+                                item.userProfileImage ?? "/static/avatar.svg"
+                              }
+                              alt="Profile Image"
+                              className="w-[20px] h-[20px] rounded-full object-cover"
+                            />
                             <p className="font-mono text-white">
-                              0x45...t63f42 !!
+                              {shortenWalletAddress(item.walletAddress)}
                             </p>
                           </div>
                           <div>
                             <p className="font-mono text-[48px] text-nafl-sponge-500 leading-[100%]">
-                              {jackpotTotalAmount}{" "}
+                              {item.wonAmount}{" "}
                               <span className="text-[20px] text-white font-mono">
                                 NAFFLINGS
                               </span>
@@ -287,22 +336,30 @@ export default function Home() {
           >
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
               <SwiperSlide key={item} style={{ width: "290px" }}>
-                <div className="flex-row flex justify-between py-2 w-full mt-2">
+                <div className="flex-row flex items-center justify-center py-2 w-full h-[100px] gap-[20px]">
                   {item % 2 === 0 ? (
-                    <TrophyIcon size="xl" colour="dark-green" />
+                    // <TrophyIcon size="xl" colour="dark-green" />
+                    <img
+                      src="/static/trophy-cyan.png"
+                      alt="trophy"
+                      className="w-[42px] object-contain"
+                    />
                   ) : (
-                    <TrophyIcon size="xl" colour="purple" />
+                    // <TrophyIcon size="xl" colour="purple" />
+                    <img
+                      src="/static/trophy-pink.png"
+                      alt="trophy"
+                      className="w-[42px] object-contain"
+                    />
                   )}
                   <Typography
-                    size="text-lg"
+                    className="font-face-roboto uppercase font-bold w-full"
+                    size="text-[13px]"
                     color={item % 2 === 0 ? "purple" : "dark-green"}
                   >
                     Winner!{" "}
-                    <span
-                      style={{ fontFamily: "Bebas Neue", color: "#FEFF3D" }}
-                    >
-                      Eddie just won
-                    </span>{" "}
+                    <span style={{ color: "#FEFF3D" }}>Eddie just won</span>{" "}
+                    <br />
                     0.3ETH ($969.19) from Jay
                   </Typography>
                 </div>
