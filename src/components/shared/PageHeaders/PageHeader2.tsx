@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, ChangeEvent, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FaDiscord, FaTwitter, FaUserCircle } from "react-icons/fa";
 import colorVariants from "@components/utils/constants";
 import { useUser } from "@blockchain/context/UserContext";
@@ -46,6 +47,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
     // onLogout,
   }
 ) => {
+  const router = useRouter();
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [open, setOpen] = useState(false);
   const [openMobile, setOpenMobile] = useState(false);
@@ -225,6 +227,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
     setShownModal("");
     setOpenEditModal(false);
     logout();
+    window.location.reload();
   };
   const handleForgotClick = () => {
     setShownModal(ModalNames.RESET);
