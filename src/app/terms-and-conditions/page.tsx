@@ -491,23 +491,29 @@ const TermsAndConditions = () => {
           relevant time or have been participating in the Raffles as an agent for
           or at the behest of a person under 18 years or below the majority age
           which applies:
-          <p>(a)</p>
-          <p className="ml-4">all prizes currently or due to be transferred to your Account will be
-          retained by us;
-          </p>
-          <p>(b)</p>
-          <p className="ml-4">all prizes gained from participating in the Raffles through our
-          Website whilst underage must be returned to us on demand (if you fail to
-          comply with this provision, we will seek to recover all costs associated
-          with recovery of such sums); and/or
-          </p>
-          <p>(c)</p>
-          <p className="ml-4">any monies deposited in your Account which are not used to
-          participate in the Raffles will be returned to you OR retained until you
-          turn 18 years old at our sole discretion. We reserve the right to deduct
-          payment transaction fees from the amount to return, including transaction
-          fees for deposits to your naffles.com account which we covered.
-          </p>
+          <div className="flex flex-row mt-3">
+            <p>(a)</p>
+            <p className="ml-4">all prizes currently or due to be transferred to your Account will be
+            retained by us;
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(b)</p>
+            <p className="ml-4">all prizes gained from participating in the Raffles through our
+            Website whilst underage must be returned to us on demand (if you fail to
+            comply with this provision, we will seek to recover all costs associated
+            with recovery of such sums); and/or
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(c)</p>
+            <p className="ml-4">any monies deposited in your Account which are not used to
+            participate in the Raffles will be returned to you OR retained until you
+            turn 18 years old at our sole discretion. We reserve the right to deduct
+            payment transaction fees from the amount to return, including transaction
+            fees for deposits to your naffles.com account which we covered.
+            </p>
+          </div>
           </p>
         </div>
         <br />
@@ -658,7 +664,9 @@ const TermsAndConditions = () => {
             reserve the right to void all affected raffle entries or transactions in
             question and take any other action to correct such errors.
           </p>
-          <p>12.2</p>
+        </div>
+        <div className="flex flex-row">
+        <p>12.2</p>
           <p className="ml-4">
             We have the right to recover from you any amount overpaid and to adjust your
             Account to rectify any mistake, including errors due to incorrect smart
@@ -780,27 +788,39 @@ const TermsAndConditions = () => {
             This includes, but is not limited to, the following scenarios in
             which you may potentially suffer loss, harm, or damage:
             <br />
-            <p>(a)</p>
-            <p className="ml-4"> accidental purchases made by you;
-            </p>
-            <p>(b)</p>
-            <p className="ml-4">glitches, malfunctions, or other technical errors encountered on the
-            Website;
-            </p>
-            <p>(c)</p>
-            <p className="ml-4">being made victim of another user&apos;s fraud, deceit, prohibited
-            activity, or misdemeanour;
-            </p>
-            <p>(d)</p>
-            <p className="ml-4">fluctuating pricing by other users;
-            </p>
-            <p>(e)</p>
-            <p className="ml-4">unreasonable pricing by other users;
-            </p>
-            <p>(f)</p>
-            <p className="ml-4">the use of the Website and/or its features and assets in a manner not
-            consistent with a relevant intended purpose.
-            </p>
+            <div className="flex flex-row mt-3">
+              <p>(a)</p>
+              <p className="ml-4"> accidental purchases made by you;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>(b)</p>
+              <p className="ml-4">glitches, malfunctions, or other technical errors encountered on the
+              Website;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>(c)</p>
+              <p className="ml-4">being made victim of another user&apos;s fraud, deceit, prohibited
+              activity, or misdemeanour;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>(d)</p>
+              <p className="ml-4">fluctuating pricing by other users;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>(e)</p>
+              <p className="ml-4">unreasonable pricing by other users;
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <p>(f)</p>
+              <p className="ml-4">the use of the Website and/or its features and assets in a manner not
+              consistent with a relevant intended purpose.
+              </p>
+            </div>
           </p>
         </div>
         <br />
@@ -1088,36 +1108,56 @@ const TermsAndConditions = () => {
           loss or damages arising from or related to the use of the Website or
           Services, including, without limitation, to any of the following:
           <br />
-          <p>(a)</p>
-          <p className="ml-4">as a result of your own fault whether acts or omissions;
-          </p>
-          <p>(b)</p>
-          <p className="ml-4">delays, interruption or loss of services;
-          </p>
-          <p>(c)</p>
-          <p className="ml-4">echnical failure, malfunction or shutdown;
-          </p>
-          <p>(d)</p>
-          <p className="ml-4">server failure, hacks or unavailability;
-          </p>
-          <p>(e)</p>
-          <p className="ml-4">data loss;
-          </p>
-          <p>(f)</p>
-          <p className="ml-4">corrupted data on Naffles&apos; servers;
-          </p>
-          <p>(g)</p>
-          <p className="ml-4">failure to update or provide correct information;
-          </p>
-          <p>(h)</p>
-          <p className="ml-4">“phishing” or other Websites masquerading as Naffles;
-          </p>
-          <p>(i)</p>
-          <p className="ml-4">stolen, lost, or unauthorised use of your means of authorization; and
-          </p>
-          <p>(j)</p>
-          <p className="ml-4">loss of business or goodwill.
-          </p>
+          <div className="flex flex-row mt-3">
+            <p>(a)</p>
+            <p className="ml-4">as a result of your own fault whether acts or omissions;
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(b)</p>
+            <p className="ml-4">delays, interruption or loss of services;
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(c)</p>
+            <p className="ml-4">echnical failure, malfunction or shutdown;
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(d)</p>
+            <p className="ml-4">server failure, hacks or unavailability;
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(e)</p>
+            <p className="ml-4">data loss;
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(f)</p>
+            <p className="ml-4">corrupted data on Naffles&apos; servers;
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(g)</p>
+            <p className="ml-4">failure to update or provide correct information;
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(h)</p>
+            <p className="ml-4">“phishing” or other Websites masquerading as Naffles;
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(i)</p>
+            <p className="ml-4">stolen, lost, or unauthorised use of your means of authorization; and
+            </p>
+          </div>
+          <div className="flex flex-row">
+            <p>(j)</p>
+            <p className="ml-4">loss of business or goodwill.
+            </p>
+          </div>
           </p>
         </div>
         <br />

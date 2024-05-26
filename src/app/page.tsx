@@ -164,7 +164,15 @@ export default function Home() {
               </div>
             </div>
             <Swiper
-              className="flex max-w-[480px] max-h-[750px] w-full mx-[0px]"
+              className="
+                flex 
+                lg:max-w-[480px] 
+                lg:max-h-[750px] 
+                mx-[0px] 
+                h-[750px]
+                max-h-[480px] 
+                md:mt-0
+              "
               direction="vertical"
               slidesPerView={1}
               spaceBetween={0}
