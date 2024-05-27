@@ -16,6 +16,8 @@ import {
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { motion } from "framer-motion";
 import { jackpotAmount } from "@components/utils/jackpotCounter";
+import { fetchLeaderboard } from "@components/utils/leaderboardsApi";
+
 interface tableRow {
   id: number;
   rank: number;
@@ -108,14 +110,20 @@ const DemoPointsLeaderboards = () => {
   const [showAddedPoints, setShowAddedPoints] = useState(false);
   const { points } = useBasicUser();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [tableData, setTableData] = useState<tableRow[]>([]);
+  const [tableData, setTableData] = useState<any[]>([]);
   const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
 
   const router = useRouter()
 
   useEffect(() => {
-    const fetchTableData = () => {
-      setTableData(sample_demo_leaderboards_json);
+    const fetchTableData = async () => {
+      // setTableData(sample_demo_leaderboards_json);
+      
+      const leaderboardData = await fetchLeaderboard('top-gamers', 1, 50);
+      setTableData(leaderboardData.data.topGamers);
+    
+      console.log(leaderboardData, 'leaderboards Data not from API')
+      console.log(tableData, 'tableData')
     };
     fetchTableData();
     setIsLoading(false);
@@ -256,7 +264,7 @@ const DemoPointsLeaderboards = () => {
             loadingContent={<Spinner label="Loading..." />}
           >
             {(item) => (
-              <TableRow key={item.id}>
+              <TableRow key={item?.user._id}>
                 <TableCell>
                   <div className="flex flex-row py-[20px]">
                     <p className="text-[16px] text-[#fff] font-bold">
@@ -267,14 +275,14 @@ const DemoPointsLeaderboards = () => {
                 <TableCell>
                   <div className="flex flex-row">
                     <p className="text-[16px] text-[#fff] font-bold">
-                      {shortenWalletAddress(item.profile)}
+                      {shortenWalletAddress(item?.user?.username)}
                     </p>
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="flex flex-row">
                     <p className="text-[16px] text-[#fff] font-bold">
-                      {item.points.toLocaleString()}
+                      {item.nafflings.toLocaleString()}
                     </p>
                   </div>
                 </TableCell>

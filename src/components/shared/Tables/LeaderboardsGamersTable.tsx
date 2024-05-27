@@ -10,9 +10,11 @@ import {
   TableCell,
   Spinner,
   Checkbox,
+  user,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { fetchLeaderboard } from "@components/utils/leaderboardsApi";
 
 interface tableRow {
   id: number;
@@ -26,7 +28,7 @@ interface tableRow {
 
 const LeaderboardGamersTable = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [tableData, setTableData] = useState<tableRow[]>([]);
+  const [tableData, setTableData] = useState<any[]>([]);
 
   let sample_gamers_json = [
     {
@@ -153,8 +155,10 @@ const LeaderboardGamersTable = () => {
     setIsLoading(false);
   }, []);
 
-  const fetchTableData = () => {
-    setTableData(sample_gamers_json);
+  const fetchTableData = async () => {
+    // setTableData(sample_gamers_json);
+    const leaderboardData = await fetchLeaderboard('top-gamers', 1, 100);
+    setTableData(leaderboardData.data.topGamers);
   };
 
   const shortenWalletAddress = (address: string) => {
@@ -187,7 +191,7 @@ const LeaderboardGamersTable = () => {
           loadingContent={<Spinner label="Loading..." />}
         >
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item?.user._id}>
               <TableCell>
                 <div className="flex flex-row py-[20px]">
                   <p className="text-[16px] text-[#fff] font-bold">
@@ -198,35 +202,35 @@ const LeaderboardGamersTable = () => {
               <TableCell>
                 <div className="flex flex-row">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {shortenWalletAddress(item.profile)}
+                    {shortenWalletAddress(item?.user.username)}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.played.toLocaleString()}
+                    {item.gamesPlayed.toLocaleString()}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-end">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.won.toLocaleString()}
+                    {item.gamesWon.toLocaleString()}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-center">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.winnings.toLocaleString()}
+                    {item.totalWinnings.toLocaleString()}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.points.toLocaleString()}
+                    {item.nafflings.toLocaleString()}
                   </p>
                 </div>
               </TableCell>
