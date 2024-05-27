@@ -114,12 +114,20 @@ export default function Home() {
 
   const shortenName = (name: string) => {
     if (name?.length > 10) {
-      return name.slice(0, 9) + "...";
+      return name.slice(0, 6) + "...";
     } else return name;
   };
 
   const onImageError = (e: any) => {
     e.target.src = "/static/avatar.svg";
+  };
+
+  const returnLoser = (winner: User, challenger: User, creator: User) => {
+    if (winner._id != challenger._id) {
+      return challenger.username;
+    } else {
+      return creator.username;
+    }
   };
 
   return (
@@ -366,7 +374,7 @@ export default function Home() {
         </div>
         <div
           className="flex-row flex border-4 border-nafl-purple 
-        rounded-lg bg-nafl-charcoal-800 relative top-[-50px] z-10"
+        rounded-lg bg-nafl-charcoal-800 relative top-[-50px] z-10 min-h-[105px]"
         >
           <Swiper
             spaceBetween={50}
@@ -378,7 +386,7 @@ export default function Home() {
             modules={[Autoplay]}
           >
             {recentWinnersData?.map((item, index) => (
-              <SwiperSlide key={item.game._id} style={{ width: "290px" }}>
+              <SwiperSlide key={item.game._id} style={{ width: "320px" }}>
                 <div className="flex-row flex items-center justify-center py-2 w-full h-[100px] gap-[20px]">
                   {(index + 1) % 2 === 0 ? (
                     // <TrophyIcon size="xl" colour="dark-green" />
@@ -405,7 +413,6 @@ export default function Home() {
                       {" "}
                       {shortenName(item.game.winner.username)} just won
                     </span>{" "}
-                    <br />
                     {tokenValueConversion(
                       item.game.payout,
                       item.payoutConverted
@@ -413,7 +420,15 @@ export default function Home() {
                     <span className="font-face-roboto uppercase">
                       {item.game.coinType}
                     </span>{" "}
-                    (${item.payoutConverted}) from Jay
+                    <br />
+                    (${item.payoutConverted}) from{" "}
+                    {shortenName(
+                      returnLoser(
+                        item.game.winner,
+                        item.game.challenger,
+                        item.game.creator
+                      )
+                    )}
                   </Typography>
                 </div>
               </SwiperSlide>
