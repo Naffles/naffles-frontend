@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { fetchLeaderboard } from "@components/utils/leaderboardsApi";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
 interface tableRow {
   id: number;
@@ -30,126 +31,6 @@ const LeaderboardGamersTable = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tableData, setTableData] = useState<any[]>([]);
 
-  let sample_gamers_json = [
-    {
-      id: 1,
-      rank: 6969,
-      profile: "You",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 2,
-      rank: 2,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 3,
-      rank: 3,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 4,
-      rank: 4,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 5,
-      rank: 5,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 6,
-      rank: 6,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 7,
-      rank: 7,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 8,
-      rank: 8,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 9,
-      rank: 9,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 10,
-      rank: 10,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 11,
-      rank: 11,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 12,
-      rank: 12,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-    {
-      id: 13,
-      rank: 13,
-      profile: "0x047eaCd122Bc4f67649e65968dF9Ff1469e11BF5",
-      played: 175,
-      won: 12069,
-      winnings: 169,
-      points: 265262.5,
-    },
-  ];
-
   useEffect(() => {
     fetchTableData();
     setIsLoading(false);
@@ -157,7 +38,7 @@ const LeaderboardGamersTable = () => {
 
   const fetchTableData = async () => {
     // setTableData(sample_gamers_json);
-    const leaderboardData = await fetchLeaderboard('top-gamers', 1, 100);
+    const leaderboardData = await fetchLeaderboard("top-gamers", 1, 100);
     setTableData(leaderboardData.data.topGamers);
   };
 
@@ -230,7 +111,9 @@ const LeaderboardGamersTable = () => {
               <TableCell>
                 <div className="flex flex-row">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.nafflings.toLocaleString()}
+                    {parseFloat(
+                      tokenValueConversion(item.nafflings, "points")
+                    ).toLocaleString()}
                   </p>
                 </div>
               </TableCell>
