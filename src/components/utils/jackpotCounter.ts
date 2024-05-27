@@ -52,7 +52,8 @@ export const recentWinners = async () => {
     if (response.status == 200) return response.data.data.gameData;
   } catch (error: any) {
     const errorData = error.response?.data;
-    toast.error(`Error fetching recentWinners: ${errorData.message}`);
+    // toast.error(`Error fetching recentWinners: ${errorData.message}`);
+    console.log(`Error fetching recentWinners: ${errorData.message}`);
   }
 };
 
