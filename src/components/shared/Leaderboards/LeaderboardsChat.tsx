@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import Web3 from "web3";
 import { jackpotAmount } from "@components/utils/jackpotCounter";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
 interface Message {
   sender: { username: string; profileImage: string; _id: string };
@@ -37,11 +38,7 @@ const BalancesListOption = ({
 }): React.JSX.Element => {
   const y = useMotionValue(0);
   const controls = useDragControls();
-  const weiToEther = (weiAmount: string) => {
-    const web3 = new Web3();
-    let weiAmoutBigInt = BigInt(weiAmount);
-    return web3.utils.fromWei(weiAmoutBigInt, "ether");
-  };
+
   return (
     <Reorder.Item
       id={value.id}
@@ -56,7 +53,7 @@ const BalancesListOption = ({
           onPointerDown={(e) => controls.start(e)}
         />
         <div className="flex flex-row items-center justify-center gap-[6px]">
-          <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance).toLocaleString()} ${type}`}</p>
+          <p className="text-[16px] text-nafl-white uppercase">{`${tokenValueConversion(balance, type) == "0." ? 0 : tokenValueConversion(balance, type)} ${type}`}</p>
           <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
         </div>
       </div>
@@ -103,23 +100,26 @@ const LeaderboardsChat = () => {
   const intervalSet = useRef(false);
   useEffect(() => {
     const fetchInitialJackpot = async () => {
-        try {
-            const initialAmount = await jackpotAmount('nafflings');
-            setJackpotTotalAmount(initialAmount.jackpotInitial);
-            if (!intervalSet.current) {
-                intervalSet.current = true;
-                const interval = setInterval(() => {
-                    setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
-                }, 10000);
+      try {
+        const initialAmount = await jackpotAmount("nafflings");
+        setJackpotTotalAmount(initialAmount.jackpotInitial);
+        if (!intervalSet.current) {
+          intervalSet.current = true;
+          const interval = setInterval(() => {
+            setJackpotTotalAmount(
+              (prevAmount: number) =>
+                prevAmount + initialAmount.jackpotPointPerSec
+            );
+          }, 10000);
 
-                return () => {
-                    clearInterval(interval);
-                    intervalSet.current = false;
-                };
-            }
-        } catch (error) {
-            console.error('Failed to fetch initial jackpot amount:', error);
+          return () => {
+            clearInterval(interval);
+            intervalSet.current = false;
+          };
         }
+      } catch (error) {
+        console.error("Failed to fetch initial jackpot amount:", error);
+      }
     };
     fetchInitialJackpot();
   }, []);
@@ -254,10 +254,7 @@ const LeaderboardsChat = () => {
             </div>
           </div>
           <p className="text-[14px] text-nafl-white font-face-bebas">
-            <a
-              href="/win-the-jackpot"
-              target="_blank"
-            >
+            <a href="/win-the-jackpot" target="_blank">
               HOW TO WIN THE JACKPOT?
             </a>
           </p>
@@ -340,18 +337,18 @@ const LeaderboardsChat = () => {
           <BiSend className="absolute right-[14px] text-[#8C8C8C] text-[26px] cursor-pointer" />
         </div>
 
-        <div 
-        className="w-full h-[58px] rounded-[10px] relative overflow-hidden">
+        <div className="w-full h-[58px] rounded-[10px] relative overflow-hidden">
           <img
             src={"/static/gamezone-header-bg.png"}
             alt="Naffle"
             className="w-full h-full object-cover object-center"
           />
-          <div 
-          onClick={() => {
-            window.open("https://discord.com/invite/naffles", "_blank");
-          }}
-          className="flex flex-row items-center justify-between absolute inset-0 w-full h-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[18px] cursor-pointer">
+          <div
+            onClick={() => {
+              window.open("https://discord.com/invite/naffles", "_blank");
+            }}
+            className="flex flex-row items-center justify-between absolute inset-0 w-full h-full bg-gradient-to-r from-[#02B1B1]/90 to-[#ffff3d]/90 px-[18px] cursor-pointer"
+          >
             <img
               src={"/static/naffles-text-logo-dark.png"}
               alt="Naffle"

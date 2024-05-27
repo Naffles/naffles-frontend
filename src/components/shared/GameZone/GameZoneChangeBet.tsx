@@ -7,91 +7,53 @@ import { TbCurrencySolana } from "react-icons/tb";
 import useGame from "@components/utils/gamezone";
 import { useUser } from "@blockchain/context/UserContext";
 import toast from "react-hot-toast";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
+import Web3 from "web3";
+
+type Balance = {
+  id: string;
+  tokenType: string;
+  amount: string;
+  conversion: string;
+};
 
 const GameZoneChangeBet = () => {
-  const { socket } = useUser();
+  const { user, socket } = useUser();
   const currentGameId = useGame((state) => state.gameId);
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setChangingBet = useGame((state) => state.setChangingBet);
 
-  const [balanceType, setBalanceType] = useState<{
-    type: string;
-    balance: string;
-    usd: string;
-  }>({
-    type: "",
-    balance: "",
-    usd: "",
-  });
+  const [balanceType, setBalanceType] = useState<Balance | null>(null);
+
   const [balanceTypeDropdown, setBalanceTypeDropdown] =
     useState<boolean>(false);
-  const [balanceAmount, setBalanceAmount] = useState<number>(0.0001);
+  const [balanceAmount, setBalanceAmount] = useState<string>("0.0001");
   const [betMultiplierChoice, setBetMultiplierChoice] = useState<number>(1);
   const [betMultiplierChoiceDropdown, setBetMultiplierChoiceDropdown] =
     useState<boolean>(false);
   const [totalPayout, setTotalPayout] = useState<number>(0);
-
-  let sample_balances_json = [
-    {
-      id: 11,
-      type: "PTS",
-      balance: "1000",
-      usd: "0",
-    },
-    {
-      id: 1,
-      type: "ETH",
-      balance: "1.2369",
-      usd: "3569",
-    },
-    {
-      id: 2,
-      type: "BTC",
-      balance: "0.2369",
-      usd: "3569",
-    },
-    {
-      id: 3,
-      type: "BYTES",
-      balance: "23.2369",
-      usd: "3569",
-    },
-    {
-      id: 4,
-      type: "SOL",
-      balance: "5.2369",
-      usd: "3569",
-    },
-    {
-      id: 5,
-      type: "NAFF",
-      balance: "1.2369",
-      usd: "3569",
-    },
-    {
-      id: 6,
-      type: "BTC",
-      balance: "0.2369",
-      usd: "3569",
-    },
-  ];
+  const [balancesOptionData, setBalancesOptionData] = useState<Balance[]>([]);
 
   let currency_name = [
-    { type: "PTS", name: "Points" },
-    { type: "ETH", name: "Ethereum" },
-    { type: "BTC", name: "Bitcoin" },
-    { type: "BYTES", name: "Neo Tokyo" },
-    { type: "SOL", name: "Solana" },
-    { type: "NAFF", name: "Naffles" },
+    { type: "pts", name: "Points" },
+    { type: "eth", name: "Ethereum" },
+    { type: "btc", name: "Bitcoin" },
+    { type: "bytes", name: "Neo Tokyo" },
+    { type: "sol", name: "Solana" },
+    { type: "naff", name: "Naffles" },
   ];
 
   let bet_multiplier_options = [1, 2, 3, 4, 5, 10];
 
   useEffect(() => {
-    if (balanceType.type == "") {
-      setBalanceType(sample_balances_json[0]);
-    }
-  }, [balanceType, sample_balances_json]);
+    user?.balances && setBalancesOptionData(user?.balances);
+  }, [user?.balances]);
+
+  useEffect(() => {
+    if (balancesOptionData.length <= 0) return;
+    console.log("balancesOptionData", balancesOptionData);
+    setBalanceType(balancesOptionData[0]);
+  }, [balancesOptionData]);
 
   const currencyNameConverter = (type: string) => {
     let currencyName = currency_name?.filter((item) => item?.type == type);
@@ -99,7 +61,8 @@ const GameZoneChangeBet = () => {
   };
 
   useEffect(() => {
-    setTotalPayout(balanceAmount * betMultiplierChoice);
+    let challengerBuyIn = parseFloat(balanceAmount) / betMultiplierChoice;
+    setTotalPayout(parseFloat(balanceAmount) + challengerBuyIn);
   }, [balanceAmount, betMultiplierChoice]);
 
   useEffect(() => {
@@ -120,23 +83,38 @@ const GameZoneChangeBet = () => {
     };
   }, [socket]);
 
-  const changeBet = (gameId: string, betAmount: string, odds: string) => {
+  const changeBet = (
+    gameId: string,
+    betAmount: string,
+    odds: string,
+    tokenType: string
+  ) => {
+    const web3 = new Web3();
+
+    let tokenAmount = "0";
+    if (tokenType == "sol") {
+      let solValue = parseFloat(betAmount) / Math.pow(10, 9);
+      tokenAmount = solValue.toString();
+    } else {
+      tokenAmount = web3.utils.toWei(betAmount, "ether");
+    }
+
     socket?.emit("requestBetUpdate", {
       gameId: gameId,
-      betAmount: betAmount,
+      betAmount: tokenAmount,
       odds: odds,
     });
     // toast.success("Change bet request sent to opposing player");
   };
 
   const currencyIconReturner = (type: string) => {
-    if (type == "ETH") {
+    if (type == "eth") {
       return <FaEthereum className="text-[#fff]" />;
-    } else if (type == "BTC") {
+    } else if (type == "btc") {
       return <FaBitcoin className="text-[#fff]" />;
-    } else if (type == "SOL") {
+    } else if (type == "sol") {
       return <TbCurrencySolana className="text-[#fff]" />;
-    } else if (type == "NAFF") {
+    } else if (type == "naff") {
       return (
         <img
           src="/static/naff-icon.png"
@@ -144,7 +122,7 @@ const GameZoneChangeBet = () => {
           className="w-[12px] object-contain"
         />
       );
-    } else if (type == "BYTES") {
+    } else if (type == "bytes") {
       return (
         <img
           src="/static/bytes-icon.png"
@@ -172,35 +150,42 @@ const GameZoneChangeBet = () => {
             // }
             className="flex items-center gap-[10px] justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B]"
           >
-            {currencyIconReturner(balanceType?.type)}
+            {currencyIconReturner(balanceType?.tokenType ?? "NA")}
             <p className="text-[#fff] text-[16px] font-face-bebas">
-              {currencyNameConverter(balanceType?.type)}
+              {currencyNameConverter(balanceType?.tokenType ?? "NA")}
             </p>
             <p className="text-[#867878] text-[16px] font-face-bebas">
-              BALANCE: {`${balanceType?.balance} ${balanceType?.type}`}
+              BALANCE:{" "}
+              {`${balanceType && tokenValueConversion(balanceType?.amount, balanceType?.tokenType)} ${balanceType?.tokenType}`}
             </p>
           </button>
           <RiExpandUpDownLine className="absolute text-[20px] right-[20px] text-nafl-sponge-500" />
           {balanceTypeDropdown && (
             <div className="flex absolute top-[60px] w-full h-[160px] z-40 p-[10px] rounded-[10px] bg-[#4B4B4B] overflow-hidden overflow-y-scroll balance-scrollbar">
               <div className="flex flex-col w-full gap-[6px]">
-                {sample_balances_json.map((item) => (
+                {balancesOptionData?.map((item) => (
                   <button
                     onClick={() => {
-                      setBalanceType(item);
-                      setBalanceTypeDropdown(false);
+                      if (parseFloat(item.amount) <= 0) {
+                        toast.error("Using 0 balance is not allowed");
+                      } else {
+                        setBalanceType(item);
+                        setBalanceTypeDropdown(false);
+                      }
                     }}
                     key={item.id}
                     className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${
-                      balanceType.type == item?.type && "bg-[#fff]/30"
-                    }`}
+                      balanceType?.tokenType == item?.tokenType &&
+                      "bg-[#fff]/30"
+                    } ${parseFloat(item.amount) <= 0 ? "opacity-100" : "opacity-30"}`}
                   >
-                    {currencyIconReturner(item?.type)}
+                    {currencyIconReturner(item?.tokenType)}
                     <p className="text-[#fff] text-[16px] font-face-bebas">
-                      {currencyNameConverter(item?.type)}
+                      {currencyNameConverter(item?.tokenType)}
                     </p>
                     <p className="text-[#cfcece] text-[16px] font-face-bebas truncate">
-                      BALANCE: {`${item?.balance} ${item?.type}`}
+                      BALANCE:{" "}
+                      {`${tokenValueConversion(item?.amount, item.tokenType) == "0." ? 0 : tokenValueConversion(item?.amount, item.tokenType)} ${item?.tokenType}`}
                     </p>
                   </button>
                 ))}
@@ -209,12 +194,11 @@ const GameZoneChangeBet = () => {
           )}
         </div>
         <input
-          type="text"
+          type="number"
+          min={0}
           value={balanceAmount}
-          onChange={(e) =>
-            parseFloat(e.target.value) &&
-            setBalanceAmount(parseFloat(e.target.value))
-          }
+          onChange={(e) => setBalanceAmount(e.target.value)}
+          max={user?.points}
           className="flex items-center justify-start w-[190px] h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] font-face-bebas text-[16px] text-[#fff]"
         />
       </div>
@@ -263,19 +247,18 @@ const GameZoneChangeBet = () => {
             </div>
           )}
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-row w-full items-center justify-center gap-[16px]">
           <p className=" text-[#989898] text-[14px]">
             Buy-in:{" "}
-            <span className="text-[#fff] font-face-roboto italic">
-              {balanceAmount.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
-              {balanceType.type}
+            <span className="text-[#fff] font-face-roboto italic uppercase font-bold">
+              {balanceAmount}
+              {balanceType?.tokenType}
             </span>
           </p>
           <p className=" text-[#989898] text-[14px]">
             Payout:{" "}
-            <span className="text-[#fff] font-face-roboto italic">
-              {totalPayout.toFixed(balanceType.type == "Points" ? 2 : 4)}{" "}
-              {balanceType.type}
+            <span className="text-[#fff] font-face-roboto italic uppercase font-bold">
+              {totalPayout} {balanceType?.tokenType}
             </span>
           </p>
         </div>
@@ -293,10 +276,12 @@ const GameZoneChangeBet = () => {
         <button
           onClick={() =>
             currentGameId &&
+            balanceType &&
             changeBet(
               currentGameId,
               balanceAmount?.toString(),
-              betMultiplierChoice?.toString()
+              betMultiplierChoice?.toString(),
+              balanceType?.tokenType
             )
           }
           className="flex items-center justify-center px-[30px] h-[54px] rounded-[8px] bg-nafl-sponge-500"

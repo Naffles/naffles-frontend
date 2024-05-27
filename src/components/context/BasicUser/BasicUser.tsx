@@ -152,6 +152,7 @@ export const BasicUserProvider = ({
         data: { data },
       } = await axios.get("user/profile");
       setUser(data ?? null);
+      console.log("temporary points", data?.temporaryPoints);
       setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
       return data;
     } catch (err: any) {

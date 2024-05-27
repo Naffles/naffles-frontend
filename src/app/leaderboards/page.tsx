@@ -7,7 +7,7 @@ import useGame from "../../components/utils/gamezone";
 import GameZoneGame from "@components/shared/GameZone/GameZoneGame";
 import LeaderboardsChat from "@components/shared/Leaderboards/LeaderboardsChat";
 import LeaderboardsMain from "@components/shared/Leaderboards/LeaderboardsMain";
-import GameZoneChat from "@components/shared/GameZone/GameZoneChat";
+import GameZoneGlobalChat from "@components/shared/GameZone/GameZoneGlobalChat";
 
 const Leaderboards = () => {
   const currentScreen = useGame((state) => state.screen);
@@ -50,7 +50,7 @@ const Leaderboards = () => {
 
         <div className="flex flex-row items-start justify-center gap-[36px] duration-500 z-20 mb-[100px] w-full">
           <LeaderboardsMain />
-          <GameZoneChat />
+          <GameZoneGlobalChat />
         </div>
         <Footer />
       </div>

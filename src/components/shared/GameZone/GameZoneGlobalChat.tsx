@@ -18,15 +18,16 @@ import {
 } from "react-icons/md";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { jackpotAmount } from "@components/utils/jackpotCounter";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
 interface GameData {
   _id: string;
   gameType: string;
   creator: { profileImage: string; username: string; _id: string };
-  challengerBuyInAmount: { $numberDecimal: number };
-  payout: { $numberDecimal: number };
-  betAmount: { $numberDecimal: number };
-  odds: { $numberDecimal: number };
+  challengerBuyInAmount: string;
+  payout: string;
+  betAmount: string;
+  odds: string;
   coinType: string;
   status: string;
 }
@@ -97,12 +98,7 @@ const BalancesListOption = ({
 }): React.JSX.Element => {
   const y = useMotionValue(0);
   const controls = useDragControls();
-  const weiToEther = (weiAmount: string) => {
-    if (weiAmount === "0") return weiAmount;
-    const web3 = new Web3();
-    let weiAmoutBigInt = BigInt(weiAmount);
-    return web3.utils.fromWei(weiAmoutBigInt, "ether");
-  };
+
   return (
     <Reorder.Item
       id={value.id}
@@ -117,7 +113,7 @@ const BalancesListOption = ({
           onPointerDown={(e) => controls.start(e)}
         />
         <div className="flex flex-row items-center justify-center gap-[6px]">
-          <p className="text-[16px] text-nafl-white uppercase">{`${weiToEther(balance) == "0." ? 0 : weiToEther(balance)} ${type}`}</p>
+          <p className="text-[16px] text-nafl-white uppercase">{`${tokenValueConversion(balance, type) == "0." ? 0 : tokenValueConversion(balance, type)} ${type}`}</p>
           <p className="text-[16px] text-[#C1C1C1]">({`${usd} USD`})</p>
         </div>
       </div>
@@ -126,10 +122,16 @@ const BalancesListOption = ({
 };
 
 const GameZoneGlobalChat = () => {
-  const { socket, socketId, user, setShowDepositModal, setShowWithdrawModal } =
-    useUser();
+  const {
+    socket,
+    socketId,
+    user,
+    setShowDepositModal,
+    setShowWithdrawModal,
+    chatData,
+  } = useUser();
   const [balances, setBalances] = useState<Balance[]>([]);
-  const [chatData, setChatData] = useState<Message[]>([]);
+  // const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const [showChat, setShowChat] = useState(false);
   const [showBalances, setShowBalances] = useState(false);
@@ -151,15 +153,6 @@ const GameZoneGlobalChat = () => {
   }, [user]);
 
   useEffect(() => {
-    socket?.emit("joinGlobalChat");
-
-    const receiveGlobalChat = (data: any) => {
-      console.log("receiveGlobalChatMessage", data);
-      setChatData((oldData) => [...oldData, data]);
-    };
-
-    socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
-
     const checkRoomOpen = (data: any) => {
       console.log("roomstatus data:", data);
       if (!data) {
@@ -176,13 +169,12 @@ const GameZoneGlobalChat = () => {
     socket?.on("roomStatus", checkRoomOpen);
 
     return () => {
-      socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
       socket?.off("roomStatus", checkRoomOpen);
     };
   }, [socket]);
 
   useEffect(() => {
-    if (chatData.length > 0) {
+    if (chatData && chatData?.length > 0) {
       scrollToBottom();
     }
   }, [chatData]);
@@ -249,11 +241,9 @@ const GameZoneGlobalChat = () => {
     );
 
     setCoinType(gameData.coinType);
-    setCurrentChallengerBuyIn(
-      gameData.challengerBuyInAmount.$numberDecimal.toString()
-    );
+    setCurrentChallengerBuyIn(gameData.challengerBuyInAmount);
     // setBetOdds(gameData.odds.toString());
-    setCurrentPayout(gameData.payout.$numberDecimal.toString());
+    setCurrentPayout(gameData.payout);
     setGameId(gameId);
   };
 
@@ -263,36 +253,6 @@ const GameZoneGlobalChat = () => {
       result += chars[Math.floor(Math.random() * chars.length)];
     return result;
   };
-
-  let sample_comments_json = [
-    {
-      id: 1,
-      name: "You",
-      image: "/static/sample-account-image-1.png",
-      date: "16/02/2024",
-      time: "9:14PM",
-      comment:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum. In placerat commodo justo,",
-    },
-    {
-      id: 2,
-      name: "Joe",
-      image: "/static/sample-account-image-2.png",
-      date: "16/02/2024",
-      time: "9:16PM",
-      comment:
-        "Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum. In placerat commodo justo,",
-    },
-    {
-      id: 3,
-      name: "PlayerOne",
-      image: "/static/sample-account-image-3.png",
-      date: "16/02/2024",
-      time: "9:17PM",
-      comment:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget magna bibendum, vulputate elit in, tincidunt lectus. Morbi et erat non mi cursus fermentum.",
-    },
-  ];
 
   const sendGlobalChatMessage = (message: string) => {
     console.log("message:", message);
@@ -370,7 +330,10 @@ const GameZoneGlobalChat = () => {
                       Buy-in:
                     </p>
                     <p className="text-[#02B1B1] text-[12px] font-bold w-[70px] uppercase">
-                      {game.challengerBuyInAmount.$numberDecimal}{" "}
+                      {tokenValueConversion(
+                        game.challengerBuyInAmount,
+                        game.coinType
+                      )}{" "}
                       {game.coinType}
                     </p>
                   </div>
@@ -380,7 +343,8 @@ const GameZoneGlobalChat = () => {
                       Payout:
                     </p>
                     <p className="text-[#02B1B1] text-[12px] font-bold w-[70px] uppercase">
-                      {game.payout.$numberDecimal} {game.coinType}
+                      {tokenValueConversion(game.payout, game.coinType)}{" "}
+                      {game.coinType}
                     </p>
                   </div>
                 </div>
@@ -477,9 +441,16 @@ const GameZoneGlobalChat = () => {
           <div className="flex flex-col items-nceter justify-center w-full rounded-[10px]">
             <div className="flex flex-row items-center justify-between w-full mt-[26px]">
               <p className="text-[#C4C4C4] text-[20px]">SEASON TOTAL:</p>
-              <p className="text-nafl-white text-[20px]">
-                {user?.points ?? 0} NAFFLINGS
-              </p>
+              <div className="flex flex-row items-center justify-center gap-[6px]">
+                <p className="text-nafl-white text-[20px]">
+                  {user?.points?.toLocaleString() ?? 0}
+                </p>
+                <img
+                  src="/nafflings/three-group.png"
+                  alt="Naffles Image"
+                  className="w-[61px] h-[34px] object-contain mr-[22px]"
+                />
+              </div>
             </div>
 
             <div className="flex flex-col items-nceter justify-center w-full border-[1px] border-nafl-sponge-500 rounded-[10px]">
@@ -531,7 +502,7 @@ const GameZoneGlobalChat = () => {
             ref={bottomChat}
           >
             <div className="flex flex-col w-full gap-[19px]">
-              {chatData.map((item) => (
+              {chatData?.map((item) => (
                 <MessageSection
                   key={randomString(
                     12,
@@ -723,7 +694,7 @@ const GameZoneGlobalChat = () => {
                     ref={bottomChat}
                   >
                     <div className="flex flex-col w-full gap-[19px]">
-                      {chatData.map((item) => (
+                      {chatData?.map((item) => (
                         <MessageSection
                           key={randomString(
                             12,
@@ -791,7 +762,7 @@ const GameZoneGlobalChat = () => {
         ) : (
           <button
             onClick={() => setShowChat(true)}
-            className="flex items-center justify-center w-[60px] h-[60px] rounded-[10px] bg-nafl-sponge-500"
+            className="flex items-center justify-center w-[60px] h-[60px] rounded-[10px] bg-nafl-sponge-500 "
           >
             <BsFillChatLeftTextFill className="text-[#000] text-[30px]" />
           </button>

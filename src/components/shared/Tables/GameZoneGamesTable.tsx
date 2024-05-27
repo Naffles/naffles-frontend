@@ -2,6 +2,7 @@
 
 import { useUser } from "@blockchain/context/UserContext";
 import useGame from "@components/utils/gamezone";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 import {
   Table,
   TableHeader,
@@ -21,11 +22,11 @@ interface tableRow {
   player: string;
   playerId: string;
   image: string;
-  creatorBuyin: number;
-  challengerBuyin: number;
-  payout: number;
-  odds: number;
-  currency: string | null;
+  creatorBuyin: string;
+  challengerBuyin: string;
+  payout: string;
+  odds: string;
+  currency: string;
   allowJoin: boolean;
   myId: string | null | undefined;
   myUsername: string | null | undefined;
@@ -35,15 +36,23 @@ interface gamezoneReturnArr {
   _id: string;
   gameType: string;
   creator: { profileImage: string; username: string; _id: string };
-  challengerBuyInAmount: { $numberDecimal: number };
-  payout: { $numberDecimal: number };
-  betAmount: { $numberDecimal: number };
-  odds: { $numberDecimal: number };
+  challengerBuyInAmount: string;
+  payout: string;
+  betAmount: string;
+  odds: string;
   coinType: string;
   status: string;
 }
 
-const GameZoneGamesTable = () => {
+interface Props {
+  search: string;
+  gameType: string;
+  odds: string;
+  min: string;
+  max: string;
+}
+
+const GameZoneGamesTable = (props: Props) => {
   const { user, socket } = useUser();
   const setCurrentScreen = useGame((state) => state.setScreen);
   const setGameType = useGame((state) => state.setType);
@@ -157,12 +166,29 @@ const GameZoneGamesTable = () => {
   ];
 
   useEffect(() => {
-    socket && fetchTableData(user?.id, user?.name);
+    socket &&
+      fetchTableData(
+        user?.id,
+        user?.name,
+        props.search,
+        props.gameType,
+        props.odds,
+        props.min,
+        props.max
+      );
 
     const gameCreated = (data: any) => {
       console.log("gameCreated data", data);
-      if (data?.message) {
-        fetchTableData(user?.id, user?.name);
+      if (data) {
+        fetchTableData(
+          user?.id,
+          user?.name,
+          props.search,
+          props.gameType,
+          props.odds,
+          props.min,
+          props.max
+        );
       }
     };
 
@@ -179,7 +205,15 @@ const GameZoneGamesTable = () => {
       socket?.off("newGameCreated", gameCreated);
       socket?.off("errorJoinRequest", joinRequestErrorHandler);
     };
-  }, [socket, user]);
+  }, [
+    socket,
+    user,
+    props.search,
+    props.gameType,
+    props.odds,
+    props.min,
+    props.max,
+  ]);
 
   useEffect(() => {
     const gameJoinRequest = (data: any) => {
@@ -191,10 +225,9 @@ const GameZoneGamesTable = () => {
           : "Coin Toss"
       );
       setCoinType(data.game.coinType);
-      setCurrentChallengerBuyIn(data.game.challengerBuyInAmount.$numberDecimal);
-      setCurrentCreatorBuyIn(data.game.betAmount.$numberDecimal);
-      setCurrentPayout(data.game.payout.$numberDecimal);
-      // setBetOdds(data.game.odds.$numberDecimal);
+      setCurrentChallengerBuyIn(data.game.challengerBuyInAmount);
+      setCurrentCreatorBuyIn(data.game.betAmount);
+      setCurrentPayout(data.game.payout);
       setGameId(data.game._id);
       setChallengerId(data.challengerId);
     };
@@ -224,18 +257,38 @@ const GameZoneGamesTable = () => {
 
   const fetchTableData = async (
     userId: string | null | undefined,
-    userName: string | null | undefined
+    userName: string | null | undefined,
+    search: string,
+    gameType: string,
+    odds: string,
+    min: string,
+    max: string
   ) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}game`, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": `${process.env.NEXT_PUBLIC_API_KEY}`,
-        },
-      });
+      let gameTypeText = "";
+      if (gameType == "ALL GAMES") {
+        gameTypeText = "all";
+      } else if (gameType == "ROCK, PAPERS, SCISSORS") {
+        gameTypeText = "rockPaperScissors";
+      } else if (gameType == "COIN TOSS") {
+        gameTypeText = "coinToss";
+      }
+      console.log(
+        "table fetch URL:",
+        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${odds ? "&odds=" + odds : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`
+      );
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${odds ? "&odds=" + odds : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`,
+        {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": `${process.env.NEXT_PUBLIC_API_KEY}`,
+          },
+        }
+      );
 
       const result = await response.json();
 
@@ -273,10 +326,10 @@ const GameZoneGamesTable = () => {
         player: item.creator.username,
         playerId: item.creator._id,
         image: item.creator.profileImage,
-        creatorBuyin: item.betAmount.$numberDecimal,
-        challengerBuyin: item.challengerBuyInAmount.$numberDecimal,
-        payout: item.payout.$numberDecimal,
-        odds: item.odds.$numberDecimal,
+        creatorBuyin: item.betAmount,
+        challengerBuyin: item.challengerBuyInAmount,
+        payout: item.payout,
+        odds: item.odds,
         currency: item.coinType,
         allowJoin: item.status == "waiting" ? true : false,
         myId: userId,
@@ -334,7 +387,15 @@ const GameZoneGamesTable = () => {
 
       if (response.ok) {
         console.log(result);
-        fetchTableData(user?.id, user?.name);
+        fetchTableData(
+          user?.id,
+          user?.name,
+          props.search,
+          props.gameType,
+          props.odds,
+          props.min,
+          props.max
+        );
       } else {
         console.error("Failed to create game: ", result.message);
       }
@@ -372,13 +433,17 @@ const GameZoneGamesTable = () => {
             return (
               <TableRow key={item.id}>
                 <TableCell>
-                  <div className="flex flex-row items-center gap-[7px] h-[70px]">
-                    <div className="w-[33px] h-[33px] bg-[#D9D9D9] border-[1px] border-[#DC2ABF] rounded-full overflow-hidden">
-                      {/* <img
-                        src=""
+                  <div className="flex flex-row items-center gap-[11px] h-[70px]">
+                    <div className="w-[33px] h-[33px] rounded-full overflow-hidden">
+                      <img
+                        src={
+                          item.game == "rockPaperScissors"
+                            ? "/static/rock-hand-magenta.png"
+                            : "/static/naffles-jackpot-token.png"
+                        }
                         alt="Game Icon"
-                        className="w-full h-full bg-[#D9D9D9] border-[1px] border-[#DC2ABF] object-cover"
-                      />{" "} */}
+                        className="w-full h-full object-cover"
+                      />{" "}
                     </div>
                     <p
                       className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
@@ -413,14 +478,27 @@ const GameZoneGamesTable = () => {
                       className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
                     >
                       {item.myUsername == item.player
-                        ? item.creatorBuyin
-                        : item.challengerBuyin}
+                        ? item.currency &&
+                          tokenValueConversion(item.creatorBuyin, item.currency)
+                        : item.currency &&
+                          tokenValueConversion(
+                            item.challengerBuyin,
+                            item.currency
+                          )}
                     </p>
-                    <p
-                      className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
-                    >
-                      {item.currency}
-                    </p>
+                    {item.currency != "points" ? (
+                      <p
+                        className={`text-[16px] font-bold uppercase ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                      >
+                        {item.currency}
+                      </p>
+                    ) : (
+                      <img
+                        src="/nafflings/three-group.png"
+                        alt="Nafflings"
+                        className="w-[60px] object-contain"
+                      />
+                    )}
                   </div>
                 </TableCell>
 
@@ -430,13 +508,23 @@ const GameZoneGamesTable = () => {
                       <p
                         className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
                       >
-                        {item.payout}
+                        {item.currency &&
+                          tokenValueConversion(item.payout, item.currency)}
                       </p>
-                      <p
-                        className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
-                      >
-                        {item.currency}
-                      </p>
+
+                      {item.currency != "points" ? (
+                        <p
+                          className={`text-[16px] font-bold uppercase ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                        >
+                          {item.currency}
+                        </p>
+                      ) : (
+                        <img
+                          src="/nafflings/three-group.png"
+                          alt="Nafflings"
+                          className="w-[60px] object-contain"
+                        />
+                      )}
                     </div>
                     {item.allowJoin &&
                       (item.myUsername != item.player ? (

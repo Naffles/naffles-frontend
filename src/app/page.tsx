@@ -13,35 +13,85 @@ import Footer from "@components/shared/Footer/Footer";
 import CollectionItem from "@components/shared/Collection/collection";
 import { GameSection } from "@components/GameSection";
 import { IoMdSearch } from "react-icons/io";
-import { jackpotAmount, jackpotWinners } from "@components/utils/jackpotCounter";
+import {
+  jackpotAmount,
+  jackpotWinners,
+  recentWinners,
+} from "@components/utils/jackpotCounter";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
+
+interface JackpotWinner {
+  id: string;
+  userProfileImage: string | null;
+  walletAddress: string;
+  wonAmount: string;
+  tokenType: string;
+  isGiveaway: boolean;
+}
+
+interface User {
+  _id: string;
+  username: string;
+}
+
+interface GameData {
+  _id: string;
+  gameType: string;
+  creator: User;
+  challenger: User;
+  challengerBuyInAmount: string;
+  payout: string;
+  betAmount: string;
+  odds: string;
+  coinType: string;
+  winner: User;
+}
+
+interface RecentWinners {
+  game: GameData;
+  payoutConverted: string;
+}
 
 export default function Home() {
   const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
-  const [jackpotWinnersArr, setJackpotWinnersArr] = useState<any>([]);
+  const [jackpotWinnersArr, setJackpotWinnersArr] = useState<JackpotWinner[]>(
+    []
+  );
+  const [recentWinnersData, setRecentWinnersData] = useState<
+    RecentWinners[] | null
+  >(null);
 
   useEffect(() => {
-    jackpotWinners(4).then(winners => {
+    jackpotWinners(4).then((winners) => {
       setJackpotWinnersArr(winners);
-      console.log(jackpotWinnersArr, 'jackpotWinnersArr')
+      console.log(jackpotWinnersArr, "jackpotWinnersArr");
     });
-  }, []);
 
-  // const jackpotWinnerArr = async () => {
-  //   const arr = await jackpotWinners(4);
-  //   console.log(arr, 'jackpot winner arr');
-  //   return arr;
-  // }
+    const recentWinnersInterval = setInterval(() => {
+      recentWinners().then((gameData) => setRecentWinnersData(gameData));
+    }, 10000);
+
+    // recentWinners();
+
+    // recentWinners().then((winners) => setRecentWinnersData(winners))
+    return () => {
+      clearInterval(recentWinnersInterval);
+    };
+  }, []);
 
   const intervalSet = useRef(false);
   useEffect(() => {
     const fetchInitialJackpot = async () => {
       try {
-        const initialAmount = await jackpotAmount('nafflings');
+        const initialAmount = await jackpotAmount("nafflings");
         setJackpotTotalAmount(initialAmount.jackpotInitial);
         if (!intervalSet.current) {
           intervalSet.current = true;
           const interval = setInterval(() => {
-            setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
+            setJackpotTotalAmount(
+              (prevAmount: number) =>
+                prevAmount + initialAmount.jackpotPointPerSec
+            );
           }, 10000);
 
           return () => {
@@ -50,18 +100,35 @@ export default function Home() {
           };
         }
       } catch (error) {
-        console.error('Failed to fetch initial jackpot amount:', error);
+        console.error("Failed to fetch initial jackpot amount:", error);
       }
     };
     fetchInitialJackpot();
   }, []);
 
+  const shortenWalletAddress = (address: string) => {
+    if (address?.length > 10) {
+      return address.slice(0, 4) + "..." + address.slice(-6, address.length);
+    } else return address;
+  };
+
+  const shortenName = (name: string) => {
+    if (name?.length > 10) {
+      return name.slice(0, 9) + "...";
+    } else return name;
+  };
+
+  const onImageError = (e: any) => {
+    e.target.src = "/static/avatar.svg";
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
-      <div className="w-full bg-[#464646] px-[25px] h-[110vh] md:h-[1200px] xl:h-[950px] pt-[100px]">
+      {/* <div className="w-full bg-[#464646] md:px-[25px] px-[15px] h-[120vh] md:h-[1200px] xl:h-[950px] pt-[100px]"> */}
+      <div className="w-full bg-[#464646] md:px-[25px] px-[15px] pt-[100px]">
         <div className="w-full bg-nafl-sponge-500 rounded-[16px] xl:pt-0 pt-[50px] xl:pb-[100px] px-4 md:px-10">
-          <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full gap-[50px]">
-            <div className="xl:w-[1000px] lg:w-[700px] w-[90%] flex flex-col items-start justify-center 2xl:pl-0 xl:pl-[20px] pl-0">
+          <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full gap-x-[50px] gap-y-[0px]">
+            <div className="xl:w-[1000px] lg:w-[700px] w-[90%] flex flex-col items-start justify-center 2xl:pl-0 xl:pl-[20px] pl-0 md:mb-0 mb-[-100px]">
               <p className="xl:text-[125px] text-[60px] text-[#000] font-face-bebas leading-[110%]">
                 Wager & Win{" "}
                 <span className="text-[#00b3b2] font-face-bebas">
@@ -78,8 +145,8 @@ export default function Home() {
               <div className="flex flex-col gap-[15px]">
                 <p className="text-[16px] md:text-[25px] text-nafl-charcoal-800 w-[80%] md:w-[100%]">
                   Win Raffles and Play PVP games against our community of
-                  trusted degens, where profits can be verifiably-fair and
-                  fun for everyone. Please degen responsibly!
+                  trusted degens, where profits can be verifiably-fair and fun
+                  for everyone. Please degen responsibly!
                 </p>
                 <div className="relative w-fit flex lg:flex-row flex-col items-center justify-start gap-[16px]">
                   <a href="/gamezone">
@@ -115,10 +182,8 @@ export default function Home() {
               }}
               modules={[Pagination]}
             >
-              {[1, 2, 3, 4].map((item) => (
-                <SwiperSlide
-                  key={item}
-                >
+              {jackpotWinnersArr.map((item: any) => (
+                <SwiperSlide key={item.id}>
                   <div className="flex flex-col items-center justify-center md:scale-100 scale-[.6] py-0 md:py-[100px]">
                     <div>
                       <p className="text-[#371143] text-[32px] uppercase font-mono translate-x-[30%]">
@@ -127,14 +192,21 @@ export default function Home() {
                       <div className="bg-[#371143] h-[98px] w-[370px] rounded-[16px] relative flex items-center justify-center">
                         <div className="translate-x-[20%]">
                           <div className="flex items-center gap-[7px]">
-                            <img src="/static/avatar.svg" alt="" />
+                            <img
+                              src={
+                                item.userProfileImage ?? "/static/avatar.svg"
+                              }
+                              alt="Profile Image"
+                              className="w-[20px] h-[20px] rounded-full object-cover"
+                              onError={onImageError}
+                            />
                             <p className="font-mono text-white">
-                              0x45...t63f42 !!
+                              {shortenWalletAddress(item.walletAddress)}
                             </p>
                           </div>
                           <div>
                             <p className="font-mono text-[48px] text-nafl-sponge-500 leading-[100%]">
-                              125 349.69{" "}
+                              {item.wonAmount}{" "}
                               <span className="text-[20px] text-white font-mono">
                                 NAFFLINGS
                               </span>
@@ -168,7 +240,9 @@ export default function Home() {
                         </p>
                         <p className="font-mono uppercase text-[24px] text-[#02B1B1]">
                           NEXT JACKPOT GIVE AWAY IN{" "}
-                          <span className="text-[#DC2ABF] font-mono">5 days</span>
+                          <span className="text-[#DC2ABF] font-mono">
+                            5 days
+                          </span>
                         </p>
                       </div>
                       <div className="mt-5 flex items-center justify-between">
@@ -180,13 +254,18 @@ export default function Home() {
                             href="https://x.com/Nafflesofficial"
                             target="_blank"
                           >
-                            <img src="/static/twitter.svg" title="Twitter" alt="Twitter" />
+                            <img
+                              src="/static/twitter.svg"
+                              title="Twitter"
+                              alt="Twitter"
+                            />
                           </a>
-                          <a
-                            href="https://discord.gg/naffles"
-                            target="_blank"
-                          >
-                            <img src="/static/discord.svg" title="Discord" alt="Discord" />
+                          <a href="https://discord.gg/naffles" target="_blank">
+                            <img
+                              src="/static/discord.svg"
+                              title="Discord"
+                              alt="Discord"
+                            />
                           </a>
                         </div>
                         <a href="/gamezone">
@@ -298,25 +377,43 @@ export default function Home() {
             }}
             modules={[Autoplay]}
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item) => (
-              <SwiperSlide key={item} style={{ width: "290px" }}>
-                <div className="flex-row flex justify-between py-2 w-full mt-2">
-                  {item % 2 === 0 ? (
-                    <TrophyIcon size="xl" colour="dark-green" />
+            {recentWinnersData?.map((item, index) => (
+              <SwiperSlide key={item.game._id} style={{ width: "290px" }}>
+                <div className="flex-row flex items-center justify-center py-2 w-full h-[100px] gap-[20px]">
+                  {(index + 1) % 2 === 0 ? (
+                    // <TrophyIcon size="xl" colour="dark-green" />
+                    <img
+                      src="/static/trophy-cyan.png"
+                      alt="trophy"
+                      className="w-[42px] object-contain"
+                    />
                   ) : (
-                    <TrophyIcon size="xl" colour="purple" />
+                    // <TrophyIcon size="xl" colour="purple" />
+                    <img
+                      src="/static/trophy-pink.png"
+                      alt="trophy"
+                      className="w-[42px] object-contain"
+                    />
                   )}
                   <Typography
-                    size="text-lg"
-                    color={item % 2 === 0 ? "purple" : "dark-green"}
+                    className="font-face-roboto uppercase font-bold w-full"
+                    size="text-[13px]"
+                    color={(index + 1) % 2 === 0 ? "purple" : "dark-green"}
                   >
                     Winner!{" "}
-                    <span
-                      style={{ fontFamily: "Bebas Neue", color: "#FEFF3D" }}
-                    >
-                      Eddie just won
+                    <span style={{ color: "#FEFF3D" }}>
+                      {" "}
+                      {shortenName(item.game.winner.username)} just won
                     </span>{" "}
-                    0.3ETH ($969.19) from Jay
+                    <br />
+                    {tokenValueConversion(
+                      item.game.payout,
+                      item.payoutConverted
+                    )}{" "}
+                    <span className="font-face-roboto uppercase">
+                      {item.game.coinType}
+                    </span>{" "}
+                    (${item.payoutConverted}) from Jay
                   </Typography>
                 </div>
               </SwiperSlide>
@@ -372,6 +469,5 @@ export default function Home() {
 
       <Footer />
     </main>
-
   );
 }

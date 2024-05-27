@@ -530,7 +530,11 @@ const PageHeader: React.FC<PageHeaderProps> = (
           className={`absolute top-0 h-screen flex lg:hidden flex-col items-center bg-nafl-sponge-500 justify-between w-[200px] py-[50px] duration-500 z-20 ${showMobileMenu ? "left-0" : "left-[-200px]"}`}
         >
           <div className="flex flex-col items-center w-full gap-[40px]">
-            <Link href="/" className="w-[90%]">
+            <Link
+              href="/"
+              onClick={() => setShowMobileMenu(false)}
+              className="w-[90%]"
+            >
               <img
                 src="/static/naffles-text-logo-dark.png"
                 alt="Naffles Dark Logo"

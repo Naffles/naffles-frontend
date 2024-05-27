@@ -2,6 +2,7 @@
 
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import axios from "@components/utils/axios";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
@@ -46,12 +47,18 @@ const WithdrawModal = (props: Props) => {
   const requestWithdraw = async (amount: string, type: Balance) => {
     if (parseFloat(withdrawAmount) > 0) {
       const web3 = new Web3();
-      let weiAmount = web3.utils.toWei(amount.toString(), "ether");
-      console.log("weiAmount: ", weiAmount);
-      console.log("type: ", type);
+
+      let tokenAmount = "0";
+      if (type.tokenType == "sol") {
+        let solValue = parseFloat(amount) / Math.pow(10, 9);
+        tokenAmount = solValue.toString();
+      } else {
+        tokenAmount = web3.utils.toWei(amount, "ether");
+      }
+
       try {
         const result = await axios.post("user/withdraw", {
-          amount: weiAmount,
+          amount: tokenAmount,
           coinType: type.tokenType,
           network: type.tokenType,
         });
@@ -143,14 +150,11 @@ const WithdrawModal = (props: Props) => {
 
   const setToMax = () => {
     toast.success("Max amount set");
-    let maxAmount = weiToEther(balanceType.amount);
+    let maxAmount = tokenValueConversion(
+      balanceType.amount,
+      balanceType.tokenType
+    );
     setWithdrawAmount(maxAmount ?? "0");
-  };
-
-  const weiToEther = (weiAmount: string) => {
-    const web3 = new Web3();
-    let weiAmoutBigInt = BigInt(weiAmount);
-    return web3.utils.fromWei(weiAmoutBigInt, "ether");
   };
 
   return (
@@ -183,7 +187,7 @@ const WithdrawModal = (props: Props) => {
                       {currencyNameConverter(balanceType?.tokenType)}
                     </p>
                     <p className="text-[#867878] text-[16px] font-face-bebas balance-type-dropdown">
-                      {`${weiToEther(balanceType?.amount) == "0." ? 0 : weiToEther(balanceType?.amount)} ${balanceType?.tokenType}`}
+                      {`${tokenValueConversion(balanceType.amount, balanceType.tokenType) == "0." ? 0 : tokenValueConversion(balanceType.amount, balanceType.tokenType)} ${balanceType?.tokenType}`}
                     </p>
                     <RiExpandUpDownLine className="absolute text-[20px] right-[12px] text-nafl-sponge-500 balance-type-dropdown" />
                   </button>
@@ -208,7 +212,7 @@ const WithdrawModal = (props: Props) => {
                             </p>
                             <p className="text-[#cfcece] text-[16px] font-face-bebas truncate">
                               BALANCE:{" "}
-                              {`${weiToEther(item?.amount) == "0." ? 0 : weiToEther(item?.amount)} ${item?.tokenType}`}
+                              {`${tokenValueConversion(item?.amount, item?.tokenType) == "0." ? 0 : tokenValueConversion(item?.amount, item?.tokenType)} ${item?.tokenType}`}
                             </p>
                           </button>
                         ))}
