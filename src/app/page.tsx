@@ -17,6 +17,7 @@ import {
   jackpotAmount,
   jackpotWinners,
   recentWinners,
+  jackpotGiveawayStartDate
 } from "@components/utils/jackpotCounter";
 import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
@@ -60,12 +61,19 @@ export default function Home() {
   const [recentWinnersData, setRecentWinnersData] = useState<
     RecentWinners[] | null
   >(null);
+  const [giveAwayStartDate, setGiveAwayStartDate] = useState<any>([]);
 
   useEffect(() => {
     jackpotWinners(4).then((winners) => {
       setJackpotWinnersArr(winners);
       console.log(jackpotWinnersArr, "jackpotWinnersArr");
     });
+
+    jackpotGiveawayStartDate().then((data: any) => {
+      const giveAwayDate = data;
+      setGiveAwayStartDate(giveAwayDate);
+      console.log(giveAwayDate, 'giveaway')
+    })
 
     const recentWinnersInterval = setInterval(() => {
       recentWinners().then((gameData) => setRecentWinnersData(gameData));
@@ -190,7 +198,7 @@ export default function Home() {
               }}
               modules={[Pagination]}
             >
-              {jackpotWinnersArr.map((item: any) => (
+              {jackpotWinnersArr.map((item: any, index: number) => (
                 <SwiperSlide key={item.id}>
                   <div className="flex flex-col items-center justify-center md:scale-100 scale-[.6] py-0 md:py-[100px]">
                     <div>
@@ -249,7 +257,13 @@ export default function Home() {
                         <p className="font-mono uppercase text-[24px] text-[#02B1B1]">
                           NEXT JACKPOT GIVE AWAY IN{" "}
                           <span className="text-[#DC2ABF] font-mono">
-                            5 days
+                            {/* 5 Days */}
+                            {giveAwayStartDate.length > index ? 
+                              // Math.floor((new Date(giveAwayStartDate[index].endDate).getTime() - new Date(giveAwayStartDate[index].startDate).getTime()) / (1000 * 60 * 60 * 24)) + " Days"
+                              Math.floor((new Date(giveAwayStartDate[index].endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) + " Days"
+                              :
+                              "5 Days"
+                            }
                           </span>
                         </p>
                       </div>

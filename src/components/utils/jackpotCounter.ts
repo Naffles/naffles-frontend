@@ -37,6 +37,14 @@ export const jackpotWinners = async (limit: number) => {
   return response.data.data.jackpotHistory;
 };
 
+export const jackpotGiveawayStartDate = async () => {
+    const response = await axios.get(
+      `/raffle/giveaways`
+    );
+  
+    return response.data.data;
+  };
+
 export const recentWinners = async () => {
   try {
     const response = await axios.get(`/game/history/`);

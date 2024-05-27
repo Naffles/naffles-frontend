@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { BaseGame } from "./BaseGame";
 import axios from "@components/utils/axios";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
@@ -11,6 +11,15 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
   const [hasError, setHasError] = useState(false);
+  const [changeGameText, setChangeGameText] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setChangeGameText(prevState => !prevState);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []); 
 
   const triggerRPSGame = useCallback(
     async (choice?: string) => {
@@ -61,6 +70,7 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       hasError={hasError}
       initialTime={30}
       onCountdownStart={onGameStart}
+      changeGameText={changeGameText}
       gameType="rps"
     />
   );
