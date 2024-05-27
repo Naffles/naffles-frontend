@@ -7,28 +7,22 @@ import useGame from "@components/utils/gamezone";
 import { io } from "socket.io-client";
 import { useUser } from "@blockchain/context/UserContext";
 import toast from "react-hot-toast";
-import { FaEthereum } from "react-icons/fa";
-
-type GameVideo = {
-  variant: number | string;
-  result: string;
-  choice: string;
-};
+import { FaBitcoin, FaEthereum } from "react-icons/fa";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
+import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import { TbCurrencySolana } from "react-icons/tb";
 
 const DEFAULT_TIMER = 10;
 
 export const RPSGamezone = () => {
   const [timeleft, setTimeleft] = useState(DEFAULT_TIMER);
-  const [isCountingDown, setIsCountingDown] = useState(true);
   const [result, setResult] = useState("");
-  const [isLocked, setIsLocked] = useState(false);
   const [selectedChoice, setSelectedChoice] = useState("");
-  const [displayChoice, setDisplayChoice] = useState("");
-  const [displayVideo, setDisplayVideo] = useState<GameVideo | null>(null);
 
   //ADDED
 
   const { socket, user } = useUser();
+  const { reloadProfile } = useBasicUser();
   const currentGameMode = useGame((state) => state.mode);
   const currentCoinType = useGame((state) => state.coinType);
   const currentCreatorBuyIn = useGame((state) => state.creatorBuyIn);
@@ -54,6 +48,7 @@ export const RPSGamezone = () => {
 
   const [requestedBetAmount, setRequestedBetAmount] = useState<string | null>();
   const [requestedBetOdds, setRequestedBetOdds] = useState<string | null>();
+  const [requestedTokenType, setRequestedTokenType] = useState<string | null>();
   const [showAcceptChangeBet, setShowAcceptChangeBet] = useState(false);
   const [muteVideo, setMuteVideo] = useState(false);
 
@@ -122,6 +117,7 @@ export const RPSGamezone = () => {
 
     const gameZoneStart = (data: any) => {
       console.log("gameStarted data: ", data);
+      reloadProfile();
       setResult("");
       setShowResultUI(false);
       setshowWaitingReplayUI(false);
@@ -145,12 +141,10 @@ export const RPSGamezone = () => {
     const betUpdates = (data: any) => {
       console.log("Bet Updated: ", data);
       if (data.status) {
-        setCurrentCreatorBuyIn(data.game.betAmount.$numberDecimal);
-        setCurrentChallengerBuyIn(
-          data.game.challengerBuyInAmount.$numberDecimal
-        );
-        setCurrentPayout(data.game.payout.$numberDecimal);
-        setCurrentBetOdds(data.game.odds.$numberDecimal);
+        setCurrentCreatorBuyIn(data.game.betAmount);
+        setCurrentChallengerBuyIn(data.game.challengerBuyInAmount);
+        setCurrentPayout(data.game.payout);
+        setCurrentBetOdds(data.game.odds);
         toast.dismiss();
         toast.success("Bet successfully changed");
       } else {
@@ -165,6 +159,7 @@ export const RPSGamezone = () => {
     const betRequest = (data: any) => {
       console.log("Bet Requested: ", data);
       setRequestedBetAmount(data.game.betAmount);
+      setRequestedTokenType(data.game.tokenType);
       setRequestedBetOdds(data.game.odds);
       setShowAcceptChangeBet(true);
     };
@@ -209,9 +204,7 @@ export const RPSGamezone = () => {
         icon: "🔥",
       });
     } else {
-      socket?.emit("showUpdatedPoints", {
-        gameId: currentGameId,
-      });
+      reloadProfile();
       setShowResultUI(true);
     }
     setShowVideo(false);
@@ -261,6 +254,32 @@ export const RPSGamezone = () => {
   const randomIntFromInterval = (min: number, max: number) => {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
+  };
+
+  const currencyIconReturner = (type: string) => {
+    if (type == "eth") {
+      return <FaEthereum className="text-[#fff]" />;
+    } else if (type == "btc") {
+      return <FaBitcoin className="text-[#fff]" />;
+    } else if (type == "sol") {
+      return <TbCurrencySolana className="text-[#fff]" />;
+    } else if (type == "naff") {
+      return (
+        <img
+          src="/static/naff-icon.png"
+          alt="Bytes Icon"
+          className="w-[22px] object-contain"
+        />
+      );
+    } else if (type == "bytes") {
+      return (
+        <img
+          src="/static/bytes-icon.png"
+          alt="Bytes Icon"
+          className="w-[22px] object-contain"
+        />
+      );
+    }
   };
 
   return (
@@ -313,15 +332,19 @@ export const RPSGamezone = () => {
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {currentPayout} {currentCoinType}
+                {tokenValueConversion(currentPayout, currentCoinType)}{" "}
+                {currentCoinType}
               </span>
             </p>
             <p className="text-[#989898] text-[12px]">
               Buy-in:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
                 {currentGameMode == "host"
-                  ? currentCreatorBuyIn
-                  : currentChallengerBuyIn}{" "}
+                  ? tokenValueConversion(currentCreatorBuyIn, currentCoinType)
+                  : tokenValueConversion(
+                      currentChallengerBuyIn,
+                      currentCoinType
+                    )}{" "}
                 {currentCoinType}
               </span>
             </p>
@@ -350,10 +373,12 @@ export const RPSGamezone = () => {
             <p className="text-[11px] text-nafl-white">
               Game owner has change the bet to
             </p>
-            <div className="flex flex-row items-center justify-center gap-[3px]">
-              <FaEthereum className="text-nafl-white text-[20px]" />
-              <p className="text-[22px] text-nafl-white font-face-bebas">
-                {requestedBetAmount}
+            <div className="flex flex-row items-center justify-center gap-[3px] text-[22px]">
+              {currencyIconReturner(requestedTokenType ?? "NA")}
+              <p className=" text-nafl-white font-face-bebas">
+                {requestedBetAmount &&
+                  requestedTokenType &&
+                  tokenValueConversion(requestedBetAmount, requestedTokenType)}
               </p>
             </div>
             <p className="text-[14px] text-nafl-white font-bold">
@@ -364,15 +389,19 @@ export const RPSGamezone = () => {
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
-                {currentPayout} {currentCoinType}
+                {tokenValueConversion(currentPayout, currentCoinType)}{" "}
+                {currentCoinType}
               </span>
             </p>
             <p className="text-[#989898] text-[12px]">
               Buy-in:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
                 {currentGameMode == "host"
-                  ? currentCreatorBuyIn
-                  : currentChallengerBuyIn}{" "}
+                  ? tokenValueConversion(currentCreatorBuyIn, currentCoinType)
+                  : tokenValueConversion(
+                      currentChallengerBuyIn,
+                      currentCoinType
+                    )}{" "}
                 {currentCoinType}
               </span>
             </p>
@@ -414,15 +443,19 @@ export const RPSGamezone = () => {
           <p className="text-[#989898] text-[12px]">
             Payout:{" "}
             <span className="font-bold text-[#fff] font-face-roboto">
-              {currentPayout} {currentCoinType}
+              {tokenValueConversion(currentPayout, currentCoinType)}{" "}
+              {currentCoinType}
             </span>
           </p>
           <p className="text-[#989898] text-[12px]">
             Buy-in:{" "}
             <span className="font-bold text-[#fff] font-face-roboto">
               {currentGameMode == "host"
-                ? currentCreatorBuyIn
-                : currentChallengerBuyIn}{" "}
+                ? tokenValueConversion(currentCreatorBuyIn, currentCoinType)
+                : tokenValueConversion(
+                    currentChallengerBuyIn,
+                    currentCoinType
+                  )}{" "}
               {currentCoinType}
             </span>
           </p>
@@ -514,15 +547,19 @@ export const RPSGamezone = () => {
               <p className="text-[#989898] text-[12px]">
                 Payout:{" "}
                 <span className="font-bold text-[#fff] font-face-roboto">
-                  {currentPayout} {currentCoinType}
+                  {tokenValueConversion(currentPayout, currentCoinType)}{" "}
+                  {currentCoinType}
                 </span>
               </p>
               <p className="text-[#989898] text-[12px]">
                 Buy-in:{" "}
                 <span className="font-bold text-[#fff] font-face-roboto">
                   {currentGameMode == "host"
-                    ? currentCreatorBuyIn
-                    : currentChallengerBuyIn}{" "}
+                    ? tokenValueConversion(currentCreatorBuyIn, currentCoinType)
+                    : tokenValueConversion(
+                        currentChallengerBuyIn,
+                        currentCoinType
+                      )}{" "}
                   {currentCoinType}
                 </span>
               </p>

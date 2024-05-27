@@ -3,7 +3,25 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 
-// Define the type for the user
+interface GameData {
+  _id: string;
+  gameType: string;
+  creator: { profileImage: string; username: string; _id: string };
+  challengerBuyInAmount: string;
+  payout: string;
+  betAmount: string;
+  odds: string;
+  coinType: string;
+  status: string;
+}
+
+interface Message {
+  sender: { username: string; profileImage: string; _id: string };
+  timestamp: Date;
+  message: string | null;
+  game: GameData | null;
+}
+
 type Balance = {
   id: string;
   tokenType: string;
@@ -11,7 +29,6 @@ type Balance = {
   conversion: string;
 };
 
-// Define the type for the user
 type User = {
   address: string | null;
   jwt: string | null;
@@ -22,13 +39,13 @@ type User = {
   balances: Balance[] | null;
 };
 
-// Define the type for the user context.
 type UserContextType = {
   user: User | null;
   socket: Socket | null;
   socketId: string | null;
   showDepositModal: boolean;
   showWithdrawModal: boolean;
+  chatData: Message[] | null;
   setProfileName: (name: string | null) => void;
   setProfileImage: (imgURL: string | null) => void;
   setJWT: (jwt: string | null) => void;
@@ -45,6 +62,7 @@ const UserContext = createContext<UserContextType>({
   socketId: null,
   showDepositModal: false,
   showWithdrawModal: false,
+  chatData: null,
   setProfileName: () => {},
   setProfileImage: () => {},
   setJWT: () => {},
@@ -74,8 +92,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
   const [userBalances, setUserBalances] = useState<Balance[] | null>(null);
+  const [chatData, setChatData] = useState<Message[]>([]);
 
-  const { jwt, user } = useBasicUser();
+  const { jwt, user, reloadProfile } = useBasicUser();
 
   // Run fetchUserAccount function whenever the web3 instance changes.
 
@@ -108,15 +127,27 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     };
     socket?.on("registered", setIntoSocketId);
 
-    const setPoints = (data: any) => {
-      setUserPoints(data);
+    const tokenBalanceUpdate = (data: any) => {
+      if (data) {
+        reloadProfile();
+      }
     };
 
-    socket?.on("realtimePoints", setPoints);
+    socket?.on("updateTokenBalance", tokenBalanceUpdate);
+
+    socket?.emit("joinGlobalChat");
+
+    const receiveGlobalChat = (data: any) => {
+      console.log("receiveGlobalChatMessage", data);
+      setChatData((oldData) => [...oldData, data]);
+    };
+
+    socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
 
     return () => {
       socket?.off("registered", setIntoSocketId);
-      socket?.off("realtimePoints", setPoints);
+      socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
+      socket?.off("updateTokenBalance", tokenBalanceUpdate);
     };
   }, [userId, socket]);
 
@@ -139,6 +170,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         socketId: socketId,
         showDepositModal: showDepositModal,
         showWithdrawModal: showWithdrawModal,
+        chatData: chatData,
         setProfileName: setProfileName,
         setProfileImage: setProfileImage,
         setJWT: setUserJWT,

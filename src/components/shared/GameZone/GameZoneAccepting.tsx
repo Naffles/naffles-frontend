@@ -2,6 +2,7 @@
 
 import { useUser } from "@blockchain/context/UserContext";
 import useGame from "@components/utils/gamezone";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 import { CircularProgress } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -108,9 +109,9 @@ const GameZoneAccepting = () => {
   const cancelGame = () => {
     setCurrentScreen("main");
     setGameType(null);
-    setCoinType(null);
-    setBetAmount(null);
-    setBetOdds(null);
+    setCoinType("");
+    setBetAmount("");
+    setBetOdds("");
   };
 
   const acceptGame = () => {
@@ -154,13 +155,15 @@ const GameZoneAccepting = () => {
           <p className=" text-[#989898] text-[14px]">
             Your Buy-in:{" "}
             <span className="text-[#fff] font-face-roboto italic">
-              {currentBetAmount} {currentCoinType}
+              {tokenValueConversion(currentBetAmount, currentCoinType)}{" "}
+              {currentCoinType}
             </span>
           </p>
           <p className=" text-[#989898] text-[14px]">
             Your Payout:{" "}
             <span className="text-[#fff] font-face-roboto italic">
-              {currentPayout} {currentCoinType}
+              {tokenValueConversion(currentPayout, currentCoinType)}{" "}
+              {currentCoinType}
             </span>
           </p>
         </div>

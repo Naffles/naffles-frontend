@@ -1,6 +1,7 @@
 "use client";
 
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -154,12 +155,6 @@ const DepositModal = (props: Props) => {
     }
   };
 
-  const weiToEther = (weiAmount: string) => {
-    const web3 = new Web3();
-    let weiAmoutBigInt = BigInt(weiAmount);
-    return web3.utils.fromWei(weiAmoutBigInt, "ether");
-  };
-
   return (
     props.show && (
       <>
@@ -190,7 +185,7 @@ const DepositModal = (props: Props) => {
                       {currencyNameConverter(balanceType?.tokenType)}
                     </p>
                     <p className="text-[#867878] text-[16px] font-face-bebas balance-type-dropdown">
-                      {`${weiToEther(balanceType?.amount) == "0." ? 0 : weiToEther(balanceType?.amount)} ${balanceType?.tokenType}`}
+                      {`${tokenValueConversion(balanceType?.amount, balanceType.tokenType) == "0." ? 0 : tokenValueConversion(balanceType?.amount, balanceType.tokenType)} ${balanceType?.tokenType}`}
                     </p>
                     <RiExpandUpDownLine className="absolute text-[20px] right-[12px] text-nafl-sponge-500" />
                   </button>
@@ -215,7 +210,7 @@ const DepositModal = (props: Props) => {
                             </p>
                             <p className="text-[#cfcece] text-[16px] font-face-bebas truncate balance-type-dropdown">
                               BALANCE:{" "}
-                              {`${weiToEther(item?.amount) == "0." ? 0 : weiToEther(item?.amount)} ${item?.tokenType}`}
+                              {`${tokenValueConversion(item?.amount, item.tokenType) == "0." ? 0 : tokenValueConversion(item?.amount, item.tokenType)} ${item?.tokenType}`}
                             </p>
                           </button>
                         ))}
