@@ -92,7 +92,7 @@ export const ResetPassForm = () => {
       {!isNext ? (
         <FormContext
           onSubmit={handleRequestPassword}
-          className="flex flex-col gap-4 w-64"
+          className="flex mx-auto flex-col gap-4 w-64 mb-2"
         >
           <TextInput
             name="emailAddress"
@@ -118,7 +118,7 @@ export const ResetPassForm = () => {
       ) : (
         <FormContext
           onSubmit={handleResetPassword}
-          className="flex flex-col gap-4 w-64"
+          className="flex mx-auto flex-col gap-4 w-64 mb-2"
         >
           <TextInput
             name="tempPassword"

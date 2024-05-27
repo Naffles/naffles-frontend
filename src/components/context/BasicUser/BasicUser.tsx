@@ -143,6 +143,7 @@ export const BasicUserProvider = ({
     removeJWT();
     removeUser();
     removePoints();
+    window.location.reload();
   }, [removeJWT, removeUser, removePoints]);
 
   const reloadProfile = useCallback(async () => {

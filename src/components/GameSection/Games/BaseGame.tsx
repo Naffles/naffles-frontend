@@ -42,6 +42,7 @@ export const BaseGame = (props: BaseGameProps) => {
     resetToInitial,
     hasError,
     initialTime,
+    changeGameText,
     gameType,
   } = props;
   const [waitTimeLeft, setWaitTimeLeft] = useState(initialTime);
@@ -273,12 +274,12 @@ export const BaseGame = (props: BaseGameProps) => {
     router.push("/gamezone");
   };
 
-  const getGameText = (type: string) => {
+  const getGameText = (type: string, changeGameText: boolean) => {
     const text = ["Ready to win real crypto?", "Go to the game zone!"];
     if (type === "rps") {
-      return text[gameText ? 1 : 0];
+      return text[changeGameText ? 1 : 0];
     } else {
-      return text[gameText ? 0 : 1];
+      return text[changeGameText ? 0 : 1];
     }
   };
 
@@ -370,7 +371,7 @@ export const BaseGame = (props: BaseGameProps) => {
               className="flex items-center text-[18px] leading-[100%] cursor-pointer"
               onClick={() => navigaToGameZone()}
             >
-              {getGameText(gameType)}
+              {getGameText(gameType, changeGameText)}
             </div>
           </div>
         </div>

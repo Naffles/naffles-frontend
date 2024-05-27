@@ -17,6 +17,7 @@ export interface BaseGameProps {
   resetToInitial?: boolean;
   hasError?: boolean;
   initialTime: number;
+  changeGameText: boolean;
   gameType: string;
 }
 
