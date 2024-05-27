@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import {
   Slider,
   Table,
@@ -17,6 +17,7 @@ import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { motion } from "framer-motion";
 import { jackpotAmount } from "@components/utils/jackpotCounter";
 import { fetchLeaderboard } from "@components/utils/leaderboardsApi";
+import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
 interface tableRow {
   id: number;
@@ -113,17 +114,17 @@ const DemoPointsLeaderboards = () => {
   const [tableData, setTableData] = useState<any[]>([]);
   const [jackpotTotalAmount, setJackpotTotalAmount] = useState<any>(0);
 
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const fetchTableData = async () => {
       // setTableData(sample_demo_leaderboards_json);
-      
-      const leaderboardData = await fetchLeaderboard('top-gamers', 1, 50);
+
+      const leaderboardData = await fetchLeaderboard("top-gamers", 1, 50);
       setTableData(leaderboardData.data.topGamers);
-    
-      console.log(leaderboardData, 'leaderboards Data not from API')
-      console.log(tableData, 'tableData')
+
+      console.log(leaderboardData, "leaderboards Data not from API");
+      console.log(tableData, "tableData");
     };
     fetchTableData();
     setIsLoading(false);
@@ -132,23 +133,26 @@ const DemoPointsLeaderboards = () => {
   const intervalSet = useRef(false);
   useEffect(() => {
     const fetchInitialJackpot = async () => {
-        try {
-            const initialAmount = await jackpotAmount('nafflings');
-            setJackpotTotalAmount(initialAmount.jackpotInitial);
-            if (!intervalSet.current) {
-                intervalSet.current = true;
-                const interval = setInterval(() => {
-                    setJackpotTotalAmount((prevAmount: number) => prevAmount + initialAmount.jackpotPointPerSec);
-                }, 10000);
+      try {
+        const initialAmount = await jackpotAmount("nafflings");
+        setJackpotTotalAmount(initialAmount.jackpotInitial);
+        if (!intervalSet.current) {
+          intervalSet.current = true;
+          const interval = setInterval(() => {
+            setJackpotTotalAmount(
+              (prevAmount: number) =>
+                prevAmount + initialAmount.jackpotPointPerSec
+            );
+          }, 10000);
 
-                return () => {
-                    clearInterval(interval);
-                    intervalSet.current = false;
-                };
-            }
-        } catch (error) {
-            console.error('Failed to fetch initial jackpot amount:', error);
+          return () => {
+            clearInterval(interval);
+            intervalSet.current = false;
+          };
         }
+      } catch (error) {
+        console.error("Failed to fetch initial jackpot amount:", error);
+      }
     };
     fetchInitialJackpot();
   }, []);
@@ -164,8 +168,8 @@ const DemoPointsLeaderboards = () => {
   };
 
   const navigaToGameZone = () => {
-    router.push('/gamezone')
-  }
+    router.push("/gamezone");
+  };
 
   useEffect(() => {
     setShowAddedPoints(true);
@@ -248,8 +252,7 @@ const DemoPointsLeaderboards = () => {
           aria-label="Demo Games Leaderboards table"
           removeWrapper
           classNames={{
-            base: "max-h-[430px] overflow-hidden overflow-y-scroll balance-scrollbar",
-            table: "min-h-[360px]",
+            base: "h-[430px] overflow-hidden overflow-y-scroll balance-scrollbar",
             th: "h-[36px] bg-[#383838] border-y-[1px] border-[#fff] text-[#fff] text-[16px] font-face-roboto",
           }}
         >
@@ -266,7 +269,7 @@ const DemoPointsLeaderboards = () => {
             {(item) => (
               <TableRow key={item?.user._id}>
                 <TableCell>
-                  <div className="flex flex-row py-[20px]">
+                  <div className="flex flex-row">
                     <p className="text-[16px] text-[#fff] font-bold">
                       {item.rank}
                     </p>
@@ -282,7 +285,9 @@ const DemoPointsLeaderboards = () => {
                 <TableCell>
                   <div className="flex flex-row">
                     <p className="text-[16px] text-[#fff] font-bold">
-                      {item.nafflings.toLocaleString()}
+                      {parseFloat(
+                        tokenValueConversion(item.nafflings, "points")
+                      ).toLocaleString()}
                     </p>
                   </div>
                 </TableCell>
@@ -292,8 +297,8 @@ const DemoPointsLeaderboards = () => {
         </Table>
       </div>
 
-      <button 
-        className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-[96%] h-[45px] gap-[30px] relative bottom-[8px]"
+      <button
+        className="flex items-center justify-center bg-nafl-sponge-500 rounded-[11px] border-[2px] border-[#464646] w-[96%] h-[45px] gap-[30px] absolute bottom-[10px]"
         onClick={() => navigaToGameZone()}
       >
         <img

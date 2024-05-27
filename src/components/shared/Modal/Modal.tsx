@@ -27,7 +27,7 @@ export const Modal = ({
       )}
       className="fixed z-[51] top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 md:w-[434px] w-full flex items-center justify-center"
     >
-      <div className="modal-container rounded-2xl bg-[#2e2e2e] md:w-full max-w-[434px] w-[90%] text-[30px]">
+      <div className="modal-container rounded-2xl bg-[#2e2e2e] md:w-full max-w-[434px] w-[90%] text-[30px] text-[#fff]">
         {title && (
           <div className="modal-header bg-[#202020] rounded-t-2xl py-1 px-2 relative flex items-center justify-center">
             <div className="modal-close mr-auto invisible">

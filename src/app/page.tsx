@@ -17,7 +17,7 @@ import {
   jackpotAmount,
   jackpotWinners,
   recentWinners,
-  jackpotGiveawayStartDate
+  jackpotGiveawayStartDate,
 } from "@components/utils/jackpotCounter";
 import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
@@ -72,8 +72,8 @@ export default function Home() {
     jackpotGiveawayStartDate().then((data: any) => {
       const giveAwayDate = data;
       setGiveAwayStartDate(giveAwayDate);
-      console.log(giveAwayDate, 'giveaway')
-    })
+      console.log(giveAwayDate, "giveaway");
+    });
 
     const recentWinnersInterval = setInterval(() => {
       recentWinners().then((gameData) => setRecentWinnersData(gameData));
@@ -153,7 +153,7 @@ export default function Home() {
                 nfts &{" "}
                 <span className="relative font-face-bebas">
                   Crypto
-                  <div className="absolute w-[100px] md:w-[130px] top-[-90px] lg:top-[-108px] right-[-10px]">
+                  <div className="absolute w-[100px] md:w-[130px] top-[-90px] md:top-[-108px] right-[-10px]">
                     <img src="/nafflings/surprise2.png" alt="" />
                   </div>
                 </span>
@@ -173,9 +173,9 @@ export default function Home() {
                   {/* <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
                     <p className="text-[#FEFF3D]">EXPLORE LIVE NAFFLES</p>
                   </button> */}
-                  <div className="absolute w-[150px] right-[35px] top-[-20px] z-[1]">
+                  {/* <div className="absolute w-[150px] right-[35px] top-[-20px] z-[1]">
                     <img src="/nafflings/surprise3.png" alt="" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -258,12 +258,16 @@ export default function Home() {
                           NEXT JACKPOT GIVE AWAY IN{" "}
                           <span className="text-[#DC2ABF] font-mono">
                             {/* 5 Days */}
-                            {giveAwayStartDate.length > index ? 
-                              // Math.floor((new Date(giveAwayStartDate[index].endDate).getTime() - new Date(giveAwayStartDate[index].startDate).getTime()) / (1000 * 60 * 60 * 24)) + " Days"
-                              Math.floor((new Date(giveAwayStartDate[index].endDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) + " Days"
-                              :
-                              "5 Days"
-                            }
+                            {giveAwayStartDate.length > index
+                              ? // Math.floor((new Date(giveAwayStartDate[index].endDate).getTime() - new Date(giveAwayStartDate[index].startDate).getTime()) / (1000 * 60 * 60 * 24)) + " Days"
+                                Math.floor(
+                                  (new Date(
+                                    giveAwayStartDate[index].endDate
+                                  ).getTime() -
+                                    new Date().getTime()) /
+                                    (1000 * 60 * 60 * 24)
+                                ) + " Days"
+                              : "5 Days"}
                           </span>
                         </p>
                       </div>

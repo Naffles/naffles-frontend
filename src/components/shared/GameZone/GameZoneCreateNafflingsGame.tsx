@@ -71,7 +71,7 @@ const GameZoneCreateNafflingsGame = () => {
   }, [user?.points]);
 
   let currency_name = [
-    { type: "PTS", name: "Points" },
+    { type: "PTS", name: "Nafflings" },
     { type: "ETH", name: "Ethereum" },
     { type: "BTC", name: "Bitcoin" },
     { type: "BYTES", name: "Neo Tokyo" },
@@ -290,7 +290,7 @@ const GameZoneCreateNafflingsGame = () => {
                 {currencyNameConverter(balanceType?.type)}
               </p>
               <p className="text-[#867878] text-[16px] font-face-bebas balance-type-dropdown">
-                BALANCE: {`${user?.points} ${balanceType?.type}`}
+                BALANCE: {`${user?.points ?? "NO"} NAFFLINGS`}
               </p>
             </button>
           </div>
@@ -352,19 +352,19 @@ const GameZoneCreateNafflingsGame = () => {
             <p className=" text-[#989898] text-[14px]">
               Your Buy-in:{" "}
               <span className="text-[#fff] font-face-roboto italic">
-                {parseFloat(balanceAmount).toFixed(2)} {balanceType.type}
+                {parseFloat(balanceAmount).toFixed(2)} Nafflings
               </span>
             </p>
             <p className=" text-[#989898] text-[14px]">
               Challenger Buy-in:{" "}
               <span className="text-[#fff] font-face-roboto italic">
-                {challengerBuyIn.toFixed(2)} {balanceType.type}
+                {challengerBuyIn.toFixed(2)} Nafflings
               </span>
             </p>
             <p className=" text-[#989898] text-[14px]">
               Your Payout:{" "}
               <span className="text-[#fff] font-face-roboto italic">
-                {totalPayout.toFixed(2)} {balanceType.type}
+                {totalPayout.toFixed(2)} Nafflings
               </span>
             </p>
           </div>

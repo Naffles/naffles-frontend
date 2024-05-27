@@ -22,27 +22,27 @@ const StakingDashboardInfo = () => {
     {
       id: "1",
       description: "$NAFF Wallet Balance",
-      value: "6,969",
+      value: "0",
     },
     {
       id: "2",
       description: "Staked $NAFF",
-      value: "106,969",
+      value: "0",
     },
     {
       id: "3",
       description: "Unclaimed $NAFF Rewards",
-      value: "5,699",
+      value: "0",
     },
     {
       id: "4",
       description: "Founders Keys",
-      value: "5 (3 staked)",
+      value: "0 (0 staked)",
     },
     {
       id: "5",
       description: "Claimable Open-Entries",
-      value: "160",
+      value: "0",
     },
   ];
 
@@ -68,13 +68,19 @@ const StakingDashboardInfo = () => {
     </div>
   );
 
+  const shortenWalletAddress = (address: string) => {
+    if (address?.length > 10) {
+      return address.slice(0, 5) + "..." + address.slice(-4, address.length);
+    } else return address;
+  };
+
   return (
     <div className="flex flex-col items-center justify-start lg:w-[470px] max-w-[470px] w-[90%] gap-[27px]">
       <p className="text-nafl-white text-[40px] font-face-bebas leading-[100%]">
         STAKE/CLAIM DASHBOARD
       </p>
       <p className="w-full text-nafl-white text-[30px] font-face-bebas leading-[100%]">
-        Wallet: {user?.address}
+        Wallet: {user?.address && shortenWalletAddress(user?.address)}
       </p>
       <div className="flex flex-col items-center justify-start gap-[10px] w-full px-[20px]">
         {stakingDashboardData?.map((item) => (

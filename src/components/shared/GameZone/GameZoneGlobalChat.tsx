@@ -46,45 +46,6 @@ type Balance = {
   conversion: string;
 };
 
-let sample_balances_json = [
-  {
-    id: 1,
-    type: "ETH",
-    balance: "1.2369",
-    usd: "3569",
-  },
-  {
-    id: 2,
-    type: "BTC",
-    balance: "0.2369",
-    usd: "3569",
-  },
-  {
-    id: 3,
-    type: "BYTES",
-    balance: "23.2369",
-    usd: "3569",
-  },
-  {
-    id: 4,
-    type: "SOL",
-    balance: "5.2369",
-    usd: "3569",
-  },
-  {
-    id: 5,
-    type: "NAFF",
-    balance: "1.2369",
-    usd: "3569",
-  },
-  {
-    id: 6,
-    type: "BTC",
-    balance: "0.2369",
-    usd: "3569",
-  },
-];
-
 const BalancesListOption = ({
   type,
   balance,
@@ -329,23 +290,37 @@ const GameZoneGlobalChat = () => {
                     <p className="text-[12px] text-nafl-white w-[63px] leading-[100%]">
                       Buy-in:
                     </p>
-                    <p className="text-[#02B1B1] text-[12px] font-bold w-[70px] uppercase">
+                    <p className="text-[#02B1B1] text-[12px] font-bold uppercase">
                       {tokenValueConversion(
                         game.challengerBuyInAmount,
                         game.coinType
                       )}{" "}
-                      {game.coinType}
+                      {game.coinType != "points" && game.coinType}
                     </p>
+                    {game.coinType == "points" && (
+                      <img
+                        src="/nafflings/three-group.png"
+                        alt="Nafflings"
+                        className="w-[50px] object-contain"
+                      />
+                    )}
                   </div>
 
                   <div className="flex flex-row items-center justify-center">
                     <p className="text-[12px] text-nafl-white w-[63px] leading-[100%]">
                       Payout:
                     </p>
-                    <p className="text-[#02B1B1] text-[12px] font-bold w-[70px] uppercase">
+                    <p className="text-[#02B1B1] text-[12px] font-bold uppercase">
                       {tokenValueConversion(game.payout, game.coinType)}{" "}
-                      {game.coinType}
+                      {game.coinType != "points" && game.coinType}
                     </p>
+                    {game.coinType == "points" && (
+                      <img
+                        src="/nafflings/three-group.png"
+                        alt="Nafflings"
+                        className="w-[50px] object-contain"
+                      />
+                    )}
                   </div>
                 </div>
                 <button

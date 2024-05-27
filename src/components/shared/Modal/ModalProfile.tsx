@@ -29,7 +29,7 @@ export const ModalProfile = ({
     >
       <div className="modal-container rounded-2xl bg-nafl-charcoal-500 md:w-full max-w-[500px] w-[90%] duration-500 text-[40px] animate-fade-in">
         {title && (
-          <div className="modal-header bg-nafl-charcoal-600 rounded-t-2xl py-1 px-2 relative flex items-center justify-center">
+          <div className="modal-header bg-nafl-charcoal-600 rounded-t-2xl py-1 px-2 relative flex items-center justify-center text-[#fff]">
             <div className="modal-close mr-auto invisible">
               <FaTimes
                 className="hover:text-nafl-sponge-700 transition-colors ease-out duration-150 cursor-pointer text-body-xl"
