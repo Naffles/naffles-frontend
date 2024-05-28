@@ -90,21 +90,21 @@ const LeaderboardGamersTable = () => {
               <TableCell>
                 <div className="flex flex-row">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.gamesPlayed.toLocaleString()}
+                    {item.gamesPlayed?.toLocaleString()}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-end">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.gamesWon.toLocaleString()}
+                    {item.gamesWon?.toLocaleString()}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-center">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.totalWinnings.toLocaleString()}
+                    {item.totalWinnings?.toLocaleString()}
                   </p>
                 </div>
               </TableCell>
