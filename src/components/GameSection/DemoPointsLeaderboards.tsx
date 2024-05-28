@@ -121,7 +121,7 @@ const DemoPointsLeaderboards = () => {
       // setTableData(sample_demo_leaderboards_json);
 
       const leaderboardData = await fetchLeaderboard("top-gamers", 1, 50);
-      setTableData(leaderboardData.data.topGamers);
+      setTableData(leaderboardData.data.leaderboard);
 
       console.log(leaderboardData, "leaderboards Data not from API");
       console.log(tableData, "tableData");

@@ -39,7 +39,7 @@ const LeaderboardGamersTable = () => {
   const fetchTableData = async () => {
     // setTableData(sample_gamers_json);
     const leaderboardData = await fetchLeaderboard("top-gamers", 1, 100);
-    setTableData(leaderboardData.data.topGamers);
+    setTableData(leaderboardData.data.leaderboard);
   };
 
   const shortenWalletAddress = (address: string) => {
