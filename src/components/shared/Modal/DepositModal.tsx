@@ -10,6 +10,8 @@ import { RiCloseLine, RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
 import Web3 from "web3";
 import { getCryptoPrice } from "@components/utils/jackpotCounter";
+import base58 from "bs58";
+import { Connection, Transaction } from "@solana/web3.js";
 
 type Balance = {
   id: string;
@@ -39,10 +41,10 @@ const DepositModal = (props: Props) => {
   const { reloadProfile } = useBasicUser();
 
   useEffect(() => {
-    getCryptoPrice(balanceType?.tokenType, depositAmount).then(price => {
-      setCurrencyConverted(price)
-    })
-  }, [depositAmount, balanceType?.tokenType])
+    getCryptoPrice(balanceType?.tokenType, depositAmount).then((price) => {
+      setCurrencyConverted(price);
+    });
+  }, [depositAmount, balanceType?.tokenType]);
 
   useEffect(() => {
     props.walletBalances && setBalanceType(props.walletBalances[0]);
@@ -155,6 +157,28 @@ const DepositModal = (props: Props) => {
     }
   };
 
+  const createSolTransaction = async (amount: string, toAddress: string) => {
+    try {
+      const { solana } = window;
+      if (solana && solana.isPhantom) {
+        const response = await solana.connect();
+
+        const network = "https://api.devnet.solana.com";
+        const connection = new Connection(network);
+        const transaction = new Transaction();
+        const { signature } =
+          await response.signAndSendTransaction(transaction);
+        let result = await connection.getSignatureStatus(signature);
+
+        console.log("sol signedTransaction", signature);
+      } else {
+        toast.error("Phantom wallet not found. Please install it.");
+      }
+    } catch (error) {
+      console.error("Error connecting to the Phantom wallet:", error);
+    }
+  };
+
   return (
     props.show && (
       <>
@@ -240,10 +264,15 @@ const DepositModal = (props: Props) => {
               </div>
               <button
                 onClick={() =>
-                  createTransaction(
-                    depositAmount,
-                    "0x829c609b5EED7A5D53C684B5f8b1d3aa6DE46145"
-                  )
+                  balanceType?.tokenType == "sol"
+                    ? createSolTransaction(
+                        depositAmount,
+                        "0x829c609b5EED7A5D53C684B5f8b1d3aa6DE46145"
+                      )
+                    : createTransaction(
+                        depositAmount,
+                        "0x829c609b5EED7A5D53C684B5f8b1d3aa6DE46145"
+                      )
                 }
                 disabled={isLoading}
                 className="flex flex-row items-center justify-center gap-[8px] bg-nafl-sponge-500 rounded-[8px] px-[40px] h-[54px] mx-[6px]"

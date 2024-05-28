@@ -371,20 +371,19 @@ const GameZoneCreateGame = () => {
             <p className=" text-[#989898] text-[14px]">
               Your Buy-in:{" "}
               <span className="text-[#fff] font-face-roboto italic">
-                {parseFloat(balanceAmount).toFixed(4)}{" "}
-                {balanceType?.tokenType ?? "N/A"}
+                {parseFloat(balanceAmount)} {balanceType?.tokenType ?? "N/A"}
               </span>
             </p>
             <p className=" text-[#989898] text-[14px]">
               Challenger Buy-in:{" "}
               <span className="text-[#fff] font-face-roboto italic">
-                {challengerBuyIn.toFixed(4)} {balanceType?.tokenType ?? "N/A"}
+                {challengerBuyIn} {balanceType?.tokenType ?? "N/A"}
               </span>
             </p>
             <p className=" text-[#989898] text-[14px]">
               Your Payout:{" "}
               <span className="text-[#fff] font-face-roboto italic">
-                {totalPayout.toFixed(4)} {balanceType?.tokenType ?? "N/A"}
+                {totalPayout} {balanceType?.tokenType ?? "N/A"}
               </span>
             </p>
           </div>
