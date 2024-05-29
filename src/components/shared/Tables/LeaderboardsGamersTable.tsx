@@ -39,7 +39,7 @@ const LeaderboardGamersTable = () => {
   const fetchTableData = async () => {
     // setTableData(sample_gamers_json);
     const leaderboardData = await fetchLeaderboard("top-gamers", 1, 100);
-    setTableData(leaderboardData.data.topGamers);
+    setTableData(leaderboardData.data.leaderboard);
   };
 
   const shortenWalletAddress = (address: string) => {
@@ -97,14 +97,14 @@ const LeaderboardGamersTable = () => {
               <TableCell>
                 <div className="flex flex-row items-end">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.gamesWon.toLocaleString()}
+                    {parseFloat(item.gamesWon).toLocaleString()}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-center">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.totalWinnings.toLocaleString()}
+                    {parseFloat(item.totalWinnings).toLocaleString()}
                   </p>
                 </div>
               </TableCell>

@@ -10,20 +10,6 @@ import LeaderboardsMain from "@components/shared/Leaderboards/LeaderboardsMain";
 import GameZoneGlobalChat from "@components/shared/GameZone/GameZoneGlobalChat";
 
 const Leaderboards = () => {
-  const currentScreen = useGame((state) => state.screen);
-  const currentGameMode = useGame((state) => state.mode);
-  const currentGameType = useGame((state) => state.type);
-
-  const setCurrentScreen = useGame((state) => state.setScreen);
-  const setGameMode = useGame((state) => state.setMode);
-  const setGameType = useGame((state) => state.setType);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setSeletedView("main");
-  //   }, 100);
-  // }, []);
-
   return (
     <div className="flex flex-col items-center w-full relative mt-10">
       <div className="flex flex-col w-full absolute top-[-100px]">

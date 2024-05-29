@@ -44,7 +44,7 @@ const LeaderboardNafflersTable = () => {
       const leaderboardData = await fetchLeaderboard("top-nafflers", 1, 100);
       console.log("leaderboardNafflersData", leaderboardData);
       if (leaderboardData.statusCode == 200) {
-        setTableData(leaderboardData.data.topNafflers);
+        setTableData(leaderboardData.data.leaderboard);
       } else {
         console.log(
           `Error fetching recentWinners: ${leaderboardData.data.message}`
@@ -58,8 +58,8 @@ const LeaderboardNafflersTable = () => {
   };
 
   const shortenUsername = (address: string) => {
-    if (address?.length > 10) {
-      return address.slice(0, 10) + "...";
+    if (address?.length > 14) {
+      return address.slice(0, 14) + "...";
     } else return address;
   };
 

@@ -11,7 +11,18 @@ import { TbCurrencySolana } from "react-icons/tb";
 import Web3 from "web3";
 import { getCryptoPrice } from "@components/utils/jackpotCounter";
 import base58 from "bs58";
-import { Connection, Transaction } from "@solana/web3.js";
+import { Connection, PublicKey, Transaction } from "@solana/web3.js";
+// import {
+//   TOKEN_PROGRAM_ID,
+//   Token,
+//   TOKENS,
+//   ASSOCIATED_TOKEN_PROGRAM_ID,
+// } from "@solana/spl-token";
+import {
+  Token,
+  TOKEN_PROGRAM_ID,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
 
 type Balance = {
   id: string;
@@ -163,14 +174,49 @@ const DepositModal = (props: Props) => {
       if (solana && solana.isPhantom) {
         const response = await solana.connect();
 
-        const network = "https://api.devnet.solana.com";
-        const connection = new Connection(network);
-        const transaction = new Transaction();
-        const { signature } =
-          await response.signAndSendTransaction(transaction);
-        let result = await connection.getSignatureStatus(signature);
+        const connection = new Connection(
+          "https://api.devnet.solana.com",
+          "confirmed"
+        );
 
-        console.log("sol signedTransaction", signature);
+        const SOL_MINT_ADDRESS = "So11111111111111111111111111111111111111112";
+        const SOL_DECIMALS = 9;
+
+        const solMintAddress = new PublicKey(SOL_MINT_ADDRESS);
+        const token = new Token(
+          connection,
+          solMintAddress,
+          TOKEN_PROGRAM_ID,
+          response.publicKey.toBase58()
+        );
+        const from = response.publicKey.toBase58();
+        const to = toAddress; // Assuming transfer to self for simplicity
+        const amountInLamports = amount;
+
+        const associatedTokenAddress = await Token.getAssociatedTokenAddress(
+          ASSOCIATED_TOKEN_PROGRAM_ID,
+          TOKEN_PROGRAM_ID,
+          solMintAddress,
+          response.publicKey.toBase58()
+        );
+
+        const transferTransaction = await token.createTransferTransaction(
+          TOKEN_PROGRAM_ID,
+          from,
+          associatedTokenAddress,
+          to,
+          [],
+          amountInLamports
+        );
+
+        const signedTransaction =
+          await response.signTransaction(transferTransaction);
+        const signature = await connection.sendRawTransaction(
+          signedTransaction.serialize()
+        );
+
+        // const signature = await sendTransaction(transferTransaction);
+        console.log(`Transaction sent: ${signature}`);
       } else {
         toast.error("Phantom wallet not found. Please install it.");
       }
