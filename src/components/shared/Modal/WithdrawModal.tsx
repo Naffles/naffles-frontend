@@ -10,6 +10,7 @@ import { RiCloseLine, RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
 import Web3 from "web3";
 import { getCryptoPrice } from "@components/utils/jackpotCounter";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 type Balance = {
   id: string;
@@ -50,7 +51,7 @@ const WithdrawModal = (props: Props) => {
 
       let tokenAmount = "0";
       if (type.tokenType == "sol") {
-        let solValue = parseFloat(amount) / Math.pow(10, 9);
+        let solValue = parseFloat(amount) * LAMPORTS_PER_SOL;
         tokenAmount = solValue.toString();
       } else {
         tokenAmount = web3.utils.toWei(amount, "ether");
@@ -201,10 +202,9 @@ const WithdrawModal = (props: Props) => {
                               setShowBalanceDropdown(false);
                             }}
                             key={index}
-                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${
-                              balanceType.tokenType == item?.tokenType &&
+                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${balanceType.tokenType == item?.tokenType &&
                               "bg-[#fff]/30"
-                            }`}
+                              }`}
                           >
                             {currencyIconReturner(item?.tokenType)}
                             <p className="text-[#fff] text-[16px] font-face-bebas">

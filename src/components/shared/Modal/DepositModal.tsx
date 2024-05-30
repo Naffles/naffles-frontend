@@ -10,19 +10,7 @@ import { RiCloseLine, RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
 import Web3 from "web3";
 import { getCryptoPrice } from "@components/utils/jackpotCounter";
-import base58 from "bs58";
-import { Connection, PublicKey, Transaction } from "@solana/web3.js";
-// import {
-//   TOKEN_PROGRAM_ID,
-//   Token,
-//   TOKENS,
-//   ASSOCIATED_TOKEN_PROGRAM_ID,
-// } from "@solana/spl-token";
-import {
-  Token,
-  TOKEN_PROGRAM_ID,
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
+import { Connection, PublicKey, Transaction, LAMPORTS_PER_SOL, SystemProgram } from "@solana/web3.js";
 
 type Balance = {
   id: string;
@@ -170,58 +158,64 @@ const DepositModal = (props: Props) => {
 
   const createSolTransaction = async (amount: string, toAddress: string) => {
     try {
+      setIsLoading(true);
       const { solana } = window;
       if (solana && solana.isPhantom) {
-        const response = await solana.connect();
+        // Connect to Phantom wallet
+        await solana.connect();
+        const endpoint = process.env.NEXT_PUBLIC_SOL_ENDPOINT;
+        const connection = new Connection(endpoint || 'https://api.devnet.solana.com', 'confirmed');
+        const senderPublicKey = new PublicKey(solana.publicKey.toString());
+        const recipientPublicKey = new PublicKey(toAddress);
+        const lamports = parseFloat(amount) * LAMPORTS_PER_SOL;
 
-        const connection = new Connection(
-          "https://api.devnet.solana.com",
-          "confirmed"
+        // Create a new transaction object
+        const transaction = new Transaction().add(
+          SystemProgram.transfer({
+            fromPubkey: senderPublicKey,
+            toPubkey: recipientPublicKey,
+            lamports,
+          })
         );
 
-        const SOL_MINT_ADDRESS = "So11111111111111111111111111111111111111112";
-        const SOL_DECIMALS = 9;
+        const { blockhash } = await connection.getRecentBlockhash();
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = senderPublicKey;
+        const signedTransaction = await solana.signTransaction(transaction);
 
-        const solMintAddress = new PublicKey(SOL_MINT_ADDRESS);
-        const token = new Token(
-          connection,
-          solMintAddress,
-          TOKEN_PROGRAM_ID,
-          response.publicKey.toBase58()
-        );
-        const from = response.publicKey.toBase58();
-        const to = toAddress; // Assuming transfer to self for simplicity
-        const amountInLamports = amount;
+        // Send the signed transaction to the network
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        const latestBlockHash = await connection.getLatestBlockhash();
 
-        const associatedTokenAddress = await Token.getAssociatedTokenAddress(
-          ASSOCIATED_TOKEN_PROGRAM_ID,
-          TOKEN_PROGRAM_ID,
-          solMintAddress,
-          response.publicKey.toBase58()
-        );
+        // Confirm the transaction
+        await connection.confirmTransaction({
+          blockhash: latestBlockHash.blockhash,
+          lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+          signature: signature,
+        });
 
-        const transferTransaction = await token.createTransferTransaction(
-          TOKEN_PROGRAM_ID,
-          from,
-          associatedTokenAddress,
-          to,
-          [],
-          amountInLamports
-        );
-
-        const signedTransaction =
-          await response.signTransaction(transferTransaction);
-        const signature = await connection.sendRawTransaction(
-          signedTransaction.serialize()
-        );
-
-        // const signature = await sendTransaction(transferTransaction);
-        console.log(`Transaction sent: ${signature}`);
+        console.log('Transaction successful with signature:', signature);
+        toast.success("Transaction Successful");
+        reloadProfile();
+        setIsLoading(false);
+        setBalanceType({
+          id: "",
+          tokenType: "",
+          amount: "",
+          conversion: "",
+        });
+        setDepositAmount("0");
+        setTimeout(() => {
+          props.setShow(false);
+        }, 2000);
       } else {
         toast.error("Phantom wallet not found. Please install it.");
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Error connecting to the Phantom wallet:", error);
+      toast.error("Transaction failed");
+      setIsLoading(false);
     }
   };
 
@@ -269,10 +263,9 @@ const DepositModal = (props: Props) => {
                               setShowBalanceDropdown(false);
                             }}
                             key={index}
-                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] balance-type-dropdown ${
-                              balanceType.tokenType == item?.tokenType &&
+                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] balance-type-dropdown ${balanceType.tokenType == item?.tokenType &&
                               "bg-[#fff]/30"
-                            }`}
+                              }`}
                           >
                             {currencyIconReturner(item?.tokenType)}
                             <p className="text-[#fff] text-[16px] font-face-bebas balance-type-dropdown">
@@ -312,13 +305,13 @@ const DepositModal = (props: Props) => {
                 onClick={() =>
                   balanceType?.tokenType == "sol"
                     ? createSolTransaction(
-                        depositAmount,
-                        "0x829c609b5EED7A5D53C684B5f8b1d3aa6DE46145"
-                      )
+                      depositAmount,
+                      "ANrTqHoU4rkzUxbXW9WsDAs5w2BWMh8MUUMRGsYnca5a"
+                    )
                     : createTransaction(
-                        depositAmount,
-                        "0x829c609b5EED7A5D53C684B5f8b1d3aa6DE46145"
-                      )
+                      depositAmount,
+                      "0x829c609b5EED7A5D53C684B5f8b1d3aa6DE46145"
+                    )
                 }
                 disabled={isLoading}
                 className="flex flex-row items-center justify-center gap-[8px] bg-nafl-sponge-500 rounded-[8px] px-[40px] h-[54px] mx-[6px]"
