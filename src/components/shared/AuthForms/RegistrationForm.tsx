@@ -5,6 +5,8 @@ import axios from "@components/utils/axios";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { AiOutlineLoading } from "react-icons/ai";
 import { strongPasswordRegex } from "@components/utils/strongPasswordRegex";
+import validator from "validator";
+import toast from "react-hot-toast";
 
 type RegistrationFormData = {
   emailAddress: string;
@@ -15,6 +17,9 @@ export const RegistrationForm = () => {
   const { login } = useBasicUser();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [emailValid, setEmailValid] = useState<string | null>(null);
+  const [isEmailValid, setIsEmailValid] = useState(false);
   const [isVerificationSuccess, setIsVerificationSuccess] = useState(false);
   const [previousData, setPreviousData] = useState<RegistrationFormData | null>(
     null
@@ -30,6 +35,18 @@ export const RegistrationForm = () => {
         return;
       }
       try {
+        if(!isEmailValid) {
+          toast.error("Invalid email address.");
+          setIsLoading((prev) => !prev);
+          return;
+        }
+
+        if(!emailError) {
+          toast.error("Email is already registered.");
+          setIsLoading((prev) => !prev);
+          return;
+        }
+
         await axios.post("user/send-email-verification", {
           email: data.emailAddress,
           password: data.password,
@@ -61,6 +78,48 @@ export const RegistrationForm = () => {
     }
     setIsLoading((prev) => !prev);
   };
+  const handleEmailBlur = async (email: string) => {
+    console.log("handledOnBlur");
+    
+    if(!validator.isEmail(email)) {
+      setIsEmailValid(false);
+      setEmailError("Invalid email format.");
+      return;
+    }
+    setIsEmailValid(true);
+
+    if(email) {
+      setIsLoading((prev) => !prev);
+      try {
+        const response = await axios.get(`user/search?email=${email}`);
+        setIsLoading((prev) => !prev);
+        if (response.data.statusCode === 200) {
+          setEmailValid(response.data.message);
+          setEmailError(null);
+        } else {
+          setEmailValid(null);
+          setEmailError(response.data.message);
+        }
+      } catch (error: any) {
+        setIsLoading((prev) => !prev);
+        switch (error?.response?.status) {
+          case 429:
+            setEmailValid(null);
+            setEmailError("Too many requests, please try again later");
+            break;
+          case 404:
+          case 401:
+          case 400:
+            setEmailValid(null);
+            setEmailError(error?.response?.data?.message);
+            break;
+          default:
+            setEmailValid(null);
+            setEmailError("Something went wrong");
+        }
+      }
+    }
+  };
   return (
     <FormContext
       onSubmit={onSubmit}
@@ -72,7 +131,18 @@ export const RegistrationForm = () => {
             name="emailAddress"
             label="Email Address"
             placeholder="Email Address"
+            onBlur={handleEmailBlur}
           />
+          {emailValid && (
+            <label className="text-xs text-nafl-sys-done">
+              {emailValid}
+            </label>
+          )}
+          {emailError && (
+            <label className="text-xs text-nafl-light-red">
+              {emailError}
+            </label>
+          )}
           <TextInput
             name="password"
             label="Password"
