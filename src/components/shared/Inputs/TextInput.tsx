@@ -26,7 +26,7 @@ export const TextInput = ({
 }: TextInputProps) => {
   const { register, formState } = useFormContext() || {};
   const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (onBlur) {
+    if(onBlur) {
       onBlur(event.target.value); // Call the provided onBlur with the email value
     }
   };
@@ -53,7 +53,9 @@ export const TextInput = ({
               message: label + " is required",
             },
           }),
-          onBlur: handleBlur
+          ...(onBlur && {
+            onBlur: handleBlur
+          })
         })}
       />
       {inputErrors && (

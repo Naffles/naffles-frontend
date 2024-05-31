@@ -20,6 +20,7 @@ export const RegistrationForm = () => {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [emailValid, setEmailValid] = useState<string | null>(null);
   const [isEmailValid, setIsEmailValid] = useState(false);
+  const [previousEmail, setPreviousEmail] = useState("");
   const [isVerificationSuccess, setIsVerificationSuccess] = useState(false);
   const [previousData, setPreviousData] = useState<RegistrationFormData | null>(
     null
@@ -34,19 +35,19 @@ export const RegistrationForm = () => {
         setIsLoading((prev) => !prev);
         return;
       }
+      if(!isEmailValid) {
+        if(emailError) {
+          toast.error("Invalid email address");
+        }
+        setIsLoading((prev) => !prev);
+        return;
+      }
+      if(emailError) {
+        toast.error("Email has already been used");
+        setIsLoading((prev) => !prev);
+        return;
+      }
       try {
-        if(!isEmailValid) {
-          toast.error("Invalid email address.");
-          setIsLoading((prev) => !prev);
-          return;
-        }
-
-        if(!emailError) {
-          toast.error("Email is already registered.");
-          setIsLoading((prev) => !prev);
-          return;
-        }
-
         await axios.post("user/send-email-verification", {
           email: data.emailAddress,
           password: data.password,
@@ -79,20 +80,21 @@ export const RegistrationForm = () => {
     setIsLoading((prev) => !prev);
   };
   const handleEmailBlur = async (email: string) => {
-    console.log("handledOnBlur");
-    
-    if(!validator.isEmail(email)) {
-      setIsEmailValid(false);
-      setEmailError("Invalid email format.");
-      return;
-    }
-    setIsEmailValid(true);
+    setIsLoading((prev) => !prev);
+    if(!email) {
+      setEmailError("");
+      setEmailValid("");
+    } else {
+      if(email && !validator.isEmail(email)) {
+        setIsEmailValid(false);
+        setEmailError("Enter a valid email.");
+        setIsLoading((prev) => !prev);
+        return;
+      }
 
-    if(email) {
-      setIsLoading((prev) => !prev);
+      setIsEmailValid(true);
       try {
         const response = await axios.get(`user/search?email=${email}`);
-        setIsLoading((prev) => !prev);
         if (response.data.statusCode === 200) {
           setEmailValid(response.data.message);
           setEmailError(null);
@@ -101,7 +103,6 @@ export const RegistrationForm = () => {
           setEmailError(response.data.message);
         }
       } catch (error: any) {
-        setIsLoading((prev) => !prev);
         switch (error?.response?.status) {
           case 429:
             setEmailValid(null);
@@ -119,6 +120,7 @@ export const RegistrationForm = () => {
         }
       }
     }
+    setIsLoading((prev) => !prev);
   };
   return (
     <FormContext
@@ -131,6 +133,7 @@ export const RegistrationForm = () => {
             name="emailAddress"
             label="Email Address"
             placeholder="Email Address"
+            required
             onBlur={handleEmailBlur}
           />
           {emailValid && (
