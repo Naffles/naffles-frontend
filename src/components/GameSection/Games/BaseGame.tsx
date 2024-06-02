@@ -283,6 +283,12 @@ export const BaseGame = (props: BaseGameProps) => {
     }
   };
 
+  const handleVolumeChange = (vidRef: any, volume: number) => {
+    // if (videoRef.current) {
+    //   videoRef.current.volume = volume;
+    // }
+  };
+
   let seconds = timeLeft;
   if (gameState === GameState.RESTDOWN) seconds = restTimeLeft;
   if (gameState === GameState.WAITING) seconds = waitTimeLeft;
@@ -328,6 +334,9 @@ export const BaseGame = (props: BaseGameProps) => {
                 key={choice + vidResult + variant}
                 ref={(ref) => {
                   videosRef.current[idx] = ref;
+                  if (videosRef.current[idx] && videosRef.current[idx]?.volume) {
+                    videosRef.current[idx]!.volume = 0.2
+                  }
                 }}
                 onEnded={handleVideoEnd}
               >
