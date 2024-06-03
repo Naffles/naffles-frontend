@@ -1,8 +1,9 @@
 import Web3 from "web3";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 export const tokenValueConversion = (amount: string, tokenType: string) => {
   if (tokenType == "sol") {
-    let solValue = Math.pow(parseFloat(amount) * 10, 9);
+    let solValue = parseFloat(amount) / (LAMPORTS_PER_SOL);
     return solValue.toString();
   } else {
     const web3 = new Web3();

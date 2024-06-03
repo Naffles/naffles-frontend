@@ -1,12 +1,14 @@
 import axios from "@components/utils/axios";
 import toast from "react-hot-toast";
 
-export const fetchLeaderboard = async (type: string, page: number, limit: number) => {
+export const fetchLeaderboard = async (
+  type: string,
+  page: number,
+  limit: number
+) => {
   const { data } = await axios.get(
-    // `user/leaderboards/top-gamers?page=1&limit=10`
     `user/leaderboards/${type}?page=${page}&limit=${limit}`
   );
-
   return data;
 };
 

@@ -261,13 +261,13 @@ export default function Home() {
                             {/* 5 Days */}
                             {giveAwayStartDate?.length > index
                               ? // Math.floor((new Date(giveAwayStartDate[index].endDate).getTime() - new Date(giveAwayStartDate[index].startDate).getTime()) / (1000 * 60 * 60 * 24)) + " Days"
-                              Math.floor(
-                                (new Date(
-                                  giveAwayStartDate[index].endDate
-                                ).getTime() -
-                                  new Date().getTime()) /
-                                (1000 * 60 * 60 * 24)
-                              ) + " Days"
+                                Math.floor(
+                                  (new Date(
+                                    giveAwayStartDate[index].endDate
+                                  ).getTime() -
+                                    new Date().getTime()) /
+                                    (1000 * 60 * 60 * 24)
+                                ) + " Days"
                               : "5 Days"}
                           </span>
                         </p>

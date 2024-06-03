@@ -47,6 +47,18 @@ export const ProfileForm = () => {
     setWalletAddresses(user?.walletAddresses);
   }, [user]);
 
+  useEffect(() => {
+    if (user?.username == profileUsername) {
+      setIsChanged(false);
+    } else setIsChanged(true);
+  }, [user, profileUsername]);
+
+  useEffect(() => {
+    if (user?.email == profileEmail) {
+      setIsChanged(false);
+    } else setIsChanged(true);
+  }, [user, profileEmail]);
+
   const handleFirstLoad = useCallback(async () => {
     try {
       const userProfile = (await reloadProfile()) ?? {};
@@ -56,7 +68,7 @@ export const ProfileForm = () => {
       });
       setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
     } catch (error) {
-      console.error('Error fetching profile image:', error); // Log the error
+      console.error("Error fetching profile image:", error); // Log the error
     }
   }, [reloadProfile]);
 
@@ -135,12 +147,16 @@ export const ProfileForm = () => {
 
   const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setProfileUsername(e.target.value);
-    setIsChanged(e.target.value !== user?.username || profileEmail !== user?.email);
+    setIsChanged(
+      e.target.value !== user?.username || profileEmail !== user?.email
+    );
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setProfileEmail(e.target.value);
-    setIsChanged(profileUsername !== user?.username || e.target.value !== user?.email);
+    setIsChanged(
+      profileUsername !== user?.username || e.target.value !== user?.email
+    );
   };
 
   const handleProfileEditSubmit = () => {
@@ -271,13 +287,15 @@ export const ProfileForm = () => {
             <input
               type="file"
               accept="image/*"
-              className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 text-nafl-white ${imageFile && "bg-gray-200 rounded-full"
-                }`}
+              className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 text-nafl-white ${
+                imageFile && "bg-gray-200 rounded-full"
+              }`}
               onChange={handleChange}
             />
             <div
-              className={`w-[120px] h-[120px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${!imageFile && "bg-gray-300"
-                }`}
+              className={`w-[120px] h-[120px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${
+                !imageFile && "bg-gray-300"
+              }`}
               style={
                 !imageUrl
                   ? { backgroundImage: `url(/static/default_img.png)` }
@@ -428,7 +446,7 @@ export const ProfileForm = () => {
         <div className="flex flex-col items-center w-full">
           <button
             type="submit"
-            className={`flex items-center justify-center font-face-roboto font-bold text-[18px] text-[#000] px-[30px] rounded-[8px] h-[54px] ${isChanged ? 'bg-nafl-sponge-500' : 'bg-gray-400 cursor-not-allowed'}`}
+            className={`flex items-center justify-center font-face-roboto font-bold text-[18px] text-[#000] px-[30px] rounded-[8px] h-[54px] ${isChanged ? "bg-nafl-sponge-500" : "bg-gray-400 cursor-not-allowed"}`}
             disabled={!isChanged}
           >
             {isLoading ? (

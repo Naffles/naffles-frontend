@@ -46,8 +46,8 @@ export const PhantomButton: React.FC<PhantomButtonProps> = ({
           signature: bs58.encode(signedMessage.signature),
           address: response.publicKey.toBase58(),
           timestamp: timestamp,
-          walletType: "metamask",
-          network: "eth",
+          walletType: "phantom",
+          network: "sol",
         };
         loginWithWallet(body);
       } else {

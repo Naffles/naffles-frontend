@@ -10,6 +10,7 @@ import { RiCloseLine, RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
 import Web3 from "web3";
 import { getCryptoPrice } from "@components/utils/jackpotCounter";
+import { Connection, PublicKey, Transaction, LAMPORTS_PER_SOL, SystemProgram } from "@solana/web3.js";
 
 type Balance = {
   id: string;
@@ -39,10 +40,10 @@ const DepositModal = (props: Props) => {
   const { reloadProfile } = useBasicUser();
 
   useEffect(() => {
-    getCryptoPrice(balanceType?.tokenType, depositAmount).then(price => {
-      setCurrencyConverted(price)
-    })
-  }, [depositAmount, balanceType?.tokenType])
+    getCryptoPrice(balanceType?.tokenType, depositAmount).then((price) => {
+      setCurrencyConverted(price);
+    });
+  }, [depositAmount, balanceType?.tokenType]);
 
   useEffect(() => {
     props.walletBalances && setBalanceType(props.walletBalances[0]);
@@ -155,6 +156,69 @@ const DepositModal = (props: Props) => {
     }
   };
 
+  const createSolTransaction = async (amount: string, toAddress: string) => {
+    try {
+      setIsLoading(true);
+      const { solana } = window;
+      if (solana && solana.isPhantom) {
+        // Connect to Phantom wallet
+        await solana.connect();
+        const endpoint = process.env.NEXT_PUBLIC_SOL_ENDPOINT;
+        const connection = new Connection(endpoint || 'https://api.devnet.solana.com', 'confirmed');
+        const senderPublicKey = new PublicKey(solana.publicKey.toString());
+        const recipientPublicKey = new PublicKey(toAddress);
+        const lamports = parseFloat(amount) * LAMPORTS_PER_SOL;
+
+        // Create a new transaction object
+        const transaction = new Transaction().add(
+          SystemProgram.transfer({
+            fromPubkey: senderPublicKey,
+            toPubkey: recipientPublicKey,
+            lamports,
+          })
+        );
+
+        const { blockhash } = await connection.getRecentBlockhash();
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = senderPublicKey;
+        const signedTransaction = await solana.signTransaction(transaction);
+
+        // Send the signed transaction to the network
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        const latestBlockHash = await connection.getLatestBlockhash();
+
+        // Confirm the transaction
+        await connection.confirmTransaction({
+          blockhash: latestBlockHash.blockhash,
+          lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+          signature: signature,
+        });
+
+        console.log('Transaction successful with signature:', signature);
+        toast.success("Transaction Successful");
+        reloadProfile();
+        setIsLoading(false);
+        setBalanceType({
+          id: "",
+          tokenType: "",
+          amount: "",
+          conversion: "",
+        });
+        setDepositAmount("0");
+        setTimeout(() => {
+          props.setShow(false);
+        }, 2000);
+      } else {
+        toast.error("Phantom wallet not found. Please install it.");
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Error connecting to the Phantom wallet:", error);
+      toast.error("Transaction failed");
+      setIsLoading(false);
+    }
+  };
+
   return (
     props.show && (
       <>
@@ -199,10 +263,9 @@ const DepositModal = (props: Props) => {
                               setShowBalanceDropdown(false);
                             }}
                             key={index}
-                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] balance-type-dropdown ${
-                              balanceType.tokenType == item?.tokenType &&
+                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] balance-type-dropdown ${balanceType.tokenType == item?.tokenType &&
                               "bg-[#fff]/30"
-                            }`}
+                              }`}
                           >
                             {currencyIconReturner(item?.tokenType)}
                             <p className="text-[#fff] text-[16px] font-face-bebas balance-type-dropdown">
@@ -240,10 +303,15 @@ const DepositModal = (props: Props) => {
               </div>
               <button
                 onClick={() =>
-                  createTransaction(
-                    depositAmount,
-                    "0x829c609b5EED7A5D53C684B5f8b1d3aa6DE46145"
-                  )
+                  balanceType?.tokenType == "sol"
+                    ? createSolTransaction(
+                      depositAmount,
+                      "ANrTqHoU4rkzUxbXW9WsDAs5w2BWMh8MUUMRGsYnca5a"
+                    )
+                    : createTransaction(
+                      depositAmount,
+                      "0x829c609b5EED7A5D53C684B5f8b1d3aa6DE46145"
+                    )
                 }
                 disabled={isLoading}
                 className="flex flex-row items-center justify-center gap-[8px] bg-nafl-sponge-500 rounded-[8px] px-[40px] h-[54px] mx-[6px]"
