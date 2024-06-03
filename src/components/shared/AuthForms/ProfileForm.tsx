@@ -48,12 +48,16 @@ export const ProfileForm = () => {
   }, [user]);
 
   const handleFirstLoad = useCallback(async () => {
-    const userProfile = (await reloadProfile()) ?? {};
-    const { data: profileImageData } = await axios.get(
-      "image/view?path=" + userProfile.profileImage,
-      { responseType: "arraybuffer" }
-    );
-    setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
+    try {
+      const userProfile = (await reloadProfile()) ?? {};
+      const imagePath = "image/view?path=" + userProfile.profileImage;
+      const { data: profileImageData } = await axios.get(imagePath, {
+        responseType: "arraybuffer",
+      });
+      setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
+    } catch (error) {
+      console.error('Error fetching profile image:', error); // Log the error
+    }
   }, [reloadProfile]);
 
   useEffect(() => {
