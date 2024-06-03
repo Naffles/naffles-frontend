@@ -39,6 +39,7 @@ export const ProfileForm = () => {
   const { resetField } = useForm();
   const [profileEmail, setProfileEmail] = useState<string>("");
   const [profileUsername, setProfileUsername] = useState<string>("");
+  const [isChanged, setIsChanged] = useState<boolean>(false);
 
   useEffect(() => {
     setProfileUsername(user?.username);
@@ -128,6 +129,16 @@ export const ProfileForm = () => {
     console.log("Image uploaded:", imageFile);
   };
 
+  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setProfileUsername(e.target.value);
+    setIsChanged(e.target.value !== user?.username || profileEmail !== user?.email);
+  };
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setProfileEmail(e.target.value);
+    setIsChanged(profileUsername !== user?.username || e.target.value !== user?.email);
+  };
+
   const handleProfileEditSubmit = () => {
     setIsLoading((prev) => !prev);
     const form = new FormData();
@@ -142,7 +153,6 @@ export const ProfileForm = () => {
         icon: "✉️",
       });
     }
-
     if (imageFile) form.append("file", imageFile);
     updateProfile(form);
     setTimeout(() => {
@@ -257,15 +267,13 @@ export const ProfileForm = () => {
             <input
               type="file"
               accept="image/*"
-              className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 text-nafl-white ${
-                imageFile && "bg-gray-200 rounded-full"
-              }`}
+              className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 text-nafl-white ${imageFile && "bg-gray-200 rounded-full"
+                }`}
               onChange={handleChange}
             />
             <div
-              className={`w-[120px] h-[120px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${
-                !imageFile && "bg-gray-300"
-              }`}
+              className={`w-[120px] h-[120px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${!imageFile && "bg-gray-300"
+                }`}
               style={
                 !imageUrl
                   ? { backgroundImage: `url(/static/nft-dummy.png)` }
@@ -290,7 +298,7 @@ export const ProfileForm = () => {
                 name="username"
                 placeholder="New Username"
                 value={profileUsername}
-                onChange={(e) => setProfileUsername(e.target.value)}
+                onChange={handleUsernameChange}
                 className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 text-nafl-white bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
               />
             </div>
@@ -303,7 +311,7 @@ export const ProfileForm = () => {
                 name="email"
                 placeholder="New Email"
                 value={profileEmail}
-                onChange={(e) => setProfileEmail(e.target.value)}
+                onChange={handleEmailChange}
                 className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 text-nafl-white bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
               />
             </div>
@@ -416,7 +424,8 @@ export const ProfileForm = () => {
         <div className="flex flex-col items-center w-full">
           <button
             type="submit"
-            className="flex items-center justify-center font-face-roboto font-bold text-[18px] text-[#000] px-[30px] rounded-[8px] h-[54px] bg-nafl-sponge-500"
+            className={`flex items-center justify-center font-face-roboto font-bold text-[18px] text-[#000] px-[30px] rounded-[8px] h-[54px] ${isChanged ? 'bg-nafl-sponge-500' : 'bg-gray-400 cursor-not-allowed'}`}
+            disabled={!isChanged}
           >
             {isLoading ? (
               <>
@@ -427,6 +436,7 @@ export const ProfileForm = () => {
               "SAVE"
             )}
           </button>
+
           {/* <Button
           label="submit"
           variant="secondary"
