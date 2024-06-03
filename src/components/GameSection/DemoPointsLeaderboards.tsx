@@ -121,7 +121,7 @@ const DemoPointsLeaderboards = () => {
       // setTableData(sample_demo_leaderboards_json);
 
       const leaderboardData = await fetchLeaderboard("top-gamers", 1, 50);
-      setTableData(leaderboardData.data.topGamers);
+      setTableData(leaderboardData.data.leaderboard);
 
       console.log(leaderboardData, "leaderboards Data not from API");
       console.log(tableData, "tableData");
@@ -187,7 +187,7 @@ const DemoPointsLeaderboards = () => {
         <div className="flex flex-row items-center justify-between w-full bg-[#444444] rounded-[16px] border-[1px] border-[#464646] drop-shadow-nafl-sponge-2xl h-[54px] px-[14px]">
           <div className="flex flex-col gap-[3px]">
             <p className="font-face-bebas text-[14px] text-[#DC2ABF] leading-[100%]">
-              YOUR NAFFLES
+              YOUR NAFFLINGS
             </p>
             <div className="relative">
               <p className="font-face-bebas text-[20px] text-nafl-white leading-[100%]">

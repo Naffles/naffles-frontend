@@ -10,6 +10,7 @@ type TextInputProps = {
   errorMessage?: string;
   minLength?: number;
   required?: boolean;
+  onBlur?: (args: any) => any;
 };
 
 export const TextInput = ({
@@ -20,9 +21,15 @@ export const TextInput = ({
   errorMessage,
   minLength,
   required = false,
+  onBlur,
   ...props
 }: TextInputProps) => {
   const { register, formState } = useFormContext() || {};
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if(onBlur) {
+      onBlur(event.target.value); // Call the provided onBlur with the email value
+    }
+  };
   const inputErrors = formState?.errors?.[name]?.message;
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -46,6 +53,9 @@ export const TextInput = ({
               message: label + " is required",
             },
           }),
+          ...(onBlur && {
+            onBlur: handleBlur
+          })
         })}
       />
       {inputErrors && (

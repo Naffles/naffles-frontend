@@ -395,12 +395,20 @@ const PageHeader: React.FC<PageHeaderProps> = (
                     className="focus:outline-none rounded-full p-2 hover:bg-gray-300"
                     // onBlur={() => setOpen(!open)}
                   >
-                    {basicUser && imageUrl ? (
-                      <img
-                        src={imageUrl}
-                        alt="Profile"
-                        className="w-[30px] h-[30px] rounded-full"
-                      />
+                    {basicUser ? (
+                      imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt="Profile"
+                          className="w-[30px] h-[30px] rounded-full"
+                        />
+                      ) : (
+                        <img
+                          src={"/static/default_img.png"}
+                          alt="Profile"
+                          className="w-[30px] h-[30px] rounded-full"
+                        />
+                      )
                     ) : (
                       <FaUserCircle className="text-[#212121] text-[30px]" />
                     )}
@@ -578,12 +586,20 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 type="button"
                 className="flex flex-row items-center justify-center focus:outline-none rounded-[10px] p-2 w-full gap-[8px]"
               >
-                {basicUser && imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt="Profile"
-                    className="w-[30px] h-[30px] rounded-full"
-                  />
+                {basicUser  ? (
+                  imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt="Profile"
+                      className="w-[30px] h-[30px] rounded-full"
+                    />
+                  ) : (
+                    <img
+                      src={"/static/default_img.png"}
+                      alt="Profile"
+                      className="w-[30px] h-[30px] rounded-full"
+                    />
+                  )
                 ) : (
                   <FaUserCircle className="text-[#212121] text-[30px]" />
                 )}

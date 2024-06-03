@@ -111,23 +111,27 @@ const LeaderboardNafflersTable = () => {
               <TableCell>
                 <div className="flex flex-row">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.rafflesEntered.toLocaleString()}
+                    {item.rafflesEntered
+                      ? item.rafflesEntered?.toLocaleString()
+                      : 0}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-end">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {item.gamesPlayed.toLocaleString()}
+                    {item.gamesPlayed ? item.gamesPlayed.toLocaleString() : 0}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
                 <div className="flex flex-row items-center">
                   <p className="text-[16px] text-[#fff] font-bold">
-                    {parseFloat(
-                      tokenValueConversion(item.nafflings, "points")
-                    ).toLocaleString()}
+                    {item.nafflings
+                      ? parseFloat(
+                          tokenValueConversion(item.nafflings, "points")
+                        ).toLocaleString()
+                      : 0}
                   </p>
                 </div>
               </TableCell>

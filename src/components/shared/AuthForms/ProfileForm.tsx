@@ -39,6 +39,7 @@ export const ProfileForm = () => {
   const { resetField } = useForm();
   const [profileEmail, setProfileEmail] = useState<string>("");
   const [profileUsername, setProfileUsername] = useState<string>("");
+  const [isChanged, setIsChanged] = useState<boolean>(false);
 
   useEffect(() => {
     setProfileUsername(user?.username);
@@ -46,13 +47,29 @@ export const ProfileForm = () => {
     setWalletAddresses(user?.walletAddresses);
   }, [user]);
 
+  useEffect(() => {
+    if (user?.username == profileUsername) {
+      setIsChanged(false);
+    } else setIsChanged(true);
+  }, [user, profileUsername]);
+
+  useEffect(() => {
+    if (user?.email == profileEmail) {
+      setIsChanged(false);
+    } else setIsChanged(true);
+  }, [user, profileEmail]);
+
   const handleFirstLoad = useCallback(async () => {
-    const userProfile = (await reloadProfile()) ?? {};
-    const { data: profileImageData } = await axios.get(
-      "image/view?path=" + userProfile.profileImage,
-      { responseType: "arraybuffer" }
-    );
-    setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
+    try {
+      const userProfile = (await reloadProfile()) ?? {};
+      const imagePath = "image/view?path=" + userProfile.profileImage;
+      const { data: profileImageData } = await axios.get(imagePath, {
+        responseType: "arraybuffer",
+      });
+      setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
+    } catch (error) {
+      console.error("Error fetching profile image:", error); // Log the error
+    }
   }, [reloadProfile]);
 
   useEffect(() => {
@@ -128,6 +145,20 @@ export const ProfileForm = () => {
     console.log("Image uploaded:", imageFile);
   };
 
+  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setProfileUsername(e.target.value);
+    setIsChanged(
+      e.target.value !== user?.username || profileEmail !== user?.email
+    );
+  };
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setProfileEmail(e.target.value);
+    setIsChanged(
+      profileUsername !== user?.username || e.target.value !== user?.email
+    );
+  };
+
   const handleProfileEditSubmit = () => {
     setIsLoading((prev) => !prev);
     const form = new FormData();
@@ -142,7 +173,6 @@ export const ProfileForm = () => {
         icon: "✉️",
       });
     }
-
     if (imageFile) form.append("file", imageFile);
     updateProfile(form);
     setTimeout(() => {
@@ -268,7 +298,7 @@ export const ProfileForm = () => {
               }`}
               style={
                 !imageUrl
-                  ? { backgroundImage: `url(/static/nft-dummy.png)` }
+                  ? { backgroundImage: `url(/static/default_img.png)` }
                   : { backgroundImage: `url(${imageUrl})` }
               }
               onClick={handleUpload}
@@ -290,7 +320,7 @@ export const ProfileForm = () => {
                 name="username"
                 placeholder="New Username"
                 value={profileUsername}
-                onChange={(e) => setProfileUsername(e.target.value)}
+                onChange={handleUsernameChange}
                 className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 text-nafl-white bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
               />
             </div>
@@ -303,7 +333,7 @@ export const ProfileForm = () => {
                 name="email"
                 placeholder="New Email"
                 value={profileEmail}
-                onChange={(e) => setProfileEmail(e.target.value)}
+                onChange={handleEmailChange}
                 className="flex w-full h-full rounded-[10px] border-[1px] border-nafl-sponge-500 text-nafl-white bg-[#4B4B4B] pt-[19px] px-[12px] truncate font-face-roboto"
               />
             </div>
@@ -416,7 +446,8 @@ export const ProfileForm = () => {
         <div className="flex flex-col items-center w-full">
           <button
             type="submit"
-            className="flex items-center justify-center font-face-roboto font-bold text-[18px] text-[#000] px-[30px] rounded-[8px] h-[54px] bg-nafl-sponge-500"
+            className={`flex items-center justify-center font-face-roboto font-bold text-[18px] text-[#000] px-[30px] rounded-[8px] h-[54px] ${isChanged ? "bg-nafl-sponge-500" : "bg-gray-400 cursor-not-allowed"}`}
+            disabled={!isChanged}
           >
             {isLoading ? (
               <>
@@ -427,6 +458,7 @@ export const ProfileForm = () => {
               "SAVE"
             )}
           </button>
+
           {/* <Button
           label="submit"
           variant="secondary"
