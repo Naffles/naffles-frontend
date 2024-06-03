@@ -280,7 +280,7 @@ export const ProfileForm = () => {
                 }`}
               style={
                 !imageUrl
-                  ? { backgroundImage: `url(/static/nft-dummy.png)` }
+                  ? { backgroundImage: `url(/static/default_img.png)` }
                   : { backgroundImage: `url(${imageUrl})` }
               }
               onClick={handleUpload}
