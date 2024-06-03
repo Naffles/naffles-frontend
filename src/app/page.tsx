@@ -258,7 +258,7 @@ export default function Home() {
                           NEXT JACKPOT GIVE AWAY IN{" "}
                           <span className="text-[#DC2ABF] font-mono">
                             {/* 5 Days */}
-                            {giveAwayStartDate.length > index
+                            {giveAwayStartDate?.length > index
                               ? // Math.floor((new Date(giveAwayStartDate[index].endDate).getTime() - new Date(giveAwayStartDate[index].startDate).getTime()) / (1000 * 60 * 60 * 24)) + " Days"
                                 Math.floor(
                                   (new Date(

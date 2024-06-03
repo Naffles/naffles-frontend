@@ -38,12 +38,13 @@ export const jackpotWinners = async (limit: number) => {
 };
 
 export const jackpotGiveawayStartDate = async () => {
-    const response = await axios.get(
-      `/raffle/giveaways`
-    );
-  
+  try {
+    const response = await axios.get(`/raffle/giveaways`);
     return response.data.data;
-  };
+  } catch (error) {
+    console.error('Error fetching jackpot giveaway start date:', error); // Log the error
+  }
+};
 
 export const recentWinners = async () => {
   try {
