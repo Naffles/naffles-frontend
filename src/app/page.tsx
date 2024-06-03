@@ -75,13 +75,14 @@ export default function Home() {
       console.log(giveAwayDate, "giveaway");
     });
 
-    const recentWinnersInterval = setInterval(() => {
-      recentWinners().then((gameData) => setRecentWinnersData(gameData));
-    }, 10000);
-
-    // recentWinners();
-
-    // recentWinners().then((winners) => setRecentWinnersData(winners))
+    const fetchRecentWinners = async () => {
+      const gameData = await recentWinners();
+      setRecentWinnersData(gameData);
+    };
+    // Initial fetch
+    fetchRecentWinners();
+    // Set up interval to fetch every 10 seconds
+    const recentWinnersInterval = setInterval(fetchRecentWinners, 10000);
     return () => {
       clearInterval(recentWinnersInterval);
     };
@@ -260,13 +261,13 @@ export default function Home() {
                             {/* 5 Days */}
                             {giveAwayStartDate?.length > index
                               ? // Math.floor((new Date(giveAwayStartDate[index].endDate).getTime() - new Date(giveAwayStartDate[index].startDate).getTime()) / (1000 * 60 * 60 * 24)) + " Days"
-                                Math.floor(
-                                  (new Date(
-                                    giveAwayStartDate[index].endDate
-                                  ).getTime() -
-                                    new Date().getTime()) /
-                                    (1000 * 60 * 60 * 24)
-                                ) + " Days"
+                              Math.floor(
+                                (new Date(
+                                  giveAwayStartDate[index].endDate
+                                ).getTime() -
+                                  new Date().getTime()) /
+                                (1000 * 60 * 60 * 24)
+                              ) + " Days"
                               : "5 Days"}
                           </span>
                         </p>
