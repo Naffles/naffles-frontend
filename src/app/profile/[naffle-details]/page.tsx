@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import Card from "@components/shared/Card/card";
 import { Table } from "flowbite-react";
+import TransactionHistory from "@components/shared/Profile/TransactionHistory";
 
 const UserProfile = () => {
   const { "naffle-details": data } = useParams();
@@ -79,8 +80,7 @@ const UserProfile = () => {
                         lead-8
                         px-[48px]
                         py-[10px]
-                        ${tab.state ? activeString : inactiveString}`
-                      }
+                        ${tab.state ? activeString : inactiveString}`}
                     >
                       {tab.title}
                     </a>
@@ -107,118 +107,9 @@ const UserProfile = () => {
                   ))}
                 </div>
               </div>
-            )}
-            {ticketsHistory.state && (
-              <div className="flex flex-col w-full h-full">
-                <h1 className="text-5xl text-nafl-white mt-5 mb-5">Actions</h1>
-                <div className="overflow-x-auto h-auto">
-                  <Table className="bg-nafle-charcoal-800">
-                    <Table.Head className="bg-nafle-charcoal-800 text-nafl-charcoal-100 text-lg border-t-orange-50 border-b-1 border-t-1">
-                      <Table.HeadCell>action required</Table.HeadCell>
-                      <Table.HeadCell>Event id</Table.HeadCell>
-                      <Table.HeadCell>collection</Table.HeadCell>
-                      <Table.HeadCell>token id</Table.HeadCell>
-                      <Table.HeadCell>ticket #</Table.HeadCell>
-                      <Table.HeadCell>cost</Table.HeadCell>
-                      <Table.HeadCell>draw trx id</Table.HeadCell>
-                      <Table.HeadCell>status</Table.HeadCell>
-                    </Table.Head>
-                    <Table.Body className="divide-y border-none">
-                      <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
-                          {'Apple MacBook Pro 17"'}
-                        </Table.Cell>
-                        <Table.Cell>Sliver</Table.Cell>
-                        <Table.Cell>Laptop</Table.Cell>
-                        <Table.Cell>$2999</Table.Cell>
-                        <Table.Cell>3145</Table.Cell>
-                        <Table.Cell>$99</Table.Cell>
-                        <Table.Cell>3x213</Table.Cell>
-                        <Table.Cell>WINNER</Table.Cell>
-                      </Table.Row>
-                      <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
-                          Microsoft Surface Pro
-                        </Table.Cell>
-                        <Table.Cell>White</Table.Cell>
-                        <Table.Cell>Laptop PC</Table.Cell>
-                        <Table.Cell>$1999</Table.Cell>
-                        <Table.Cell>3145</Table.Cell>
-                        <Table.Cell>$99</Table.Cell>
-                        <Table.Cell>3x213</Table.Cell>
-                        <Table.Cell>WINNER</Table.Cell>
-                      </Table.Row>
-                      <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
-                          Magic Mouse 2
-                        </Table.Cell>
-                        <Table.Cell>Black</Table.Cell>
-                        <Table.Cell>Accessories</Table.Cell>
-                        <Table.Cell>$99</Table.Cell>
-                        <Table.Cell>3145</Table.Cell>
-                        <Table.Cell>$99</Table.Cell>
-                        <Table.Cell>3x213</Table.Cell>
-                        <Table.Cell>WINNER</Table.Cell>
-                      </Table.Row>
-                    </Table.Body>
-                  </Table>
-                </div>
-                <h1 className="text-5xl text-nafl-sponge-100 mt-3">History</h1>
-                <div className="overflow-x-auto h-auto">
-                  <Table className="bg-nafle-charcoal-800">
-                    <Table.Head className="bg-nafle-charcoal-800 text-nafl-charcoal-100 text-lg border-t-orange-50 border-b-1 border-t-1">
-                      <Table.HeadCell>action required</Table.HeadCell>
-                      <Table.HeadCell>Event id</Table.HeadCell>
-                      <Table.HeadCell>collection</Table.HeadCell>
-                      <Table.HeadCell>token id</Table.HeadCell>
-                      <Table.HeadCell>ticket #</Table.HeadCell>
-                      <Table.HeadCell>cost</Table.HeadCell>
-                      <Table.HeadCell>draw trx id</Table.HeadCell>
-                      <Table.HeadCell>status</Table.HeadCell>
-                    </Table.Head>
-                    <Table.Body className="divide-y border-none">
-                      <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
-                          {'Apple MacBook Pro 17"'}
-                        </Table.Cell>
-                        <Table.Cell>Sliver</Table.Cell>
-                        <Table.Cell>Laptop</Table.Cell>
-                        <Table.Cell>$2999</Table.Cell>
-                        <Table.Cell>3145</Table.Cell>
-                        <Table.Cell>$99</Table.Cell>
-                        <Table.Cell>3x213</Table.Cell>
-                        <Table.Cell>WINNER</Table.Cell>
-                      </Table.Row>
-                      <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
-                          Microsoft Surface Pro
-                        </Table.Cell>
-                        <Table.Cell>White</Table.Cell>
-                        <Table.Cell>Laptop PC</Table.Cell>
-                        <Table.Cell>$1999</Table.Cell>
-                        <Table.Cell>3145</Table.Cell>
-                        <Table.Cell>$99</Table.Cell>
-                        <Table.Cell>3x213</Table.Cell>
-                        <Table.Cell>WINNER</Table.Cell>
-                      </Table.Row>
-                      <Table.Row className="bg-nafle-charcoal-600 dark:border-gray-700 dark:bg-gray-800 text-nafl-sponge-100 border-none">
-                        <Table.Cell className="whitespace-nowrap font-medium dark:text-nafl-white">
-                          Magic Mouse 2
-                        </Table.Cell>
-                        <Table.Cell>Black</Table.Cell>
-                        <Table.Cell>Accessories</Table.Cell>
-                        <Table.Cell>$99</Table.Cell>
-                        <Table.Cell>3145</Table.Cell>
-                        <Table.Cell>$99</Table.Cell>
-                        <Table.Cell>3x213</Table.Cell>
-                        <Table.Cell>WINNER</Table.Cell>
-                      </Table.Row>
-                    </Table.Body>
-                  </Table>
-                </div>
-              </div>
-            )}
-            {burn.state && (
+            )} */}
+            {ticketsHistory.state && <TransactionHistory />}
+            {/* burn.state && (
               <div className="flex flex-col w-full h-full">
                 <h1 className="text-5xl text-nafl-white mt-5 mb-5">BURN</h1>
 
