@@ -4,6 +4,7 @@ import { useState } from "react";
 import ProfileTransactionHistory from "../Tables/ProfileTransactionHistoryTable";
 import { RiExpandUpDownLine } from "react-icons/ri";
 import CustomDropdownComponent from "../Dropdown/CustomDropdownComponent";
+import { Checkbox } from "@nextui-org/checkbox";
 
 const TransactionHistory = () => {
   const [tableData, setTableData] = useState<any[]>([]);
@@ -26,6 +27,9 @@ const TransactionHistory = () => {
             openStateFunction={setEventsDropdown}
             dropDownHeight={180}
           />
+          <Checkbox defaultSelected classNames={{ icon: "bg-nafl-sponge-500" }}>
+            Option
+          </Checkbox>
         </div>
         <ProfileTransactionHistory />
       </div>
