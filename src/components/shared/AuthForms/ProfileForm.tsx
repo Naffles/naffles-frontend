@@ -11,6 +11,7 @@ import { IoIosCloseCircleOutline, IoMdAddCircleOutline } from "react-icons/io";
 import { useUser } from "@blockchain/context/UserContext";
 import WalletTypeModal from "../Modal/WalletTypeModal";
 import toast from "react-hot-toast";
+import { AiOutlineLoading } from "react-icons/ai";
 
 export type ProfileSubmitData = { username: string; email: string };
 
@@ -40,6 +41,8 @@ export const ProfileForm = () => {
   const [profileEmail, setProfileEmail] = useState<string>("");
   const [profileUsername, setProfileUsername] = useState<string>("");
   const [isChanged, setIsChanged] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     setProfileUsername(user?.username);
@@ -62,13 +65,20 @@ export const ProfileForm = () => {
   const handleFirstLoad = useCallback(async () => {
     try {
       const userProfile = (await reloadProfile()) ?? {};
-      const imagePath = "image/view?path=" + userProfile.profileImage;
-      const { data: profileImageData } = await axios.get(imagePath, {
-        responseType: "arraybuffer",
-      });
-      setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
+      if(userProfile.profileImage) {
+        const imagePath = "image/view?path=" + userProfile.profileImage;
+        const { data: profileImageData } = await axios.get(imagePath, {
+          responseType: "arraybuffer",
+        });
+        setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
+        setIsImageLoaded(true);
+      } else { 
+        setImageUrl('/static/default_img.png');
+      }
     } catch (error) {
       console.error("Error fetching profile image:", error); // Log the error
+    } finally {
+      setIsImageLoaded(true);
     }
   }, [reloadProfile]);
 
@@ -77,11 +87,15 @@ export const ProfileForm = () => {
   }, [handleFirstLoad]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsHovered(false);
+    setIsLoading((prev) => !prev);
     const file = event?.target?.files?.[0];
     if (file) {
+      setIsChanged(true);
       setImageFile(file);
       setImageUrl(URL.createObjectURL(file));
     }
+    setIsLoading((prev) => !prev);
   };
 
   const handleChangePassword = async (data: ChangePasswordData) => {
@@ -290,24 +304,31 @@ export const ProfileForm = () => {
               className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 text-nafl-white ${
                 imageFile && "bg-gray-200 rounded-full"
               }`}
-              onChange={handleChange}
+              onChange={handleChange} 
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             />
             <div
               className={`w-[120px] h-[120px] bg-cover bg-center rounded-full overflow-hidden relative z-0 ${
                 !imageFile && "bg-gray-300"
               }`}
-              style={
-                !imageUrl
-                  ? { backgroundImage: `url(/static/default_img.png)` }
-                  : { backgroundImage: `url(${imageUrl})` }
-              }
+              style={{
+                backgroundImage: isImageLoaded ? `url(${imageUrl}` : 'none',
+              }}
               onClick={handleUpload}
             >
-              {!imageFile && (
-                <div className="flex items-center justify-center h-full text-nafl-white text-[16px] bg-black bg-opacity-30 rounded-full">
-                  Click to upload
-                </div>
-              )}
+            {!isImageLoaded && (
+              <div className="flex items-center justify-center h-full">
+                <AiOutlineLoading className="animate-spin text-4xl text-gray-500" />
+              </div>
+            )}
+              <div
+                className={`flex items-center justify-center h-full text-nafl-white text-[16px] bg-black bg-opacity-30 rounded-full transition-opacity duration-300 ${
+                  isHovered ? "opacity-100" : "opacity-0"
+                }`}
+              >  
+                Click to upload
+              </div>
             </div>
           </div>
           <div className="flex flex-col m-5 gap-4 w-full">
