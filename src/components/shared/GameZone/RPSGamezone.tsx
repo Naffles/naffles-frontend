@@ -296,8 +296,8 @@ export const RPSGamezone = () => {
                 muted={muteVideo}
               >
                 <source
-                  src={`/static/rps/${selectedChoice}/${result}${randomIntFromInterval(1, 3)}.mp4`}
-                  type={`video/mp4`}
+                  src={`https://storage.googleapis.com/naffles-public-videos/rps/${selectedChoice}/${result}${randomIntFromInterval(1, 3)}.webm`}
+                  type={`video/webm`}
                 />
               </video>
             )}
@@ -310,7 +310,10 @@ export const RPSGamezone = () => {
               onClick={() => setMuteVideo(!muteVideo)}
               muted={showVideo || muteVideo}
             >
-              <source src={`/static/rps/waiting.mp4`} type={`video/mp4`} />
+              <source
+                src={`https://storage.googleapis.com/naffles-public-videos/rps/waiting.webm`}
+                type={`video/webm`}
+              />
             </video>
           </div>
         </div>

@@ -17,6 +17,7 @@ type Balance = {
   tokenType: string;
   amount: string;
   conversion: string;
+  isWalletConnected: boolean;
 };
 
 interface Props {
@@ -35,15 +36,16 @@ const WithdrawModal = (props: Props) => {
     tokenType: "",
     amount: "",
     conversion: "",
+    isWalletConnected: false,
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currencyConverted, setCurrencyConverted] = useState<number>(0);
 
   useEffect(() => {
-    getCryptoPrice(balanceType?.tokenType, withdrawAmount).then(price => {
-      setCurrencyConverted(price)
-    })
-  }, [withdrawAmount, balanceType?.tokenType])
+    getCryptoPrice(balanceType?.tokenType, withdrawAmount).then((price) => {
+      setCurrencyConverted(price);
+    });
+  }, [withdrawAmount, balanceType?.tokenType]);
 
   const requestWithdraw = async (amount: string, type: Balance) => {
     if (parseFloat(withdrawAmount) > 0) {
@@ -202,9 +204,10 @@ const WithdrawModal = (props: Props) => {
                               setShowBalanceDropdown(false);
                             }}
                             key={index}
-                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${balanceType.tokenType == item?.tokenType &&
+                            className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${
+                              balanceType.tokenType == item?.tokenType &&
                               "bg-[#fff]/30"
-                              }`}
+                            }`}
                           >
                             {currencyIconReturner(item?.tokenType)}
                             <p className="text-[#fff] text-[16px] font-face-bebas">
@@ -248,7 +251,11 @@ const WithdrawModal = (props: Props) => {
                 </div>
               </div>
               <button
-                onClick={() => requestWithdraw(withdrawAmount, balanceType)}
+                onClick={() =>
+                  balanceType.isWalletConnected
+                    ? requestWithdraw(withdrawAmount, balanceType)
+                    : toast.error("No wallet connected for this balance")
+                }
                 className="bg-nafl-sponge-500 rounded-[8px] w-[240px] h-[54px] mx-[6px]"
               >
                 <p className="text-[#000] text-[18px] font-bold">

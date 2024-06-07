@@ -114,8 +114,8 @@ const GameZoneAccepting = () => {
     setBetOdds("");
   };
 
-  const acceptGame = () => {
-    console.log("accept game data: ", currentGameId, currentChallengerId);
+  const acceptGame = (gameId: string, challengerId: string) => {
+    console.log("accept game data: ", gameId, challengerId);
     // if (currentGameType == "Rock, Paper, Scissors") {
     socket?.emit("acceptJoinRequest", {
       gameId: currentGameId,
@@ -200,7 +200,11 @@ const GameZoneAccepting = () => {
             <p className="text-[#fff] text-[18px] font-bold">REJECT</p>
           </button>
           <button
-            onClick={() => currentChallengerId && acceptGame()}
+            onClick={() =>
+              currentGameId && currentChallengerId
+                ? acceptGame(currentGameId, currentChallengerId)
+                : toast.error("Challenger or Game ID not found")
+            }
             className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500 bg-nafl-sponge-500 mb-[17px]"
           >
             <p className="text-[#000] text-[18px] font-bold">ACCEPT</p>

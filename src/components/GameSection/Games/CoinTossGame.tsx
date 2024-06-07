@@ -6,8 +6,14 @@ import { GameContainerProps } from "@type/GameSection";
 import toast from "react-hot-toast";
 
 export const CoinTossGame = (props: GameContainerProps) => {
-  const { onGameStart, onGameReset, isPaused, resetToInitial, onLimitReached, callGameResultModal } =
-    props;
+  const {
+    onGameStart,
+    onGameReset,
+    isPaused,
+    resetToInitial,
+    onLimitReached,
+    callGameResultModal,
+  } = props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
   const [hasError, setHasError] = useState(false);
@@ -15,11 +21,11 @@ export const CoinTossGame = (props: GameContainerProps) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setChangeGameText(prevState => !prevState);
+      setChangeGameText((prevState) => !prevState);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []); 
+  }, []);
 
   const triggerCoinTossGame = useCallback(
     async (choice?: string) => {
@@ -57,7 +63,7 @@ export const CoinTossGame = (props: GameContainerProps) => {
       results={["win", "lose"]}
       choices={["heads", "tails"]}
       variants={[1, 2, 3, 4]}
-      basePath="/static/coin-toss/"
+      basePath="https://storage.googleapis.com/naffles-public-videos/coin-toss/"
       extension="webm"
       barColor="bg-nafl-purple"
       gameCall={triggerCoinTossGame}

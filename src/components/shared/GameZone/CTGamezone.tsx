@@ -58,6 +58,7 @@ export const CTGamezone = () => {
   const [showAcceptChangeBet, setShowAcceptChangeBet] = useState(false);
   const [muteVideo, setMuteVideo] = useState(false);
   const [results, setResults] = useState<string[]>([]);
+  const [requestPlayAgain, setRequestPlayAgain] = useState(false);
 
   const GameResultMessage = ({
     result,
@@ -122,6 +123,7 @@ export const CTGamezone = () => {
 
     const gameResult = (data: any) => {
       setResult("");
+      setRequestPlayAgain(false);
       console.log("gameResult socket data:", data);
       data.winner == user?.id ? setLastResult("win") : setLastResult("lose");
       data.assignedChoice && setSelectedChoice(data.assignedChoice);
@@ -139,6 +141,7 @@ export const CTGamezone = () => {
     const gameZoneStart = (data: any) => {
       console.log("gameStarted data: ", data);
       setResult("");
+      setRequestPlayAgain(false);
       setShowResultUI(false);
       if (data.initialChoices) {
         currentGameMode == "host"
@@ -231,6 +234,7 @@ export const CTGamezone = () => {
       gameId: currentGameId,
     });
     setResult("");
+    setRequestPlayAgain(true);
   };
 
   const leaveGame = () => {
@@ -313,7 +317,7 @@ export const CTGamezone = () => {
                 muted={muteVideo}
               >
                 <source
-                  src={`/static/coin-toss/${selectedChoice}/${lastResult}${randomIntFromInterval(1, 4)}.webm`}
+                  src={`https://storage.googleapis.com/naffles-public-videos/coin-toss/${selectedChoice}/${lastResult}${randomIntFromInterval(1, 4)}.webm`}
                   type={`video/webm`}
                 />
               </video>
@@ -328,7 +332,7 @@ export const CTGamezone = () => {
               muted={showVideo || muteVideo}
             >
               <source
-                src={`/static/coin-toss/waiting.webm`}
+                src={`https://storage.googleapis.com/naffles-public-videos/coin-toss/waiting.webm`}
                 type={`video/webm`}
               />
             </video>
@@ -545,35 +549,37 @@ export const CTGamezone = () => {
 
             {/* TIMER PART */}
 
-            <div className="flex flex-col py-[30px] items-center relative w-full">
-              <div className="flex items-center justify-center scale-x-[-1] relative">
-                <CircularProgress
-                  aria-label="Gamezone countdown progress"
-                  classNames={{
-                    svg: "w-[160px] h-[160px] drop-shadow-md",
-                    indicator: "stroke-[#00e0df]",
-                    track: "stroke-[#ee26ff]",
-                    value: "text-3xl font-semibold text-nafl-white",
-                  }}
-                  value={timeleft}
-                  minValue={0}
-                  maxValue={DEFAULT_TIMER}
-                  strokeWidth={4}
-                  showValueLabel={false}
-                />
-                <div
-                  // onClick={() => setCountdownTimer(200)}
-                  className="flex flex-col items-center justify-center absolute top-[30px] h-[100px] w-[100px] rounded-full bg-[#383838] scale-x-[-1]"
-                >
-                  <p className="text-[#fff] font-face-bebas text-[50px] leading-[100%]">
-                    {timeleft}
-                  </p>
+            {!requestPlayAgain && (
+              <div className="flex flex-col py-[30px] items-center relative w-full">
+                <div className="flex items-center justify-center scale-x-[-1] relative">
+                  <CircularProgress
+                    aria-label="Gamezone countdown progress"
+                    classNames={{
+                      svg: "w-[160px] h-[160px] drop-shadow-md",
+                      indicator: "stroke-[#00e0df]",
+                      track: "stroke-[#ee26ff]",
+                      value: "text-3xl font-semibold text-nafl-white",
+                    }}
+                    value={timeleft}
+                    minValue={0}
+                    maxValue={DEFAULT_TIMER}
+                    strokeWidth={4}
+                    showValueLabel={false}
+                  />
+                  <div
+                    // onClick={() => setCountdownTimer(200)}
+                    className="flex flex-col items-center justify-center absolute top-[30px] h-[100px] w-[100px] rounded-full bg-[#383838] scale-x-[-1]"
+                  >
+                    <p className="text-[#fff] font-face-bebas text-[50px] leading-[100%]">
+                      {timeleft}
+                    </p>
+                  </div>
                 </div>
+                <p className="text-[#fff] text-center text-[16px] mt-[0px] leading-[100%] font-face-bebas">
+                  SECONDS
+                </p>
               </div>
-              <p className="text-[#fff] text-center text-[16px] mt-[0px] leading-[100%] font-face-bebas">
-                SECONDS
-              </p>
-            </div>
+            )}
           </div>
         ))}
 
@@ -631,7 +637,8 @@ export const CTGamezone = () => {
               </button>
             </>
           ) : (
-            lastResult && (
+            lastResult &&
+            !requestPlayAgain && (
               <button
                 onClick={() => playAgain()}
                 className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"

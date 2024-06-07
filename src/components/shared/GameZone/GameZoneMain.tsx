@@ -7,6 +7,7 @@ import { RiExpandUpDownLine } from "react-icons/ri";
 import { useState } from "react";
 import { Slider } from "@nextui-org/react";
 import GameZoneGamesTable from "../Tables/GameZoneGamesTable";
+import CustomDropdownComponent from "../Dropdown/CustomDropdownComponent";
 
 const GameZoneMain = () => {
   const [gameType, setGameType] = useState<string>("ALL GAMES");
@@ -15,13 +16,13 @@ const GameZoneMain = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [search, setSearch] = useState<string>("");
 
-  const [selectedOdds, setSelectedOdds] = useState<string>("1");
-  const [oddsDropdown, setOddsDropdown] = useState<boolean>(false);
+  const [selectedToken, setselectedToken] = useState<string>("ALL TOKENS");
+  const [tokenDropdown, setTokenDropdown] = useState<boolean>(false);
 
   const [minBet, setMinBet] = useState<string>("0");
   const [minText, setMinText] = useState<string>("0");
-  const [maxBet, setMaxBet] = useState<string>("100");
-  const [maxText, setMaxText] = useState<string>("100");
+  const [maxBet, setMaxBet] = useState<string>("10");
+  const [maxText, setMaxText] = useState<string>("10");
   useEffect(() => {
     const timer = setTimeout(() => {
       setSearch(searchText);
@@ -52,20 +53,29 @@ const GameZoneMain = () => {
     "COIN TOSS",
   ];
 
-  let odds_options = ["1", "2", "3", "4", "5", "10"];
+  let token_options = ["ALL TOKENS", "ETH", "SOL", "NAFFLINGS"];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const clickedElement = event.target as HTMLElement;
-      const containerElement = document.getElementById("game-type-dropdown");
+      const containerElement1 = document.getElementById("game-type-dropdown");
+      const containerElement2 = document.getElementById("game-token-dropdown");
       const clickedElementId = clickedElement.id;
 
       if (
-        !containerElement ||
-        !containerElement.contains(clickedElement) ||
+        !containerElement1 ||
+        !containerElement1.contains(clickedElement) ||
         clickedElementId == "game-type-dropdown"
       ) {
         setGameTypeDropdown(false);
+      }
+
+      if (
+        !containerElement2 ||
+        !containerElement2.contains(clickedElement) ||
+        clickedElementId == "game-token-dropdown"
+      ) {
+        setTokenDropdown(false);
       }
     };
 
@@ -117,17 +127,6 @@ const GameZoneMain = () => {
           </div>
 
           <div className="flex flex-row flex-wrap lg:items-end items-center md:justify-between justify-center mt-[36px] w-full px-[20px] lg:gap-0 gap-[20px]">
-            <div className="flex items-center w-[220px] h-[37px] relative">
-              <input
-                type="text"
-                placeholder="SEARCH"
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                className="w-full h-full rounded-[10px] bg-[#4B4B4B] font-face-roboto px-[20px] text-[16px] placeholder:text-[#C1C1C1]"
-              />
-              <MdOutlineSearch className="absolute right-[12px] text-[20px] text-[#E9E9E9]" />
-            </div>
-
             <div className="flex flex-row flex-wrap items-end justify-center gap-[13px]">
               <div className="flex flex-col gap-[11px]">
                 <p className="text-[13px] text-[#FEFF3D] leading-[100%]">
@@ -135,73 +134,30 @@ const GameZoneMain = () => {
                 </p>
 
                 <div className="flex md:flex-row flex-col items-center gap-[13px]">
-                  <div id="game-type-dropdown" className="w-[154px] relative">
-                    <button
-                      onClick={() =>
-                        setGameTypeDropdown(gameTypeDropdown ? false : true)
-                      }
-                      className="flex px-[15px] items-center rounded-[10px] w-full h-[37px] bg-[#4B4B4B]"
-                    >
-                      <p className="text-[16px] text-[#C1C1C1] truncate">
-                        {gameType}
-                      </p>
-                      <RiExpandUpDownLine className="absolute text-[20px] right-[10px]" />
-                    </button>
-
-                    {gameTypeDropdown && (
-                      <div className="flex flex-col absolute top-[40px] w-full rounded-[10px] bg-[#4B4B4B] h-[140px] z-[100] pt-[5px]">
-                        <div className="flex flex-col w-full gap-[6px] px-[5px]">
-                          {games_type_filter_options.map((item) => (
-                            <button
-                              onClick={() => {
-                                setGameType(item);
-                                setGameTypeDropdown(false);
-                              }}
-                              key={item}
-                              className={`flex items-center w-full px-[15px] rounded-[10px] hover:bg-[#fff]/30 duration-300 h-[37px] ${
-                                gameType == item && "bg-[#fff]/30"
-                              }`}
-                            >
-                              <p className="text-[16px] text-[#fff] truncate">
-                                {item}
-                              </p>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                  <div id="game-type-dropdown" className="relative">
+                    <CustomDropdownComponent
+                      label={null}
+                      options={games_type_filter_options}
+                      selected={gameType}
+                      setSelected={setGameType}
+                      openState={gameTypeDropdown}
+                      openStateFunction={setGameTypeDropdown}
+                      dropDownHeight={140}
+                      dropDownWidth={154}
+                    />
                   </div>
 
-                  <div className="relative">
-                    <button
-                      onClick={() => setOddsDropdown(!oddsDropdown)}
-                      className="flex px-[15px] items-center rounded-[10px] w-[154px] h-[37px] bg-[#4B4B4B] relative"
-                    >
-                      <p className="text-[16px] text-[#C1C1C1]">ODDS</p>
-                      <RiExpandUpDownLine className="absolute text-[20px] right-[10px]" />
-                    </button>
-                    {oddsDropdown && (
-                      <div className="flex flex-col absolute top-[40px] w-full rounded-[10px] bg-[#4B4B4B] h-[260px] z-[100] pt-[5px]">
-                        <div className="flex flex-col w-full gap-[6px] px-[5px]">
-                          {odds_options.map((item) => (
-                            <button
-                              onClick={() => {
-                                setSelectedOdds(item);
-                                setOddsDropdown(false);
-                              }}
-                              key={item}
-                              className={`flex items-center w-full px-[15px] rounded-[10px] hover:bg-[#fff]/30 duration-300 h-[37px] ${
-                                selectedOdds == item && "bg-[#fff]/30"
-                              }`}
-                            >
-                              <p className="text-[16px] text-[#fff] truncate">
-                                {item}
-                              </p>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                  <div id="game-token-dropdown" className="relative">
+                    <CustomDropdownComponent
+                      label={null}
+                      options={token_options}
+                      selected={selectedToken}
+                      setSelected={setselectedToken}
+                      openState={tokenDropdown}
+                      openStateFunction={setTokenDropdown}
+                      dropDownHeight={180}
+                      dropDownWidth={190}
+                    />
                   </div>
                 </div>
               </div>
@@ -217,7 +173,7 @@ const GameZoneMain = () => {
                     step={1}
                     value={minText}
                     onChange={(e) => setMinText(e.target.value)}
-                    className="w-[60px] h-[37px] flex items-center justify-center placeholder:text-[#C1C1C1] bg-[#4B4B4B] rounded-[10px] font-face-roboto px-[15px]"
+                    className="w-[80px] h-[37px] flex items-center justify-center placeholder:text-[#C1C1C1] bg-[#4B4B4B] rounded-[10px] font-face-roboto pl-[15px]"
                   />
 
                   <div className="flex items-center relative">
@@ -226,12 +182,18 @@ const GameZoneMain = () => {
                     <Slider
                       aria-label="Min Max Value slider"
                       size="sm"
-                      step={1}
-                      onChangeEnd={(e: any) => {
+                      step={0.01}
+                      minValue={0}
+                      maxValue={10}
+                      value={[
+                        minText ? parseFloat(minText) : 0,
+                        maxText ? parseFloat(maxText) : 10,
+                      ]}
+                      onChange={(e: any) => {
                         setMinText(e[0]);
                         setMaxText(e[1]);
                       }}
-                      defaultValue={[0, 100]}
+                      defaultValue={[0, 10]}
                       classNames={{
                         base: "w-[170px]",
                         track: "bg-[#000]/30 w-full",
@@ -252,7 +214,7 @@ const GameZoneMain = () => {
                     step={1}
                     value={maxText}
                     onChange={(e) => setMaxText(e.target.value)}
-                    className="w-[67px] h-[37px] flex items-center justify-center placeholder:text-[#C1C1C1] bg-[#4B4B4B] rounded-[10px] font-face-roboto px-[15px]"
+                    className="w-[80px] h-[37px] flex items-center justify-center placeholder:text-[#C1C1C1] bg-[#4B4B4B] rounded-[10px] font-face-roboto pl-[15px]"
                   />
                 </div>
               </div>
@@ -260,9 +222,8 @@ const GameZoneMain = () => {
           </div>
 
           <GameZoneGamesTable
-            search={search}
             gameType={gameType}
-            odds={selectedOdds}
+            tokenType={selectedToken}
             min={minBet}
             max={maxBet}
           />
