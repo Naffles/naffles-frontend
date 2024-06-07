@@ -17,22 +17,25 @@ export const GameSection = () => {
   const [isCoinTossPaused, setIsCoinTossPaused] = useState(false);
   const [isRPSPaused, setIsRPSPaused] = useState(false);
   const [showGameResultModal, setShowGameResultModal] = useState(false);
-  const [gameResult, setGameResult] = useState('');
+  const [gameResult, setGameResult] = useState("");
   const [showStartGameModal, setShowStartGameModal] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const clickedElement = event.target as HTMLElement;
-      const containerElement = document.getElementById('start-game-modal-pop-up');
+      const containerElement = document.getElementById(
+        "start-game-modal-pop-up"
+      );
       const clickedElementId = clickedElement.id;
-      
+
       if (
-          (!containerElement || !containerElement.contains(clickedElement)) ||
-          clickedElementId == 'start-game-modal-pop-up'
+        !containerElement ||
+        !containerElement.contains(clickedElement) ||
+        clickedElementId == "start-game-modal-pop-up"
       ) {
-        setIsRPSPaused(false);
-        setIsCoinTossPaused(false);
+        // setIsRPSPaused(false);
+        // setIsCoinTossPaused(false);
         setShowStartGameModal(false);
       }
     };
@@ -50,9 +53,9 @@ export const GameSection = () => {
         setIsRPSPaused(true);
         setIsCoinTossPaused(true);
         setShowStartGameModal(true);
-        setFirstLoad(false)
+        setFirstLoad(false);
       }, 20000); // milliseconds
-  
+
       return () => clearTimeout(timer); // Cleanup function to clear timeout on unmount
     }
   }, [firstLoad]);
@@ -71,7 +74,7 @@ export const GameSection = () => {
 
   const handleRPSStart = (choice?: string) => {
     if (choice) {
-      setFirstLoad(false)
+      setFirstLoad(false);
       setHasSelected(true);
     }
     setIsCoinTossPaused(true);
@@ -79,7 +82,7 @@ export const GameSection = () => {
 
   const handleCoinTossStart = (choice?: string) => {
     if (choice) {
-      setFirstLoad(false)
+      setFirstLoad(false);
       setHasSelected(true);
     }
     setIsRPSPaused(true);
@@ -101,12 +104,12 @@ export const GameSection = () => {
 
   const handleResultModal = (result: string) => {
     setGameResult(result);
-    setShowGameResultModal(true)
-  }
+    setShowGameResultModal(true);
+  };
 
   const handleCloseStartGameModal = () => {
-    setShowStartGameModal(!showStartGameModal)
-  }
+    setShowStartGameModal(!showStartGameModal);
+  };
 
   return (
     <>
@@ -119,10 +122,10 @@ export const GameSection = () => {
       </Modal>
       <div className="flex-row flex-wrap justify-center items-center gamezone-container gap-4 pt-8 hidden lg:flex relative">
         <div className="flex-col flex games-container gap-8">
-          <GameResultModal 
-            show={showGameResultModal} 
-            hideModal={() => setShowGameResultModal(!showGameResultModal)} 
-            result={gameResult} 
+          <GameResultModal
+            show={showGameResultModal}
+            hideModal={() => setShowGameResultModal(!showGameResultModal)}
+            result={gameResult}
           />
           <RockPaperScissorsGame
             resetToInitial={hasSelected}
@@ -140,9 +143,11 @@ export const GameSection = () => {
             callGameResultModal={handleResultModal}
             onLimitReached={handleLimitReached}
           />
-          <StartGameModal 
-            show={showStartGameModal} 
-            hideModal={() => {handleCloseStartGameModal}} 
+          <StartGameModal
+            show={showStartGameModal}
+            hideModal={() => {
+              handleCloseStartGameModal;
+            }}
           />
         </div>
         <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl xl:mt-0 lg:mt-[100px]">
@@ -151,10 +156,10 @@ export const GameSection = () => {
       </div>
       {isMobile && (
         <div className="flex lg:hidden xl:hidden flex-col h-auto">
-          <GameResultModal 
-            show={showGameResultModal} 
-            hideModal={() => setShowGameResultModal(!showGameResultModal)} 
-            result={gameResult} 
+          <GameResultModal
+            show={showGameResultModal}
+            hideModal={() => setShowGameResultModal(!showGameResultModal)}
+            result={gameResult}
           />
           <RockPaperScissorsGame
             resetToInitial={hasSelected}

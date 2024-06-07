@@ -239,9 +239,22 @@ body {
 .swiper-pagination-bullet {
   width: 16px;
   height: 16px;
-  
 }
 
 .swiper-pagination {
   margin-right: 0;
+}
+
+input.checked {
+  background-color: #feff3d;
+  position: relative;
+}
+
+input.checked::before {
+  content: "2714";
+  font-size: 1.5em;
+  color: #fff;
+  position: absolute;
+  right: 1px;
+  top: -5px;
 }

@@ -34,6 +34,8 @@ export const jackpotWinners = async (limit: number) => {
     `/raffle/jackpot/history/all?page=1&limit=${limit}`
   );
 
+  console.log("jackpotWinners response", response);
+
   return response.data.data.jackpotHistory;
 };
 
@@ -42,7 +44,7 @@ export const jackpotGiveawayStartDate = async () => {
     const response = await axios.get(`/raffle/giveaways`);
     return response.data.data;
   } catch (error) {
-    console.error('Error fetching jackpot giveaway start date:', error); // Log the error
+    console.error("Error fetching jackpot giveaway start date:", error); // Log the error
   }
 };
 

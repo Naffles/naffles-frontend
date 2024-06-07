@@ -23,6 +23,7 @@ type Balance = {
   tokenType: string;
   amount: string;
   conversion: string;
+  isWalletConnected: boolean;
 };
 
 const BalancesListOption = ({

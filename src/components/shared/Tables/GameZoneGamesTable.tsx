@@ -45,9 +45,8 @@ interface gamezoneReturnArr {
 }
 
 interface Props {
-  search: string;
   gameType: string;
-  odds: string;
+  tokenType: string;
   min: string;
   max: string;
 }
@@ -170,9 +169,8 @@ const GameZoneGamesTable = (props: Props) => {
       fetchTableData(
         user?.id,
         user?.name,
-        props.search,
         props.gameType,
-        props.odds,
+        props.tokenType,
         props.min,
         props.max
       );
@@ -183,9 +181,8 @@ const GameZoneGamesTable = (props: Props) => {
         fetchTableData(
           user?.id,
           user?.name,
-          props.search,
           props.gameType,
-          props.odds,
+          props.tokenType,
           props.min,
           props.max
         );
@@ -205,15 +202,7 @@ const GameZoneGamesTable = (props: Props) => {
       socket?.off("newGameCreated", gameCreated);
       socket?.off("errorJoinRequest", joinRequestErrorHandler);
     };
-  }, [
-    socket,
-    user,
-    props.search,
-    props.gameType,
-    props.odds,
-    props.min,
-    props.max,
-  ]);
+  }, [socket, user, props.gameType, props.tokenType, props.min, props.max]);
 
   useEffect(() => {
     const gameJoinRequest = (data: any) => {
@@ -258,9 +247,8 @@ const GameZoneGamesTable = (props: Props) => {
   const fetchTableData = async (
     userId: string | null | undefined,
     userName: string | null | undefined,
-    search: string,
     gameType: string,
-    odds: string,
+    tokenType: string,
     min: string,
     max: string
   ) => {
@@ -273,12 +261,24 @@ const GameZoneGamesTable = (props: Props) => {
       } else if (gameType == "COIN TOSS") {
         gameTypeText = "coinToss";
       }
+
+      let tokenTypeText = "";
+      if (tokenType == "ALL TOKENS") {
+        tokenTypeText = "all";
+      } else if (tokenType == "ETH") {
+        tokenTypeText = "eth";
+      } else if (tokenType == "SOL") {
+        tokenTypeText = "sol";
+      } else if (tokenType == "NAFFLINGS") {
+        tokenTypeText = "points";
+      }
+
       console.log(
         "table fetch URL:",
-        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${odds ? "&odds=" + odds : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`
+        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${tokenTypeText ? "&coinType=" + tokenTypeText : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`
       );
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${odds ? "&odds=" + odds : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`,
+        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${tokenTypeText ? "&coinType=" + tokenTypeText : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`,
         {
           method: "GET",
           mode: "cors",
@@ -390,9 +390,8 @@ const GameZoneGamesTable = (props: Props) => {
         fetchTableData(
           user?.id,
           user?.name,
-          props.search,
           props.gameType,
-          props.odds,
+          props.tokenType,
           props.min,
           props.max
         );

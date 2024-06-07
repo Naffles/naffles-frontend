@@ -6,8 +6,14 @@ import { GameContainerProps } from "@type/GameSection";
 import toast from "react-hot-toast";
 
 export const RockPaperScissorsGame = (props: GameContainerProps) => {
-  const { onGameStart, onGameReset, isPaused, resetToInitial, onLimitReached, callGameResultModal } =
-    props;
+  const {
+    onGameStart,
+    onGameReset,
+    isPaused,
+    resetToInitial,
+    onLimitReached,
+    callGameResultModal,
+  } = props;
   const { setPoints } = useBasicUser();
   const [displayPoints, setDisplayPoints] = useState(0);
   const [hasError, setHasError] = useState(false);
@@ -15,11 +21,11 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setChangeGameText(prevState => !prevState);
+      setChangeGameText((prevState) => !prevState);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []); 
+  }, []);
 
   const triggerRPSGame = useCallback(
     async (choice?: string) => {
@@ -58,8 +64,8 @@ export const RockPaperScissorsGame = (props: GameContainerProps) => {
       results={["win", "lose", "draw"]}
       choices={["rock", "paper", "scissors"]}
       variants={[1, 2, 3]}
-      basePath="/static/rps/"
-      extension="mp4"
+      basePath="https://storage.googleapis.com/naffles-public-videos/rps/"
+      extension="webm"
       barColor="bg-nafl-aqua-500"
       gameCall={triggerRPSGame}
       onChoiceClicked={onGameStart}
