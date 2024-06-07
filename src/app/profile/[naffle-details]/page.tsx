@@ -187,9 +187,13 @@ const UserProfile = () => {
                 </div>
               </div>
             )} */}
-            <div className="flex items-center justify-center h-[300px]">
-              <p className="font-mono text-[32px] text-white">Coming Soon</p>
-            </div>
+            {ticketsHistory.state ? (
+              ""
+            ) : (
+              <div className="flex items-center justify-center h-[300px]">
+                <p className="font-mono text-[32px] text-white">Coming Soon</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

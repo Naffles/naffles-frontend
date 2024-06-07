@@ -140,8 +140,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between mt-0 translate-y-[-30px]">
-      {/* <div className="w-full bg-[#464646] md:px-[25px] px-[15px] h-[120vh] md:h-[1200px] xl:h-[950px] pt-[100px]"> */}
+    <main className="flex min-h-screen flex-col items-center justify-between mt-[-30px]">
       <div className="w-full bg-[#464646] md:px-[25px] px-[15px] pt-[100px]">
         <div className="w-full bg-nafl-sponge-500 rounded-[16px] xl:pt-0 pt-[50px] xl:pb-[100px] px-4 md:px-10">
           <div className="flex xl:flex-row flex-col items-center justify-center w-full h-full gap-x-[50px] gap-y-[0px]">
@@ -154,9 +153,9 @@ export default function Home() {
                 nfts &{" "}
                 <span className="relative font-face-bebas">
                   Crypto
-                  <div className="absolute w-[100px] md:w-[130px] top-[-90px] md:top-[-108px] right-[-10px]">
+                  <span className="absolute w-[100px] md:w-[130px] top-[-90px] md:top-[-108px] right-[-10px]">
                     <img src="/nafflings/surprise2.png" alt="" />
-                  </div>
+                  </span>
                 </span>
               </p>
               <div className="flex flex-col gap-[15px]">
@@ -171,12 +170,6 @@ export default function Home() {
                       <p className="text-[#FEFF3D]"> PLAY OUR GAMES</p>
                     </button>
                   </a>
-                  {/* <button className="px-[32px] bg-[#464646] rounded-[8px] h-[50px] font-bold tracking-[1px] z-10">
-                    <p className="text-[#FEFF3D]">EXPLORE LIVE NAFFLES</p>
-                  </button> */}
-                  {/* <div className="absolute w-[150px] right-[35px] top-[-20px] z-[1]">
-                    <img src="/nafflings/surprise3.png" alt="" />
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -258,10 +251,8 @@ export default function Home() {
                         <p className="font-mono uppercase text-[24px] text-[#02B1B1]">
                           NEXT JACKPOT GIVE AWAY IN{" "}
                           <span className="text-[#DC2ABF] font-mono">
-                            {/* 5 Days */}
                             {giveAwayStartDate?.length > index
-                              ? // Math.floor((new Date(giveAwayStartDate[index].endDate).getTime() - new Date(giveAwayStartDate[index].startDate).getTime()) / (1000 * 60 * 60 * 24)) + " Days"
-                                Math.floor(
+                              ? Math.floor(
                                   (new Date(
                                     giveAwayStartDate[index].endDate
                                   ).getTime() -
@@ -314,73 +305,6 @@ export default function Home() {
                 </SwiperSlide>
               ))}
             </Swiper>
-            {/* <>
-                <div className="flex flex-row items-center justify-center">
-                  <Image
-                    src={"/static/hero-img1.png"}
-                    alt="Naffle"
-                    width={316}
-                    height={380}
-                    className="mr-[-20%]"
-                    style={{ zIndex: 2, objectFit: "contain" }}
-                  />
-                  <Image
-                    src={"/static/hero-img2.png"}
-                    alt="Naffle"
-                    width={290}
-                    height={290}
-                    sizes="290px"
-                    className="ml-[-18%]"
-                    style={{ zIndex: 1, objectFit: "contain" }}
-                  />
-                </div>
-                <p className="text-[50px] text-[#464646] font-face-bebas leading-[100%] mb-[30px]">
-                  VEEFRIENDS
-                </p>
-                <div className="flex flex-col items-center justify-center">
-                  <div className="border-t border-nafl-charcoal-300 my-4 w-64 opacity-35"></div>
-                  <div className="flex-row flex justify-between">
-                    <div className="flex flex-col items-start w-[190px] py-[5px] gap-[2px] border-r-[1px] border-[#000]/20">
-                      <p className="text-[16px] font-face-bebas text-[#464646] leading-[100%] ml-[50px]">
-                        TICKETS PRICE
-                      </p>
-                      <div className="flex flex-row items-center justify-center w-full gap-[8px]">
-                        <img
-                          src="/static/eth-logo.png"
-                          alt="ETH Logo"
-                          className="w-[25px] object-contain"
-                        />
-                        <p className="text-[33px] font-face-bebas text-[#464646] leading-[100%]">
-                          0.005
-                        </p>
-                      </div>
-
-                      <p className="flex items-center justify-center w-full text-[16px] font-face-bebas text-[#02B1B1] leading-[100%]">
-                        ($ 16 USD)
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-start w-[190px] py-[5px] gap-[2px]">
-                      <p className="text-[16px] font-face-bebas text-[#464646] leading-[100%] ml-[50px]">
-                        TICKETS FROM
-                      </p>
-                      <div className="flex flex-row items-center justify-center w-full gap-[8px]">
-                        <img
-                          src="/static/eth-logo.png"
-                          alt="ETH Logo"
-                          className="w-[25px] object-contain"
-                        />
-                        <p className="text-[33px] font-face-bebas text-[#464646] leading-[100%]">
-                          0.005
-                        </p>
-                      </div>
-
-                      <p className="flex items-center justify-center w-full text-[16px] font-face-bebas text-[#02B1B1] leading-[100%]">
-                        ($ 16 USD)
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </> */}
           </div>
         </div>
         {/* <div className="flex relative top-[-60px] px-[30px]">
@@ -405,7 +329,7 @@ export default function Home() {
             modules={[Autoplay]}
           >
             {recentWinnersData?.map((item, index) => (
-              <SwiperSlide key={item.game._id} style={{ width: "320px" }}>
+              <SwiperSlide key={item.game._id} style={{ width: "350px" }}>
                 <div className="flex-row flex items-center justify-center py-2 w-full h-[100px] gap-[20px]">
                   {(index + 1) % 2 === 0 ? (
                     // <TrophyIcon size="xl" colour="dark-green" />
@@ -432,15 +356,14 @@ export default function Home() {
                       {" "}
                       {shortenName(item.game.winner.username)} just won
                     </span>{" "}
-                    {tokenValueConversion(
-                      item.game.payout,
-                      item.payoutConverted
-                    )}{" "}
+                    {parseFloat(
+                      tokenValueConversion(item.game.payout, item.game.coinType)
+                    ).toFixed(4)}{" "}
                     <span className="font-face-roboto uppercase">
                       {item.game.coinType}
                     </span>{" "}
                     <br />
-                    (${item.payoutConverted}) from{" "}
+                    (${parseFloat(item.payoutConverted) / 1000}) from{" "}
                     {shortenName(
                       returnLoser(
                         item.game.winner,
@@ -493,9 +416,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-        {/* a button with a label explore all our collections with a yellow background */}
         <button className="bg-nafl-yellow-500 text-[#464646] lg:text-[19px] text-[16px] p-2 rounded-lg mx-auto mt-10 flex items-center justify-center mb-10 font-face-roboto uppercase font-bold gap-[10px] px-[32px]">
-          {/* <MagnifyingIcon size="sm" colour="yellow" /> */}
           <IoMdSearch className="text-[30px]" />
           Explore all our collections
         </button>

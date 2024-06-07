@@ -1,12 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileTransactionHistory from "../Tables/ProfileTransactionHistoryTable";
 import { RiExpandUpDownLine } from "react-icons/ri";
 import CustomDropdownComponent from "../Dropdown/CustomDropdownComponent";
+import { Checkbox } from "@nextui-org/react";
+import { IoMdCheckmark } from "react-icons/io";
+import CustomCheckboxComponent from "../Checkbox/CustomCheckboxComponent";
 
 const TransactionHistory = () => {
   const [tableData, setTableData] = useState<any[]>([]);
+  const [isWonChecked, setIsWonChecked] = useState<boolean>(false);
+  const [isLostChecked, setIsLostChecked] = useState<boolean>(false);
+  const [isLiveChecked, setIsLiveChecked] = useState<boolean>(false);
+  const [isDrawnChecked, setIsDrawnChecked] = useState<boolean>(false);
+  const [isSwappedChecked, setIsSwappedChecked] = useState<boolean>(false);
 
   const [eventSelected, setEventSelected] = useState<string>("ALL EVENTS");
   const [eventsDropdown, setEventsDropdown] = useState<boolean>(false);
@@ -15,7 +23,7 @@ const TransactionHistory = () => {
   return (
     <>
       <div className="flex flex-col w-[1000px]">
-        <div className="flex flex-row items-center justify-center gap-[20px]">
+        <div className="flex flex-row flex-wrap items-center justify-between gap-[20px] px-[20px]">
           <p className="text-[60px] text-white font-face-bebas">HISTORY</p>
           <CustomDropdownComponent
             label={null}
@@ -25,6 +33,32 @@ const TransactionHistory = () => {
             openState={eventsDropdown}
             openStateFunction={setEventsDropdown}
             dropDownHeight={180}
+            dropDownWidth={154}
+          />
+          <CustomCheckboxComponent
+            label="WON"
+            checked={isWonChecked}
+            checkSetter={setIsWonChecked}
+          />
+          <CustomCheckboxComponent
+            label="LOST"
+            checked={isLostChecked}
+            checkSetter={setIsLostChecked}
+          />
+          <CustomCheckboxComponent
+            label="LIVE"
+            checked={isLiveChecked}
+            checkSetter={setIsLiveChecked}
+          />
+          <CustomCheckboxComponent
+            label="DRAWN"
+            checked={isDrawnChecked}
+            checkSetter={setIsDrawnChecked}
+          />
+          <CustomCheckboxComponent
+            label="SWAPPED"
+            checked={isSwappedChecked}
+            checkSetter={setIsSwappedChecked}
           />
         </div>
         <ProfileTransactionHistory />

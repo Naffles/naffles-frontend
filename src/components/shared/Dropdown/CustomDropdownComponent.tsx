@@ -10,6 +10,7 @@ interface Dropdown {
   openState: boolean;
   openStateFunction: Function;
   dropDownHeight: number;
+  dropDownWidth: number;
 }
 
 const CustomDropdownComponent = ({
@@ -20,6 +21,7 @@ const CustomDropdownComponent = ({
   openState,
   openStateFunction,
   dropDownHeight,
+  dropDownWidth,
 }: Dropdown) => {
   return (
     <div className="flex flex-col gap-[11px]">
@@ -28,7 +30,7 @@ const CustomDropdownComponent = ({
       )}
 
       <div className="flex md:flex-row flex-col items-center gap-[13px]">
-        <div id="game-type-dropdown" className="w-[154px] relative">
+        <div className="relative" style={{ width: dropDownWidth }}>
           <button
             onClick={() => openStateFunction(openState ? false : true)}
             className="flex px-[15px] items-center rounded-[10px] w-full h-[37px] bg-[#4B4B4B]"

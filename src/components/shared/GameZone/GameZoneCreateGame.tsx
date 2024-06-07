@@ -12,12 +12,14 @@ import toast, { Toaster } from "react-hot-toast";
 import { error } from "console";
 import Web3 from "web3";
 import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 type Balance = {
   id: string;
   tokenType: string;
   amount: string;
   conversion: string;
+  isWalletConnected: boolean;
 };
 
 const GameZoneCreateGame = () => {
@@ -131,11 +133,13 @@ const GameZoneCreateGame = () => {
 
     let tokenAmount = "0";
     if (coinType == "sol") {
-      let solValue = parseFloat(balanceAmount) / Math.pow(10, 9);
+      let solValue = parseFloat(balanceAmount) * LAMPORTS_PER_SOL;
       tokenAmount = solValue.toString();
     } else {
       tokenAmount = web3.utils.toWei(balanceAmount, "ether");
     }
+
+    console.log("tokenAmount", tokenAmount);
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}game`, {
@@ -297,7 +301,7 @@ const GameZoneCreateGame = () => {
                       className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${
                         balanceType?.tokenType == item?.tokenType &&
                         "bg-[#fff]/30"
-                      } ${parseFloat(item.amount) <= 0 ? "opacity-100" : "opacity-30"}`}
+                      } ${parseFloat(item.amount) > 0 ? "opacity-100" : "opacity-30"}`}
                     >
                       {currencyIconReturner(item?.tokenType)}
                       <p className="text-[#fff] text-[16px] font-face-bebas">
@@ -347,7 +351,7 @@ const GameZoneCreateGame = () => {
             <RiExpandUpDownLine className="absolute text-[20px] right-[20px] text-nafl-sponge-500" />
 
             {betMultiplierChoiceDropdown && (
-              <div className="flex flex-col w-full rounded-[10px] absolute top-[60px] bg-[#4B4B4B] h-[290px] z-40 p-[10px] gap-[6px]">
+              <div className="flex flex-col w-full rounded-[10px] absolute top-[60px] bg-[#4B4B4B] h-[290px] z-0 p-[10px] gap-[6px]">
                 {bet_multiplier_options.map((item) => (
                   <button
                     onClick={() => {
