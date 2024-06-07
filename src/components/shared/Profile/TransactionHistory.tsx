@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import ProfileTransactionHistory from "../Tables/ProfileTransactionHistoryTable";
 import { RiExpandUpDownLine } from "react-icons/ri";
 import CustomDropdownComponent from "../Dropdown/CustomDropdownComponent";
-import { Checkbox } from "@nextui-org/react";
-import { IoMdCheckmark } from "react-icons/io";
 import CustomCheckboxComponent from "../Checkbox/CustomCheckboxComponent";
 
 const TransactionHistory = () => {
