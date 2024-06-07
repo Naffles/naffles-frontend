@@ -42,7 +42,6 @@ export const ProfileForm = () => {
   const [profileUsername, setProfileUsername] = useState<string>("");
   const [isChanged, setIsChanged] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     setProfileUsername(user?.username);
@@ -62,29 +61,9 @@ export const ProfileForm = () => {
     } else setIsChanged(true);
   }, [user, profileEmail]);
 
-  const handleFirstLoad = useCallback(async () => {
-    try {
-      const userProfile = (await reloadProfile()) ?? {};
-      if(userProfile.profileImage) {
-        const imagePath = "image/view?path=" + userProfile.profileImage;
-        const { data: profileImageData } = await axios.get(imagePath, {
-          responseType: "arraybuffer",
-        });
-        setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
-        setIsImageLoaded(true);
-      } else { 
-        setImageUrl('/static/default_img.png');
-      }
-    } catch (error) {
-      console.error("Error fetching profile image:", error); // Log the error
-    } finally {
-      setIsImageLoaded(true);
-    }
-  }, [reloadProfile]);
-
   useEffect(() => {
-    handleFirstLoad();
-  }, [handleFirstLoad]);
+    setImageUrl(user?.profileImageUrl);
+  }, []);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setIsHovered(false);
@@ -313,15 +292,10 @@ export const ProfileForm = () => {
                 !imageFile && "bg-gray-300"
               }`}
               style={{
-                backgroundImage: isImageLoaded ? `url(${imageUrl}` : 'none',
+                backgroundImage: `url(${imageUrl || "/static/default_img.png"})`,
               }}
               onClick={handleUpload}
             >
-            {!isImageLoaded && (
-              <div className="flex items-center justify-center h-full">
-                <AiOutlineLoading className="animate-spin text-4xl text-gray-500" />
-              </div>
-            )}
               <div
                 className={`flex items-center justify-center h-full text-nafl-white text-[16px] bg-black bg-opacity-30 rounded-full transition-opacity duration-300 ${
                   isHovered ? "opacity-100" : "opacity-0"
