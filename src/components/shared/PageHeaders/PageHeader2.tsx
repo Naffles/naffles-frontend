@@ -56,8 +56,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const [showModal, setShowModal] = useState(false);
   const [showOtherModal, setShowOtherModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const { jwt, user: basicUser, login, logout } = useBasicUser();
+  const { user: basicUser, logout } = useBasicUser();
 
   const [openVerifyModal, setOpenVerifyModal] = useState<boolean>(false);
   const [verificationToken, setVerificationToken] = useState<string | null>(
@@ -75,6 +74,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   } = useUser();
 
   useEffect(() => {
+    console.log("1");
     verificationFinished &&
       window.history.replaceState(null, "", window.location.pathname);
   }, [verificationFinished]);
@@ -187,22 +187,6 @@ const PageHeader: React.FC<PageHeaderProps> = (
     open == "verify" && setOpenVerifyModal(true);
     token && setVerificationToken(token);
   }, []);
-
-  const handleUserChange = useCallback(async () => {
-    if (basicUser?.profileImage) {
-      const { data: profileImageData } = await axios.get(
-        "image/view?path=" + basicUser.profileImage,
-        { responseType: "arraybuffer" }
-      );
-      setImageUrl(URL.createObjectURL(new Blob([profileImageData])));
-    } else {
-      setImageUrl(null);
-    }
-  }, [basicUser]);
-
-  useEffect(() => {
-    handleUserChange();
-  }, [handleUserChange]);
 
   useEffect(() => {
     console.log("opening", open);
@@ -396,19 +380,11 @@ const PageHeader: React.FC<PageHeaderProps> = (
                     // onBlur={() => setOpen(!open)}
                   >
                     {basicUser ? (
-                      imageUrl ? (
-                        <img
-                          src={imageUrl}
-                          alt="Profile"
-                          className="w-[30px] h-[30px] rounded-full"
-                        />
-                      ) : (
-                        <img
-                          src={"/static/default_img.png"}
-                          alt="Profile"
-                          className="w-[30px] h-[30px] rounded-full"
-                        />
-                      )
+                      <img
+                        src={basicUser.profileImageUrl || "/static/default_img.png"}
+                        alt="Profile"
+                        className="w-[30px] h-[30px] rounded-full"
+                      />
                     ) : (
                       <FaUserCircle className="text-[#212121] text-[30px]" />
                     )}
@@ -586,20 +562,12 @@ const PageHeader: React.FC<PageHeaderProps> = (
                 type="button"
                 className="flex flex-row items-center justify-center focus:outline-none rounded-[10px] p-2 w-full gap-[8px]"
               >
-                {basicUser  ? (
-                  imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt="Profile"
-                      className="w-[30px] h-[30px] rounded-full"
-                    />
-                  ) : (
-                    <img
-                      src={"/static/default_img.png"}
-                      alt="Profile"
-                      className="w-[30px] h-[30px] rounded-full"
-                    />
-                  )
+                {basicUser ? (
+                  <img
+                    src={basicUser.profileImageUrl || "/static/default_img.png"}
+                    alt="Profile"
+                    className="w-[30px] h-[30px] rounded-full"
+                  />
                 ) : (
                   <FaUserCircle className="text-[#212121] text-[30px]" />
                 )}
