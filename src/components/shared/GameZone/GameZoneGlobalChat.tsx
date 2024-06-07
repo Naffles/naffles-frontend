@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@blockchain/context/UserContext";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
 import { IoIosClose, IoMdAddCircleOutline } from "react-icons/io";
 import { TfiMenu } from "react-icons/tfi";
@@ -19,6 +19,7 @@ import {
 import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { jackpotAmount } from "@components/utils/jackpotCounter";
 import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
+import axios from "@components/utils/axios";
 
 interface GameData {
   _id: string;
@@ -33,6 +34,7 @@ interface GameData {
 }
 
 interface Message {
+  id: string;
   sender: { username: string; profileImage: string; _id: string };
   timestamp: Date;
   message: string | null;
@@ -90,10 +92,9 @@ const GameZoneGlobalChat = () => {
     user,
     setShowDepositModal,
     setShowWithdrawModal,
-    chatData,
   } = useUser();
   const [balances, setBalances] = useState<Balance[]>([]);
-  // const [chatData, setChatData] = useState<Message[]>([]);
+  const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const [showChat, setShowChat] = useState(false);
   const [showBalances, setShowBalances] = useState(false);
@@ -108,7 +109,97 @@ const GameZoneGlobalChat = () => {
   const setCurrentPayout = useGame((state) => state.setPayout);
   const setGameId = useGame((state) => state.setGameId);
 
-  const bottomChat = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [cursor, setCursor] = useState<string | "">("");
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+  const [toBottom, setToBottom] = useState<boolean>(false);
+  const [scrollBehavior, setScrollBehavior] = useState<string | "">("instant");
+  const [currentScrollHeight, setCurrentScrollHeight] = useState<number | undefined>(0);
+  const [currentScrollTop, setCurrentScrollTop] = useState<number | undefined>(0);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if(loading) {
+      adjustScrollHeight(currentScrollHeight, currentScrollTop);
+      setLoading((prev) => !prev);
+    }
+    if(toBottom) {
+      scrollToBottom(scrollBehavior);
+      setToBottom((prev) => !prev);
+    }
+  }, [ showChat, chatData ]);
+
+  const scrollToBottom = (behavior: any) => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo(
+        { 
+          top: chatContainerRef.current.scrollHeight, 
+          behavior: behavior
+        });
+    }
+  };
+
+  const adjustScrollHeight = (scrollHeight, scrollTop) => {
+    if (chatContainerRef.current) {
+      const newScrollHeight = chatContainerRef.current.scrollHeight;
+      if (newScrollHeight !== undefined) {
+          const heightDifference = newScrollHeight - scrollHeight;
+          chatContainerRef.current.scrollTop = scrollTop + heightDifference;
+      }
+    }
+  };
+  
+  const fetchMore = useCallback(
+    async (nextCursor = "") => {
+      if(loading || !hasMore) return;
+      setLoading((prev) => !prev);
+
+      if(initialLoadComplete) {
+        // Calculate the current scroll height and scroll position
+        const currentScrollHeight = chatContainerRef.current?.scrollHeight;
+        const currentScrollTop = chatContainerRef.current?.scrollTop;
+        setCurrentScrollHeight(currentScrollHeight);
+        setCurrentScrollTop(currentScrollTop);
+
+        const { data: { data } } = await axios.get("game/messages/global", {
+          params: { cursor: nextCursor, limit: 20 },
+        });
+        setChatData((oldData) => [...data.messages, ...oldData]);
+        setCursor(data.nextCursor);
+        setHasMore(!!data.nextCursor);
+      }
+  }, [
+      initialLoadComplete,
+      setInitialLoadComplete,
+      setCurrentScrollHeight,
+      setCurrentScrollTop,
+      setChatData,
+      setCursor,
+      setHasMore
+    ]);
+
+  useEffect(() => {
+    const receiveGlobalChat = (data: any) => {
+      setToBottom((prev) => !prev);
+      setScrollBehavior("smooth");
+      setChatData((oldData) => [...oldData, data]);
+    };
+
+    socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
+
+    fetchMore();
+    setInitialLoadComplete(true);
+    return () => {
+      socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
+    };
+  }, [socket, fetchMore]);
+
+  const handleScroll = async () => {
+    if(chatContainerRef.current?.scrollTop === 0 && hasMore && !loading) {
+      await fetchMore(cursor);
+    }
+  };
 
   useEffect(() => {
     user?.balances && setBalances(user?.balances);
@@ -134,12 +225,6 @@ const GameZoneGlobalChat = () => {
       socket?.off("roomStatus", checkRoomOpen);
     };
   }, [socket]);
-
-  useEffect(() => {
-    if (chatData && chatData?.length > 0) {
-      scrollToBottom();
-    }
-  }, [chatData]);
 
   // useEffect(() => {
   //   const fetchInitialJackpot = async () => {
@@ -223,12 +308,6 @@ const GameZoneGlobalChat = () => {
       setMessage("");
     } else {
       toast.error("You must login first to chat");
-    }
-  };
-
-  const scrollToBottom = () => {
-    if (bottomChat.current) {
-      bottomChat.current.scrollTop = bottomChat.current.scrollHeight;
     }
   };
 
@@ -475,15 +554,18 @@ const GameZoneGlobalChat = () => {
         <div className="flex flex-col py-[10px] px-[21px] gap-[10px] w-full">
           <div
             className="flex flex-col h-[488px] w-full overflow-hidden overflow-y-scroll pt-[15px] comments-scrollbar"
-            ref={bottomChat}
+            ref={chatContainerRef}
+            onScroll={handleScroll}
           >
+            {loading && (
+              <div className="flex justify-center items-center py-2">
+                <span>Loading...</span>
+              </div>
+            )}
             <div className="flex flex-col w-full gap-[19px]">
-              {chatData?.map((item) => (
+              {chatData && chatData?.map((item, index) => (
                 <MessageSection
-                  key={randomString(
-                    12,
-                    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                  )}
+                  key={item.id}
                   currentId={socketId}
                   senderId={item.sender._id}
                   sender={item.sender.username}
@@ -667,15 +749,18 @@ const GameZoneGlobalChat = () => {
                 <div className="flex flex-col py-[10px] px-[10px] gap-[10px] w-full h-full pt-[50px]">
                   <div
                     className="flex flex-col h-full w-full overflow-hidden overflow-y-scroll pt-[15px] comments-scrollbar"
-                    ref={bottomChat}
+                    ref={chatContainerRef}
+                    onScroll={handleScroll}
                   >
+                    {loading && (
+                      <div className="flex justify-center items-center py-2">
+                        <span>Loading...</span>
+                      </div>
+                    )}
                     <div className="flex flex-col w-full gap-[19px]">
-                      {chatData?.map((item) => (
+                      {chatData && chatData?.map((item, index) => (
                         <MessageSection
-                          key={randomString(
-                            12,
-                            "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                          )}
+                          key={item.id}
                           currentId={socketId}
                           senderId={item.sender._id}
                           sender={item.sender.username}
@@ -737,7 +822,11 @@ const GameZoneGlobalChat = () => {
           </>
         ) : (
           <button
-            onClick={() => setShowChat(true)}
+            onClick={() => { 
+              setShowChat(true); 
+              setToBottom((prev) => !prev);
+              setScrollBehavior("instant");
+            } }
             className="flex items-center justify-center w-[60px] h-[60px] rounded-[10px] bg-nafl-sponge-500 "
           >
             <BsFillChatLeftTextFill className="text-[#000] text-[30px]" />

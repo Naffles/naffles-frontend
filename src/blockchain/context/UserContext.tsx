@@ -15,13 +15,6 @@ interface GameData {
   status: string;
 }
 
-interface Message {
-  sender: { username: string; profileImage: string; _id: string };
-  timestamp: Date;
-  message: string | null;
-  game: GameData | null;
-}
-
 type Balance = {
   id: string;
   tokenType: string;
@@ -46,7 +39,6 @@ type UserContextType = {
   socketId: string | null;
   showDepositModal: boolean;
   showWithdrawModal: boolean;
-  chatData: Message[] | null;
   setProfileName: (name: string | null) => void;
   setProfileImage: (imgURL: string | null) => void;
   setJWT: (jwt: string | null) => void;
@@ -63,7 +55,6 @@ const UserContext = createContext<UserContextType>({
   socketId: null,
   showDepositModal: false,
   showWithdrawModal: false,
-  chatData: null,
   setProfileName: () => {},
   setProfileImage: () => {},
   setJWT: () => {},
@@ -93,7 +84,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [showDepositModal, setShowDepositModal] = useState<boolean>(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
   const [userBalances, setUserBalances] = useState<Balance[] | null>(null);
-  const [chatData, setChatData] = useState<Message[]>([]);
 
   const { jwt, user, reloadProfile } = useBasicUser();
 
@@ -138,16 +128,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     socket?.emit("joinGlobalChat");
 
-    const receiveGlobalChat = (data: any) => {
-      console.log("receiveGlobalChatMessage", data);
-      setChatData((oldData) => [...oldData, data]);
-    };
-
-    socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
-
     return () => {
       socket?.off("registered", setIntoSocketId);
-      socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
       socket?.off("updateTokenBalance", tokenBalanceUpdate);
     };
   }, [userId, socket]);
@@ -171,7 +153,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         socketId: socketId,
         showDepositModal: showDepositModal,
         showWithdrawModal: showWithdrawModal,
-        chatData: chatData,
         setProfileName: setProfileName,
         setProfileImage: setProfileImage,
         setJWT: setUserJWT,

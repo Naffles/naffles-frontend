@@ -74,7 +74,6 @@ const PageHeader: React.FC<PageHeaderProps> = (
   } = useUser();
 
   useEffect(() => {
-    console.log("1");
     verificationFinished &&
       window.history.replaceState(null, "", window.location.pathname);
   }, [verificationFinished]);
