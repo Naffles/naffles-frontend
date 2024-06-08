@@ -140,7 +140,7 @@ const GameZoneGlobalChat = () => {
     }
   };
 
-  const adjustScrollHeight = (scrollHeight, scrollTop) => {
+  const adjustScrollHeight = (scrollHeight: any, scrollTop: any) => {
     if (chatContainerRef.current) {
       const newScrollHeight = chatContainerRef.current.scrollHeight;
       if (newScrollHeight !== undefined) {
