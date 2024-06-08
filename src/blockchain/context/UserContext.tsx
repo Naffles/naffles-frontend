@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
+import toast from "react-hot-toast";
 
 interface GameData {
   _id: string;
@@ -128,9 +129,24 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     socket?.emit("joinGlobalChat");
 
+    // const receiveGlobalChat = (data: any) => {
+    //   console.log("receiveGlobalChatMessage", data);
+    //   setChatData((oldData) => [...oldData, data]);
+    // };
+
+    // socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
+
+    const consoleError = (data: any) => {
+      console.log(data);
+      toast.error(data);
+    };
+
+    socket?.on("error", consoleError);
+
     return () => {
       socket?.off("registered", setIntoSocketId);
       socket?.off("updateTokenBalance", tokenBalanceUpdate);
+      socket?.off("error", consoleError);
     };
   }, [userId, socket]);
 

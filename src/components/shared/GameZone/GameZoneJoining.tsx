@@ -56,11 +56,6 @@ const GameZoneJoining = () => {
 
     socket?.on("gameStarted", gameStart);
 
-    const consoleError = (data: any) => {
-      console.log(data);
-    };
-    socket?.on("error", consoleError);
-
     const rejectMessage = (data: any) => {
       console.log(data);
       toast.error("Host rejected request");
