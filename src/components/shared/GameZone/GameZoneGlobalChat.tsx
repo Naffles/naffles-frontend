@@ -120,6 +120,11 @@ const GameZoneGlobalChat = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setToBottom((prev) => !prev);
+    fetchMore();
+  }, []);
+
+  useEffect(() => {
     if(loading) {
       adjustScrollHeight(currentScrollHeight, currentScrollTop);
       setLoading((prev) => !prev);
@@ -150,34 +155,23 @@ const GameZoneGlobalChat = () => {
     }
   };
   
-  const fetchMore = useCallback(
-    async (nextCursor = "") => {
+  const fetchMore = async (nextCursor = "") => {
       if(loading || !hasMore) return;
       setLoading((prev) => !prev);
 
-      if(initialLoadComplete) {
-        // Calculate the current scroll height and scroll position
-        const currentScrollHeight = chatContainerRef.current?.scrollHeight;
-        const currentScrollTop = chatContainerRef.current?.scrollTop;
-        setCurrentScrollHeight(currentScrollHeight);
-        setCurrentScrollTop(currentScrollTop);
+      // Calculate the current scroll height and scroll position
+      const currentScrollHeight = chatContainerRef.current?.scrollHeight;
+      const currentScrollTop = chatContainerRef.current?.scrollTop;
+      setCurrentScrollHeight(currentScrollHeight);
+      setCurrentScrollTop(currentScrollTop);
 
-        const { data: { data } } = await axios.get("game/messages/global", {
-          params: { cursor: nextCursor, limit: 20 },
-        });
-        setChatData((oldData) => [...data.messages, ...oldData]);
-        setCursor(data.nextCursor);
-        setHasMore(!!data.nextCursor);
-      }
-  }, [
-      initialLoadComplete,
-      setInitialLoadComplete,
-      setCurrentScrollHeight,
-      setCurrentScrollTop,
-      setChatData,
-      setCursor,
-      setHasMore
-    ]);
+      const { data: { data } } = await axios.get("game/messages/global", {
+        params: { cursor: nextCursor, limit: 20 },
+      });
+      setChatData((oldData) => [...data.messages, ...oldData]);
+      setCursor(data.nextCursor);
+      setHasMore(!!data.nextCursor);
+  };
 
   useEffect(() => {
     const receiveGlobalChat = (data: any) => {
@@ -188,12 +182,10 @@ const GameZoneGlobalChat = () => {
 
     socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
 
-    fetchMore();
-    setInitialLoadComplete(true);
     return () => {
       socket?.off("receiveGlobalChatMessage", receiveGlobalChat);
     };
-  }, [socket, fetchMore]);
+  }, [socket]);
 
   const handleScroll = async () => {
     if(chatContainerRef.current?.scrollTop === 0 && hasMore && !loading) {
@@ -565,7 +557,11 @@ const GameZoneGlobalChat = () => {
             <div className="flex flex-col w-full gap-[19px]">
               {chatData && chatData?.map((item, index) => (
                 <MessageSection
-                  key={item.id}
+                  key={process.env.NODE_ENV === "development" ? 
+                  randomString(
+                    12,
+                    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                  ) : item.id}
                   currentId={socketId}
                   senderId={item.sender._id}
                   sender={item.sender.username}
@@ -760,7 +756,11 @@ const GameZoneGlobalChat = () => {
                     <div className="flex flex-col w-full gap-[19px]">
                       {chatData && chatData?.map((item, index) => (
                         <MessageSection
-                          key={item.id}
+                          key={process.env.NODE_ENV === "development" ? 
+                          randomString(
+                            12,
+                            "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                          ) : item.id}
                           currentId={socketId}
                           senderId={item.sender._id}
                           sender={item.sender.username}
