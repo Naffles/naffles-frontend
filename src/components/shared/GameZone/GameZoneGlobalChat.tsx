@@ -134,6 +134,11 @@ const GameZoneGlobalChat = () => {
     }
   }, [showChat, chatData]);
 
+  useEffect(() => {
+    scrollToBottom(scrollBehavior);
+    setToBottom((prev) => !prev);
+  }, [initialLoadComplete]);
+
   const scrollToBottom = (behavior: any) => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTo({
@@ -175,6 +180,7 @@ const GameZoneGlobalChat = () => {
         setChatData(responseData.data.messages);
         setCursor(responseData.data.nextCursor);
         setHasMore(!!responseData.data.nextCursor);
+        setInitialLoadComplete(true);
       } else {
         toast.error(responseData.messsage);
       }
@@ -880,6 +886,7 @@ const GameZoneGlobalChat = () => {
               setShowChat(true);
               setToBottom((prev) => !prev);
               setScrollBehavior("instant");
+              setInitialLoadComplete(true);
             }}
             className="flex items-center justify-center w-[60px] h-[60px] rounded-[10px] bg-nafl-sponge-500 "
           >
