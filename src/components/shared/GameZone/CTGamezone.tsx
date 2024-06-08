@@ -125,8 +125,21 @@ export const CTGamezone = () => {
       setResult("");
       setRequestPlayAgain(false);
       console.log("gameResult socket data:", data);
-      data.winner == user?.id ? setLastResult("win") : setLastResult("lose");
-      data.assignedChoice && setSelectedChoice(data.assignedChoice);
+
+      let assignedChoice = "";
+      if (data.winner == user?.id) {
+        setLastResult("win");
+        assignedChoice = data.winnerChoice;
+      } else {
+        setLastResult("lose");
+        if (data.winnerChoice == "heads") {
+          assignedChoice = "tails";
+        } else {
+          assignedChoice = "heads";
+        }
+      }
+      assignedChoice != "" && setSelectedChoice(assignedChoice);
+      // data.assignedChoice && setSelectedChoice(data.assignedChoice);
       setLastWinningChoice(data.winnerChoice);
       setShowVideo(true);
       setStopTimeListen(true);
@@ -188,6 +201,12 @@ export const CTGamezone = () => {
 
     socket?.on("betRequest", betRequest);
 
+    const consoleError = (data: any) => {
+      if (data == "User does not have enough balance") leaveGame();
+    };
+
+    socket?.on("error", consoleError);
+
     return () => {
       socket?.off("timerUpdate", timerUpdater);
       socket?.off("gameResult", gameResult);
@@ -195,6 +214,7 @@ export const CTGamezone = () => {
       socket?.off("playerLeft", playerHasLeft);
       socket?.off("betUpdated", betUpdates);
       socket?.off("betRequest", betRequest);
+      socket?.off("error", consoleError);
     };
   }, [socket]);
 

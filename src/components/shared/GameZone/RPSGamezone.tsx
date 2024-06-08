@@ -166,6 +166,12 @@ export const RPSGamezone = () => {
 
     socket?.on("betRequest", betRequest);
 
+    const consoleError = (data: any) => {
+      if (data == "User does not have enough balance") leaveGame();
+    };
+
+    socket?.on("error", consoleError);
+
     return () => {
       socket?.off("timerUpdate", timerUpdater);
       socket?.off("gameResult", gameResult);
@@ -173,6 +179,7 @@ export const RPSGamezone = () => {
       socket?.off("playerLeft", playerHasLeft);
       socket?.off("betUpdated", betUpdates);
       socket?.off("betRequest", betRequest);
+      socket?.off("error", consoleError);
     };
   }, [socket]);
 
