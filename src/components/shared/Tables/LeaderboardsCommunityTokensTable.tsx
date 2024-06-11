@@ -183,7 +183,7 @@ const LeaderboardsCommunityTokensTable = () => {
         <TableColumn>GAMES</TableColumn>
         <TableColumn>LOTTERIES (USD)</TableColumn>
         <TableColumn>VOLUME (USD)</TableColumn>
-        <TableColumn>POINTS</TableColumn>
+        <TableColumn>NAFFLINGS</TableColumn>
       </TableHeader>
       <TableBody
         items={tableData}

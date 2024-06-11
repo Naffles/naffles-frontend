@@ -1,0 +1,35 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/naffles-418512/naffles-website:latest", "."]
+
+  # Tag the image with 'dev'
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "tag",
+        "gcr.io/naffles-418512/naffles-website:latest",
+        "gcr.io/naffles-418512/naffles-website:dev",
+      ]
+
+  # Push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/naffles-418512/naffles-website:dev"]
+
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "dev-naffles-frontend" # The service name on Cloud Run
+      - "--image"
+      - "gcr.io/naffles-418512/naffles-website:dev"
+      - "--region"
+      - "australia-southeast1"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated" # Optionally, you might want to secure your service
+
+images:
+  - "gcr.io/naffles-418512/naffles-website:dev"

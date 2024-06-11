@@ -1,11 +1,29 @@
 "use client";
-import React, { createContext, useCallback, useContext, useMemo } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useLocalStorage } from "@hook/useLocalStorage";
 import axios from "@components/utils/axios";
+import unixToString from "@components/utils/unixToString";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 type LoginParams = {
   identifier: string;
   password: string;
+};
+
+type WalletLoginParams = {
+  signature: string;
+  address: string;
+  timestamp: string;
+  walletType: string;
+  network: string;
 };
 
 // Define the type for the user
@@ -20,12 +38,13 @@ type BasicUserContextType = {
   jwt: string | null;
   points: number;
   addPoints: (points: number) => void;
-  login: (data: LoginParams) => Record<string, any> | void;
+  setPoints: (points: number) => void;
+  login: (data: LoginParams) => Promise<Record<string, any>> | void;
   logout: () => void;
+  reloadProfile: () => Record<string, any> | void;
+  updateProfile: (form: FormData) => void;
+  loginWithWallet: (data: WalletLoginParams) => Record<string, any> | void;
 };
-
-const unixToString = (unixTimestamp: number) =>
-  new Date(unixTimestamp).toISOString().split("T")[0];
 
 // // Create a context for user data.
 const BasicUserContext = createContext<BasicUserContextType>({
@@ -33,8 +52,12 @@ const BasicUserContext = createContext<BasicUserContextType>({
   jwt: null,
   points: 0,
   addPoints: (points) => {},
+  setPoints: (points) => {},
   login: (data) => {},
   logout: () => {},
+  reloadProfile: () => {},
+  updateProfile: (form) => {},
+  loginWithWallet: (data) => {},
 });
 
 // Custom hook for accessing user context data.
@@ -54,14 +77,15 @@ export const BasicUserProvider = ({
     null,
     { initializeWithValue: false }
   );
-  const [pointsObject, setPoints, removePoints] =
+
+  const [pointsObject, setPointsObject, removePoints] =
     useLocalStorage<PointsObject | null>("naffles-points", null, {
       initializeWithValue: false,
     });
 
   const addPoints = useCallback(
     (addedPoints: number) => {
-      setPoints((points) => {
+      setPointsObject((points) => {
         if (points?.date) {
           const currentDateNumber = Date.now();
           const currentDate = unixToString(currentDateNumber);
@@ -77,7 +101,27 @@ export const BasicUserProvider = ({
         return { points: addedPoints, date: Date.now() };
       });
     },
-    [setPoints]
+    [setPointsObject]
+  );
+
+  const setPoints = useCallback(
+    (points: number) => {
+      setPointsObject((pointsObject) => {
+        if (pointsObject?.date) {
+          const currentDateNumber = Date.now();
+          const currentDate = unixToString(currentDateNumber);
+          const previousDate = unixToString(pointsObject.date);
+          if (previousDate === currentDate) {
+            return {
+              points,
+              date: currentDateNumber,
+            };
+          }
+        }
+        return { points, date: Date.now() };
+      });
+    },
+    [setPointsObject]
   );
 
   const login = useCallback(
@@ -88,25 +132,109 @@ export const BasicUserProvider = ({
         identifier,
         password,
       });
-      setUser(data?.user);
-      setJWT(data?.token);
-      setPoints({ points: data?.temporaryPoints || 0, date: Date.now() });
+      setJWT(data?.token ?? null);
       console.log("data:", data);
       return data;
     },
-    [setJWT, setUser, setPoints]
+    [setJWT]
   );
 
   const logout = useCallback(() => {
     removeJWT();
     removeUser();
     removePoints();
+    window.location.reload();
   }, [removeJWT, removeUser, removePoints]);
 
+  const reloadProfile = useCallback(async () => {
+    try {
+      const {
+        data: { data },
+      } = await axios.get("user/profile");
+      setUser(data ?? null);
+      console.log("temporary points", data?.temporaryPoints);
+      setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
+      return data;
+    } catch (err: any) {
+      if (err?.response?.status === 403) {
+        toast.error(err.response.data.message);
+        logout();
+      }
+      throw err;
+    }
+  }, [setUser, setPointsObject, logout]);
+
+  const updateProfile = useCallback(
+    async (form: FormData) => {
+      try {
+        const {
+          data: { data },
+        } = await axios.patch("user/profile", form);
+        reloadProfile();
+        setPointsObject({
+          points: data?.temporaryPoints || 0,
+          date: Date.now(),
+        });
+        toast.success("Profile updated successfully!");
+        return data;
+      } catch (error: any) {
+        const errorData = error.response?.data;
+        toast.error(`Error updating profile: ${errorData.message}`);
+      }
+    },
+    [setUser, setPointsObject]
+  );
+
+  const loginWithWallet = useCallback(
+    async (data: WalletLoginParams) => {
+      try {
+        const validResponse = await axios.post("user/login/wallet", data);
+
+        console.log("WALLET LOGIN RESULT:", validResponse);
+        if (validResponse.status === 200 || validResponse.status === 201) {
+          setJWT(validResponse.data?.data?.token ?? null);
+          toast.success("Successfully logged in using wallet!");
+        } else toast.error("Login with wallet failed, please try again!");
+      } catch (error: any) {
+        const errorData = error.response?.data;
+        toast.error(`Error on Wallet Login: ${errorData.message}`);
+      }
+    },
+    [setUser]
+  );
+
+  useEffect(() => {
+    if (jwt) {
+      reloadProfile();
+    }
+  }, [jwt, reloadProfile]);
+
   const contextValue = useMemo(() => {
-    const points = pointsObject?.points || 0;
-    return { jwt, user, points, addPoints, login, logout };
-  }, [jwt, user, login, logout, pointsObject, addPoints]);
+    const points = pointsObject?.points ?? 0;
+    return {
+      jwt,
+      user,
+      points,
+      addPoints,
+      setPoints,
+      login,
+      logout,
+      reloadProfile,
+      updateProfile,
+      loginWithWallet,
+    };
+  }, [
+    jwt,
+    user,
+    login,
+    logout,
+    reloadProfile,
+    updateProfile,
+    loginWithWallet,
+    pointsObject,
+    addPoints,
+    setPoints,
+  ]);
 
   return (
     <BasicUserContext.Provider value={contextValue}>

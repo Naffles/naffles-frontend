@@ -62,10 +62,8 @@ export default function Home() {
 
           <p className="mt-[48px] lg:text-[119px] text-[65px] font-face-bebas leading-[100%] lg:w-[900px] w-[90%] text-center text-[#000]">
             the leading CHOICE FOR{" "}
-            <a href="" className="text-[#00E0DF] cursor-text">
-              DEGEN
-            </a>{" "}
-            crypto Gamers
+            <span className="text-[#00E0DF] cursor-text">DEGEN</span> crypto
+            Gamers
           </p>
 
           <p className="mt-[55px] lg:text-[23px] text-[16px] text-[#000] lg:w-[890px] w-[90%] text-center">
