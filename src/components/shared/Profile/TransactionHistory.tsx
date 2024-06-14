@@ -21,8 +21,14 @@ const TransactionHistory = () => {
   return (
     <>
       <div className="flex flex-col w-[1000px]">
-        <div className="flex flex-row flex-wrap items-center justify-between gap-[20px] px-[20px]">
-          <p className="text-[60px] text-white font-face-bebas">HISTORY</p>
+        <div className="flex flex-col items-center justify-center w-full mt-[50px]">
+          <p className="px-[20px] w-full text-[60px] text-[#fff] font-face-bebas">
+            ACTIONS
+          </p>
+          <p className="font-mono text-[32px] text-[#fff]">Coming Soon</p>
+        </div>
+        <div className="flex flex-row flex-wrap items-center justify-between gap-[20px] px-[20px] mt-[80px]">
+          <p className="text-[60px] text-[#fff] font-face-bebas">HISTORY</p>
           <CustomDropdownComponent
             label={null}
             options={events_option}

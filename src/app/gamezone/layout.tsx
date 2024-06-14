@@ -8,12 +8,11 @@ import "swiper/css/navigation";
 import PageHeader from "@components/shared/PageHeaders/PageHeader2";
 import Footer from "@components/shared/Footer/Footer";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Naffle: Game Zone",
-  description: "WIN RAFFLES FOR",
+  description: "P2P Raffles and PvP crypto wagering for degens",
 };
 
 export default function Layout({
@@ -24,9 +23,9 @@ export default function Layout({
   return (
     <Fragment>
       {/* <body className={inter.className}> */}
-        {/* <PageHeader /> */}
-        {children}
-        {/* <Footer /> */}
+      {/* <PageHeader /> */}
+      {children}
+      {/* <Footer /> */}
       {/* </body> */}
     </Fragment>
   );

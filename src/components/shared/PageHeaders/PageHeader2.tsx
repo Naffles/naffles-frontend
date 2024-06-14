@@ -25,6 +25,8 @@ import VerifyModal from "../Modal/VerifyModal";
 import DepositModal from "../Modal/DepositModal";
 import WithdrawModal from "../Modal/WithdrawModal";
 import { ModalProfile } from "../Modal/ModalProfile";
+import { FaXTwitter } from "react-icons/fa6";
+import EmailModal from "../Modal/EmailModal";
 
 type PageHeaderProps = {
   // onLogin?: () => void;
@@ -64,6 +66,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   );
   const [verificationFinished, setVerificationFinished] =
     useState<boolean>(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
 
   const {
     user,
@@ -209,7 +212,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   const handleLogout = () => {
     setShownModal("");
     setOpenEditModal(false);
-    logout();    
+    logout();
   };
   const handleForgotClick = () => {
     setShownModal(ModalNames.RESET);
@@ -224,6 +227,8 @@ const PageHeader: React.FC<PageHeaderProps> = (
       transition={{ type: "spring", duration: 0.2 }}
       className="fixed top-0 flex items-center justify-center w-full px-[25px] z-40"
     >
+      <EmailModal setShow={setShowEmailModal} show={showEmailModal} />
+
       {!basicUser ? (
         <>
           <Modal
@@ -334,15 +339,23 @@ const PageHeader: React.FC<PageHeaderProps> = (
             </Link>
             <div className="hidden xl:flex text-nafl-charcoal-800 gap-[40px]">
               <a href="https://twitter.com/Nafflesofficial" target="_blank">
-                <FaTwitter className="hover:text-nafl-sponge-700 text-[40px] transition-colors ease-out duration-150 cursor-pointer " />
+                <FaXTwitter className="hover:text-nafl-sponge-700 text-[40px] transition-colors ease-out duration-150 cursor-pointer " />
               </a>
               <a href="https://discord.gg/naffles" target="_blank">
                 <FaDiscord className="hover:text-nafl-sponge-700 text-[40px] transition-colors ease-out duration-150 cursor-pointer" />
               </a>
             </div>
-            <div className="w-[200px] absolute top-[-20px] right-[-180px]">
+            {/* <div className="w-[200px] absolute top-[-20px] right-[-180px]">
               <img src="/nafflings/surprise.png" alt="" />
-            </div>
+            </div> */}
+            <motion.button
+              onClick={() => setShowEmailModal(true)}
+              initial={{ y: 0, height: 80, top: -20 }}
+              whileHover={{ y: 20, height: 100, top: -40 }}
+              className="flex items-end justify-center absolute right-[-130px] w-[114px] cursor-pointer overflow-hidden"
+            >
+              <img src="/nafflings/hidden.png" alt="" className="flex" />
+            </motion.button>
           </div>
 
           <div className="flex items-center z-20">
@@ -380,7 +393,9 @@ const PageHeader: React.FC<PageHeaderProps> = (
                   >
                     {basicUser ? (
                       <img
-                        src={basicUser.profileImageUrl || "/static/default_img.png"}
+                        src={
+                          basicUser.profileImageUrl || "/static/default_img.png"
+                        }
                         alt="Profile"
                         className="w-[30px] h-[30px] rounded-full"
                       />
