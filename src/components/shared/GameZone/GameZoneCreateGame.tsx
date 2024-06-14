@@ -49,10 +49,16 @@ const GameZoneCreateGame = () => {
   }, [user?.balances]);
 
   useEffect(() => {
-    if (balancesOptionData.length <= 0) return;
-    console.log("balancesOptionData", balancesOptionData);
-    setBalanceType(balancesOptionData[0]);
-  }, [balancesOptionData]);
+    let balanceWei = Math.pow(10, 18);
+
+    setBalanceType({
+      id: "0000000001",
+      tokenType: "pts",
+      amount: user ? (user.points * balanceWei).toString() : "0",
+      conversion: "N/A",
+      isWalletConnected: true,
+    });
+  }, [user]);
 
   let currency_name = [
     { type: "pts", name: "Points" },
@@ -132,11 +138,18 @@ const GameZoneCreateGame = () => {
     const web3 = new Web3();
 
     let tokenAmount = "0";
+    let newCointType = "";
+
     if (coinType == "sol") {
       let solValue = parseFloat(balanceAmount) * LAMPORTS_PER_SOL;
       tokenAmount = solValue.toString();
-    } else {
+      newCointType = "sol";
+    } else if (coinType == "eth") {
       tokenAmount = web3.utils.toWei(balanceAmount, "ether");
+      newCointType = "eth";
+    } else if (coinType == "pts") {
+      tokenAmount = web3.utils.toWei(balanceAmount, "ether");
+      newCointType = "points";
     }
 
     console.log("tokenAmount", tokenAmount);
@@ -154,7 +167,7 @@ const GameZoneCreateGame = () => {
             gameChoice == "ROCK, PAPERS, SCISSORS"
               ? "rockPaperScissors"
               : "coinToss",
-          coinType: coinType,
+          coinType: newCointType,
           betAmount: tokenAmount,
           odds: betMultiplierChoice.toString(),
         }),
@@ -287,6 +300,36 @@ const GameZoneCreateGame = () => {
             {balanceTypeDropdown && (
               <div className="flex absolute top-[60px] w-full h-[160px] z-40 p-[10px] rounded-[10px] bg-[#4B4B4B] overflow-hidden overflow-y-scroll balance-scrollbar">
                 <div className="flex flex-col w-full gap-[6px]">
+                  <button
+                    onClick={() => {
+                      if (user && user?.points <= 0) {
+                        toast.error("Using 0 balance is not allowed");
+                      } else {
+                        let balanceWei = Math.pow(10, 18);
+                        setBalanceType({
+                          id: "0000000001",
+                          tokenType: "pts",
+                          amount: user
+                            ? (user.points * balanceWei).toString()
+                            : "0",
+                          conversion: "N/A",
+                          isWalletConnected: true,
+                        });
+                        setBalanceTypeDropdown(false);
+                      }
+                    }}
+                    key={"0000000001"}
+                    className={`flex items-center gap-[10px] w-full py-[10px] hover:bg-[#fff]/30 duration-500 rounded-[10px] px-[10px] ${
+                      balanceType?.tokenType == "points" && "bg-[#fff]/30"
+                    } ${user && user?.points > 0 ? "opacity-100" : "opacity-30"}`}
+                  >
+                    <p className="text-[#fff] text-[16px] font-face-bebas balance-type-dropdown">
+                      Points
+                    </p>
+                    <p className="text-[#867878] text-[16px] font-face-bebas balance-type-dropdown">
+                      BALANCE: {user?.points}
+                    </p>
+                  </button>
                   {balancesOptionData?.map((item) => (
                     <button
                       onClick={() => {

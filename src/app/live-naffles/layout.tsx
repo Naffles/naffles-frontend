@@ -8,12 +8,11 @@ import "swiper/css/navigation";
 import PageHeader from "@components/shared/PageHeaders/PageHeader2";
 import Footer from "@components/shared/Footer/Footer";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Naffle: Game Zone",
-  description: "WIN RAFFLES FOR",
+  title: "Naffle: Live Naffles",
+  description: "P2P Raffles and PvP crypto wagering for degens",
 };
 
 export default function Layout({
@@ -21,9 +20,5 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <Fragment>
-      {children}
-    </Fragment>
-  );
+  return <Fragment>{children}</Fragment>;
 }

@@ -105,10 +105,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     console.log("basic user context data:", jwt, user);
 
-    !userJWT && jwt && setUserJWT(jwt);
-    !userId && user?.id && setUserId(user?.id);
-    !profileName && user?.username && setProfileName(user?.username);
-    !userPoints && user?.temporaryPoints && setUserPoints(user.temporaryPoints);
+    jwt && setUserJWT(jwt);
+    user?.id && setUserId(user?.id);
+    user?.username && setProfileName(user?.username);
+    user?.temporaryPoints && setUserPoints(user.temporaryPoints);
     user?.userBalance && setUserBalances(user?.userBalance);
   }, [jwt, user]);
 

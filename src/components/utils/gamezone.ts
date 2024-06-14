@@ -7,9 +7,15 @@ interface GameState {
     | "createNafflings"
     | "joining"
     | "accepting"
-    | "ingame";
+    | "ingame"
+    | "ingameNafflings";
   mode: "challenger" | "host" | null;
-  type: "Rock, Paper, Scissors" | "Coin Toss" | null;
+  type:
+    | "Rock, Paper, Scissors"
+    | "Coin Toss"
+    | "Nafflings Rock, Paper, Scissors"
+    | "Nafflings Coin Toss"
+    | null;
   gameId: string | null;
   coinType: string;
   creatorBuyIn: string;
@@ -30,9 +36,17 @@ interface GameActions {
       | "joining"
       | "accepting"
       | "ingame"
+      | "ingameNafflings"
   ) => void;
   setMode: (mode: "challenger" | "host" | null) => void;
-  setType: (type: "Rock, Paper, Scissors" | "Coin Toss" | null) => void;
+  setType: (
+    type:
+      | "Rock, Paper, Scissors"
+      | "Coin Toss"
+      | "Nafflings Rock, Paper, Scissors"
+      | "Nafflings Coin Toss"
+      | null
+  ) => void;
   setGameId: (gameId: string | null) => void;
   setCoinType: (coinType: string) => void;
   setCreatorBuyIn: (creatorBuyIn: string) => void;

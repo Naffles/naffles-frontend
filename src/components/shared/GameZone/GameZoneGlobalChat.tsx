@@ -20,6 +20,7 @@ import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { jackpotAmount } from "@components/utils/jackpotCounter";
 import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 import axios from "@components/utils/axios";
+import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 
 interface GameData {
   _id: string;
@@ -88,6 +89,7 @@ const BalancesListOption = ({
 const GameZoneGlobalChat = () => {
   const { socket, socketId, user, setShowDepositModal, setShowWithdrawModal } =
     useUser();
+
   const [balances, setBalances] = useState<Balance[]>([]);
   const [chatData, setChatData] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");

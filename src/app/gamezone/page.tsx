@@ -9,13 +9,17 @@ import GameZoneJoining from "@components/shared/GameZone/GameZoneJoining";
 import GameZoneGlobalChat from "@components/shared/GameZone/GameZoneGlobalChat";
 import GameZoneAccepting from "@components/shared/GameZone/GameZoneAccepting";
 import GameZoneChat from "@components/shared/GameZone/GameZoneChat";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import GameZoneCreateNafflingsGame from "@components/shared/GameZone/GameZoneCreateNafflingsGame";
+import PlayForNafflings from "@components/shared/Modal/PlayForNafflings";
 
 const GameZone = () => {
   const currentScreen = useGame((state) => state.screen);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
+
+  const [showPlayForNafflingsModal, setShowPlayForNafflingsModal] =
+    useState(false);
 
   // const onConfirmRefresh = function (event: any) {
   //   event.preventDefault();
@@ -73,7 +77,7 @@ const GameZone = () => {
               </p>
             </button>
             <button
-              onClick={() => setCurrentScreen("createNafflings")}
+              onClick={() => setShowPlayForNafflingsModal(true)}
               className="flex items-center justify-center bg-[#DC2ABF] px-[20px] rounded-lg h-[50px] border-[1px] border-[#02B1B1]"
             >
               <p className="text-nafl-white text-[18px] font-bold">
@@ -123,6 +127,17 @@ const GameZone = () => {
           </div>
         )}
 
+        {currentScreen == "ingameNafflings" && (
+          <div className="flex flex-row items-start justify-center gap-[36px] duration-500 pb-[300px] z-30">
+            <GameZoneGame />
+            <GameZoneGlobalChat />
+          </div>
+        )}
+
+        <PlayForNafflings
+          show={showPlayForNafflingsModal}
+          setShow={setShowPlayForNafflingsModal}
+        />
         <Footer />
       </div>
     </div>

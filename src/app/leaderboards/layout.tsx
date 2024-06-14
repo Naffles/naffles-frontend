@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Naffle: Leaderboards",
-  description: "WIN RAFFLES FOR",
+  description: "P2P Raffles and PvP crypto wagering for degens",
 };
 
 export default function Layout({
