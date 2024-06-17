@@ -27,7 +27,7 @@ const StartGameModal = ({ show, hideModal }: IStartGameModal) => {
     showModal != "neverShow" &&
     show && (
       <div
-        id="start-game-modal-pop-up"
+        // id="start-game-modal-pop-up"
         className="
           fixed 
           inset-0

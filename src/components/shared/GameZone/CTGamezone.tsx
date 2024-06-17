@@ -38,7 +38,8 @@ export const CTGamezone = () => {
   const currentChallengerBuyIn = useGame((state) => state.challengerBuyIn);
   const currentPayout = useGame((state) => state.payout);
   const currentGameId = useGame((state) => state.gameId);
-  const currentDefaultChosen = useGame((state) => state.defaultChosen);
+  // const currentDefaultChosen = useGame((state) => state.defaultChosen);
+  // const setCurrentDefaultChosen = useGame((state) => state.setDefaultChosen);
   const changingBet = useGame((state) => state.changingBet);
 
   const setCurrentScreen = useGame((state) => state.setScreen);
@@ -162,6 +163,7 @@ export const CTGamezone = () => {
 
     const gameZoneStart = (data: any) => {
       console.log("gameStarted data: ", data);
+      // setCurrentDefaultChosen("");
       setResult("");
       setRequestPlayAgain(false);
       setShowResultUI(false);
@@ -227,9 +229,9 @@ export const CTGamezone = () => {
     };
   }, [socket]);
 
-  useEffect(() => {
-    currentDefaultChosen && setSelectedChoice(currentDefaultChosen);
-  }, [currentDefaultChosen]);
+  // useEffect(() => {
+  //   currentDefaultChosen && setSelectedChoice(currentDefaultChosen);
+  // }, [currentDefaultChosen]);
 
   useEffect(() => {
     !stopTimeListen && timeleft <= 0 && leaveGame();

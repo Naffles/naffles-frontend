@@ -96,6 +96,7 @@ export const BaseGame = (props: BaseGameProps) => {
 
   const triggerGame = useCallback(async () => {
     let result;
+    console.log("hasError:", hasError);
     if (selectedChoice && !hasError) {
       const data = (await gameCall(selectedChoice)) || {};
       result = data?.result;
@@ -110,14 +111,14 @@ export const BaseGame = (props: BaseGameProps) => {
     }
   }, [selectedChoice, hasError, gameCall, switchGameState, results]);
 
-  if (
-    gameState === GameState.COUNTDOWN &&
-    hasError &&
-    !isPaused &&
-    timeLeft === 0
-  ) {
-    triggerGame();
-  }
+  // if (
+  //   gameState === GameState.COUNTDOWN &&
+  //   hasError &&
+  //   !isPaused &&
+  //   timeLeft === 0
+  // ) {
+  //   triggerGame();
+  // }
 
   if (prevResetState !== resetToInitial) {
     setPrevResetState(!!resetToInitial);
@@ -215,34 +216,34 @@ export const BaseGame = (props: BaseGameProps) => {
     return () => clearInterval(restInterval);
   }, [gameState, restTimeLeft, isPaused, switchGameState]);
 
-  const isVideoHidden = (
-    variantVid: string | number,
-    choiceVid: string,
-    resultVid: string
-  ) => {
-    const { variant = 1, result = "", choice = "" } = displayVideo ?? {};
-    if (
-      variantVid === variant &&
-      resultVid === result &&
-      choiceVid === choice
-    ) {
-      return (
-        <video
-          // playsInline={true}
-          // preload={selectedChoice === choice ? "auto" : "metadata"}
-          // className={isVideoHidden(variant, choice, vidResult)}
-          preload="auto"
-          key={choice + result + variant}
-          onEnded={handleVideoEnd}
-        >
-          <source
-            src={`${basePath}${choice}/${result}${variant}.${extension}`}
-            type={`video/${extension}`}
-          />
-        </video>
-      );
-    }
-  };
+  // const isVideoHidden = (
+  //   variantVid: string | number,
+  //   choiceVid: string,
+  //   resultVid: string
+  // ) => {
+  //   const { variant = 1, result = "", choice = "" } = displayVideo ?? {};
+  //   if (
+  //     variantVid === variant &&
+  //     resultVid === result &&
+  //     choiceVid === choice
+  //   ) {
+  //     return (
+  //       <video
+  //         // playsInline={true}
+  //         // preload={selectedChoice === choice ? "auto" : "metadata"}
+  //         // className={isVideoHidden(variant, choice, vidResult)}
+  //         preload="auto"
+  //         key={choice + result + variant}
+  //         onEnded={handleVideoEnd}
+  //       >
+  //         <source
+  //           src={`${basePath}${choice}/${result}${variant}.${extension}`}
+  //           type={`video/${extension}`}
+  //         />
+  //       </video>
+  //     );
+  //   }
+  // };
 
   const buttonColor = useCallback(
     (choice: string) => {
@@ -338,28 +339,16 @@ export const BaseGame = (props: BaseGameProps) => {
             </AnimatePresence>
           )}
           <div
-            className={`lg:w-[600px] w-[180%] h-[240px] ${gameState === GameState.COUNTDOWN ? "hidden" : ""}`}
+            className={`lg:w-[600px] max-w-[600px] w-[180%] h-[240px] ${gameState === GameState.COUNTDOWN ? "hidden" : ""}`}
           >
             {displayVideo && (
               <video
-                // playsInline={true}
-                // preload={selectedChoice === choice ? "auto" : "metadata"}
-                // className={isVideoHidden(variant, choice, vidResult)}
                 preload="auto"
                 key={
                   displayVideo.choice +
                   displayVideo.result +
                   displayVideo.variant
                 }
-                // ref={(ref) => {
-                //   videosRef.current[idx] = ref;
-                //   if (
-                //     videosRef.current[idx] &&
-                //     videosRef.current[idx]?.volume
-                //   ) {
-                //     videosRef.current[idx]!.volume = 0.2;
-                //   }
-                // }}
                 onEnded={handleVideoEnd}
                 autoPlay
               >

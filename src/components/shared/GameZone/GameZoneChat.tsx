@@ -198,7 +198,7 @@ const GameZoneChat = () => {
       <>
         <div className="flex flex-row items-start justify-start gap-[19px] w-full">
           <img
-            src={image == "" ? "/static/user-circle.png" : image}
+            src={image == "" ? "/static/default_img.png" : image}
             alt="Account Image"
             className="w-[40px] h-[38px] rounded-full object-contain"
           />
