@@ -394,7 +394,7 @@ const GameZoneGlobalChat = () => {
         {game ? (
           <div className="w-full px-[6px] pt-[13px] pb-[20px] bg-[#000000B2] flex flex-row gap-[12px] rounded-[6px]">
             <img
-              src={image == "" ? "/static/user-circle.png" : image}
+              src={image == "" ? "/static/default_img.png" : image}
               alt="Account Image"
               className="w-[40px] h-[38px] rounded-full object-contain"
             />
@@ -462,7 +462,7 @@ const GameZoneGlobalChat = () => {
         ) : (
           <div className="flex flex-row items-start justify-start gap-[19px] w-full">
             <img
-              src={image == "" ? "/static/user-circle.png" : image}
+              src={image == "" ? "/static/default_img.png" : image}
               alt="Account Image"
               className="w-[40px] h-[38px] rounded-full object-contain"
             />

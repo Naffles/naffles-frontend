@@ -21,31 +21,31 @@ export const GameSection = () => {
   const [showStartGameModal, setShowStartGameModal] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const clickedElement = event.target as HTMLElement;
-      const containerElement = document.getElementById(
-        "start-game-modal-pop-up"
-      );
-      const clickedElementId = clickedElement.id;
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     const clickedElement = event.target as HTMLElement;
+  //     const containerElement = document.getElementById(
+  //       "start-game-modal-pop-up"
+  //     );
+  //     const clickedElementId = clickedElement.id;
 
-      if (
-        !containerElement ||
-        !containerElement.contains(clickedElement) ||
-        clickedElementId == "start-game-modal-pop-up"
-      ) {
-        // setIsRPSPaused(false);
-        // setIsCoinTossPaused(false);
-        setShowStartGameModal(false);
-      }
-    };
+  //     if (
+  //       !containerElement ||
+  //       !containerElement.contains(clickedElement) ||
+  //       clickedElementId == "start-game-modal-pop-up"
+  //     ) {
+  //       // setIsRPSPaused(false);
+  //       // setIsCoinTossPaused(false);
+  //       setShowStartGameModal(false);
+  //     }
+  //   };
 
-    // Add event listener on document for clicks outside the dropdown
-    document.addEventListener("click", handleClickOutside);
+  //   // Add event listener on document for clicks outside the dropdown
+  //   document.addEventListener("click", handleClickOutside);
 
-    // Cleanup function to remove event listener on unmount
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+  //   // Cleanup function to remove event listener on unmount
+  //   return () => document.removeEventListener("click", handleClickOutside);
+  // }, []);
 
   useEffect(() => {
     if (firstLoad) {

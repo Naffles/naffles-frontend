@@ -12,6 +12,7 @@ import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { TbCurrencySolana } from "react-icons/tb";
 import { TwitterShareButton } from "react-share";
+import { SolanaJSONRPCError } from "@solana/web3.js";
 
 const DEFAULT_TIMER = 10;
 
@@ -31,6 +32,7 @@ export const RPSGamezone = () => {
   const currentOdds = useGame((state) => state.betOdds);
   const currentGameId = useGame((state) => state.gameId);
   const currentDefaultChosen = useGame((state) => state.defaultChosen);
+  const setCurrentDefaultChosen = useGame((state) => state.setDefaultChosen);
   const changingBet = useGame((state) => state.changingBet);
   const currentPayout = useGame((state) => state.payout);
 
@@ -102,14 +104,25 @@ export const RPSGamezone = () => {
   };
 
   useEffect(() => {
+    const choiceSelected = (data: any) => {
+      setSelectedChoice(data);
+    };
+
+    socket?.on("rpsPlayerChoiceSelected", choiceSelected);
+
     const timerUpdater = (data: any) => {
       console.log(data.timeLeft);
       setTimeleft(data.timeLeft);
     };
+
     socket?.on("timerUpdate", timerUpdater);
 
     const gameResult = (data: any) => {
       console.log("gameResult socket data:", data);
+
+      currentGameMode == "host"
+        ? setSelectedChoice(data?.creatorChoice)
+        : setSelectedChoice(data?.challengerChoice);
 
       if (data.challengerChoice == data.creatorChoice) {
         setResult("draw");
@@ -128,6 +141,7 @@ export const RPSGamezone = () => {
     const gameZoneStart = (data: any) => {
       console.log("gameStarted data: ", data);
       reloadProfile();
+      setCurrentDefaultChosen("");
       setResult("");
       setShowResultUI(false);
       setshowWaitingReplayUI(false);
@@ -183,6 +197,7 @@ export const RPSGamezone = () => {
     socket?.on("error", consoleError);
 
     return () => {
+      socket?.off("rpsPlayerChoiceSelected", choiceSelected);
       socket?.off("timerUpdate", timerUpdater);
       socket?.off("gameResult", gameResult);
       socket?.off("gameStarted", gameZoneStart);
@@ -199,14 +214,14 @@ export const RPSGamezone = () => {
 
   const handleChoiceClick = (choiceClicked: string) => {
     setSelectedChoice(choiceClicked);
-    console.log("Change Choice currentGameId: ", currentGameId);
-    console.log("Change Choice userId: ", user?.id);
+    // console.log("Change Choice currentGameId: ", currentGameId);
+    // console.log("Change Choice userId: ", user?.id);
     if (currentGameId && user?.id) {
       socket?.emit("playerChoice", {
         gameId: currentGameId,
         choice: choiceClicked,
       });
-      console.log("choiceSelected: ", choiceClicked);
+      // console.log("choiceSelected: ", choiceClicked);
     }
   };
 

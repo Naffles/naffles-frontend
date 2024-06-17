@@ -95,7 +95,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       transports: ["websocket"],
     });
     setSocket(newSocket);
-    console.log("socket", socket);
+    // console.log("socket", socket);
 
     return () => {
       newSocket.close();
