@@ -21,6 +21,12 @@ import {
 } from "@components/utils/jackpotCounter";
 import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "./globals.css";
+import { FaXTwitter } from "react-icons/fa6";
+
 interface JackpotWinner {
   id: string;
   userProfileImage: string | null;
@@ -272,11 +278,12 @@ export default function Home() {
                             href="https://x.com/Nafflesofficial"
                             target="_blank"
                           >
-                            <img
+                            {/* <img
                               src="/static/twitter.svg"
                               title="Twitter"
                               alt="Twitter"
-                            />
+                            /> */}
+                            <FaXTwitter className="text-[25px] text-[#02b1b1]" />
                           </a>
                           <a href="https://discord.gg/naffles" target="_blank">
                             <img
@@ -317,7 +324,7 @@ export default function Home() {
         </div>
         <div
           className="flex-row flex border-4 border-nafl-purple 
-        rounded-lg bg-nafl-charcoal-800 relative top-[-50px] z-10 min-h-[105px]"
+        rounded-lg bg-nafl-charcoal-800 relative top-[-50px] z-10 min-h-[105px] h-[100px]"
         >
           <Swiper
             spaceBetween={50}
@@ -330,7 +337,7 @@ export default function Home() {
           >
             {recentWinnersData?.map((item, index) => (
               <SwiperSlide key={item.game._id} style={{ width: "350px" }}>
-                <div className="flex-row flex items-center justify-center py-2 w-full h-[100px] gap-[20px]">
+                <div className="flex-row flex items-center justify-center py-2 w-[350px] h-[100px] gap-[20px]">
                   {(index + 1) % 2 === 0 ? (
                     // <TrophyIcon size="xl" colour="dark-green" />
                     <img

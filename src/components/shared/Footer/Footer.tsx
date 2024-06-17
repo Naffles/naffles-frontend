@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -92,7 +93,7 @@ const Footer = () => {
             </div>
             <div className="w-full flex flex-row items-center justify-center mt-[70px] gap-[40px]">
               <a href="https://twitter.com/Nafflesofficial" target="_blank">
-                <FaTwitter className="hover:text-nafl-white text-nafl-sponge-500 text-[40px] transition-colors ease-out duration-150 cursor-pointer" />
+                <FaXTwitter className="hover:text-nafl-white text-nafl-sponge-500 text-[40px] transition-colors ease-out duration-150 cursor-pointer" />
               </a>
               <a href="https://discord.gg/naffles" target="_blank">
                 <FaDiscord className="hover:text-nafl-white text-nafl-sponge-500 text-[40px] transition-colors ease-out duration-150 cursor-pointer" />

@@ -60,15 +60,15 @@ export const BaseGame = (props: BaseGameProps) => {
 
   const router = useRouter();
 
-  const videoArray = choices
-    .map((choice) =>
-      results
-        .map((result) =>
-          variants.map((variant) => ({ choice, result, variant })).flat()
-        )
-        .flat()
-    )
-    .flat();
+  // const videoArray = choices
+  //   .map((choice) =>
+  //     results
+  //       .map((result) =>
+  //         variants.map((variant) => ({ choice, result, variant })).flat()
+  //       )
+  //       .flat()
+  //   )
+  //   .flat();
 
   const switchGameState = useCallback(
     (targetState: GameState) => {
@@ -142,17 +142,17 @@ export const BaseGame = (props: BaseGameProps) => {
         {
           const variant = randomFromArray(variants);
           const randomChoice = randomFromArray(choices);
-          const isChosen = (choiceVid: string) =>
-            selectedChoice
-              ? choiceVid === selectedChoice
-              : choiceVid === randomChoice;
+          // const isChosen = (choiceVid: string) =>
+          //   selectedChoice
+          //     ? choiceVid === selectedChoice
+          //     : choiceVid === randomChoice;
 
-          const refIndex = videoArray.findIndex(
-            (item) =>
-              item.variant === variant &&
-              item.result === result &&
-              isChosen(item.choice)
-          );
+          // const refIndex = videoArray.findIndex(
+          //   (item) =>
+          //     item.variant === variant &&
+          //     item.result === result &&
+          //     isChosen(item.choice)
+          // );
           if (!selectedChoice) {
             setDisplayChoice(randomChoice);
           }
@@ -161,7 +161,7 @@ export const BaseGame = (props: BaseGameProps) => {
             result,
             choice: selectedChoice || randomChoice,
           });
-          videosRef?.current[refIndex]?.play();
+          // videosRef?.current[refIndex]?.play();
           onCountdownFinish();
         }
         break;
@@ -226,9 +226,22 @@ export const BaseGame = (props: BaseGameProps) => {
       resultVid === result &&
       choiceVid === choice
     ) {
-      return "";
+      return (
+        <video
+          // playsInline={true}
+          // preload={selectedChoice === choice ? "auto" : "metadata"}
+          // className={isVideoHidden(variant, choice, vidResult)}
+          preload="auto"
+          key={choice + result + variant}
+          onEnded={handleVideoEnd}
+        >
+          <source
+            src={`${basePath}${choice}/${result}${variant}.${extension}`}
+            type={`video/${extension}`}
+          />
+        </video>
+      );
     }
-    return "hidden";
   };
 
   const buttonColor = useCallback(
@@ -261,9 +274,10 @@ export const BaseGame = (props: BaseGameProps) => {
       onWinNotify(result);
     }
     setResult("");
-    setTimeout(() => {
-      setDisplayVideo(null);
-    }, 1700);
+    setDisplayVideo(null);
+    // setTimeout(() => {
+    //   setDisplayVideo(null);
+    // }, 1700);
     setSelectedChoice("");
     setDisplayChoice("");
     onVideoFinish(!!selectedChoice);
@@ -326,26 +340,35 @@ export const BaseGame = (props: BaseGameProps) => {
           <div
             className={`lg:w-[600px] w-[180%] h-[240px] ${gameState === GameState.COUNTDOWN ? "hidden" : ""}`}
           >
-            {videoArray.map(({ choice, result: vidResult, variant }, idx) => (
+            {displayVideo && (
               <video
-                playsInline={true}
-                preload={selectedChoice === choice ? "auto" : "metadata"}
-                className={isVideoHidden(variant, choice, vidResult)}
-                key={choice + vidResult + variant}
-                ref={(ref) => {
-                  videosRef.current[idx] = ref;
-                  if (videosRef.current[idx] && videosRef.current[idx]?.volume) {
-                    videosRef.current[idx]!.volume = 0.2
-                  }
-                }}
+                // playsInline={true}
+                // preload={selectedChoice === choice ? "auto" : "metadata"}
+                // className={isVideoHidden(variant, choice, vidResult)}
+                preload="auto"
+                key={
+                  displayVideo.choice +
+                  displayVideo.result +
+                  displayVideo.variant
+                }
+                // ref={(ref) => {
+                //   videosRef.current[idx] = ref;
+                //   if (
+                //     videosRef.current[idx] &&
+                //     videosRef.current[idx]?.volume
+                //   ) {
+                //     videosRef.current[idx]!.volume = 0.2;
+                //   }
+                // }}
                 onEnded={handleVideoEnd}
+                autoPlay
               >
                 <source
-                  src={`${basePath}${choice}/${vidResult}${variant}.${extension}`}
+                  src={`${basePath}${displayVideo.choice}/${displayVideo.result}${displayVideo.variant}.${extension}`}
                   type={`video/${extension}`}
                 />
               </video>
-            ))}
+            )}
             <video
               playsInline={true}
               preload="auto"

@@ -4,7 +4,7 @@ import BrandIcon from "@components/icons/brandIcon";
 import { useUser } from "@blockchain/context/UserContext";
 import { useEffect, useState } from "react";
 import { FaBitcoin, FaEthereum } from "react-icons/fa";
-import { RiExpandUpDownLine } from "react-icons/ri";
+import { RiCloseLine, RiExpandUpDownLine } from "react-icons/ri";
 import { TbCurrencySolana } from "react-icons/tb";
 import useGame from "@components/utils/gamezone";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -226,8 +226,12 @@ const GameZoneCreateGame = () => {
 
   return (
     <div className="flex flex-col md:w-[500px] max-w-[500px] w-[90%] bg-[#383838] rounded-[16px]">
-      <div className="flex items-center justify-center w-full h-[76px] bg-[#202020] rounded-t-[16px]">
+      <div className="flex items-center justify-center w-full h-[76px] bg-[#202020] rounded-t-[16px] relative">
         <p className="text-[40px] text-[#fff] font-face-bebas">CREATE GAME</p>
+        <RiCloseLine
+          onClick={() => setCurrentScreen("main")}
+          className="text-nafl-white hover:text-nafl-sponge-500 duration-300 text-[30px] absolute right-[20px] cursor-pointer"
+        />
       </div>
       <div className="flex flex-col items-center w-full md:px-[51px] px-[20px] py-[20px] gap-[20px]">
         <div className="flex flex-col w-full gap-[4px]">

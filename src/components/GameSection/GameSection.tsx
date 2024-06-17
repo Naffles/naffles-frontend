@@ -12,7 +12,7 @@ import StartGameModal from "@components/shared/Modal/StartGameModal";
 export const GameSection = () => {
   const [hasSelected, setHasSelected] = useState(false);
   const { user } = useBasicUser();
-  const { isMobile } = useScreenSize();
+  // const { isMobile } = useScreenSize();
   const [openModal, setOpenModal] = useState(false);
   const [isCoinTossPaused, setIsCoinTossPaused] = useState(false);
   const [isRPSPaused, setIsRPSPaused] = useState(false);
@@ -50,8 +50,8 @@ export const GameSection = () => {
   useEffect(() => {
     if (firstLoad) {
       const timer = setTimeout(() => {
-        setIsRPSPaused(true);
-        setIsCoinTossPaused(true);
+        // setIsRPSPaused(true);
+        // setIsCoinTossPaused(true);
         setShowStartGameModal(true);
         setFirstLoad(false);
       }, 20000); // milliseconds
@@ -145,16 +145,14 @@ export const GameSection = () => {
           />
           <StartGameModal
             show={showStartGameModal}
-            hideModal={() => {
-              handleCloseStartGameModal;
-            }}
+            hideModal={handleCloseStartGameModal}
           />
         </div>
         <div className="flex-col flex stats-container bg-nafl-grey-700 rounded-3xl xl:mt-0 lg:mt-[100px]">
           <DemoPointsLeaderboards />
         </div>
       </div>
-      {isMobile && (
+      {/* {isMobile && (
         <div className="flex lg:hidden xl:hidden flex-col h-auto">
           <GameResultModal
             show={showGameResultModal}
@@ -178,7 +176,30 @@ export const GameSection = () => {
             onLimitReached={handleLimitReached}
           />
         </div>
-      )}
+      )} */}
+      <div className="flex lg:hidden xl:hidden flex-col h-auto">
+        <GameResultModal
+          show={showGameResultModal}
+          hideModal={() => setShowGameResultModal(!showGameResultModal)}
+          result={gameResult}
+        />
+        <RockPaperScissorsGame
+          resetToInitial={hasSelected}
+          onGameStart={handleRPSStart}
+          onGameReset={handleRPSEnd}
+          isPaused={isRPSPaused}
+          callGameResultModal={handleResultModal}
+          onLimitReached={handleLimitReached}
+        />
+        <CoinTossGame
+          resetToInitial={hasSelected}
+          onGameStart={handleCoinTossStart}
+          onGameReset={handleCoinTossEnd}
+          isPaused={isCoinTossPaused}
+          callGameResultModal={handleResultModal}
+          onLimitReached={handleLimitReached}
+        />
+      </div>
     </>
   );
 };

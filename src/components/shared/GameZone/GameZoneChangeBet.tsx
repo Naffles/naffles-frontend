@@ -290,14 +290,17 @@ const GameZoneChangeBet = () => {
           <p className="text-[#000] text-[18px] font-bold">CHANGE BET</p>
         </button>
       </div>
-      <div
-        onClick={() => setCurrentScreen("main")}
-        className="flex flex-row items-center justify-center mb-[17px] gap-[20px]"
-      >
-        <button className="flex items-center justify-center px-[30px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500">
+      <div className="flex flex-row items-center justify-center mb-[17px] gap-[20px]">
+        <button
+          onClick={() => setCurrentScreen("main")}
+          className="flex items-center justify-center px-[30px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500"
+        >
           <p className="text-[#fff] text-[18px] font-bold">BACK</p>
         </button>
-        <button className="flex items-center justify-center w-[312px] h-[54px] rounded-[8px] bg-transparent border-[1px] border-[#464646]">
+        <button
+          disabled
+          className="flex items-center justify-center w-[312px] h-[54px] rounded-[8px] bg-transparent border-[1px] border-[#464646]"
+        >
           <p className="text-[#fff] text-[18px] font-bold">
             WAITING FOR CHALLENGER ...
           </p>
