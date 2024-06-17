@@ -25,7 +25,7 @@ const TransactionHistory = () => {
           <p className="px-[20px] w-full text-[60px] text-[#fff] font-face-bebas">
             ACTIONS
           </p>
-          <p className="font-mono text-[32px] text-[#fff]">Coming Soon</p>
+          <p className="font-mono text-[32px] text-[#fff]">NO ACTIONS</p>
         </div>
         <div className="flex flex-row flex-wrap items-center justify-between gap-[20px] px-[20px] mt-[80px]">
           <p className="text-[60px] text-[#fff] font-face-bebas">HISTORY</p>

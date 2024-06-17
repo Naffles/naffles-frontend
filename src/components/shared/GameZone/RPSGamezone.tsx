@@ -11,6 +11,7 @@ import { FaBitcoin, FaEthereum } from "react-icons/fa";
 import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { TbCurrencySolana } from "react-icons/tb";
+import { TwitterShareButton } from "react-share";
 
 const DEFAULT_TIMER = 10;
 
@@ -62,16 +63,25 @@ export const RPSGamezone = () => {
         <p className="font-face-bebas text-nafl-sponge-500 text-[60px] leading-[130%] text-center">
           YOU WON! PLAY AGAIN?
         </p>
-        <button className="flex items-center justify-center px-[61px] h-[70px] rounded-[8px] bg-[#DC2ABF]">
-          <div className="flex flex-col items-center justify-center">
-            <p className="text-nafl-white text-[19px] leading-[100%] font-bold">
-              BRAG ON X
-            </p>
-            <p className="text-nafl-white text-[14px] leading-[100%] font-bold">
-              EARN ?? POINTS
-            </p>
-          </div>
-        </button>
+
+        <div className="flex items-center justify-center h-[70px] w-[200px] rounded-[8px] bg-[#DC2ABF]">
+          <TwitterShareButton
+            url="naffles.com"
+            via="naffles"
+            title="I won a Naffles Game"
+            hashtags={["nafflesWin"]}
+            style={{ width: "100%", height: "100%" }}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <p className="text-nafl-white text-[19px] leading-[100%] font-bold">
+                BRAG ON X
+              </p>
+              <p className="text-nafl-white text-[14px] leading-[100%] font-bold">
+                EARN ?? POINTS
+              </p>
+            </div>
+          </TwitterShareButton>
+        </div>
       </>
     ) : result == "lose" ? (
       <p className="font-face-bebas text-nafl-sponge-500 text-[60px] leading-[130%] text-center">
@@ -485,7 +495,7 @@ export const RPSGamezone = () => {
               <div className="flex flex-row items-center justify-center gap-[23px] mt-[10px]">
                 <button
                   onClick={() => handleChoiceClick("rock")}
-                  disabled={timeleft <= 0}
+                  disabled={timeleft <= 1}
                   className={`rounded-[8px] border-[1px] px-[31px] h-[54px] duration-300 uppercase ${
                     selectedChoice == "rock"
                       ? "border-nafl-purple bg-nafl-purple"
@@ -499,7 +509,7 @@ export const RPSGamezone = () => {
 
                 <button
                   onClick={() => handleChoiceClick("paper")}
-                  disabled={timeleft <= 0}
+                  disabled={timeleft <= 1}
                   className={`rounded-[8px] border-[1px] px-[31px] h-[54px] duration-300 uppercase ${
                     selectedChoice == "paper"
                       ? "border-nafl-purple bg-nafl-purple"
@@ -513,7 +523,7 @@ export const RPSGamezone = () => {
 
                 <button
                   onClick={() => handleChoiceClick("scissors")}
-                  disabled={timeleft <= 0}
+                  disabled={timeleft <= 1}
                   className={`rounded-[8px] border-[1px] px-[31px] h-[54px] duration-300 uppercase ${
                     selectedChoice == "scissors"
                       ? "border-nafl-purple bg-nafl-purple"

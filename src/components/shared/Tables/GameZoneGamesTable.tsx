@@ -175,8 +175,7 @@ const GameZoneGamesTable = (props: Props) => {
         props.max
       );
 
-    const gameCreated = (data: any) => {
-      console.log("gameCreated data", data);
+    const updateTable = (data: any) => {
       if (data) {
         fetchTableData(
           user?.id,
@@ -195,11 +194,13 @@ const GameZoneGamesTable = (props: Props) => {
       }
     };
 
-    socket?.on("newGameCreated", gameCreated);
+    socket?.on("newGameDeleted", updateTable);
+    socket?.on("newGameCreated", updateTable);
     socket?.on("errorJoinRequest", joinRequestErrorHandler);
 
     return () => {
-      socket?.off("newGameCreated", gameCreated);
+      socket?.off("newGameDeleted", updateTable);
+      socket?.off("newGameCreated", updateTable);
       socket?.off("errorJoinRequest", joinRequestErrorHandler);
     };
   }, [socket, user, props.gameType, props.tokenType, props.min, props.max]);

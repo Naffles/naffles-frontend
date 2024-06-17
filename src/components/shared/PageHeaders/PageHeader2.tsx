@@ -350,9 +350,9 @@ const PageHeader: React.FC<PageHeaderProps> = (
             </div> */}
             <motion.button
               onClick={() => setShowEmailModal(true)}
-              initial={{ y: 0, height: 80, top: -20 }}
+              initial={{ y: 0, height: 40, top: -20 }}
               whileHover={{ y: 20, height: 100, top: -40 }}
-              className="flex items-end justify-center absolute right-[-130px] w-[114px] cursor-pointer overflow-hidden"
+              className="hidden xl:flex items-end justify-center absolute right-[-130px] w-[114px] cursor-pointer overflow-hidden"
             >
               <img src="/nafflings/hidden.png" alt="" className="flex" />
             </motion.button>

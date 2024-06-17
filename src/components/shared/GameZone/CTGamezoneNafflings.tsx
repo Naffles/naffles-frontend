@@ -12,6 +12,7 @@ import { tokenValueConversion } from "@components/utils/tokenTypeConversion";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import { TbCurrencySolana } from "react-icons/tb";
 import axios from "@components/utils/axios";
+import { TwitterShareButton } from "react-share";
 
 type GameVideo = {
   variant: number | string;
@@ -71,16 +72,24 @@ export const CTGamezoneNafflings = () => {
         </div>
 
         <div className="flex items-center justify-center w-full mt-[10px]">
-          <button className="flex items-center justify-center px-[61px] h-[70px] rounded-[8px] bg-[#DC2ABF]">
-            <div className="flex flex-col items-center justify-center">
-              <p className="text-nafl-white text-[19px] leading-[100%] font-bold">
-                BRAG ON X
-              </p>
-              <p className="text-nafl-white text-[14px] leading-[100%] font-bold">
-                EARN ?? POINTS
-              </p>
-            </div>
-          </button>
+          <div className="flex items-center justify-center h-[70px] w-[200px] rounded-[8px] bg-[#DC2ABF]">
+            <TwitterShareButton
+              url="naffles.com"
+              via="naffles"
+              title="I won a Naffles Game"
+              hashtags={["nafflesWin"]}
+              style={{ width: "100%", height: "100%" }}
+            >
+              <div className="flex flex-col items-center justify-center">
+                <p className="text-nafl-white text-[19px] leading-[100%] font-bold">
+                  BRAG ON X
+                </p>
+                <p className="text-nafl-white text-[14px] leading-[100%] font-bold">
+                  EARN ?? POINTS
+                </p>
+              </div>
+            </TwitterShareButton>
+          </div>
         </div>
       </>
     ) : result == "lose" ? (
