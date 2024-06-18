@@ -29,12 +29,12 @@ const WalletTypeModal = (props: Props) => {
         );
 
         const signedMessage = await solana.signMessage(message, "utf8");
-        console.log("signed message: ", signedMessage);
-        console.log({
-          signature: bs58.encode(signedMessage.signature),
-          address: response.publicKey.toBase58(),
-          timestamp: timestamp,
-        });
+        // console.log("signed message: ", signedMessage);
+        // console.log({
+        //   signature: bs58.encode(signedMessage.signature),
+        //   address: response.publicKey.toBase58(),
+        //   timestamp: timestamp,
+        // });
 
         // setWalletAddress(response.publicKey.toBase58());
         const validResponse = await axios.post("user/profile/wallet", {
@@ -49,7 +49,7 @@ const WalletTypeModal = (props: Props) => {
           toast.success("wallet added");
           reloadProfile();
         }
-        console.log(validResponse);
+        // console.log(validResponse);
       } else {
         toast.error("Phantom wallet not found. Please install it.");
       }
@@ -76,11 +76,11 @@ const WalletTypeModal = (props: Props) => {
           params: [message, publicKey],
         });
 
-        console.log({
-          signature: signature,
-          address: publicKey,
-          timestamp: timestamp,
-        });
+        // console.log({
+        //   signature: signature,
+        //   address: publicKey,
+        //   timestamp: timestamp,
+        // });
 
         // setWalletAddress(publicKey);
 
@@ -97,13 +97,13 @@ const WalletTypeModal = (props: Props) => {
           reloadProfile();
           toast.success("wallet added");
         } else toast.error("Your signature has failed to verify");
-        console.log(validResponse);
+        // console.log(validResponse);
       } catch (error: any) {
         const errorData = error.response?.data;
         toast.error(`${errorData.message}`);
       }
     } else {
-      console.log("MetaMask is not installed");
+      toast.error("MetaMask is not installed, Please Intall Metamask");
     }
   };
 

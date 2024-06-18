@@ -61,16 +61,6 @@ export const BaseGame = (props: BaseGameProps) => {
 
   const router = useRouter();
 
-  // const videoArray = choices
-  //   .map((choice) =>
-  //     results
-  //       .map((result) =>
-  //         variants.map((variant) => ({ choice, result, variant })).flat()
-  //       )
-  //       .flat()
-  //   )
-  //   .flat();
-
   const switchGameState = useCallback(
     (targetState: GameState) => {
       switch (targetState) {
@@ -97,12 +87,9 @@ export const BaseGame = (props: BaseGameProps) => {
 
   const triggerGame = useCallback(async () => {
     let result;
-    console.log("hasError:", hasError);
-    console.log("game trigger selectedChoice:", selectedChoice);
     if (selectedChoice && !hasError) {
       const data = (await gameCall(selectedChoice)) || {};
       result = data?.result;
-      console.log("trigger game", result);
       if (result) {
         setResult(result);
         switchGameState(GameState.START);
@@ -113,15 +100,6 @@ export const BaseGame = (props: BaseGameProps) => {
       switchGameState(GameState.START);
     }
   }, [selectedChoice, hasError, gameCall, switchGameState, results]);
-
-  // if (
-  //   gameState === GameState.COUNTDOWN &&
-  //   hasError &&
-  //   !isPaused &&
-  //   timeLeft === 0
-  // ) {
-  //   triggerGame();
-  // }
 
   useEffect(() => {
     if (prevResetState !== resetToInitial) {
@@ -147,17 +125,6 @@ export const BaseGame = (props: BaseGameProps) => {
           {
             const variant = randomFromArray(variants);
             const randomChoice = randomFromArray(choices);
-            // const isChosen = (choiceVid: string) =>
-            //   selectedChoice
-            //     ? choiceVid === selectedChoice
-            //     : choiceVid === randomChoice;
-
-            // const refIndex = videoArray.findIndex(
-            //   (item) =>
-            //     item.variant === variant &&
-            //     item.result === result &&
-            //     isChosen(item.choice)
-            // );
             if (!selectedChoice) {
               setDisplayChoice(randomChoice);
             }
@@ -168,7 +135,6 @@ export const BaseGame = (props: BaseGameProps) => {
               choice: selectedChoice || randomChoice,
             };
             setDisplayVideo((oldData) => [...oldData, videoData]);
-            // videosRef?.current[refIndex]?.play();
             onCountdownFinish();
           }
           break;
@@ -223,35 +189,6 @@ export const BaseGame = (props: BaseGameProps) => {
     return () => clearInterval(restInterval);
   }, [gameState, restTimeLeft, isPaused, switchGameState]);
 
-  // const isVideoHidden = (
-  //   variantVid: string | number,
-  //   choiceVid: string,
-  //   resultVid: string
-  // ) => {
-  //   const { variant = 1, result = "", choice = "" } = displayVideo ?? {};
-  //   if (
-  //     variantVid === variant &&
-  //     resultVid === result &&
-  //     choiceVid === choice
-  //   ) {
-  //     return (
-  //       <video
-  //         // playsInline={true}
-  //         // preload={selectedChoice === choice ? "auto" : "metadata"}
-  //         // className={isVideoHidden(variant, choice, vidResult)}
-  //         preload="auto"
-  //         key={choice + result + variant}
-  //         onEnded={handleVideoEnd}
-  //       >
-  //         <source
-  //           src={`${basePath}${choice}/${result}${variant}.${extension}`}
-  //           type={`video/${extension}`}
-  //         />
-  //       </video>
-  //     );
-  //   }
-  // };
-
   const buttonColor = useCallback(
     (choice: string) => {
       if (displayChoice === choice) return "secondary-outline";
@@ -283,9 +220,6 @@ export const BaseGame = (props: BaseGameProps) => {
     }
     setResult("");
     setDisplayVideo([]);
-    // setTimeout(() => {
-    //   setDisplayVideo(null);
-    // }, 1700);
     setSelectedChoice("");
     setDisplayChoice("");
     onVideoFinish(!!selectedChoice);
@@ -305,30 +239,9 @@ export const BaseGame = (props: BaseGameProps) => {
     }
   };
 
-  const handleVolumeChange = (vidRef: any, volume: number) => {
-    // if (videoRef.current) {
-    //   videoRef.current.volume = volume;
-    // }
-  };
-
   let seconds = timeLeft;
   if (gameState === GameState.RESTDOWN) seconds = restTimeLeft;
   if (gameState === GameState.WAITING) seconds = waitTimeLeft;
-
-  // const [seconds, setSeconds] = useState(0);
-
-  // useEffect(() => {
-  //   setSeconds(timeLeft);
-  // }, []);
-
-  // useEffect(() => {
-  //   gameState === GameState.RESTDOWN && setSeconds(restTimeLeft);
-  //   gameState === GameState.WAITING && setSeconds(waitTimeLeft);
-  // }, [gameState,restTimeLeft,waitTimeLeft]);
-
-  useEffect(() => {
-    console.log("display video:", displayVideo);
-  }, [displayVideo]);
 
   return (
     <>

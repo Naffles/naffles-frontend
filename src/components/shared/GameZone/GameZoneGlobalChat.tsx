@@ -178,7 +178,7 @@ const GameZoneGlobalChat = () => {
       let responseData = response.data;
 
       if (responseData.statusCode == 200) {
-        console.log("messages data: ", responseData.data.messages);
+        // console.log("messages data: ", responseData.data.messages);
         setChatData(responseData.data.messages);
         setCursor(responseData.data.nextCursor);
         setHasMore(!!responseData.data.nextCursor);
@@ -210,7 +210,7 @@ const GameZoneGlobalChat = () => {
       let responseData = response.data;
 
       if (responseData.statusCode == 200) {
-        console.log("more messages data: ", responseData.data.messages);
+        // console.log("more messages data: ", responseData.data.messages);
         setChatData((oldData) => [...responseData.data.messages, ...oldData]);
         setCursor(responseData.data.nextCursor);
         setHasMore(!!responseData.data.nextCursor);
@@ -240,7 +240,7 @@ const GameZoneGlobalChat = () => {
 
   useEffect(() => {
     const checkRoomOpen = (data: any) => {
-      console.log("roomstatus data:", data);
+      // console.log("roomstatus data:", data);
       if (!data) {
         toast.dismiss();
         toast.error(
@@ -319,7 +319,7 @@ const GameZoneGlobalChat = () => {
   }, []);
 
   const joinGame = (gameId: string, gameData: GameData) => {
-    console.log("joined a game start");
+    // console.log("joined a game start");
     var currentDate = new Date();
     currentDate.setSeconds(currentDate.getSeconds() + 10);
 
@@ -348,7 +348,7 @@ const GameZoneGlobalChat = () => {
   };
 
   const sendGlobalChatMessage = (message: string) => {
-    console.log("message:", message);
+    // console.log("message:", message);
     if (user?.id) {
       socket?.emit("sendGlobalChatMessage", { message: message });
       setMessage("");

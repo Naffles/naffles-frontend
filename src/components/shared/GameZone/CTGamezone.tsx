@@ -134,7 +134,7 @@ export const CTGamezone = () => {
     const gameResult = (data: any) => {
       setResult("");
       setRequestPlayAgain(false);
-      console.log("gameResult socket data:", data);
+      // console.log("gameResult socket data:", data);
 
       let assignedChoice = "";
       if (data.winner == user?.id) {
@@ -162,7 +162,7 @@ export const CTGamezone = () => {
     // });
 
     const gameZoneStart = (data: any) => {
-      console.log("gameStarted data: ", data);
+      // console.log("gameStarted data: ", data);
       // setCurrentDefaultChosen("");
       setResult("");
       setRequestPlayAgain(false);
@@ -177,7 +177,7 @@ export const CTGamezone = () => {
     socket?.on("gameStarted", gameZoneStart);
 
     const playerHasLeft = (data: any) => {
-      console.log("player left data:", data);
+      // console.log("player left data:", data);
       setSelectedChoice("");
       setCurrentScreen("main");
     };
@@ -185,7 +185,7 @@ export const CTGamezone = () => {
     socket?.on("playerLeft", playerHasLeft);
 
     const betUpdates = (data: any) => {
-      console.log("Bet Updated: ", data);
+      // console.log("Bet Updated: ", data);
       if (data.status) {
         setCurrentCreatorBuyIn(data.game.betAmount);
         setCurrentChallengerBuyIn(data.game.challengerBuyInAmount);
@@ -203,7 +203,7 @@ export const CTGamezone = () => {
     socket?.on("betUpdated", betUpdates);
 
     const betRequest = (data: any) => {
-      console.log("Bet Requested: ", data);
+      // console.log("Bet Requested: ", data);
       setRequestedBetAmount(data.game.betAmount);
       setRequestedTokenType(data.game.tokenType);
       setRequestedBetOdds(data.game.odds);
@@ -235,19 +235,19 @@ export const CTGamezone = () => {
 
   useEffect(() => {
     !stopTimeListen && timeleft <= 0 && leaveGame();
-    console.log(timeleft);
+    // console.log(timeleft);
   }, [timeleft, stopTimeListen]);
 
   const handleChoiceClick = (choiceClicked: string) => {
     setSelectedChoice(choiceClicked);
-    console.log("Change Choice currentGameId: ", currentGameId);
-    console.log("Change Choice userId: ", user?.id);
+    // console.log("Change Choice currentGameId: ", currentGameId);
+    // console.log("Change Choice userId: ", user?.id);
     if (currentGameId && user?.id) {
       socket?.emit("playerChoice", {
         gameId: currentGameId,
         choice: choiceClicked,
       });
-      console.log("choiceSelected: ", choiceClicked);
+      // console.log("choiceSelected: ", choiceClicked);
     }
   };
 
@@ -275,7 +275,7 @@ export const CTGamezone = () => {
   };
 
   const acceptBet = (gameId: string) => {
-    console.log("Bet Accepted");
+    // console.log("Bet Accepted");
 
     socket?.emit("acceptBetChangeRequest", {
       gameId: gameId,
@@ -283,7 +283,7 @@ export const CTGamezone = () => {
   };
 
   const rejectBet = (gameId: string) => {
-    console.log("Bet Rejected");
+    // console.log("Bet Rejected");
     socket?.emit("rejectBetChangeRequest", {
       gameId: gameId,
     });

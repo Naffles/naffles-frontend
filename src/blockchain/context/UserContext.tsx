@@ -103,7 +103,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    console.log("basic user context data:", jwt, user);
+    // console.log("basic user context data:", jwt, user);
 
     jwt && setUserJWT(jwt);
     user?.id && setUserId(user?.id);
@@ -137,7 +137,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     // socket?.on("receiveGlobalChatMessage", receiveGlobalChat);
 
     const consoleError = (data: any) => {
-      console.log(data);
+      // console.log(data);
       toast.error(data);
     };
 

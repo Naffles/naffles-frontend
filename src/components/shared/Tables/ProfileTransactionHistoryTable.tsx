@@ -15,6 +15,7 @@ import {
 } from "@nextui-org/react";
 import axios from "@components/utils/axios";
 import moment from "moment";
+import toast from "react-hot-toast";
 
 interface User {
   _id: string;
@@ -48,18 +49,16 @@ const ProfileTransactionHistory = () => {
         `/user/transaction/history`
       );
 
-      console.log("TransactionHistoryReturn", TransactionHistoryReturn);
+      // console.log("TransactionHistoryReturn", TransactionHistoryReturn);
       if (TransactionHistoryReturn.data.statusCode == 200) {
         setTableData(TransactionHistoryReturn.data.data.transactions);
       } else {
-        console.log(
-          `Error fetching recentWinners: ${TransactionHistoryReturn.data.message}`
-        );
+        toast.error(`${TransactionHistoryReturn.data.message}`);
       }
     } catch (error: any) {
       const errorData = error.response?.data;
       // toast.error(`Error fetching recentWinners: ${errorData.message}`);
-      console.log(`Error fetching recentWinners: ${errorData.message}`);
+      toast.error(`Error fetching recentWinners: ${errorData.message}`);
     }
   };
 

@@ -72,13 +72,13 @@ export default function Home() {
   useEffect(() => {
     jackpotWinners(4).then((winners) => {
       setJackpotWinnersArr(winners);
-      console.log(jackpotWinnersArr, "jackpotWinnersArr");
+      // console.log(jackpotWinnersArr, "jackpotWinnersArr");
     });
 
     jackpotGiveawayStartDate().then((data: any) => {
       const giveAwayDate = data;
       setGiveAwayStartDate(giveAwayDate);
-      console.log(giveAwayDate, "giveaway");
+      // console.log(giveAwayDate, "giveaway");
     });
 
     const fetchRecentWinners = async () => {

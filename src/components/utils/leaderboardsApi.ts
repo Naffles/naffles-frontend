@@ -23,7 +23,7 @@ export const jackpotWinners = async (limit: number) => {
 export const recentWinners = async () => {
   try {
     const response = await axios.get(`/game/history/`);
-    console.log("recentWinners:", response);
+    // console.log("recentWinners:", response);
     if (response.status == 200) return response.data.data.gameData;
   } catch (error: any) {
     const errorData = error.response?.data;

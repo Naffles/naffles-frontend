@@ -18,17 +18,14 @@ const Card: React.FC<CardProps> = ({
   buttonText,
 }) => {
   const router = useRouter();
-  const handleClick = () => {
-    // router.push(`/${title}`); redirect to its nft profile page
-    console.log("to redirect in nft page");
-  };
+  // const handleClick = () => {
+  //   router.push(`/${title}`); redirect to its nft profile page
+  //   console.log("to redirect in nft page");
+  // };
 
   return (
     <>
-      <button
-        className="bg-nafl-grey-900 border-nafl-grey-900 border-[6px] z-10 overflow-hidden rounded-[21px] w-[210px] user-select-none h-[312px] "
-        onClick={handleClick}
-      >
+      <button className="bg-nafl-grey-900 border-nafl-grey-900 border-[6px] z-10 overflow-hidden rounded-[21px] w-[210px] user-select-none h-[312px] ">
         <div className="flex flex-col relative rounded-[6px] h-full w-full overflow-hidden">
           <div className="absolute bg-nafl-grey-900 z-10 overflow-hidden rounded-full h-8 w-8 top-[-1rem] left-[calc(50%-1rem)]" />
           <img

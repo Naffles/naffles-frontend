@@ -34,7 +34,7 @@ export const jackpotWinners = async (limit: number) => {
     `/raffle/jackpot/history/all?page=1&limit=${limit}`
   );
 
-  console.log("jackpotWinners response", response);
+  // console.log("jackpotWinners response", response);
 
   return response.data.data.jackpotHistory;
 };
@@ -51,12 +51,16 @@ export const jackpotGiveawayStartDate = async () => {
 export const recentWinners = async () => {
   try {
     const response = await axios.get(`/game/history/`);
-    console.log("recentWinners:", response);
-    if (response.status == 200) return response.data.data.gameData;
+    // console.log("recentWinners:", response);
+    if (response.status == 200) {
+      return response.data.data.gameData;
+    } else {
+      toast.error(response?.data?.message);
+    }
   } catch (error: any) {
     const errorData = error.response?.data;
     // toast.error(`Error fetching recentWinners: ${errorData.message}`);
-    console.log(`Error fetching recentWinners: ${errorData.message}`);
+    toast.error(`Error fetching recentWinners: ${errorData.message}`);
   }
 };
 

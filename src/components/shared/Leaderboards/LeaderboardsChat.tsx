@@ -81,7 +81,7 @@ const LeaderboardsChat = () => {
     socket?.emit("joinGlobalChat");
 
     const receiveGlobalChat = (data: any) => {
-      console.log("receiveGlobalChatMessage", data);
+      // console.log("receiveGlobalChatMessage", data);
       setChatData((oldData) => [...oldData, data]);
     };
 
@@ -133,7 +133,7 @@ const LeaderboardsChat = () => {
   };
 
   const sendGlobalChatMessage = (message: string) => {
-    console.log("message:", message);
+    // console.log("message:", message);
     if (user?.id) {
       socket?.emit("sendGlobalChatMessage", { message: message });
       setMessage("");

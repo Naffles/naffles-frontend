@@ -45,7 +45,7 @@ const GameZoneJoining = () => {
 
   useEffect(() => {
     const gameStart = (data: any) => {
-      console.log("gameStart", data);
+      // console.log("gameStart", data);
       if (data.gameId) {
         setCurrentScreen("ingame");
         data.initialChoices && setDefaultChosen(data.initialChoices.challenger);
@@ -57,7 +57,7 @@ const GameZoneJoining = () => {
     socket?.on("gameStarted", gameStart);
 
     const rejectMessage = (data: any) => {
-      console.log(data);
+      // console.log(data);
       toast.error("Host rejected request");
       exitGame();
     };
@@ -71,7 +71,7 @@ const GameZoneJoining = () => {
   }, [socket]);
 
   const cancelGame = (gameId: string) => {
-    console.log("gameId:", gameId);
+    // console.log("gameId:", gameId);
     socket?.emit("cancelJoinRequest", {
       gameId: gameId,
     });

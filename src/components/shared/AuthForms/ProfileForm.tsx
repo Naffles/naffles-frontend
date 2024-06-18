@@ -135,7 +135,7 @@ export const ProfileForm = () => {
   };
 
   const handleUpload = () => {
-    console.log("Image uploaded:", imageFile);
+    // console.log("Image uploaded:", imageFile);
   };
 
   const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -155,8 +155,8 @@ export const ProfileForm = () => {
   const handleProfileEditSubmit = () => {
     setIsLoading((prev) => !prev);
     const form = new FormData();
-    console.log("form username:", profileUsername);
-    console.log("form email:", profileEmail);
+    // console.log("form username:", profileUsername);
+    // console.log("form email:", profileEmail);
     if (profileUsername != user?.username && profileUsername)
       form.append("username", profileUsername);
     if (profileEmail != user?.email && profileEmail) {
@@ -197,7 +197,7 @@ export const ProfileForm = () => {
         reloadProfile();
         toast.success("wallet removed");
       } else toast.error("error removing wallet please try again");
-      console.log(result);
+      // console.log(result);
     } catch (error: any) {
       const errorData = error.response?.data;
       toast.error(`Error removing wallet: ${errorData.message}`);
@@ -283,7 +283,7 @@ export const ProfileForm = () => {
               className={`w-[120px] h-[120px] cursor-pointer opacity-0 absolute top-0 left-0 z-10 text-nafl-white ${
                 imageFile && "bg-gray-200 rounded-full"
               }`}
-              onChange={handleChange} 
+              onChange={handleChange}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             />
@@ -300,7 +300,7 @@ export const ProfileForm = () => {
                 className={`flex items-center justify-center h-full text-nafl-white text-[16px] bg-black bg-opacity-30 rounded-full transition-opacity duration-300 ${
                   isHovered ? "opacity-100" : "opacity-0"
                 }`}
-              >  
+              >
                 Click to upload
               </div>
             </div>

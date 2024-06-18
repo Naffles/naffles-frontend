@@ -111,14 +111,14 @@ export const RPSGamezone = () => {
     socket?.on("rpsPlayerChoiceSelected", choiceSelected);
 
     const timerUpdater = (data: any) => {
-      console.log(data.timeLeft);
+      // console.log(data.timeLeft);
       setTimeleft(data.timeLeft);
     };
 
     socket?.on("timerUpdate", timerUpdater);
 
     const gameResult = (data: any) => {
-      console.log("gameResult socket data:", data);
+      // console.log("gameResult socket data:", data);
 
       currentGameMode == "host"
         ? setSelectedChoice(data?.creatorChoice)
@@ -139,7 +139,7 @@ export const RPSGamezone = () => {
     // });
 
     const gameZoneStart = (data: any) => {
-      console.log("gameStarted data: ", data);
+      // console.log("gameStarted data: ", data);
       reloadProfile();
       setCurrentDefaultChosen("");
       setResult("");
@@ -155,7 +155,7 @@ export const RPSGamezone = () => {
     socket?.on("gameStarted", gameZoneStart);
 
     const playerHasLeft = (data: any) => {
-      console.log("player left data:", data);
+      // console.log("player left data:", data);
       setSelectedChoice("");
       setCurrentScreen("main");
     };
@@ -163,7 +163,7 @@ export const RPSGamezone = () => {
     socket?.on("playerLeft", playerHasLeft);
 
     const betUpdates = (data: any) => {
-      console.log("Bet Updated: ", data);
+      // console.log("Bet Updated: ", data);
       if (data.status) {
         setCurrentCreatorBuyIn(data.game.betAmount);
         setCurrentChallengerBuyIn(data.game.challengerBuyInAmount);
@@ -181,7 +181,7 @@ export const RPSGamezone = () => {
     socket?.on("betUpdated", betUpdates);
 
     const betRequest = (data: any) => {
-      console.log("Bet Requested: ", data);
+      // console.log("Bet Requested: ", data);
       setRequestedBetAmount(data.game.betAmount);
       setRequestedTokenType(data.game.tokenType);
       setRequestedBetOdds(data.game.odds);
@@ -257,7 +257,7 @@ export const RPSGamezone = () => {
   };
 
   const acceptBet = (gameId: string) => {
-    console.log("Bet Accepted");
+    // console.log("Bet Accepted");
 
     socket?.emit("acceptBetChangeRequest", {
       gameId: gameId,
@@ -265,7 +265,7 @@ export const RPSGamezone = () => {
   };
 
   const rejectBet = (gameId: string) => {
-    console.log("Bet Rejected");
+    // console.log("Bet Rejected");
     socket?.emit("rejectBetChangeRequest", {
       gameId: gameId,
     });

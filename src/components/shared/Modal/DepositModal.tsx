@@ -47,9 +47,9 @@ const DepositModal = (props: Props) => {
   const [currencyConverted, setCurrencyConverted] = useState<number>(0);
   const { user, reloadProfile } = useBasicUser();
 
-  useEffect(() => {
-    console.log("balance type: ", balanceType);
-  }, [balanceType]);
+  // useEffect(() => {
+  //   console.log("balance type: ", balanceType);
+  // }, [balanceType]);
 
   useEffect(() => {
     getCryptoPrice(balanceType?.tokenType, depositAmount).then((price) => {
@@ -144,7 +144,7 @@ const DepositModal = (props: Props) => {
           value: amountInWei,
         })
         .then((receipt: any) => {
-          console.log(receipt, "txn receipt");
+          // console.log(receipt, "txn receipt");
           toast.success("Transaction Sucessful");
           setIsLoading(false);
           setBalanceType({
@@ -164,7 +164,7 @@ const DepositModal = (props: Props) => {
           }, 20000);
         })
         .catch((err: any) => {
-          console.log(err, "error");
+          // console.log(err, "error");
           setIsLoading(false);
         });
     } else {
@@ -215,7 +215,7 @@ const DepositModal = (props: Props) => {
           signature: signature,
         });
 
-        console.log("Transaction successful with signature:", signature);
+        // console.log("Transaction successful with signature:", signature);
         toast.success("Transaction Successful");
 
         setIsLoading(false);
