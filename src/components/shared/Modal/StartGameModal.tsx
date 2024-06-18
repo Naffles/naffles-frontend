@@ -50,8 +50,8 @@ const StartGameModal = ({ show, hideModal }: IStartGameModal) => {
             modal-container 
             rounded-[10px]
             bg-[#383838] 
-            min-w-[234px] 
-            min-h-[103px]
+            max-w-[400px] 
+            w-full
             relative
             z-20
             py-[20px]

@@ -95,7 +95,7 @@ export const GameSection = () => {
         <RegistrationForm />
       </Modal>
       {!isMobile ? (
-        <div className="flex-row flex-wrap justify-center items-center gamezone-container gap-4 pt-8 hidden lg:flex relative">
+        <div className="flex-row flex-wrap justify-center items-center gamezone-container gap-4 pt-8 hidden md:flex relative">
           <div className="flex-col flex games-container gap-8">
             <GameResultModal
               show={showGameResultModal}
@@ -149,6 +149,10 @@ export const GameSection = () => {
             isPaused={isCoinTossPaused}
             callGameResultModal={handleResultModal}
             onLimitReached={handleLimitReached}
+          />
+          <StartGameModal
+            show={showStartGameModal}
+            hideModal={handleCloseStartGameModal}
           />
         </div>
       )}
