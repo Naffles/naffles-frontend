@@ -2,6 +2,7 @@ import { useUser } from "@blockchain/context/UserContext";
 import { useBasicUser } from "@components/context/BasicUser/BasicUser";
 import axios from "@components/utils/axios";
 import bs58 from "bs58";
+import toast from "react-hot-toast";
 import Web3 from "web3";
 
 interface MetamaskButtonProps {
@@ -37,11 +38,11 @@ export const MetamaskButton: React.FC<MetamaskButtonProps> = ({
           params: [message, publicKey],
         });
 
-        console.log({
-          signature: signature,
-          address: publicKey,
-          timestamp: timestamp,
-        });
+        // console.log({
+        //   signature: signature,
+        //   address: publicKey,
+        //   timestamp: timestamp,
+        // });
 
         setWalletAddress(publicKey);
 
@@ -57,7 +58,7 @@ export const MetamaskButton: React.FC<MetamaskButtonProps> = ({
         console.error("Error connecting to MetaMask", error);
       }
     } else {
-      console.log("MetaMask is not installed");
+      toast.error("MetaMask is not installed, Please install metamask");
     }
   };
 

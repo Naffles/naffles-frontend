@@ -143,7 +143,7 @@ export const RPSGamezoneNafflings = () => {
 
       if (responseData.statusCode == 200) {
         // toast.success(responseData.data.message);
-        console.log(responseData.data);
+        // console.log(responseData.data);
         setResult(responseData.data.result);
         setShowVideo(true);
       } else {

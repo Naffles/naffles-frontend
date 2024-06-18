@@ -207,7 +207,7 @@ const GameZoneGamesTable = (props: Props) => {
 
   useEffect(() => {
     const gameJoinRequest = (data: any) => {
-      console.log("gameJoinRequest data: ", data);
+      // console.log("gameJoinRequest data: ", data);
       setCurrentScreen("accepting");
       setGameType(
         data.game.gameType == "rockPaperScissors"
@@ -225,7 +225,7 @@ const GameZoneGamesTable = (props: Props) => {
     socket?.on("gameJoinRequest", gameJoinRequest);
 
     const checkRoomOpen = (data: any) => {
-      console.log("roomstatus data:", data);
+      // console.log("roomstatus data:", data);
       if (!data) {
         toast.dismiss();
         toast.error(
@@ -274,10 +274,10 @@ const GameZoneGamesTable = (props: Props) => {
         tokenTypeText = "points";
       }
 
-      console.log(
-        "table fetch URL:",
-        `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${tokenTypeText ? "&coinType=" + tokenTypeText : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`
-      );
+      // console.log(
+      //   "table fetch URL:",
+      //   `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${tokenTypeText ? "&coinType=" + tokenTypeText : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`
+      // );
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_ENDPOINT}game/${gameTypeText ? "?gameType=" + gameTypeText : ""}${tokenTypeText ? "&coinType=" + tokenTypeText : ""}${min ? "&minBet=" + min : ""}${max ? "&maxBet=" + max : ""}`,
         {
@@ -294,8 +294,8 @@ const GameZoneGamesTable = (props: Props) => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log("RESULT :", result);
-        console.log("userName :", userName);
+        // console.log("RESULT :", result);
+        // console.log("userName :", userName);
         result && tableDataSetter(result.data.games, userId, userName);
         result && setIsLoading(false);
         // socket.emit("notificationRoom", { data: userId });
@@ -337,12 +337,12 @@ const GameZoneGamesTable = (props: Props) => {
         myUsername: userName,
       };
     });
-    console.log("tableData: ", tableData);
+    // console.log("tableData: ", tableData);
     setTableData(tableData);
   };
 
   const joinGame = (gameId: string, gameData: tableRow) => {
-    console.log("joined a game start");
+    // console.log("joined a game start");
     var currentDate = new Date();
     currentDate.setSeconds(currentDate.getSeconds() + 10);
 
@@ -367,7 +367,7 @@ const GameZoneGamesTable = (props: Props) => {
   };
 
   const deleteGame = async (gameId: string, gameData: tableRow) => {
-    console.log("delete game with id:", gameId);
+    // console.log("delete game with id:", gameId);
 
     try {
       const response = await fetch(
@@ -387,7 +387,7 @@ const GameZoneGamesTable = (props: Props) => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log(result);
+        // console.log(result);
         fetchTableData(
           user?.id,
           user?.name,

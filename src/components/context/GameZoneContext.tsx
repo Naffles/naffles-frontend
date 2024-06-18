@@ -23,7 +23,7 @@ export const GameZoneProvider = ({
   let queryString = window.location.search;
 
   useEffect(() => {
-    console.log(queryString);
+    // console.log(queryString);
     const urlParams = new URLSearchParams(queryString);
     let mode = urlParams.get("mode");
     mode && setSelectedView(mode);

@@ -140,7 +140,7 @@ const GameZoneCreateNafflingsGame = () => {
     setIsLoading(true);
     var jwt = user?.jwt;
 
-    console.log("jwt", jwt);
+    // console.log("jwt", jwt);
 
     if (!socket) {
       console.error("Socket not connected");
@@ -178,7 +178,7 @@ const GameZoneCreateNafflingsGame = () => {
 
       const result = await response.json();
 
-      console.log("RESULT :", result);
+      // console.log("RESULT :", result);
 
       if (result.statusCode == 201 && response.ok) {
         // console.log("GAME CREATED", result?.data?.game?._id);
@@ -243,7 +243,6 @@ const GameZoneCreateNafflingsGame = () => {
         <div className="flex items-center w-full relative game-choice-dropdown">
           <button
             onClick={() => {
-              console.log("clicked");
               setGameChoiceDropdown(gameChoiceDropdown ? false : true);
             }}
             className="flex items-center justify-start w-full h-[54px] rounded-[10px] border-[1px] border-nafl-sponge-500 px-[12px] bg-[#4B4B4B] game-choice-dropdown"

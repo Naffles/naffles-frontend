@@ -66,7 +66,7 @@ const WithdrawModal = (props: Props) => {
           network: type.tokenType,
         });
 
-        console.log(result);
+        // console.log(result);
         if (result.status == 200) {
           toast.success("successfully requested withdrawal");
           setWithdrawAmount("0");

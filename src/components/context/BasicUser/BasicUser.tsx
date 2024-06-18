@@ -133,7 +133,7 @@ export const BasicUserProvider = ({
         password,
       });
       setJWT(data?.token ?? null);
-      console.log("data:", data);
+      // console.log("data:", data);
       return data;
     },
     [setJWT]
@@ -152,7 +152,7 @@ export const BasicUserProvider = ({
         data: { data },
       } = await axios.get("user/profile");
       setUser(data ?? null);
-      console.log("temporary points", data?.temporaryPoints);
+      // console.log("temporary points", data?.temporaryPoints);
       setPointsObject({ points: data?.temporaryPoints || 0, date: Date.now() });
       return data;
     } catch (err: any) {
@@ -190,7 +190,7 @@ export const BasicUserProvider = ({
       try {
         const validResponse = await axios.post("user/login/wallet", data);
 
-        console.log("WALLET LOGIN RESULT:", validResponse);
+        // console.log("WALLET LOGIN RESULT:", validResponse);
         if (validResponse.status === 200 || validResponse.status === 201) {
           setJWT(validResponse.data?.data?.token ?? null);
           toast.success("Successfully logged in using wallet!");

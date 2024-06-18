@@ -154,7 +154,7 @@ export const CTGamezoneNafflings = () => {
       if (responseData.statusCode == 200) {
         // toast.success(responseData.data.message);
         setResult("");
-        console.log(responseData.data);
+        // console.log(responseData.data);
         setLastResult(responseData.data.result);
         setLastWinningChoice(
           responseData.data.result == "win"

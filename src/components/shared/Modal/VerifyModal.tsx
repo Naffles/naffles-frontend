@@ -41,7 +41,7 @@ const VerifyModal = (props: Props) => {
 
       const result = await response.json();
 
-      console.log("RESULT :", result);
+      // console.log("RESULT :", result);
 
       if (result.statusCode == 200 && response.ok) {
         setVerificationSuccess(true);

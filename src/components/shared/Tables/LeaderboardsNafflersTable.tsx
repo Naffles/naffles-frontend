@@ -14,6 +14,7 @@ import {
   Checkbox,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 interface User {
   _id: string;
@@ -42,18 +43,16 @@ const LeaderboardNafflersTable = () => {
   const fetchTableData = async () => {
     try {
       const leaderboardData = await fetchLeaderboard("top-nafflers", 1, 100);
-      console.log("leaderboardNafflersData", leaderboardData);
+      // console.log("leaderboardNafflersData", leaderboardData);
       if (leaderboardData.statusCode == 200) {
         setTableData(leaderboardData.data.leaderboard);
       } else {
-        console.log(
-          `Error fetching recentWinners: ${leaderboardData.data.message}`
-        );
+        toast.error(`${leaderboardData.data.message}`);
       }
     } catch (error: any) {
       const errorData = error.response?.data;
       // toast.error(`Error fetching recentWinners: ${errorData.message}`);
-      console.log(`Error fetching recentWinners: ${errorData.message}`);
+      toast.error(`Error fetching recentWinners: ${errorData.message}`);
     }
   };
 

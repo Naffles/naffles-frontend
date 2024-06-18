@@ -48,7 +48,7 @@ const GameZoneAccepting = () => {
 
   useEffect(() => {
     const gameStart = (data: any) => {
-      console.log("gameStart", data);
+      // console.log("gameStart", data);
       if (data.gameId) {
         setCurrentScreen("ingame");
         data.initialChoices && setDefaultChosen(data.initialChoices.creator);
@@ -60,7 +60,7 @@ const GameZoneAccepting = () => {
     socket?.on("gameStarted", gameStart);
 
     const CTgameStart = (data: any) => {
-      console.log("coinTossGameStarted", data);
+      // console.log("coinTossGameStarted", data);
       if (data.gameId) {
         setCurrentScreen("ingame");
         data.initialChoices && setDefaultChosen(data.initialChoices.challenger);
@@ -72,7 +72,7 @@ const GameZoneAccepting = () => {
     socket?.on("coinTossGameStarted", CTgameStart);
 
     const cancelMessage = (data: any) => {
-      console.log("cancelMessage", data);
+      // console.log("cancelMessage", data);
       cancelGame();
       toast.error("Other player cancelled request");
     };
@@ -115,18 +115,10 @@ const GameZoneAccepting = () => {
   };
 
   const acceptGame = (gameId: string, challengerId: string) => {
-    console.log("accept game data: ", gameId, challengerId);
-    // if (currentGameType == "Rock, Paper, Scissors") {
     socket?.emit("acceptJoinRequest", {
       gameId: currentGameId,
       challengerId: currentChallengerId,
     });
-    // } else {
-    //   socket?.emit("acceptJoinRequestCoinToss", {
-    //     gameId: currentGameId,
-    //     challengerId: currentChallengerId,
-    //   });
-    // }
   };
 
   const rejectGame = () => {

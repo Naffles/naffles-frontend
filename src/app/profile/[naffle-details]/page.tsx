@@ -41,17 +41,17 @@ const UserProfile = () => {
   const burn = tabsState[2];
   const affiliateRewards = tabsState[3];
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event?.target?.files?.[0];
-    if (file) {
-      setImageFile(file);
-      setImageUrl(URL.createObjectURL(file));
-    }
-  };
+  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const file = event?.target?.files?.[0];
+  //   if (file) {
+  //     setImageFile(file);
+  //     setImageUrl(URL.createObjectURL(file));
+  //   }
+  // };
 
-  const handleUpload = () => {
-    console.log("Image uploaded:", imageFile);
-  };
+  // const handleUpload = () => {
+  //   console.log("Image uploaded:", imageFile);
+  // };
 
   return (
     <Fragment>

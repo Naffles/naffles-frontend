@@ -52,7 +52,7 @@ const GameZoneChangeBet = () => {
 
   useEffect(() => {
     if (balancesOptionData.length <= 0) return;
-    console.log("balancesOptionData", balancesOptionData);
+    // console.log("balancesOptionData", balancesOptionData);
     setBalanceType(balancesOptionData[0]);
   }, [balancesOptionData]);
 
@@ -68,7 +68,7 @@ const GameZoneChangeBet = () => {
 
   useEffect(() => {
     const checkBetChangeRequestStatus = (data: any) => {
-      console.log("pa note", data);
+      // console.log("pa note", data);
       if (data) {
         toast.success("Bet change request succeeded");
         setChangingBet(false);

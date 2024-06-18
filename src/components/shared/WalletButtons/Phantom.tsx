@@ -33,12 +33,12 @@ export const PhantomButton: React.FC<PhantomButtonProps> = ({
         );
 
         const signedMessage = await solana.signMessage(message, "utf8");
-        console.log("signed message: ", signedMessage);
-        console.log({
-          signature: bs58.encode(signedMessage.signature),
-          address: response.publicKey.toBase58(),
-          timestamp: timestamp,
-        });
+        // console.log("signed message: ", signedMessage);
+        // console.log({
+        //   signature: bs58.encode(signedMessage.signature),
+        //   address: response.publicKey.toBase58(),
+        //   timestamp: timestamp,
+        // });
 
         setWalletAddress(response.publicKey.toBase58());
 

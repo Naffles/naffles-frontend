@@ -190,9 +190,9 @@ const PageHeader: React.FC<PageHeaderProps> = (
     token && setVerificationToken(token);
   }, []);
 
-  useEffect(() => {
-    console.log("opening", open);
-  }, [open]);
+  // useEffect(() => {
+  //   console.log("opening", open);
+  // }, [open]);
 
   useEffect(() => {
     const index = navigationOptions.findIndex((item) => {
@@ -204,7 +204,7 @@ const PageHeader: React.FC<PageHeaderProps> = (
   }, [navigationOptions]);
 
   const handleLogin = (response: any) => {
-    console.log(response);
+    // console.log(response);
   };
 
   const [openEditModal, setOpenEditModal] = useState(false);

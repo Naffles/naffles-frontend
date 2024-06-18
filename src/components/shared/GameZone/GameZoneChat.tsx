@@ -94,7 +94,7 @@ const GameZoneChat = () => {
 
   useEffect(() => {
     const receiveMessage = (data: any) => {
-      console.log("receivePrivateChatRoomMessage", data);
+      // console.log("receivePrivateChatRoomMessage", data);
       setChatData((oldData) => [...oldData, data]);
       // setChatData(data);
     };
@@ -145,7 +145,7 @@ const GameZoneChat = () => {
   };
 
   const sendChatMessage = (message: string) => {
-    console.log("message:", message);
+    // console.log("message:", message);
     if (user?.id) {
       currentGameId &&
         socket?.emit("sendChatMessage", {

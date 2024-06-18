@@ -35,14 +35,14 @@ export const RegistrationForm = () => {
         setIsLoading((prev) => !prev);
         return;
       }
-      if(!isEmailValid) {
-        if(emailError) {
+      if (!isEmailValid) {
+        if (emailError) {
           toast.error("Invalid email address");
         }
         setIsLoading((prev) => !prev);
         return;
       }
-      if(emailError) {
+      if (emailError) {
         toast.error("Email has already been used");
         setIsLoading((prev) => !prev);
         return;
@@ -55,7 +55,7 @@ export const RegistrationForm = () => {
         setIsError(false);
         setShowNext(true);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsError(true);
       }
     } else {
@@ -73,7 +73,7 @@ export const RegistrationForm = () => {
         }
         setIsVerificationSuccess(false);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setIsVerificationSuccess(true);
       }
     }
@@ -81,11 +81,11 @@ export const RegistrationForm = () => {
   };
   const handleEmailBlur = async (email: string) => {
     setIsLoading((prev) => !prev);
-    if(!email) {
+    if (!email) {
       setEmailError("");
       setEmailValid("");
     } else {
-      if(email && !validator.isEmail(email)) {
+      if (email && !validator.isEmail(email)) {
         setIsEmailValid(false);
         setEmailError("Enter a valid email.");
         setIsLoading((prev) => !prev);
@@ -137,14 +137,10 @@ export const RegistrationForm = () => {
             onBlur={handleEmailBlur}
           />
           {emailValid && (
-            <label className="text-xs text-nafl-sys-done">
-              {emailValid}
-            </label>
+            <label className="text-xs text-nafl-sys-done">{emailValid}</label>
           )}
           {emailError && (
-            <label className="text-xs text-nafl-light-red">
-              {emailError}
-            </label>
+            <label className="text-xs text-nafl-light-red">{emailError}</label>
           )}
           <TextInput
             name="password"
