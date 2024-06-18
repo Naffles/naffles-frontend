@@ -1,0 +1,31 @@
+.eye-container {
+  position: relative;
+  display: inline-block;
+}
+
+.blinking-eye {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+
+}
+
+.blink {
+  animation: blink-animation 3s infinite;
+}
+
+
+
+@keyframes blink-animation {
+  0%,
+  5%,
+  10%,
+  15%,
+  20%,
+  100% {
+    transform: scaleY(1); /* Eye open */
+  }
+  6%,
+  16% {
+    transform: scaleY(0); /* Eye closed */
+  }
+}
