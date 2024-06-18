@@ -1,12 +1,9 @@
 "use-client";
 import { cva, VariantProps } from "class-variance-authority";
 import Image from "next/image";
+import { MouseEventHandler } from "react";
 
-export enum ButtonTypes {
-  "button",
-  "submit",
-  "reset",
-}
+export type ButtonTypes = "submit" | "reset" | "button";
 interface ButtonProps {
   label: string;
   leftIcon?: React.ReactNode;
@@ -18,10 +15,10 @@ interface ButtonProps {
   spinnerColour?: boolean;
   subClassName?: string;
   type?: ButtonTypes;
-};
+}
 
 const btnStyles = cva(
-  "px-4 py-2 rounded-md font-roboto-body uppercase font-bold selection:transition-opacity ease-out duration-300 cursor-pointer hover:opacity-70 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-nafl-sys-complete",
+  "px-4 py-2 rounded-lg h-[45px] font-roboto-body uppercase font-bold selection:transition-opacity ease-out duration-300 cursor-pointer hover:opacity-70 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-nafl-sys-complete",
   {
     variants: {
       variant: {
@@ -31,6 +28,12 @@ const btnStyles = cva(
         special:
           "bg-gradient-to-r from-nafl-jade-500 to-nafl-sponge-500 text-nafl-charcoal-800",
         outline: "border-2 border-nafl-charcoal-800 text-nafl-charcoal-800",
+        "primary-outline":
+          "text-nafl-sponge-500 bg-nafl-charcoal-600 border-nafl-sponge-500 border-1",
+        "secondary-outline":
+          "bg-nafl-yellow-500 text-nafl-grey-900 border-nafl-grey-900 border-1",
+        "tertiary-outline":
+          "bg-nafl-charcoal-800 text-nafl-charcoal-100 border-nafl-charcoal-100 border-1",
       },
       size: {
         sx: "!font-mono text-body-xs",
@@ -60,6 +63,7 @@ const btnStyles = cva(
 
 interface ButtonProps extends VariantProps<typeof btnStyles> {
   type?: ButtonTypes;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 const Button: React.FC<ButtonProps> = ({
   variant,
@@ -75,12 +79,12 @@ const Button: React.FC<ButtonProps> = ({
   isOutline,
   spinnerColour,
   subClassName,
-  type = ButtonTypes.button,
+  type = "button",
   ...props
 }) => {
   return (
     <button
-      type="button"
+      type={type}
       className={`${btnStyles({
         variant,
         width,

@@ -1,29 +1,34 @@
-FROM node:18
+# Base stage with node image and essential packages installed
+FROM node:18-alpine as base
+RUN apk add --no-cache g++ make py3-pip libc6-compat
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+EXPOSE 3000
 
-ENV NODE_VERSION=18.*
-ENV PARCEL_VERSION=2.7.0
-ENV PORT=4001
-ARG NODE_ENV=production
-ARG NEXT_PUBLIC_ENVIRONMENT=mainnet
-ARG NEXT_PUBLIC_BASE_URL=https://naffles-api-oyoeituzeq-ez.a.run.app
-ARG NEXT_PUBLIC_L1NAFFLEDAIMONDADDRESS=0x5d23dFE21D547cf30eF4DA045003577bD1a74F59
-ARG NEXT_PUBLIC_L2NAFFLEDAIMONDADDRESS=0xe1Ab3967D0274d0c9094264c5597b2496c15b9F7
-ARG NEXT_PUBLIC_L2OPENENTRYTICKETDAIMONDADDRESS=0xa47A46Bb43d4C8fC51876dbb5191Ae63080431Ec
-ARG NEXT_PUBLIC_L2PAIDTICKETDAIMONDADDRESS=0x64e04D34853Ff3f9C4bCeBE28166d37774B67b71
-ARG NEXT_PUBLIC_ZKSYNCDAIMONDADDRESS=0x32400084c286cf3e17e7b677ea9583e60a000324
-EXPOSE 4001
-
-# Update and install system dependencies
-
-# Create workdir
-RUN mkdir -p naffles
-WORKDIR /naffles
-
-# Install package dependencies
+# Builder stage: Builds the Next.js application
+FROM base as builder
 COPY . .
+RUN npm run build
 
-RUN yarn install --legacy-peer-deps
-RUN yarn next build
+# Production stage: Sets up the production environment with only necessary files
+FROM node:18-alpine as production
+WORKDIR /app
+ENV NODE_ENV=production
 
-ENTRYPOINT ["yarn"]
-CMD ["start"]
+# Install only production dependencies
+COPY --from=base /app/package*.json ./
+RUN npm ci --only=production
+
+# Create and switch to a non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001 -G nodejs
+USER nextjs
+
+# Copy necessary files from the builder stage
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=base /app/node_modules ./node_modules
+COPY --from=base /app/package.json ./package.json
+
+CMD ["npm", "start"]

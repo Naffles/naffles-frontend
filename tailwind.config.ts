@@ -7,6 +7,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "./public/**/*.html",
   ],
   theme: {
     screens: {
@@ -70,6 +71,7 @@ module.exports = {
         800: "#212121",
         900: "#181818",
       },
+      "nafl-light-red": "#ecc8c8",
       "nafl-white": "#FFFFFF",
       "nafl-purple": "#DC2ABF",
     },
@@ -252,6 +254,123 @@ module.exports = {
       },
       animation: {
         fade: "fadeOut 5s ease-in-out",
+        "slide-in": "slide-in 0.5s ease-out",
+        "fade-in-down": "fade-in-down 0.3s ease-out",
+        "fade-in-up": "fade-in-up 0.3s ease-out",
+        "fade-in-right": "fade-in-right 0.3s ease-out",
+        "fade-in-left": "fade-in-left 0.3s ease-out",
+        "fade-in": "fade-in 0.3s ease-out",
+        "extend-size": "extend-size 0.3s ease-out",
+      },
+      dropShadow: {
+        "nafl-sponge-2xl": "0 0px 20px rgba(254, 255, 61, 0.5)",
+      },
+
+      keyframes: {
+        "slide-in": {
+          "0%": {
+            "-webkit-transform": "translateX(120%)",
+            transform: "translateX(120%)",
+          },
+          "100%": {
+            "-webkit-transform": "translateX(0%)",
+            transform: "translateX(0%)",
+          },
+        },
+        "slide-in-right": {
+          "0%": {
+            "-webkit-transform": "translateX(120%)",
+            transform: "translateX(120%)",
+          },
+          "100%": {
+            "-webkit-transform": "translateX(0%)",
+            transform: "translateX(0%)",
+          },
+        },
+        "fade-in-down": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        "fade-in-down-2": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-40px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        "fade-in-up": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        "fade-in": {
+          "0%": {
+            opacity: "0",
+          },
+          "100%": {
+            opacity: "1",
+          },
+        },
+        "fade-in-right": {
+          "0%": {
+            opacity: "0",
+            transform: "translateX(-10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateX(0)",
+          },
+        },
+        "fade-in-right-2": {
+          "0%": {
+            opacity: "0",
+            width: "0px",
+          },
+          "100%": {
+            opacity: "1",
+            width: "20px",
+          },
+        },
+        "fade-in-left": {
+          "0%": {
+            opacity: "0",
+            transform: "translateX(10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateX(0)",
+          },
+        },
+        "extend-size": {
+          "0%": {
+            transform: "scale(1, 1)",
+          },
+          "100%": {
+            transform: "translateX(0), scale(2, 1)",
+          },
+        },
+        "rotate-arrow": {
+          "0%": {
+            transform: "translateX(0)",
+          },
+          "100%": {
+            transform: "rotateZ(180deg)",
+          },
+        },
       },
     },
   },
@@ -261,5 +380,5 @@ module.exports = {
     },
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [nextui(), require("flowbite/plugin")],
 };

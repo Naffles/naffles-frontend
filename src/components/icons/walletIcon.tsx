@@ -4,6 +4,7 @@ import { cva } from "class-variance-authority";
 interface IconProps {
   colour: string;
   size?: "sm" | "base" | "lg" | "xl";
+  className?: string;
 }
 
 const iconStyles = cva("bg-cover mx-0 h-full w-full", {
