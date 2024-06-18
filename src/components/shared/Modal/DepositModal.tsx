@@ -331,11 +331,11 @@ const DepositModal = (props: Props) => {
                     ? balanceType?.tokenType == "sol"
                       ? createSolTransaction(
                           depositAmount,
-                          "ANrTqHoU4rkzUxbXW9WsDAs5w2BWMh8MUUMRGsYnca5a"
+                          "VaHsRkx789PgGiy3tamsD5whQzDFDXYQ2FAhJHmsH3d"
                         )
                       : createTransaction(
                           depositAmount,
-                          "0x829c609b5EED7A5D53C684B5f8b1d3aa6DE46145"
+                          "0x0D58Eba3187634EeF81E2E2B63fF132CBaA25AD2"
                         )
                     : toast.error("No wallet connected for this balance")
                 }
