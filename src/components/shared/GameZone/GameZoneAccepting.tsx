@@ -138,9 +138,9 @@ const GameZoneAccepting = () => {
   };
 
   return (
-    <div className="flex flex-col w-[500px] bg-[#383838] rounded-[16px]">
+    <div className="flex flex-col max-w-[500px] w-[95%] bg-[#383838] rounded-[16px]">
       <div className="flex items-center justify-center w-full h-[76px] bg-[#202020] rounded-t-[16px]">
-        <p className="text-[40px] text-[#fff] font-face-bebas">
+        <p className="md:text-[40px] text-[32px] text-[#fff] font-face-bebas">
           You’ve got a challenger!
         </p>
       </div>
@@ -192,7 +192,7 @@ const GameZoneAccepting = () => {
             SECONDS
           </p>
         </div>
-        <div className="flex flex-row items-center justify-center gap-[20px]">
+        <div className="flex flex-row flex-wrap items-center justify-center gap-[20px]">
           <button
             onClick={() => rejectGame()}
             className="flex items-center justify-center w-[183px] h-[54px] rounded-[8px] border-[1px] border-nafl-sponge-500 mb-[17px]"

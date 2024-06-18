@@ -13,6 +13,7 @@ type GameVideo = {
 enum GameState {
   WAITING = "waiting",
   COUNTDOWN = "countdown",
+  COUNTDOWNDEMO = "countdownDemo",
   START = "start",
   RESTDOWN = "restdown",
 }
@@ -51,7 +52,7 @@ export const BaseGame = (props: BaseGameProps) => {
   const [result, setResult] = useState("");
   const [selectedChoice, setSelectedChoice] = useState("");
   const [displayChoice, setDisplayChoice] = useState("");
-  const [displayVideo, setDisplayVideo] = useState<GameVideo | null>(null);
+  const [displayVideo, setDisplayVideo] = useState<GameVideo[]>([]);
   const videosRef = useRef<(HTMLVideoElement | null)[]>([]);
   const [prevGameState, setPrevGameState] = useState<GameState | null>(null);
   const [prevResetState, setPrevResetState] = useState<boolean | null>(false);
@@ -97,9 +98,11 @@ export const BaseGame = (props: BaseGameProps) => {
   const triggerGame = useCallback(async () => {
     let result;
     console.log("hasError:", hasError);
+    console.log("game trigger selectedChoice:", selectedChoice);
     if (selectedChoice && !hasError) {
       const data = (await gameCall(selectedChoice)) || {};
       result = data?.result;
+      console.log("trigger game", result);
       if (result) {
         setResult(result);
         switchGameState(GameState.START);
@@ -120,56 +123,60 @@ export const BaseGame = (props: BaseGameProps) => {
   //   triggerGame();
   // }
 
-  if (prevResetState !== resetToInitial) {
-    setPrevResetState(!!resetToInitial);
-    if (isPaused && !selectedChoice && resetToInitial) {
-      setWaitTimeLeft(initialTime);
+  useEffect(() => {
+    if (prevResetState !== resetToInitial) {
+      setPrevResetState(!!resetToInitial);
+      if (isPaused && !selectedChoice && resetToInitial) {
+        setWaitTimeLeft(initialTime);
+      }
     }
-  }
 
-  if (prevGameState !== gameState) {
-    setPrevGameState(gameState);
-    switch (gameState) {
-      case GameState.WAITING:
-        if (prevGameState !== null) {
-          onGameReset();
-          setGameText(!gameText);
-        }
-        break;
-      case GameState.COUNTDOWN:
-        onCountdownStart();
-        break;
-      case GameState.START:
-        {
-          const variant = randomFromArray(variants);
-          const randomChoice = randomFromArray(choices);
-          // const isChosen = (choiceVid: string) =>
-          //   selectedChoice
-          //     ? choiceVid === selectedChoice
-          //     : choiceVid === randomChoice;
-
-          // const refIndex = videoArray.findIndex(
-          //   (item) =>
-          //     item.variant === variant &&
-          //     item.result === result &&
-          //     isChosen(item.choice)
-          // );
-          if (!selectedChoice) {
-            setDisplayChoice(randomChoice);
+    if (prevGameState !== gameState) {
+      setPrevGameState(gameState);
+      switch (gameState) {
+        case GameState.WAITING:
+          if (prevGameState !== null) {
+            onGameReset();
+            setGameText(!gameText);
           }
-          setDisplayVideo({
-            variant,
-            result,
-            choice: selectedChoice || randomChoice,
-          });
-          // videosRef?.current[refIndex]?.play();
-          onCountdownFinish();
-        }
-        break;
-      case GameState.RESTDOWN:
-        break;
+          break;
+        case GameState.COUNTDOWN:
+          onCountdownStart();
+          break;
+        case GameState.START:
+          {
+            const variant = randomFromArray(variants);
+            const randomChoice = randomFromArray(choices);
+            // const isChosen = (choiceVid: string) =>
+            //   selectedChoice
+            //     ? choiceVid === selectedChoice
+            //     : choiceVid === randomChoice;
+
+            // const refIndex = videoArray.findIndex(
+            //   (item) =>
+            //     item.variant === variant &&
+            //     item.result === result &&
+            //     isChosen(item.choice)
+            // );
+            if (!selectedChoice) {
+              setDisplayChoice(randomChoice);
+            }
+
+            let videoData = {
+              variant,
+              result,
+              choice: selectedChoice || randomChoice,
+            };
+            setDisplayVideo((oldData) => [...oldData, videoData]);
+            // videosRef?.current[refIndex]?.play();
+            onCountdownFinish();
+          }
+          break;
+        case GameState.RESTDOWN:
+          break;
+      }
     }
-  }
+  }, [prevGameState, gameState, resetToInitial]);
 
   useEffect(() => {
     let waitInterval: NodeJS.Timeout;
@@ -275,7 +282,7 @@ export const BaseGame = (props: BaseGameProps) => {
       onWinNotify(result);
     }
     setResult("");
-    setDisplayVideo(null);
+    setDisplayVideo([]);
     // setTimeout(() => {
     //   setDisplayVideo(null);
     // }, 1700);
@@ -307,6 +314,22 @@ export const BaseGame = (props: BaseGameProps) => {
   let seconds = timeLeft;
   if (gameState === GameState.RESTDOWN) seconds = restTimeLeft;
   if (gameState === GameState.WAITING) seconds = waitTimeLeft;
+
+  // const [seconds, setSeconds] = useState(0);
+
+  // useEffect(() => {
+  //   setSeconds(timeLeft);
+  // }, []);
+
+  // useEffect(() => {
+  //   gameState === GameState.RESTDOWN && setSeconds(restTimeLeft);
+  //   gameState === GameState.WAITING && setSeconds(waitTimeLeft);
+  // }, [gameState,restTimeLeft,waitTimeLeft]);
+
+  useEffect(() => {
+    console.log("display video:", displayVideo);
+  }, [displayVideo]);
+
   return (
     <>
       <div className="flex-row flex items-center justify-center">
@@ -341,19 +364,19 @@ export const BaseGame = (props: BaseGameProps) => {
           <div
             className={`lg:w-[600px] max-w-[600px] w-[180%] h-[240px] ${gameState === GameState.COUNTDOWN ? "hidden" : ""}`}
           >
-            {displayVideo && (
+            {displayVideo && displayVideo[0] && (
               <video
                 preload="auto"
                 key={
-                  displayVideo.choice +
-                  displayVideo.result +
-                  displayVideo.variant
+                  displayVideo[0]?.choice +
+                  displayVideo[0]?.result +
+                  displayVideo[0]?.variant
                 }
                 onEnded={handleVideoEnd}
                 autoPlay
               >
                 <source
-                  src={`${basePath}${displayVideo.choice}/${displayVideo.result}${displayVideo.variant}.${extension}`}
+                  src={`${basePath}${displayVideo[0]?.choice}/${displayVideo[0]?.result}${displayVideo[0]?.variant}.${extension}`}
                   type={`video/${extension}`}
                 />
               </video>

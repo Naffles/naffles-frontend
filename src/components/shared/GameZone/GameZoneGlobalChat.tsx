@@ -694,7 +694,7 @@ const GameZoneGlobalChat = () => {
 
             <button
               onClick={() => setShowChat(false)}
-              className="md:hidden flex items-center justify-center w-[100px] rounded-[10px] bg-nafl-sponge-500 shadow-xl"
+              className="md:hidden flex items-center justify-center w-[100px] rounded-[10px] bg-nafl-sponge-500 shadow-xl absolute top-[30px]"
             >
               <p className="font-face-bebas text-[20px] text-[#000]">
                 CLOSE CHAT

@@ -205,7 +205,7 @@ export const RPSGamezoneNafflings = () => {
               CHOOSE YOUR WEAPON!
             </p>
             <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
-            <div className="flex flex-row items-center justify-center gap-[23px] mt-[10px]">
+            <div className="flex flex-row flex-wrap items-center justify-center gap-[23px] mt-[10px]">
               <button
                 onClick={() => triggerRPSGame("rock")}
                 disabled={timeleft <= 0}
@@ -254,7 +254,7 @@ export const RPSGamezoneNafflings = () => {
           <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
           {result != "draw" && (
             <div
-              className={`flex flex-row items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
+              className={`flex flex-row flex-wrap items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
             >
               <button
                 onClick={() => leaveGame()}

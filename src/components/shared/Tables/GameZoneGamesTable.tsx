@@ -433,8 +433,8 @@ const GameZoneGamesTable = (props: Props) => {
             return (
               <TableRow key={item.id}>
                 <TableCell>
-                  <div className="flex flex-row items-center gap-[11px] h-[70px]">
-                    <div className="w-[33px] h-[33px] rounded-full overflow-hidden">
+                  <div className="flex flex-row items-center gap-[11px] h-[70px] min-w-[120px]">
+                    <div className="min-w-[33px] h-[33px] rounded-full overflow-hidden">
                       <img
                         src={
                           item.game == "rockPaperScissors"
@@ -455,7 +455,7 @@ const GameZoneGamesTable = (props: Props) => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex flex-row items-center gap-[7px]">
+                  <div className="flex flex-row items-center gap-[7px] min-w-[150px]">
                     <img
                       src={item.image ?? "/static/no-image-account.png"}
                       aria-placeholder=""
@@ -464,7 +464,7 @@ const GameZoneGamesTable = (props: Props) => {
                       onError={onImageError}
                     />{" "}
                     <p
-                      className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
+                      className={`text-[16px] font-bold truncate ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
                     >
                       {item.myUsername == item.player
                         ? "You"
@@ -473,7 +473,7 @@ const GameZoneGamesTable = (props: Props) => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex flex-row items-center gap-[6px]">
+                  <div className="flex flex-row items-center gap-[6px] min-w-[120px]">
                     <p
                       className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
                     >
@@ -503,7 +503,7 @@ const GameZoneGamesTable = (props: Props) => {
                 </TableCell>
 
                 <TableCell>
-                  <div className="flex flex-row items-center justify-between gap-[7px]">
+                  <div className="flex flex-row items-center justify-between gap-[7px] min-w-[260px]">
                     <div className="flex flex-row items-center justify-center gap-[6px]">
                       <p
                         className={`text-[16px] font-bold ${item.myUsername == item.player ? "text-nafl-sponge-500" : "text-[#fff]"}`}
