@@ -20,14 +20,14 @@ const TransactionHistory = () => {
 
   return (
     <>
-      <div className="flex flex-col w-[1000px]">
+      <div className="flex flex-col max-w-[1000px] w-full">
         <div className="flex flex-col items-center justify-center w-full mt-[50px]">
-          <p className="px-[20px] w-full text-[60px] text-[#fff] font-face-bebas">
+          <p className="md:px-[20px] w-full text-[60px] text-[#fff] font-face-bebas">
             ACTIONS
           </p>
           <p className="font-mono text-[32px] text-[#fff]">NO ACTIONS</p>
         </div>
-        <div className="flex flex-row flex-wrap items-center justify-between gap-[20px] px-[20px] mt-[80px]">
+        <div className="flex flex-row flex-wrap items-center justify-between gap-[20px] md:px-[20px] mt-[80px]">
           <p className="text-[60px] text-[#fff] font-face-bebas">HISTORY</p>
           <CustomDropdownComponent
             label={null}

@@ -429,7 +429,7 @@ export const CTGamezone = () => {
           <div className="flex flex-col w-full ">
             <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
             <div
-              className={`flex flex-row items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
+              className={`flex flex-row flex-wrap items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
             >
               <button
                 onClick={() => leaveGame()}
@@ -616,7 +616,7 @@ export const CTGamezone = () => {
 
       {!changingBet && !showAcceptChangeBet && (
         <>
-          <div className="flex flex-row items-center justify-center gap-[20px] mt-[20px]">
+          <div className="flex flex-row flex-wrap items-center justify-center gap-[20px] mt-[20px]">
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
@@ -644,7 +644,9 @@ export const CTGamezone = () => {
       {/* BOTTOM PART */}
 
       {!changingBet && !showAcceptChangeBet && !selectedChoice && (
-        <div className={`flex flex-row items-center justify-center gap-[14px]`}>
+        <div
+          className={`flex md:flex-row flex-wrap items-center justify-center gap-[14px] flex-col-reverse`}
+        >
           <button
             onClick={() => leaveGame()}
             className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
@@ -653,7 +655,7 @@ export const CTGamezone = () => {
           </button>
           {lastResult == "lose" ||
           (currentGameMode == "host" && !lastResult) ? (
-            <>
+            <div className="flex flex-row flex-wrap gap-[14px]">
               <button
                 onClick={() => handleChoiceClick("heads")}
                 className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
@@ -666,7 +668,7 @@ export const CTGamezone = () => {
               >
                 <p className="text-[#fff] text-[18px] font-bold">TAILS</p>
               </button>
-            </>
+            </div>
           ) : (
             lastResult &&
             !requestPlayAgain && (

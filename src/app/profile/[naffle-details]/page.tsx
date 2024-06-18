@@ -56,7 +56,7 @@ const UserProfile = () => {
   return (
     <Fragment>
       {/* open a modal to edit profile */}
-      <div className="flex flex-col items-center w-full mt-[85px] h-auto px-[125px] min-h-[800px]">
+      <div className="flex flex-col items-center w-full mt-[85px] h-auto md:px-[125px] px-[25px] min-h-[800px]">
         <div className="flex w-full h-auto">
           <div className="w-full h-full bg-nafl-charcoal-500 mt-[60px]">
             <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-nafl-sponge-500 dark:border-gray-700 dark:text-gray-400">
@@ -67,7 +67,7 @@ const UserProfile = () => {
                   "inline-block rounded-t-lg bg-nafl-grey-700 hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 text-nafl-charcoal-100";
                 return (
                   <li
-                    className="me-2"
+                    className="md:me-2 me-[2px]"
                     key={index}
                     onClick={() => handleOnTabClick(tab.key)}
                   >
@@ -76,9 +76,9 @@ const UserProfile = () => {
                       aria-current="page"
                       className={`
                         font-normal
-                        text-[22px]
-                        lead-8
-                        px-[48px]
+                        md:text-[22px] text-[12px]
+                        md:lead-8
+                        md:px-[48px] px-[14px]
                         py-[10px]
                         ${tab.state ? activeString : inactiveString}`}
                     >

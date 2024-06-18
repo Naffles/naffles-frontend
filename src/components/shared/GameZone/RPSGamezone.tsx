@@ -363,7 +363,7 @@ export const RPSGamezone = () => {
           <p className="text-[24px] text-nafl-white mb-[90px]">
             Waiting for Challenger ...
           </p>
-          <div className="flex flex-row items-center justify-center gap-[20px] mb-[20px]">
+          <div className="flex flex-row flex-wrap items-center justify-center gap-[20px] mb-[20px]">
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
@@ -404,7 +404,7 @@ export const RPSGamezone = () => {
           </div>
 
           <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
-          <div className="flex flex-row items-center justify-center w-full my-[80px] gap-[16px]">
+          <div className="flex flex-row flex-wrap items-center justify-center w-full my-[80px] gap-[16px]">
             <p className="text-[11px] text-nafl-white">
               Game owner has change the bet to
             </p>
@@ -420,7 +420,7 @@ export const RPSGamezone = () => {
               at {requestedBetOdds} : 1 odds
             </p>
           </div>
-          <div className="flex flex-row items-center justify-center gap-[20px] mt-[20px]">
+          <div className="flex flex-row flex-wrap items-center justify-center gap-[20px] mt-[20px]">
             <p className="text-[#989898] text-[12px]">
               Payout:{" "}
               <span className="font-bold text-[#fff] font-face-roboto">
@@ -445,7 +445,7 @@ export const RPSGamezone = () => {
             <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
             {result != "draw" && (
               <div
-                className={`flex flex-row items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
+                className={`flex flex-row flex-wrap items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
               >
                 <button
                   onClick={() => leaveGame()}
@@ -474,7 +474,7 @@ export const RPSGamezone = () => {
       )}
       {changingBet && <GameZoneChangeBet />}
       {result && !changingBet && !showAcceptChangeBet && (
-        <div className="flex flex-row items-center justify-center gap-[20px] mt-[20px]">
+        <div className="flex flex-row flex-wrap items-center justify-center gap-[20px] mt-[20px]">
           <p className="text-[#989898] text-[12px]">
             Payout:{" "}
             <span className="font-bold text-[#fff] font-face-roboto">
@@ -507,7 +507,7 @@ export const RPSGamezone = () => {
                 CHOOSE YOUR WEAPON!
               </p>
               <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
-              <div className="flex flex-row items-center justify-center gap-[23px] mt-[10px]">
+              <div className="flex flex-row flex-wrap items-center justify-center gap-[23px] mt-[10px]">
                 <button
                   onClick={() => handleChoiceClick("rock")}
                   disabled={timeleft <= 1}
@@ -578,7 +578,7 @@ export const RPSGamezone = () => {
                 SECONDS
               </p>
             </div>
-            <div className="flex flex-row items-center justify-center gap-[20px]">
+            <div className="flex flex-row flex-wrap items-center justify-center gap-[20px]">
               <p className="text-[#989898] text-[12px]">
                 Payout:{" "}
                 <span className="font-bold text-[#fff] font-face-roboto">
@@ -606,7 +606,7 @@ export const RPSGamezone = () => {
             <div className="w-full h-[1px] bg-nafl-sponge-500"></div>
             {result != "draw" && (
               <div
-                className={`flex flex-row items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
+                className={`flex flex-row flex-wrap items-center justify-center gap-[14px] ${showResultUI ? "opacity-100" : "opacity-0"}`}
               >
                 <button
                   onClick={() => leaveGame()}

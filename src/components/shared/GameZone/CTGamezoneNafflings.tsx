@@ -248,7 +248,9 @@ export const CTGamezoneNafflings = () => {
       )}
 
       {!selectedChoice && (
-        <div className={`flex flex-row items-center justify-center gap-[14px]`}>
+        <div
+          className={`flex md:flex-row flex-wrap items-center justify-center gap-[14px] flex-col-reverse`}
+        >
           <button
             onClick={() => leaveGame()}
             className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
@@ -256,7 +258,7 @@ export const CTGamezoneNafflings = () => {
             <p className="text-[#fff] text-[18px] font-bold">LEAVE GAME</p>
           </button>
 
-          <>
+          <div className="flex flex-row flex-wrap gap-[14px]">
             <button
               onClick={() => triggerCTGame("heads")}
               className="h-[54px] px-[31px] rounded-[8px] border-[1px] border-nafl-sponge-500 my-[20px]"
@@ -269,7 +271,7 @@ export const CTGamezoneNafflings = () => {
             >
               <p className="text-[#fff] text-[18px] font-bold">TAILS</p>
             </button>
-          </>
+          </div>
         </div>
       )}
     </>

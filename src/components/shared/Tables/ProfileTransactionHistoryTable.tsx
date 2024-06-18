@@ -77,7 +77,7 @@ const ProfileTransactionHistory = () => {
   };
 
   return (
-    <div className="w-full lg:px-[0px] px-[10px] mb-[50px] min-h-[800px]">
+    <div className="w-full lg:px-[0px] md:px-[10px] mb-[50px] min-h-[800px]">
       <Table
         aria-label="Admin transactions table"
         removeWrapper
