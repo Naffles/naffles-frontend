@@ -97,7 +97,7 @@ export default function Home() {
 
           <div className="flex flex-col items-center justify-center gap-[16px] mt-[65px] w-full">
             <a
-              href="https://discord.gg/naffles"
+              href="https://discord.com/invite/T3RVQtr5Vm"
               target="_blank"
               className="flex items-center justify-center h-[54px] lg:w-[364px] w-[90%] bg-[#464646] rounded-[8px] gap-[10px] group"
             >

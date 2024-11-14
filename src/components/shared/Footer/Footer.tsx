@@ -95,7 +95,7 @@ const Footer = () => {
               <a href="https://twitter.com/Nafflesofficial" target="_blank">
                 <FaXTwitter className="hover:text-nafl-white text-nafl-sponge-500 text-[40px] transition-colors ease-out duration-150 cursor-pointer" />
               </a>
-              <a href="https://discord.gg/naffles" target="_blank">
+              <a href="https://discord.com/invite/T3RVQtr5Vm" target="_blank">
                 <FaDiscord className="hover:text-nafl-white text-nafl-sponge-500 text-[40px] transition-colors ease-out duration-150 cursor-pointer" />
               </a>
             </div>

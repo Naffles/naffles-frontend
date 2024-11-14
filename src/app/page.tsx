@@ -285,7 +285,7 @@ export default function Home() {
                             /> */}
                             <FaXTwitter className="text-[25px] text-[#02b1b1]" />
                           </a>
-                          <a href="https://discord.gg/naffles" target="_blank">
+                          <a href="https://discord.com/invite/T3RVQtr5Vm" target="_blank">
                             <img
                               src="/static/discord.svg"
                               title="Discord"

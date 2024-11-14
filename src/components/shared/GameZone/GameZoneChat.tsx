@@ -388,7 +388,7 @@ const GameZoneChat = () => {
           </div>
 
           <a
-            href="https://discord.gg/naffles"
+            href="https://discord.com/invite/T3RVQtr5Vm"
             target="_blank"
             className="w-full h-[58px] rounded-[10px] relative overflow-hidden cursor-pointer"
           >
@@ -579,7 +579,7 @@ const GameZoneChat = () => {
                   </div>
 
                   <a
-                    href="https://discord.gg/naffles"
+                    href="https://discord.com/invite/T3RVQtr5Vm"
                     target="_blank"
                     className="w-full h-[58px] rounded-[10px] relative overflow-hidden cursor-pointer"
                   >
