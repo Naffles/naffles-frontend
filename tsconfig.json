@@ -19,18 +19,22 @@
       }
     ],
     "paths": {
+      "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
       "@blockchain/*": ["./src/blockchain/*"],
       "@layout/*": ["./src/layouts/*"],
       "@store/*": ["./src/store/*"],
+      "@hooks/*": ["./src/hooks/*"],
       "@hook/*": ["./src/hooks/*"],
+      "@utils/*": ["./src/utils/*"],
       "@util/*": ["./src/util/*"],
+      "@services/*": ["./src/services/*"],
       "@network/*": ["./src/network/*"],
       "@type/*": ["./src/types/*"],
       "@image/*": ["./public/static/*"],
       "@api/*": ["./src/api/api.ts"],
       "@assets/*": ["./public/static/*"],
-      "react": [ "./node_modules/@types/react" ],
+      "react": [ "./node_modules/@types/react" ]
     },
     "types": [
       "node",

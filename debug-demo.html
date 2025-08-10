@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-8">
+    <h1 class="text-2xl font-bold mb-4">Debug Demo</h1>
+    
+    <div class="space-y-4">
+        <button onclick="testShowGame()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+            Test showGame Function
+        </button>
+        
+        <button onclick="showGame('blackjack', event)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+            Test Blackjack Button
+        </button>
+        
+        <div id="game-container" class="bg-gray-800 p-4 rounded">
+            <p>Game will load here...</p>
+        </div>
+        
+        <div id="output" class="bg-gray-700 p-4 rounded">
+            <p>Output will appear here...</p>
+        </div>
+    </div>
+
+    <script>
+        console.log('Script loading...');
+        
+        function testShowGame() {
+            console.log('testShowGame called');
+            document.getElementById('output').innerHTML = '<p class="text-green-500">Test function works!</p>';
+        }
+        
+        function showGame(gameType, event) {
+            console.log('showGame called with:', gameType);
+            document.getElementById('output').innerHTML = '<p class="text-green-500">showGame called with: ' + gameType + '</p>';
+            
+            const container = document.getElementById('game-container');
+            container.innerHTML = '<p class="text-yellow-500">Game type: ' + gameType + ' loaded!</p>';
+        }
+        
+        console.log('Script loaded successfully');
+        console.log('showGame function defined:', typeof showGame);
+    </script>
+</body>
+</html>

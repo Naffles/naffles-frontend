@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Card Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card {
+            width: 64px;
+            height: 96px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-8">
+    <h1 class="text-2xl font-bold mb-4">Card Design Test</h1>
+    
+    <div class="mb-8">
+        <h2 class="text-xl mb-4">Individual Cards</h2>
+        <div class="flex gap-4">
+            <div class="card">
+                <!-- Top-left corner -->
+                <div class="absolute top-1 left-1 text-xs font-bold text-red-600 leading-none">
+                    A<br><span class="text-sm">♥</span>
+                </div>
+                
+                <!-- Left edge symbol for overlap visibility -->
+                <div class="absolute top-1/2 left-0.5 transform -translate-y-1/2 text-sm font-bold text-red-600">
+                    ♥
+                </div>
+                
+                <!-- Center symbol (subtle) -->
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-red-600 opacity-20">
+                    ♥
+                </div>
+                
+                <!-- Bottom-right corner (rotated) -->
+                <div class="absolute bottom-1 right-1 text-xs font-bold text-red-600 transform rotate-180 leading-none">
+                    A<br><span class="text-sm">♥</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <!-- Top-left corner -->
+                <div class="absolute top-1 left-1 text-xs font-bold text-black leading-none">
+                    K<br><span class="text-sm">♠</span>
+                </div>
+                
+                <!-- Left edge symbol for overlap visibility -->
+                <div class="absolute top-1/2 left-0.5 transform -translate-y-1/2 text-sm font-bold text-black">
+                    ♠
+                </div>
+                
+                <!-- Center symbol (subtle) -->
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-black opacity-20">
+                    ♠
+                </div>
+                
+                <!-- Bottom-right corner (rotated) -->
+                <div class="absolute bottom-1 right-1 text-xs font-bold text-black transform rotate-180 leading-none">
+                    K<br><span class="text-sm">♠</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-8">
+        <h2 class="text-xl mb-4">Overlapping Cards (60% overlap)</h2>
+        <div class="relative" style="height: 120px;">
+            <!-- Card 1 -->
+            <div class="card absolute" style="transform: translateX(0px) rotate(-1deg); z-index: 1;">
+                <div class="absolute top-1 left-1 text-xs font-bold text-red-600 leading-none">
+                    A<br><span class="text-sm">♥</span>
+                </div>
+                <div class="absolute top-1/2 left-0.5 transform -translate-y-1/2 text-sm font-bold text-red-600">
+                    ♥
+                </div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-red-600 opacity-20">
+                    ♥
+                </div>
+                <div class="absolute bottom-1 right-1 text-xs font-bold text-red-600 transform rotate-180 leading-none">
+                    A<br><span class="text-sm">♥</span>
+                </div>
+            </div>
+            
+            <!-- Card 2 (60% overlap) -->
+            <div class="card absolute" style="transform: translateX(25.6px) rotate(1deg); z-index: 2;">
+                <div class="absolute top-1 left-1 text-xs font-bold text-black leading-none">
+                    K<br><span class="text-sm">♠</span>
+                </div>
+                <div class="absolute top-1/2 left-0.5 transform -translate-y-1/2 text-sm font-bold text-black">
+                    ♠
+                </div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-black opacity-20">
+                    ♠
+                </div>
+                <div class="absolute bottom-1 right-1 text-xs font-bold text-black transform rotate-180 leading-none">
+                    K<br><span class="text-sm">♠</span>
+                </div>
+            </div>
+            
+            <!-- Card 3 (60% overlap) -->
+            <div class="card absolute" style="transform: translateX(51.2px) rotate(-1deg); z-index: 3;">
+                <div class="absolute top-1 left-1 text-xs font-bold text-red-600 leading-none">
+                    Q<br><span class="text-sm">♦</span>
+                </div>
+                <div class="absolute top-1/2 left-0.5 transform -translate-y-1/2 text-sm font-bold text-red-600">
+                    ♦
+                </div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-red-600 opacity-20">
+                    ♦
+                </div>
+                <div class="absolute bottom-1 right-1 text-xs font-bold text-red-600 transform rotate-180 leading-none">
+                    Q<br><span class="text-sm">♦</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-sm text-gray-400">
+        <p>✅ Each card should show its suit symbol on the left edge</p>
+        <p>✅ Top-left corner should show value and suit</p>
+        <p>✅ Red suits (♥♦) should be red, black suits (♠♣) should be black</p>
+        <p>✅ When overlapped, you should still be able to identify each card</p>
+    </div>
+</body>
+</html>

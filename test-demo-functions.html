@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Demo Functions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-8">
+    <h1 class="text-2xl font-bold mb-4">Test Demo Functions</h1>
+    
+    <div class="space-y-4">
+        <button onclick="testShowGame()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+            Test showGame Function
+        </button>
+        
+        <div id="test-container" class="bg-gray-800 p-4 rounded">
+            <p>Click the button above to test the showGame function</p>
+        </div>
+        
+        <div id="output" class="bg-gray-700 p-4 rounded">
+            <p>Output will appear here...</p>
+        </div>
+    </div>
+
+    <script>
+        function testShowGame() {
+            try {
+                console.log('Testing showGame function...');
+                document.getElementById('output').innerHTML = '<p class="text-green-500">showGame function test started...</p>';
+                
+                // Test if the function exists
+                if (typeof showGame === 'function') {
+                    document.getElementById('output').innerHTML += '<p class="text-green-500">✓ showGame function exists</p>';
+                } else {
+                    document.getElementById('output').innerHTML += '<p class="text-red-500">✗ showGame function does not exist</p>';
+                }
+                
+                // Create a mock game container
+                const container = document.createElement('div');
+                container.id = 'game-container';
+                document.getElementById('test-container').appendChild(container);
+                
+                // Test calling showGame
+                showGame('blackjack');
+                document.getElementById('output').innerHTML += '<p class="text-green-500">✓ showGame called successfully</p>';
+                
+            } catch (error) {
+                console.error('Error testing showGame:', error);
+                document.getElementById('output').innerHTML += '<p class="text-red-500">✗ Error: ' + error.message + '</p>';
+            }
+        }
+
+        // Copy the showGame function from the main demo
+        function showGame(gameType, event) {
+            const container = document.getElementById('game-container');
+            
+            // Update selector states
+            document.querySelectorAll('.game-selector').forEach(btn => {
+                btn.classList.remove('border-nafl-aqua-500');
+                btn.classList.add('border-gray-600');
+            });
+            
+            // Only update button state if event is provided
+            if (event && event.target) {
+                const button = event.target.closest('.game-selector');
+                if (button) {
+                    button.classList.add('border-nafl-aqua-500');
+                    button.classList.remove('border-gray-600');
+                }
+            }
+
+            switch(gameType) {
+                case 'blackjack':
+                    showBlackjack();
+                    break;
+                case 'coin-toss':
+                    showCoinToss();
+                    break;
+                case 'rps':
+                    showRPS();
+                    break;
+            }
+        }
+
+        function showBlackjack() {
+            const container = document.getElementById('game-container');
+            container.innerHTML = '<p class="text-green-500">Blackjack game loaded successfully!</p>';
+        }
+
+        function showCoinToss() {
+            const container = document.getElementById('game-container');
+            container.innerHTML = '<p class="text-yellow-500">Coin Toss game loaded successfully!</p>';
+        }
+
+        function showRPS() {
+            const container = document.getElementById('game-container');
+            container.innerHTML = '<p class="text-purple-500">Rock Paper Scissors game loaded successfully!</p>';
+        }
+    </script>
+</body>
+</html>

@@ -1,7 +1,8 @@
 import axios from "axios";
+import { setupMockInterceptor } from "@utils/mockGameAPI";
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_ENDPOINT,
+  baseURL: process.env.NEXT_PUBLIC_ENDPOINT || "http://localhost:3001",
   headers: {
     "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
   },
@@ -18,4 +19,8 @@ instance.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Setup mock API interceptor for demo purposes
+setupMockInterceptor(instance);
+
 export default instance;

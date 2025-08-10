@@ -1,0 +1,63 @@
+/* Game History Display Styles */
+
+.non-intrusive-positioning {
+  /* Ensure the history display doesn't interfere with gameplay */
+  pointer-events: none;
+  user-select: none;
+  
+  /* Smooth transitions for better UX */
+  transition: all 0.3s ease-in-out;
+  
+  /* Ensure it stays above other elements but below modals */
+  z-index: 20;
+}
+
+.non-intrusive-positioning:hover {
+  pointer-events: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .non-intrusive-positioning {
+    /* Smaller padding on mobile */
+    padding: 0.5rem;
+    
+    /* Adjust positioning for mobile */
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .non-intrusive-positioning {
+    /* Even smaller on very small screens */
+    padding: 0.25rem;
+    top: 0.25rem;
+    right: 0.25rem;
+  }
+}
+
+/* Ensure history doesn't interfere with game controls */
+@media (max-height: 600px) {
+  .non-intrusive-positioning {
+    /* Move to top-left on short screens */
+    top: 0.5rem;
+    left: 0.5rem;
+    right: auto;
+  }
+}
+
+/* Animation performance optimizations */
+.history-item {
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Force GPU acceleration */
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .non-intrusive-positioning,
+  .history-item {
+    transition: none;
+    animation: none;
+  }
+}
